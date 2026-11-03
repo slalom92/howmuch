@@ -6,34 +6,44 @@
 
 ```bash
 npm install
-cp .env.example .env   # 키를 넣지 않으면 가상 채널로 동작하는 데모 모드
-npm run dev            # http://localhost:5173
-npm run build          # dist/ 폴더를 Vercel, Netlify, GitHub Pages 등에 올리면 됩니다
+# .env.local 파일을 만들고 YT_API_KEY=발급받은키 를 넣으세요 (커밋 금지)
+npm run dev            # http://localhost:5173  (/api 서버 함수도 함께 동작)
+npm run build
 ```
 
-## 환경 변수 (.env)
+키 없이 화면만 보려면 `.env`에 `VITE_DEMO_MODE=true`를 넣으면 가상 채널로 동작합니다.
 
-| 이름 | 설명 |
-|---|---|
-| `VITE_YT_API_KEY` | YouTube Data API v3 키. 비워 두면 데모 모드 |
-| `VITE_ADSENSE_CLIENT` | 애드센스 게시자 ID (`ca-pub-...`) |
-| `VITE_AD_SLOT_TOP` / `VITE_AD_SLOT_INLINE` / `VITE_AD_SLOT_ANCHOR` | 상단 배너, 결과 아래 본문, 하단 고정 광고 단위 ID |
+## 구조: 브라우저 → 서버 함수 → YouTube
 
-### YouTube API 키 발급
+```
+브라우저 ──/api/search, /api/channel──▶ Vercel 서버 함수 ──▶ YouTube Data API
+            (Vercel CDN 캐시: 검색 24시간, 채널 6시간)
+```
 
-1. Google Cloud Console에서 프로젝트를 만들고 **YouTube Data API v3**를 사용 설정합니다.
-2. 사용자 인증 정보에서 API 키를 만듭니다.
-3. 키는 브라우저 코드에 그대로 포함되므로 반드시 제한을 겁니다.
-   - 애플리케이션 제한사항: **HTTP 리퍼러** (예: `https://내도메인.com/*`, 개발 중엔 `http://localhost:5173/*`)
-   - API 제한사항: **YouTube Data API v3**만 허용
+- API 키는 서버 환경변수 `YT_API_KEY`에만 있고 브라우저 코드에는 들어가지 않습니다.
+- 서버 응답에 `Cache-Control: s-maxage`를 붙여 Vercel CDN이 같은 요청 결과를 모든 방문자와 공유합니다. 인기 채널은 하루 한 번만 실제로 YouTube를 호출합니다.
+- 브라우저에도 localStorage로 한 번 더 캐시합니다.
+- 오류 응답(쿼터 초과 등)은 캐시하지 않습니다.
+
+## 환경 변수
+
+| 이름 | 위치 | 설명 |
+|---|---|---|
+| `YT_API_KEY` | Vercel 환경변수, 로컬은 `.env.local` | YouTube Data API v3 키 (비밀) |
+| `VITE_ADSENSE_CLIENT` | `.env` | 애드센스 게시자 ID (`ca-pub-...`) |
+| `VITE_AD_SLOT_TOP` / `VITE_AD_SLOT_INLINE` / `VITE_AD_SLOT_ANCHOR` | `.env` | 상단 배너, 본문, 하단 고정 광고 단위 ID |
+| `VITE_DEMO_MODE` | `.env` | `true`면 가상 채널 데이터 사용 |
+| `SITE_URL` | Vercel 환경변수 (선택) | 서버가 YouTube에 보내는 Referer. 기본값 `https://howmuchyoutube.blog/` |
+
+### YouTube API 키
+
+서버에서 쓰는 키는 브라우저에 노출되지 않으므로 HTTP 리퍼러 제한 대신 **API 제한사항(YouTube Data API v3만 허용)**만 걸어 두면 됩니다. 기존 리퍼러 제한 키도 서버가 사이트 주소를 Referer로 보내므로 그대로 동작합니다.
 
 ### 쿼터 (무료 기본값)
 
-- 채널 이름 검색(`search.list`): **하루 약 100회**로 따로 제한됩니다.
-- `@핸들`, 채널 주소, 채널 ID로 입력하면 검색을 거치지 않아 쿼터를 거의 쓰지 않습니다 (채널 1개당 약 3 unit, 하루 10,000 unit).
-- 같은 검색어는 24시간, 같은 채널은 6시간 동안 브라우저에 캐시합니다.
-
-방문자가 많아지면 하루 100회 검색 제한에 금방 걸립니다. 이때는 서버(예: Vercel/Cloudflare 함수)에서 API를 호출하고 결과를 모든 방문자가 공유하도록 캐시하거나, Google에 쿼터 증설을 신청하세요.
+- 채널 이름 검색(`search.list`): 하루 약 100회로 따로 제한됩니다. 서버 캐시 덕분에 같은 검색어는 하루에 한 번만 셉니다.
+- `@핸들`, 채널 주소, 채널 ID 입력은 이름 검색을 거치지 않습니다.
+- 더 필요하면 YouTube API Services Audit and Quota Extension Form으로 증설을 신청합니다.
 
 ## 수익 계산 방식 (`src/lib/calc.js`)
 
@@ -61,6 +71,10 @@ RPM 가정값은 `RPM` 상수에서 바꿀 수 있습니다 (롱폼 1,000 / 2,00
 ## 구조
 
 ```
+api/
+  search.js               GET /api/search  채널 검색 (CDN 24시간 캐시)
+  channel.js              GET /api/channel 채널 + 최근 영상 (CDN 6시간 캐시)
+  _lib/youtube.js         YouTube API 호출 공용 코드
 src/
   App.jsx                 화면 흐름 (검색 → 후보 선택 → 결과), ?c=채널ID 공유 링크
   components/
@@ -70,7 +84,7 @@ src/
     CompareChart.jsx      직장인 소득 비교 막대그래프 (라이브러리 없이 CSS)
     AdSlot.jsx            광고 영역
   lib/
-    youtube.js            API 호출, 입력 해석, 캐시
+    youtube.js            입력 해석, 서버 함수 호출, 브라우저 캐시
     calc.js               수익 추정
     compare.js            비교 소득 데이터
     demo.js               API 키 없을 때 쓰는 가상 채널
