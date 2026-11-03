@@ -9,7 +9,8 @@
   --seal: #c2362b;
   --seal-tint: #fbeceb;
 
-  --anchor-h: 66px;
+  /* 하단 고정 광고 높이: AdSlot이 실제 높이로 채운다 */
+  --anchor-h: 0px;
   --font: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 }
 
@@ -29,7 +30,7 @@ body {
   font-size: 16px;
   line-height: 1.6;
   word-break: keep-all;
-  padding-bottom: calc(var(--anchor-h) + 16px);
+  padding-bottom: calc(var(--anchor-h, 0px) + 16px);
 }
 
 button,
@@ -102,6 +103,8 @@ input {
 }
 
 .ad__placeholder {
+  max-width: 100%;
+  margin: 0 auto;
   display: grid;
   place-items: center;
   border: 1px dashed #b3bccb;
@@ -109,10 +112,6 @@ input {
   color: #8790a3;
   font-size: 12px;
   background: repeating-linear-gradient(-45deg, transparent 0 8px, rgba(26, 34, 56, 0.03) 8px 16px);
-}
-
-.ad--top .ad__placeholder {
-  height: 90px;
 }
 
 .ad--inline {
@@ -127,6 +126,12 @@ input {
   height: 250px;
 }
 
+.ad__unit {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* 하단 고정: 광고 높이만큼만 차지하고, 어떤 경우에도 화면의 20%를 넘지 않게 자른다 */
 .ad--anchor {
   position: fixed;
   left: 0;
@@ -134,22 +139,22 @@ input {
   bottom: 0;
   z-index: 50;
   max-width: none;
+  max-height: 20vh;
+  overflow: hidden;
   margin: 0;
-  padding: 4px 12px calc(6px + env(safe-area-inset-bottom));
+  padding: 4px 0 calc(4px + env(safe-area-inset-bottom));
   background: rgba(255, 255, 255, 0.97);
   border-top: 1px solid var(--rule);
+  line-height: 0;
 }
 
 .ad--anchor .ad__label {
-  max-width: 728px;
-  margin: 0 auto 2px;
-}
-
-.ad--anchor .ad__placeholder,
-.ad--anchor .ad__unit {
-  height: 50px;
-  max-width: 728px;
-  margin: 0 auto;
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  margin: 0;
+  font-size: 10px;
+  line-height: 1;
 }
 
 /* ---------- 본문 ---------- */
@@ -753,10 +758,6 @@ input {
 
 /* ---------- 모바일 ---------- */
 @media (max-width: 600px) {
-  .ad--top .ad__placeholder {
-    height: 50px;
-  }
-
   .hero {
     padding-top: 24px;
   }
@@ -822,17 +823,6 @@ input {
   .bars__label,
   .bars__value {
     font-size: 13px;
-  }
-}
-
-@media (min-width: 760px) {
-  :root {
-    --anchor-h: 106px;
-  }
-
-  .ad--anchor .ad__placeholder,
-  .ad--anchor .ad__unit {
-    height: 90px;
   }
 }
 
