@@ -7,6 +7,7 @@ import AdSlot from './components/AdSlot.jsx'
 import { searchChannels, loadChannel, DEMO_MODE } from './lib/youtube.js'
 import { DEMO_CHANNELS } from './lib/demo.js'
 import { analyze, RPM, SHORTS_MAX_SEC } from './lib/calc.js'
+import { trackSearch, trackChannelView } from './lib/analytics.js'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
@@ -32,11 +33,12 @@ export default function App() {
   const analysis = useMemo(() => (channel ? analyze(channel.videos) : null), [channel])
   const busy = status === 'searching' || status === 'loading'
 
-  const pick = useCallback(async (summary) => {
+  const pick = useCallback(async (summary, source = 'search') => {
     setStatus('loading')
     setError('')
     try {
       const full = await loadChannel(summary)
+      trackChannelView(full, source)
       setChannel(full)
       setUrlChannel(full.id)
       setStatus('done')
@@ -54,6 +56,7 @@ export default function App() {
       setChannel(null)
       try {
         const list = await searchChannels(q)
+        trackSearch(q.trim().replace(/\s+/g, ' ').toLowerCase(), list.length)
         if (!list.length) {
           setError('검색 결과가 없습니다. 채널 이름을 바꾸거나 @핸들로 검색하세요.')
           setStatus('error')
@@ -74,7 +77,7 @@ export default function App() {
   // ?c=채널ID 로 들어오면 바로 계산 (공유 링크)
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get('c')
-    if (id) pick(id)
+    if (id) pick(id, 'link')
   }, [pick])
 
   return (
