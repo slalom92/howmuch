@@ -1,5 +1,8 @@
 {
   "trailingSlash": true,
   "regions": ["icn1"],
-  "rewrites": [{ "source": "/s/", "destination": "/api/share/" }]
+  "rewrites": [
+    { "source": "/s/", "destination": "/api/share/" },
+    { "source": "/channel/:slug/", "destination": "/api/page/?slug=:slug" }
+  ]
 }

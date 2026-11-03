@@ -8,7 +8,13 @@ function devApi() {
     name: 'dev-api',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        const m = req.url.match(/^\/(?:api\/(search|channel|corps|company|benchmarks|share)|(s))\/?(?:\?|$)/)
+        // /channel/<핸들>/ → /api/page/?slug=<핸들> (배포의 vercel.json rewrites 와 같은 동작)
+        const ch = req.url.match(/^\/channel\/([^/?]+)\/?(\?.*)?$/)
+        if (ch) {
+          const extra = ch[2] ? '&' + ch[2].slice(1) : ''
+          req.url = `/api/page/?slug=${ch[1]}${extra}`
+        }
+        const m = req.url.match(/^\/(?:api\/(search|channel|corps|company|benchmarks|share|page)|(s))\/?(?:\?|$)/)
         if (!m) return next()
         try {
           const mod = await server.ssrLoadModule(`/api/${m[1] || 'share'}.js`)
@@ -30,6 +36,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), devApi()],
-    base: './',
+    // 채널 페이지(/channel/…/)에서도 자산을 찾도록 절대 경로로 둔다
+    base: '/',
   }
 })

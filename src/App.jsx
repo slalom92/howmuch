@@ -14,6 +14,10 @@ import { loadCompany } from './lib/company.js'
 import { placeInCompany } from './lib/career.js'
 import { won } from './lib/format.js'
 import { trackSearch, trackChannelView } from './lib/analytics.js'
+import { channelPath, channelSlug, slugFromPath, isChannelId } from './lib/popular.js'
+import PopularChannels from './components/PopularChannels.jsx'
+
+const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 유튜버 월급명세서'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
@@ -27,6 +31,15 @@ function setUrlParams(params) {
     if (v) url.searchParams.set(k, v)
     else url.searchParams.delete(k)
   }
+  window.history.replaceState(null, '', url)
+}
+
+// 채널을 보면 주소를 /channel/<핸들>/ 로 바꾼다 (새로고침·주소 복사 시 검색에 잡히는 채널 페이지로 열림)
+function setChannelUrl(ch) {
+  const url = new URL(window.location.href)
+  url.pathname = ch ? channelPath(ch) : '/'
+  url.searchParams.delete('c')
+  if (!ch) url.searchParams.delete('co')
   window.history.replaceState(null, '', url)
 }
 
@@ -55,7 +68,7 @@ export default function App() {
       const full = await loadChannel(summary)
       trackChannelView(full, source)
       setChannel(full)
-      setUrlParams({ c: full.id })
+      setChannelUrl(full)
       setStatus('done')
       requestAnimationFrame(() => document.getElementById('result')?.focus())
     } catch (e) {
@@ -70,6 +83,7 @@ export default function App() {
       setError('')
       setChannel(null)
       setCompany(null)
+      setChannelUrl(null)
       try {
         const list = await searchChannels(q)
         trackSearch(q.trim().replace(/\s+/g, ' ').toLowerCase(), list.length)
@@ -90,18 +104,42 @@ export default function App() {
     [pick, setCompany],
   )
 
-  // ?c=채널ID 로 들어오면 바로 계산 (공유 링크)
+  // 채널 페이지(/channel/<핸들>/)나 ?c=채널ID 로 들어오면 바로 계산
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    const id = params.get('c')
+    const slug = slugFromPath(window.location.pathname)
+    const preset = window.__CHANNEL__ // 서버가 채널 페이지에 넣어 준 채널 ID
+    const id = params.get('c') || (slug && (preset?.id || (isChannelId(slug) ? slug : null)))
     const co = params.get('co')
-    if (id) pick(id, 'link')
-    if (id && /^\d{8}$/.test(co || '')) {
+    if (id) pick(id, slug ? 'page' : 'link')
+    else if (slug) {
+      setStatus('loading')
+      searchChannels('@' + slug)
+        .then((list) => {
+          if (list[0]) return pick(list[0], 'page')
+          setError(`@${slug} 채널을 찾지 못했습니다. 채널 이름으로 다시 검색하세요.`)
+          setStatus('error')
+        })
+        .catch((e) => {
+          setError(e.message)
+          setStatus('error')
+        })
+    }
+    if ((id || slug) && /^\d{8}$/.test(co || '')) {
       loadCompany(co)
         .then(setCompanyState)
         .catch(() => setUrlParams({ co: null }))
     }
   }, [pick])
+
+  // 탭 제목도 채널에 맞춘다
+  useEffect(() => {
+    if (status === 'done' && channel && analysis) {
+      document.title = `${channel.title} 유튜브 수익 – 한 달 약 ${won(monthlyRevenue(analysis, 'mid').total)} 추정 | 유튜버 월급명세서`
+    } else if (status === 'searching' || status === 'picking') {
+      document.title = HOME_TITLE
+    }
+  }, [status, channel, analysis])
 
   // 공유 링크와 문구 (공유 링크는 미리보기 문구를 만들어 주는 /s/ 페이지를 거친다)
   const share = useMemo(() => {
@@ -118,12 +156,13 @@ export default function App() {
   return (
     <div className="page">
       <header className="masthead">
-        <a className="brand" href="./">
+        <a className="brand" href="/">
           <BrandMark />
           유튜버 월급명세서
         </a>
         <nav className="topnav" aria-label="주요 메뉴">
           {DEMO_MODE && <span className="demo-flag">데모 데이터로 보는 중</span>}
+          <a href="/channel/">유튜버별 수익</a>
           <a href="/guide/">수익 가이드</a>
         </nav>
       </header>
@@ -167,6 +206,8 @@ export default function App() {
 
         {status === 'done' && <AdSlot variant="inline" slot={SLOTS.inline} />}
 
+        {!busy && <PopularChannels currentSlug={channel ? channelSlug(channel) : null} title={status === 'done' ? '다른 유튜버 수익도 보기' : '많이 찾는 유튜버'} />}
+
         <details className="method">
           <summary>이 금액은 어떻게 계산되나요?</summary>
           <div className="method__body">
@@ -209,6 +250,7 @@ export default function App() {
       <footer className="footer">
         <ul className="footer__links">
           <li><a href="/guide/">수익 가이드</a></li>
+          <li><a href="/channel/">유튜버별 수익</a></li>
           <li><a href="/about/">사이트 소개</a></li>
           <li><a href="/privacy/">개인정보처리방침</a></li>
           <li><a href="/terms/">이용약관</a></li>

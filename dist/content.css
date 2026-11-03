@@ -357,3 +357,30 @@ a:hover {
 .doc .guide-list {
   padding: 0;
 }
+
+/* 유튜버별 수익 모음 */
+.doc .channel-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 8px 0 4px;
+  list-style: none;
+}
+.doc .channel-list li {
+  margin: 0;
+}
+.doc .channel-list a {
+  display: inline-block;
+  padding: 6px 13px;
+  border: 1px solid var(--rule, #cfd6e0);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink, #1a2238);
+  font-size: 14px;
+  text-decoration: none;
+}
+.doc .channel-list a:hover {
+  border-color: var(--seal, #c2362b);
+  color: var(--seal, #c2362b);
+}
