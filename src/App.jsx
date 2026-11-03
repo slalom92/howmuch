@@ -6,6 +6,7 @@ import CompareChart from './components/CompareChart.jsx'
 import AdSlot from './components/AdSlot.jsx'
 import CompanyCompare from './components/CompanyCompare.jsx'
 import ShareBar from './components/ShareBar.jsx'
+import { BrandMark, PayEnvelope } from './components/Art.jsx'
 import { searchChannels, loadChannel, DEMO_MODE } from './lib/youtube.js'
 import { DEMO_CHANNELS } from './lib/demo.js'
 import { analyze, monthlyRevenue, RPM, SHORTS_MAX_SEC } from './lib/calc.js'
@@ -118,6 +119,7 @@ export default function App() {
     <div className="page">
       <header className="masthead">
         <a className="brand" href="./">
+          <BrandMark />
           유튜버 월급명세서
         </a>
         <nav className="topnav" aria-label="주요 메뉴">
@@ -130,10 +132,13 @@ export default function App() {
 
       <main className="main">
         <section className="hero">
-          <h1 className="hero__title">이 유튜버, 한 달에 얼마 벌까?</h1>
-          <p className="hero__lede">
-            구독자 수와 최근 영상 조회수로 광고 수익을 추정하고 직장인 월급과 나란히 놓아 봅니다.
-          </p>
+          <div className="hero__text">
+            <h1 className="hero__title">이 유튜버, 한 달에 얼마 벌까?</h1>
+            <p className="hero__lede">
+              구독자 수와 최근 영상 조회수로 광고 수익을 추정하고 직장인 월급, 우리 회사 연봉과 나란히 놓아 봅니다.
+            </p>
+          </div>
+          <PayEnvelope className="hero__art" />
           <SearchBar onSearch={search} busy={busy} examples={DEMO_MODE ? DEMO_CHANNELS.map((c) => c.title) : []} />
         </section>
 

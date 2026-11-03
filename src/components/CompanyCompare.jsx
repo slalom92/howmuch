@@ -5,6 +5,7 @@ import { monthlyRevenue } from '../lib/calc.js'
 import { SIZE_AVG, INDUSTRIES } from '../lib/benchmarks.js'
 import { won } from '../lib/format.js'
 import { track } from '../lib/analytics.js'
+import CareerCurve from './CareerCurve.jsx'
 
 const SIZES = ['대기업', '중견', '중소']
 
@@ -255,6 +256,8 @@ export default function CompanyCompare({ channel, analysis, tier, company, setCo
               <dd>{won(annual)}</dd>
             </div>
           </dl>
+
+          <CareerCurve curve={result.curve} annual={annual} place={result.place} channelTitle={channel.title} companyName={company.stockName || company.name} />
 
           <table className="ladder">
             <caption>{company.name} 직급별 추정 연봉</caption>

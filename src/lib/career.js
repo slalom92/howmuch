@@ -103,5 +103,13 @@ export function placeInCompany(company, annual) {
     place = { kind: 'top', text: '부장 말년차 이상', sub: `입사 ${Math.floor(exec)}년차 이상` }
   }
 
-  return { place, ladder, base: Math.round(base), tenureUsed: tenure, tenureAssumed: tenure === DEFAULT_TENURE && !company.avgTenure }
+  // 그래프용: 연차별 연봉 곡선(꺾은선 꼭짓점)과 직급 구간
+  const curveData = {
+    points: pts.map(([y, m]) => [y, Math.round(base * m)]),
+    ranks: RANKS.map((rank, i) => ({ rank, from: starts[i], to: i + 1 < starts.length ? starts[i + 1] : exec })),
+    exec,
+    tenure,
+  }
+
+  return { place, ladder, curve: curveData, base: Math.round(base), tenureUsed: tenure, tenureAssumed: tenure === DEFAULT_TENURE && !company.avgTenure }
 }

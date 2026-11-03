@@ -1,6 +1,9 @@
 import { COMPARE, COMPARE_SOURCES } from '../lib/compare.js'
 import { PERIODS, monthlyRevenue } from '../lib/calc.js'
 import { won, ratioText } from '../lib/format.js'
+import { IconVideo, IconClock, IconShop, IconPerson, IconTower } from './Art.jsx'
+
+const ICONS = { me: IconVideo, min: IconClock, sme: IconShop, avg: IconPerson, big: IconTower }
 
 const PERIOD_WORD = { day: '하루', week: '한 주', month: '한 달', year: '1년' }
 
@@ -32,7 +35,11 @@ export default function CompareChart({ channel, analysis, period, tier }) {
         {rows.map((r) => (
           <li key={r.id} className={`bars__row${r.me ? ' is-me' : ''}`}>
             <span className="bars__label">
-              {r.label}
+              {(() => {
+                const I = ICONS[r.id]
+                return I ? <I /> : null
+              })()}
+              <span className="bars__name">{r.label}</span>
               {r.note && <span className="bars__note">{r.note}</span>}
             </span>
             <span className="bars__track">

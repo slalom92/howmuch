@@ -1,4 +1,5 @@
 import Avatar from './Avatar.jsx'
+import { Guilloche } from './Art.jsx'
 import { RPM, PERIODS, monthlyRevenue, overallAvgViews } from '../lib/calc.js'
 import { won, count } from '../lib/format.js'
 
@@ -140,6 +141,7 @@ export default function PayStub({ channel, analysis, period, setPeriod, tier, se
       </table>
 
       <div className="stub__total">
+        <Guilloche className="stub__guilloche" />
         <div>
           <p className="stub__total-label">{PERIOD_TITLE[period]}</p>
           <p className="stub__range">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { track } from '../lib/analytics.js'
+import { Scissors } from './Art.jsx'
 
 // 카카오톡 공유는 카카오 JavaScript 키(VITE_KAKAO_JS_KEY)와 카카오 디벨로퍼스의 사이트 도메인 등록이 필요하다.
 // 키가 없으면 휴대폰 기본 공유 창(지원되는 기기) 또는 링크 복사로 대신한다.
@@ -116,7 +117,9 @@ export default function ShareBar({ url, text }) {
 
   return (
     <div className="share">
-      <p className="share__title">결과 공유하기</p>
+      <Scissors />
+      <p className="share__title">결과를 잘라서 보내기</p>
+      <p className="share__sub">링크를 받은 사람도 같은 결과를 보고, 자기 회사로 바꿔 계산해 볼 수 있어요.</p>
       <ul className="share__list">
         {buttons.map(([k, label]) => (
           <li key={k}>

@@ -282,3 +282,78 @@ a:hover {
     padding: 8px 6px;
   }
 }
+
+/* ---------- 디자인 요소 ---------- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-mark {
+  flex: none;
+}
+
+/* 본문 종이 위쪽 절취선 (계산기의 급여명세서와 같은 모양) */
+.doc {
+  position: relative;
+}
+
+.doc::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: radial-gradient(circle at 8px 6px, var(--desk) 4.5px, transparent 5px) repeat-x;
+  background-size: 16px 12px;
+}
+
+.fig {
+  margin: 24px 0 8px;
+  padding: 20px 16px 12px;
+  max-width: 520px;
+  background: var(--paper-tint);
+  border-radius: 10px;
+}
+
+.fig svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--font);
+}
+
+.fig figcaption {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.guide-list li {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  column-gap: 16px;
+  align-items: start;
+}
+
+.guide-list .guide-icon {
+  grid-row: span 2;
+  width: 48px;
+  height: 48px;
+  padding: 8px;
+  background: var(--paper-tint);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.guide-list a,
+.guide-list p {
+  grid-column: 2;
+}
+
+.doc .guide-list {
+  padding: 0;
+}
