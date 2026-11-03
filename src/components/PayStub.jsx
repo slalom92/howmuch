@@ -2,6 +2,14 @@ import Avatar from './Avatar.jsx'
 import { Guilloche } from './Art.jsx'
 import { RPM, PERIODS, monthlyRevenue, overallAvgViews } from '../lib/calc.js'
 import { won, count } from '../lib/format.js'
+import { track } from '../lib/analytics.js'
+
+// 채널 주소: 핸들(@이름)이 있으면 그 주소, 없으면 채널 ID 주소
+export function channelUrl(channel) {
+  const h = (channel.handle || '').trim()
+  if (h) return `https://www.youtube.com/${h.startsWith('@') ? h : '@' + h}`
+  return `https://www.youtube.com/channel/${encodeURIComponent(channel.id)}`
+}
 
 const TODAY = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
 const PERIOD_TITLE ={ day: '하루 예상 수익', week: '한 주 예상 수익', month: '한 달 예상 수익', year: '1년 예상 수익' }
@@ -66,6 +74,20 @@ export default function PayStub({ channel, analysis, period, setPeriod, tier, se
           <div>
             <h2 className="stub__name">{channel.title}</h2>
             {channel.handle && <p className="stub__handle">{channel.handle}</p>}
+            <a
+              className="stub__visit"
+              href={channelUrl(channel)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => track('visit_channel', { channel_id: channel.id, channel_title: channel.title })}
+            >
+              채널 바로가기
+              <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+                <path d="M6 3H3.5A1.5 1.5 0 0 0 2 4.5v8A1.5 1.5 0 0 0 3.5 14h8a1.5 1.5 0 0 0 1.5-1.5V10" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                <path d="M9 2h5v5M14 2 7.5 8.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="sr-only">(새 창)</span>
+            </a>
           </div>
         </div>
         <dl className="stub__facts">

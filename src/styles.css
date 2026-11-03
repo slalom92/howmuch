@@ -424,6 +424,31 @@ input {
   color: var(--muted);
 }
 
+.stub__visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 4px 10px 4px 11px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--paper);
+  transition: border-color .15s, color .15s, background .15s;
+}
+.stub__visit:hover {
+  border-color: var(--seal);
+  color: var(--seal);
+  background: var(--seal-tint);
+}
+.stub__visit:focus-visible {
+  outline: 2px solid var(--seal);
+  outline-offset: 2px;
+}
+
 .stub__facts {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
