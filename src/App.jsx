@@ -83,7 +83,10 @@ export default function App() {
         <a className="brand" href="./" onClick={() => setUrlChannel(null)}>
           유튜버 월급명세서
         </a>
-        {DEMO_MODE && <span className="demo-flag">데모 데이터로 보는 중</span>}
+        <nav className="topnav" aria-label="주요 메뉴">
+          {DEMO_MODE && <span className="demo-flag">데모 데이터로 보는 중</span>}
+          <a href="/guide/">수익 가이드</a>
+        </nav>
       </header>
 
       <AdSlot variant="top" slot={SLOTS.top} />
@@ -160,6 +163,13 @@ export default function App() {
       </main>
 
       <footer className="footer">
+        <ul className="footer__links">
+          <li><a href="/guide/">수익 가이드</a></li>
+          <li><a href="/about/">사이트 소개</a></li>
+          <li><a href="/privacy/">개인정보처리방침</a></li>
+          <li><a href="/terms/">이용약관</a></li>
+          <li><a href="/contact/">문의</a></li>
+        </ul>
         <p>YouTube 공개 데이터(YouTube Data API)를 바탕으로 한 추정치이며, 실제 정산 금액과 다릅니다.</p>
         <p>이 사이트는 YouTube 또는 Google과 관련이 없습니다.</p>
       </footer>

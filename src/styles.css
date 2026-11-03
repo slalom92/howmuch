@@ -69,12 +69,40 @@ input {
   gap: 12px;
 }
 
+.masthead {
+  flex-wrap: wrap;
+}
+
+.brand,
+.topnav a,
+.demo-flag {
+  white-space: nowrap;
+}
+
 .brand {
   font-weight: 700;
   font-size: 17px;
   color: var(--ink);
   text-decoration: none;
   letter-spacing: -0.01em;
+}
+
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+}
+
+.topnav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.topnav a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .demo-flag {
@@ -754,6 +782,24 @@ input {
 
 .footer p {
   margin: 2px 0;
+}
+
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.footer__links a {
+  color: var(--muted);
+  text-underline-offset: 3px;
+}
+
+.footer__links a:hover {
+  color: var(--ink);
 }
 
 /* ---------- 모바일 ---------- */
