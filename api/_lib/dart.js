@@ -126,14 +126,26 @@ export function years(v) {
   return Number.isFinite(n) ? n : NaN
 }
 
-const isTotal = (s) => /^(합계|계|전체|총계)$/.test(String(s || '').replace(/\s/g, ''))
+// 합계·소계·총계·전체 같은 "합친 줄"인지
+const isTotal = (s) => /(합계|소계|총계|전체)$|^계$/.test(String(s || '').replace(/\s/g, ''))
 
-// 직원 현황 여러 줄(사업부문 × 성별)을 회사 전체 값 하나로 합친다
+// 직원 현황 여러 줄(사업부문 × 성별, 중간중간 소계·합계 줄 포함)을 회사 전체 값 하나로 합친다.
+// 1순위: 부문도 성별도 합계인 줄 하나
+// 2순위: 부문이 합계인 줄들(성별로 나뉜 경우)
+// 3순위: 부문도 성별도 합계가 아닌 맨 아래 줄들
 export function summarizeEmployees(list) {
   if (!list?.length) return null
-  const totals = list.filter((r) => isTotal(r.fo_bbm) && (isTotal(r.sexdstn) || !r.sexdstn))
-  const rows = totals.length ? totals.slice(0, 1) : list.filter((r) => !isTotal(r.fo_bbm) && !isTotal(r.sexdstn))
-  const use = rows.length ? rows : list
+  const size = (rows) => rows.reduce((a, r) => a + (num(r.sm) || 0), 0)
+  // 합계 줄이 여러 개(부문 소계 + 전체 합계)면 인원이 가장 많은 쪽이 전체 합계다
+  const both = list.filter((r) => isTotal(r.fo_bbm) && (isTotal(r.sexdstn) || !r.sexdstn))
+  const bestBoth = both.length ? [both.reduce((a, r) => ((num(r.sm) || 0) >= (num(a.sm) || 0) ? r : a))] : []
+  const groups = {}
+  for (const r of list) {
+    if (isTotal(r.fo_bbm) && r.sexdstn && !isTotal(r.sexdstn)) (groups[r.fo_bbm] ||= []).push(r)
+  }
+  const bestDept = Object.values(groups).sort((a, b) => size(b) - size(a))[0] || []
+  const leaves = list.filter((r) => !isTotal(r.fo_bbm) && !isTotal(r.sexdstn))
+  const use = bestBoth.length ? bestBoth : bestDept.length ? bestDept : leaves.length ? leaves : list
 
   let people = 0
   let payTotal = 0
