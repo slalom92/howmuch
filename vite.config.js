@@ -8,10 +8,10 @@ function devApi() {
     name: 'dev-api',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        const m = req.url.match(/^\/api\/(search|channel)(?:\?|$)/)
+        const m = req.url.match(/^\/(?:api\/(search|channel|corps|company|benchmarks|share)|(s))\/?(?:\?|$)/)
         if (!m) return next()
         try {
-          const mod = await server.ssrLoadModule(`/api/${m[1]}.js`)
+          const mod = await server.ssrLoadModule(`/api/${m[1] || 'share'}.js`)
           await mod.default(req, res)
         } catch (e) {
           next(e)
@@ -22,9 +22,11 @@ function devApi() {
 }
 
 export default defineConfig(({ mode }) => {
-  // .env.local 의 YT_API_KEY 를 개발 서버의 서버 함수에서 읽을 수 있게 한다 (브라우저 코드에는 들어가지 않음)
+  // .env.local 의 서버용 키를 개발 서버의 서버 함수에서 읽을 수 있게 한다 (브라우저 코드에는 들어가지 않음)
   const env = loadEnv(mode, process.cwd(), '')
-  if (env.YT_API_KEY && !process.env.YT_API_KEY) process.env.YT_API_KEY = env.YT_API_KEY
+  for (const k of ['YT_API_KEY', 'DART_API_KEY', 'KOSIS_API_KEY', 'KOSIS_INDUSTRY_URL']) {
+    if (env[k] && !process.env[k]) process.env[k] = env[k]
+  }
 
   return {
     plugins: [react(), devApi()],

@@ -4,9 +4,14 @@ import ChannelPicker from './components/ChannelPicker.jsx'
 import PayStub from './components/PayStub.jsx'
 import CompareChart from './components/CompareChart.jsx'
 import AdSlot from './components/AdSlot.jsx'
+import CompanyCompare from './components/CompanyCompare.jsx'
+import ShareBar from './components/ShareBar.jsx'
 import { searchChannels, loadChannel, DEMO_MODE } from './lib/youtube.js'
 import { DEMO_CHANNELS } from './lib/demo.js'
-import { analyze, RPM, SHORTS_MAX_SEC } from './lib/calc.js'
+import { analyze, monthlyRevenue, RPM, SHORTS_MAX_SEC } from './lib/calc.js'
+import { loadCompany } from './lib/company.js'
+import { placeInCompany } from './lib/career.js'
+import { won } from './lib/format.js'
 import { trackSearch, trackChannelView } from './lib/analytics.js'
 
 const SLOTS = {
@@ -15,10 +20,12 @@ const SLOTS = {
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
 
-function setUrlChannel(id) {
+function setUrlParams(params) {
   const url = new URL(window.location.href)
-  if (id) url.searchParams.set('c', id)
-  else url.searchParams.delete('c')
+  for (const [k, v] of Object.entries(params)) {
+    if (v) url.searchParams.set(k, v)
+    else url.searchParams.delete(k)
+  }
   window.history.replaceState(null, '', url)
 }
 
@@ -29,6 +36,13 @@ export default function App() {
   const [channel, setChannel] = useState(null)
   const [period, setPeriod] = useState('month')
   const [tier, setTier] = useState('mid')
+  const [company, setCompanyState] = useState(null)
+
+  // 회사가 바뀌면 주소에도 남겨 공유·새로고침 때 그대로 보이게 한다 (상장사만)
+  const setCompany = useCallback((co) => {
+    setCompanyState(co)
+    setUrlParams({ co: co && !co.manual ? co.code : null })
+  }, [])
 
   const analysis = useMemo(() => (channel ? analyze(channel.videos) : null), [channel])
   const busy = status === 'searching' || status === 'loading'
@@ -40,7 +54,7 @@ export default function App() {
       const full = await loadChannel(summary)
       trackChannelView(full, source)
       setChannel(full)
-      setUrlChannel(full.id)
+      setUrlParams({ c: full.id })
       setStatus('done')
       requestAnimationFrame(() => document.getElementById('result')?.focus())
     } catch (e) {
@@ -54,6 +68,7 @@ export default function App() {
       setStatus('searching')
       setError('')
       setChannel(null)
+      setCompany(null)
       try {
         const list = await searchChannels(q)
         trackSearch(q.trim().replace(/\s+/g, ' ').toLowerCase(), list.length)
@@ -71,19 +86,38 @@ export default function App() {
         setStatus('error')
       }
     },
-    [pick],
+    [pick, setCompany],
   )
 
   // ?c=채널ID 로 들어오면 바로 계산 (공유 링크)
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get('c')
+    const params = new URLSearchParams(window.location.search)
+    const id = params.get('c')
+    const co = params.get('co')
     if (id) pick(id, 'link')
+    if (id && /^\d{8}$/.test(co || '')) {
+      loadCompany(co)
+        .then(setCompanyState)
+        .catch(() => setUrlParams({ co: null }))
+    }
   }, [pick])
+
+  // 공유 링크와 문구 (공유 링크는 미리보기 문구를 만들어 주는 /s/ 페이지를 거친다)
+  const share = useMemo(() => {
+    if (!channel || !analysis) return null
+    const monthly = monthlyRevenue(analysis, 'mid').total
+    let text = `${channel.title} 한 달 추정 수익 ${won(monthly)}`
+    if (company?.avgSalary) text += `, ${company.name} 기준 ${placeInCompany(company, monthly * 12).place.text}`
+    const url = new URL('/s/', window.location.origin)
+    url.searchParams.set('c', channel.id)
+    if (company && !company.manual && company.code) url.searchParams.set('co', company.code)
+    return { url: url.toString(), text: `${text} | 유튜버 월급명세서` }
+  }, [channel, analysis, company])
 
   return (
     <div className="page">
       <header className="masthead">
-        <a className="brand" href="./" onClick={() => setUrlChannel(null)}>
+        <a className="brand" href="./">
           유튜버 월급명세서
         </a>
         <nav className="topnav" aria-label="주요 메뉴">
@@ -121,6 +155,8 @@ export default function App() {
               setTier={setTier}
             />
             <CompareChart channel={channel} analysis={analysis} period={period} tier={tier} />
+            <CompanyCompare channel={channel} analysis={analysis} tier={tier} company={company} setCompany={setCompany} />
+            {share && <ShareBar url={share.url} text={share.text} />}
           </div>
         )}
 

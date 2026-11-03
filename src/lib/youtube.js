@@ -58,7 +58,8 @@ export function parseInput(raw) {
 async function apiGet(path, params) {
   let res
   try {
-    res = await fetch(`/api/${path}?${new URLSearchParams(params)}`)
+    // 끝의 / 는 vercel.json trailingSlash 설정 때문 (없으면 매번 리다이렉트가 한 번 더 일어난다)
+    res = await fetch(`/api/${path}/?${new URLSearchParams(params)}`)
   } catch {
     throw new Error('네트워크 연결을 확인한 뒤 다시 검색하세요.')
   }

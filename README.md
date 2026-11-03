@@ -45,6 +45,58 @@ npm run build
 - `@핸들`, 채널 주소, 채널 ID 입력은 이름 검색을 거치지 않습니다.
 - 더 필요하면 YouTube API Services Audit and Quota Extension Form으로 증설을 신청합니다.
 
+## 회사 비교 기능 (우리 회사에 다닌다면?)
+
+유튜버 결과 아래에서 회사 이름을 넣으면, 그 회사 연봉 기준으로 유튜버가 몇 년차 어떤 직급에 해당하는지 보여 줍니다.
+
+```
+브라우저                                  Vercel 서버 함수                          외부 데이터
+회사명 입력 ──(목록은 브라우저에서 검색)── /api/corps/      7일 캐시 ──▶ DART corpCode.xml (상장사 약 4천 곳)
+회사 선택  ─────────────────────────────▶ /api/company/   7일 캐시 ──▶ DART 기업개황·직원현황·임원보수
+목록에 없음 → 규모·업종 선택 ───────────▶ /api/benchmarks/ 1일 캐시 ──▶ KOSIS(선택) + 기본 통계
+공유 버튼  ─────────────────────────────▶ /s/ (api/share.js) 6시간 캐시 ── SNS 미리보기 문구 생성 후 계산기로 이동
+```
+
+### 데이터 출처
+
+| 데이터 | 출처 | 비고 |
+|---|---|---|
+| 회사 목록 | OpenDART `corpCode.xml` | 상장사만 사용 |
+| 회사 평균 연봉, 평균 근속연수, 직원 수 | OpenDART 직원 현황(`empSttus`) | 가장 최근 사업보고서. 회사마다 금액 단위(원·천원·백만원)가 달라 자동 보정 |
+| 미등기임원·등기임원 평균 보수 | OpenDART `unrstExctvMendngSttus`, `hmvAuditAllSttus` | 없으면 생략 |
+| 업종 | OpenDART 기업개황 업종코드 → 한국표준산업분류 대분류 | |
+| 규모별 평균 | 국가데이터처 2024년 임금근로일자리 소득, CEO스코어 상장 중견기업 조사 | `src/lib/benchmarks.js` |
+| 산업별 평균 | 기본: 국가데이터처 발표에 공개된 6개 산업 / KOSIS 연동 시 최신 산업별 통계 | |
+| 직급별 승진 시점 | 인크루트 직급별 승진 소요기간 조사(규모별) | `src/lib/career.js` |
+
+**고용노동부 임금직무정보시스템(wage.go.kr)은 2025년 4월 문을 닫고 임금직업포털(wagework.go.kr)로 바뀌었으며, 공개 API는 확인되지 않았습니다.** 그 원자료인 고용형태별근로실태조사와 사업체노동력조사는 KOSIS에서 받을 수 있어 KOSIS 연동으로 대신합니다.
+
+### 직급·연차 추정 방법 (`src/lib/career.js`)
+
+1. 규모(직원 수 1,000명 이상 대기업, 300명 이상 중견, 그 미만 중소)별 직급 승진 시점을 둡니다.
+2. 직급별 연봉 배율을 사원 1.0, 대리 1.25, 과장 1.55, 차장 1.85, 부장 2.2, 임원 직전 2.45로 둡니다.
+3. "평균 근속연수 시점의 연봉 = 회사 평균 연봉"이 되도록 신입 연봉을 역산해 연차별 연봉 곡선을 만듭니다.
+4. 유튜버 연 수익(보통 가정)이 곡선 어디에 오는지 찾아 직급과 연차를 정합니다. 곡선을 넘으면 미등기임원 평균, 등기임원 평균과 비교합니다.
+
+실제 회사의 연봉 테이블과는 다른, 재미로 보는 추정치입니다. 화면과 공유 문구에도 "추정"이라고 표시합니다.
+
+### 설정
+
+| 환경변수 | 위치 | 필수 | 설명 |
+|---|---|---|---|
+| `DART_API_KEY` | Vercel 환경변수, 로컬 `.env.local` | 회사 비교에 필수 | [OpenDART](https://opendart.fss.or.kr) 인증키 (무료, 하루 2만 건) |
+| `KOSIS_API_KEY` | Vercel 환경변수 | 선택 | [KOSIS 공유서비스](https://kosis.kr/openapi) 인증키 |
+| `KOSIS_INDUSTRY_URL` | Vercel 환경변수 | 선택 | KOSIS에서 산업별 월평균 임금 통계표를 열고 [OpenAPI] → URL 생성으로 만든 주소에서 `apiKey=` 값만 뺀 것 |
+| `VITE_KAKAO_JS_KEY` | `.env` 또는 Vercel | 선택 | 카카오 디벨로퍼스 JavaScript 키. [앱] → [플랫폼] → [Web]에 `https://howmuchyoutube.blog` 등록 필요 |
+
+`vercel.json`의 `"regions": ["icn1"]`로 서버 함수를 서울 리전에서 실행해 국내 API(DART, KOSIS)와 가깝게 둡니다.
+
+### 공유
+
+- 공유 링크는 `https://howmuchyoutube.blog/s/?c=채널ID&co=회사고유번호` 형태입니다. SNS는 이 주소의 og 태그를 읽어 "OOO 한 달 추정 수익 …, 삼성전자에 다닌다면 과장 4년차" 같은 미리보기를 보여 주고, 사람이 누르면 계산기 화면으로 바로 이동합니다.
+- 카카오톡, X, 페이스북, 스레드, 밴드, 링크 복사, (휴대폰) 기본 공유 창을 지원합니다. 아이콘은 서비스 로고 대신 일반 기호를 쓰므로, 공식 로고로 바꾸려면 각 서비스의 브랜드 가이드를 따르세요.
+- 미리보기 이미지는 `public/og-image.png` (1200×630)입니다.
+
 ## 수익 계산 방식 (`src/lib/calc.js`)
 
 1. 최근 업로드 영상 최대 50개를 가져와 3분 이하는 쇼츠, 나머지는 롱폼으로 나눕니다.
@@ -72,6 +124,11 @@ RPM 가정값은 `RPM` 상수에서 바꿀 수 있습니다 (롱폼 1,000 / 2,00
 
 ```
 api/
+  corps.js                GET /api/corps/     상장사 목록 (CDN 7일 캐시)
+  company.js              GET /api/company/   회사 임금·임원 보수 (CDN 7일 캐시)
+  benchmarks.js           GET /api/benchmarks/ 규모·산업별 평균 (CDN 1일 캐시)
+  share.js                GET /s/             공유 미리보기 페이지
+  _lib/dart.js            OpenDART 호출, ZIP 풀기, 금액 단위 보정
   search.js               GET /api/search  채널 검색 (CDN 24시간 캐시)
   channel.js              GET /api/channel 채널 + 최근 영상 (CDN 6시간 캐시)
   _lib/youtube.js         YouTube API 호출 공용 코드
@@ -83,10 +140,15 @@ src/
     PayStub.jsx           급여명세서 형태의 결과 (기간, 광고 단가 전환)
     CompareChart.jsx      직장인 소득 비교 막대그래프 (라이브러리 없이 CSS)
     AdSlot.jsx            광고 영역
+    CompanyCompare.jsx    회사 검색, 가상 인사발령 카드, 직급별 추정 연봉표
+    ShareBar.jsx          소셜 공유 버튼
   lib/
     youtube.js            입력 해석, 서버 함수 호출, 브라우저 캐시
     calc.js               수익 추정
     compare.js            비교 소득 데이터
+    benchmarks.js         규모·산업별 평균 임금, 업종코드 → 산업 대분류
+    career.js             직급·연차 추정 모델
+    company.js            회사 목록 검색, 회사·통계 불러오기
     demo.js               API 키 없을 때 쓰는 가상 채널
     format.js             만/억 단위 표기
 ```

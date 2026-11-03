@@ -1,3 +1,5 @@
 {
-  "trailingSlash": true
+  "trailingSlash": true,
+  "regions": ["icn1"],
+  "rewrites": [{ "source": "/s/", "destination": "/api/share/" }]
 }
