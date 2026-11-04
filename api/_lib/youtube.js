@@ -51,6 +51,7 @@ function summarize(ch) {
     videoCount: Number(st.videoCount || 0),
     totalViews: Number(st.viewCount || 0),
     uploads: ch.contentDetails?.relatedPlaylists?.uploads,
+    createdAt: Date.parse(ch.snippet?.publishedAt || '') || null, // 채널 개설일
   }
 }
 

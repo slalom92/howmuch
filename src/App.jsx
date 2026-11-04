@@ -5,6 +5,7 @@ import PayStub from './components/PayStub.jsx'
 import CompareChart from './components/CompareChart.jsx'
 import AdSlot from './components/AdSlot.jsx'
 import CompanyCompare from './components/CompanyCompare.jsx'
+import GoalPlan from './components/GoalPlan.jsx'
 import ShareBar from './components/ShareBar.jsx'
 import { BrandMark, PayEnvelope } from './components/Art.jsx'
 import { searchChannels, loadChannel, DEMO_MODE } from './lib/youtube.js'
@@ -200,6 +201,7 @@ export default function App() {
             />
             <CompareChart channel={channel} analysis={analysis} period={period} tier={tier} />
             <CompanyCompare channel={channel} analysis={analysis} tier={tier} company={company} setCompany={setCompany} />
+            <GoalPlan key={channel.id} channel={channel} analysis={analysis} tier={tier} />
             {share && <ShareBar url={share.url} text={share.text} />}
           </div>
         )}
