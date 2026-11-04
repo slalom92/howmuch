@@ -14,7 +14,7 @@ import { channelSlug, channelPath, normalizeSlug, isChannelId, mergeChannels, re
 
 const SIX_HOURS = 6 * 3600
 const DAY = 86400
-const SITE_NAME = '유튜버 월급명세서'
+const SITE_NAME = '돈미터'
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 // <script> 안에 넣는 JSON 은 </script> 로 끊기지 않게 < 를 이스케이프
@@ -158,7 +158,7 @@ function send(res, status, html, cache) {
 export default async function handler(req, res) {
   const params = query(req)
   const slug = normalizeSlug(params.get('slug'))
-  const host = req.headers['x-forwarded-host'] || req.headers.host || 'howmuchyoutube.blog'
+  const host = req.headers['x-forwarded-host'] || req.headers.host || 'donmeter.com'
   const proto = req.headers['x-forwarded-proto'] || (/^(localhost|127\.)/.test(host) ? 'http' : 'https')
   const origin = `${proto}://${host}`
 

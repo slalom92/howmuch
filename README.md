@@ -1,4 +1,4 @@
-# 유튜버 월급명세서
+# 돈미터
 
 유튜버를 검색하면 구독자 수와 최근 영상 조회수로 일, 주, 월, 연 광고 수익을 추정하고 직장인 월급과 비교해 보여주는 SPA입니다. React와 Vite로 만들었습니다.
 
@@ -33,7 +33,7 @@ npm run build
 | `VITE_ADSENSE_CLIENT` | `.env` | 애드센스 게시자 ID (`ca-pub-...`) |
 | `VITE_AD_SLOT_TOP` / `VITE_AD_SLOT_INLINE` / `VITE_AD_SLOT_ANCHOR` | `.env` | 상단 배너, 본문, 하단 고정 광고 단위 ID |
 | `VITE_DEMO_MODE` | `.env` | `true`면 가상 채널 데이터 사용 |
-| `SITE_URL` | Vercel 환경변수 (선택) | 서버가 YouTube에 보내는 Referer. 기본값 `https://howmuchyoutube.blog/` |
+| `SITE_URL` | Vercel 환경변수 (선택) | 서버가 YouTube에 보내는 Referer. 기본값 `https://donmeter.com/` |
 
 ### YouTube API 키
 
@@ -87,13 +87,13 @@ npm run build
 | `DART_API_KEY` | Vercel 환경변수, 로컬 `.env.local` | 회사 비교에 필수 | [OpenDART](https://opendart.fss.or.kr) 인증키 (무료, 하루 2만 건) |
 | `KOSIS_API_KEY` | Vercel 환경변수 | 선택 | [KOSIS 공유서비스](https://kosis.kr/openapi) 인증키 |
 | `KOSIS_INDUSTRY_URL` | Vercel 환경변수 | 선택 | KOSIS에서 산업별 월평균 임금 통계표를 열고 [OpenAPI] → URL 생성으로 만든 주소에서 `apiKey=` 값만 뺀 것 |
-| `VITE_KAKAO_JS_KEY` | `.env` 또는 Vercel | 선택 | 카카오 디벨로퍼스 JavaScript 키. [앱] → [플랫폼] → [Web]에 `https://howmuchyoutube.blog` 등록 필요 |
+| `VITE_KAKAO_JS_KEY` | `.env` 또는 Vercel | 선택 | 카카오 디벨로퍼스 JavaScript 키. [앱] → [플랫폼] → [Web]에 `https://donmeter.com` 등록 필요 |
 
 `vercel.json`의 `"regions": ["icn1"]`로 서버 함수를 서울 리전에서 실행해 국내 API(DART, KOSIS)와 가깝게 둡니다.
 
 ### 공유
 
-- 공유 링크는 `https://howmuchyoutube.blog/s/?c=채널ID&co=회사고유번호` 형태입니다. SNS는 이 주소의 og 태그를 읽어 "OOO 한 달 추정 수익 …, 삼성전자에 다닌다면 과장 4년차" 같은 미리보기를 보여 주고, 사람이 누르면 계산기 화면으로 바로 이동합니다.
+- 공유 링크는 `https://donmeter.com/s/?c=채널ID&co=회사고유번호` 형태입니다. SNS는 이 주소의 og 태그를 읽어 "OOO 한 달 추정 수익 …, 삼성전자에 다닌다면 과장 4년차" 같은 미리보기를 보여 주고, 사람이 누르면 계산기 화면으로 바로 이동합니다.
 - 카카오톡, X, 페이스북, 스레드, 밴드, 링크 복사, (휴대폰) 기본 공유 창을 지원합니다. 아이콘은 서비스 로고 대신 일반 기호를 쓰므로, 공식 로고로 바꾸려면 각 서비스의 브랜드 가이드를 따르세요.
 - 미리보기 이미지는 `public/og-image.png` (1200×630)입니다.
 

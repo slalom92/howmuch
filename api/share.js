@@ -33,7 +33,7 @@ export default async function handler(req, res) {
   const params = query(req)
   const c = (params.get('c') || '').trim()
   const co = (params.get('co') || '').trim()
-  const host = req.headers['x-forwarded-host'] || req.headers.host || 'howmuchyoutube.blog'
+  const host = req.headers['x-forwarded-host'] || req.headers.host || 'donmeter.com'
   const proto = req.headers['x-forwarded-proto'] || (/^(localhost|127\.)/.test(host) ? 'http' : 'https')
   const origin = `${proto}://${host}`
 
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
   const self = new URL(origin + '/s/')
   for (const [k, v] of app.searchParams) self.searchParams.set(k, v)
 
-  let title = '이 유튜버, 한 달에 얼마 벌까? | 유튜버 월급명세서'
+  let title = '이 유튜버, 한 달에 얼마 벌까? | 돈미터'
   let desc = '좋아하는 유튜버의 한 달 광고 수익을 추정해 드려요. 우리 회사에 다닌다면 몇 년차 무슨 직급일지, 내 채널로 따라잡으려면 얼마나 걸릴지도 알려 드립니다.'
 
   const channel = app.searchParams.get('c') ? await getJson(origin, `/api/channel/?id=${encodeURIComponent(c)}`) : null
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
   }
 
   const target = app.toString()
-  const image = `${origin}/og/share-v1.png`
+  const image = `${origin}/og/share-v2.png`
   // 카카오 스크랩 규칙: og:url 은 이 페이지 주소와 같아야 하고, 봇은 자바스크립트를 실행하지 않는다.
   // 그래서 meta refresh 없이 자바스크립트로만 계산기 화면으로 넘긴다.
   const html = `<!doctype html>
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}" />
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="유튜버 월급명세서" />
+<meta property="og:site_name" content="돈미터" />
 <meta property="og:locale" content="ko_KR" />
 <meta property="og:title" content="${esc(title)}" />
 <meta property="og:description" content="${esc(desc)}" />
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
 <meta property="og:image" content="${esc(image)}" />
 <meta property="og:image:width" content="1600" />
 <meta property="og:image:height" content="800" />
-<meta property="og:image:alt" content="유튜버 월급명세서: 이 유튜버, 한 달에 얼마 벌까?" />
+<meta property="og:image:alt" content="돈미터: 이 유튜버, 한 달에 얼마 벌까?" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="${esc(title)}" />
 <meta name="twitter:description" content="${esc(desc)}" />

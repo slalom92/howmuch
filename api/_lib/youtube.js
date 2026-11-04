@@ -5,7 +5,7 @@
 
 const API = 'https://www.googleapis.com/youtube/v3'
 // 기존 키에 HTTP 리퍼러 제한이 걸려 있어도 동작하도록 사이트 주소를 Referer로 보낸다.
-const SITE = process.env.SITE_URL || 'https://howmuchyoutube.blog/'
+const SITE = process.env.SITE_URL || 'https://donmeter.com/'
 
 export class ApiError extends Error {
   constructor(status, message) {

@@ -18,7 +18,7 @@ import { trackSearch, trackChannelView } from './lib/analytics.js'
 import { channelPath, channelSlug, slugFromPath, isChannelId, revenueTitle } from './lib/popular.js'
 import PopularChannels from './components/PopularChannels.jsx'
 
-const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 유튜버 월급명세서'
+const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 돈미터'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
@@ -136,7 +136,7 @@ export default function App() {
   // 탭 제목도 채널에 맞춘다
   useEffect(() => {
     if (status === 'done' && channel && analysis) {
-      document.title = `${revenueTitle(channel.title)} – 한 달 약 ${won(monthlyRevenue(analysis, 'mid').total)} 추정 | 유튜버 월급명세서`
+      document.title = `${revenueTitle(channel.title)} – 한 달 약 ${won(monthlyRevenue(analysis, 'mid').total)} 추정 | 돈미터`
     } else if (status === 'searching' || status === 'picking') {
       document.title = HOME_TITLE
     }
@@ -151,7 +151,7 @@ export default function App() {
     const url = new URL('/s/', window.location.origin)
     url.searchParams.set('c', channel.id)
     if (company && !company.manual && company.code) url.searchParams.set('co', company.code)
-    return { url: url.toString(), text: `${text} | 유튜버 월급명세서` }
+    return { url: url.toString(), text: `${text} | 돈미터` }
   }, [channel, analysis, company])
 
   return (
@@ -159,7 +159,7 @@ export default function App() {
       <header className="masthead">
         <a className="brand" href="/">
           <BrandMark />
-          유튜버 월급명세서
+          돈미터
         </a>
         <nav className="topnav" aria-label="주요 메뉴">
           {DEMO_MODE && <span className="demo-flag">데모 데이터로 보는 중</span>}

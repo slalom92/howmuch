@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://howmuchyoutube.blog/sitemap.xml
+Sitemap: https://donmeter.com/sitemap.xml
