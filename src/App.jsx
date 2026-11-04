@@ -18,6 +18,8 @@ import { trackSearch, trackChannelView } from './lib/analytics.js'
 import { channelPath, channelSlug, slugFromPath, isChannelId, revenueTitle } from './lib/popular.js'
 import PopularChannels from './components/PopularChannels.jsx'
 import HomeGuide from './components/HomeGuide.jsx'
+import SiteMenu from './components/SiteMenu.jsx'
+import { FOOTER_MENU } from './lib/menu.js'
 import { FOOTER_NOTE } from './lib/disclaimer.js'
 
 const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 돈미터'
@@ -165,8 +167,7 @@ export default function App() {
         </a>
         <nav className="topnav" aria-label="주요 메뉴">
           {DEMO_MODE && <span className="demo-flag">데모 데이터로 보는 중</span>}
-          <a href="/channel/">유튜버별 수익</a>
-          <a href="/guide/">수익 가이드</a>
+          <SiteMenu current="/" />
           {/* 색 테마 고르기: 메뉴와 동작은 public/theme.js 가 맡는다 */}
           <button type="button" className="theme-pick__toggle" data-theme-toggle aria-expanded="false" aria-controls="theme-menu" aria-label="명세서 색 바꾸기">
             <span className="theme-pick__dot" aria-hidden="true" />
@@ -181,10 +182,7 @@ export default function App() {
         <section className="hero">
           <div className="hero__text">
             <h1 className="hero__title">이 유튜버, 한 달에 얼마 벌까?</h1>
-            <p className="hero__lede">
-              구독자 수와 최근 영상 조회수로 광고 수익을 추정하고 직장인 월급, 우리 회사 연봉과 나란히 놓아 봅니다. 내 채널로
-              따라잡으려면 얼마나 걸릴지도 계산해 드려요.
-            </p>
+            <p className="hero__lede">채널 이름만 넣으면 한 달 광고 수익을 추정해 드려요.</p>
           </div>
           <PayEnvelope className="hero__art" />
           <SearchBar onSearch={search} busy={busy} examples={DEMO_MODE ? DEMO_CHANNELS.map((c) => c.title) : []} />
@@ -216,7 +214,7 @@ export default function App() {
 
         {status === 'done' && <AdSlot variant="inline" slot={SLOTS.inline} />}
 
-        {!busy && <PopularChannels currentSlug={channel ? channelSlug(channel) : null} title={status === 'done' ? '다른 유튜버 수익도 보기' : '많이 찾는 유튜버'} />}
+        {!busy && <PopularChannels currentSlug={channel ? channelSlug(channel) : null} title={status === 'done' ? '다른 유튜버 수익도 보기' : '많이 찾는 유튜버'} limit={status === 'done' ? 14 : 8} />}
 
         {status === 'done' ? (
                   <details className="method">
@@ -254,6 +252,9 @@ export default function App() {
                 협찬, 멤버십, 슈퍼챗, 쇼핑 수익과 예전 영상에서 계속 나오는 조회수는 포함하지 않습니다. 실제 수익은 채널 주제와
                 시청자 국가, 시즌에 따라 몇 배까지 차이 날 수 있으니 참고용으로만 보세요.
               </p>
+              <p>
+                <a href="/how/">계산 방법 자세히 보기</a> · <a href="/faq/">자주 묻는 질문</a>
+              </p>
             </div>
           </details>
         ) : (
@@ -263,12 +264,11 @@ export default function App() {
 
       <footer className="footer">
         <ul className="footer__links">
-          <li><a href="/guide/">수익 가이드</a></li>
-          <li><a href="/channel/">유튜버별 수익</a></li>
-          <li><a href="/about/">사이트 소개</a></li>
-          <li><a href="/privacy/">개인정보처리방침</a></li>
-          <li><a href="/terms/">이용약관</a></li>
-          <li><a href="/contact/">문의</a></li>
+          {FOOTER_MENU.map((m) => (
+            <li key={m.href}>
+              <a href={m.href}>{m.label}</a>
+            </li>
+          ))}
         </ul>
         <p>{FOOTER_NOTE}</p>
         <p>돈미터는 YouTube API 서비스를 사용하며, YouTube 또는 Google과 제휴하거나 승인받은 서비스가 아닙니다.</p>

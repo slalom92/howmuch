@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/theme.js"></script>
+    <title>계산 방법 | 돈미터</title>
+    <meta name="description" content="돈미터가 유튜버 한 달 수익을 추정하는 방법입니다. 최근 영상 조회수, 롱폼과 쇼츠 구분, 1,000회당 수익(RPM) 가정, 직장인 월급과 회사 연봉 비교 기준을 공개합니다." />
+    <link rel="canonical" href="https://donmeter.com/how/" />
+    <meta property="og:title" content="계산 방법" />
+    <meta property="og:description" content="돈미터가 유튜버 한 달 수익을 추정하는 방법입니다. 최근 영상 조회수, 롱폼과 쇼츠 구분, 1,000회당 수익(RPM) 가정, 직장인 월급과 회사 연봉 비교 기준을 공개합니다." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://donmeter.com/how/" />
+    <meta property="og:site_name" content="돈미터" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://donmeter.com/og/share-v2.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="800" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23C2362B' stroke-width='3'/><text x='16' y='21' font-size='13' text-anchor='middle' fill='%23C2362B' font-weight='700'>₩</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/themes.css" />
+    <link rel="stylesheet" href="/content.css" />
+    <script src="/ga.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <header class="site-head">
+      <a class="brand" href="/"><svg class="brand-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2.4" style="stroke:var(--seal)"/><path d="M7.2 8.2l1.9 7.6 1.9-6.2 1.9 6.2 1.9-7.6M6.6 11.2h10.8M6.6 13.2h10.8" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--seal)"/></svg>돈미터</a>
+      <nav class="site-nav" aria-label="주요 메뉴"><a class="navlink" href="/channel/">유튜버별 수익</a><a class="navlink" href="/guide/">수익 가이드</a><a class="navlink" href="/how/" aria-current="page">계산 방법</a><a class="navlink" href="/faq/">자주 묻는 질문</a><details class="site-menu"><summary class="site-menu__btn" aria-label="메뉴 열기"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 4h11M2.5 8h11M2.5 12h11"/></svg>메뉴</summary><ul class="site-menu__list"><li><a href="/">수익 계산기</a></li><li><a href="/channel/">유튜버별 수익</a></li><li><a href="/guide/">수익 가이드</a></li><li><a href="/how/" aria-current="page">계산 방법</a></li><li><a href="/faq/">자주 묻는 질문</a></li></ul></details><button type="button" class="theme-pick__toggle" data-theme-toggle aria-expanded="false" aria-controls="theme-menu" aria-label="명세서 색 바꾸기"><span class="theme-pick__dot" aria-hidden="true"></span>테마</button></nav>
+    </header>
+    <main class="doc">
+
+      <h1>돈미터는 이렇게 계산해요</h1>
+      <p class="lede">검색한 유튜버의 금액이 어디서 나오는지 정리했어요. 모든 금액은 공개 데이터로 낸 추정치이고, 실제 정산 금액과 다릅니다.</p>
+
+      <h2>광고 수익은 세 단계로 계산해요</h2>
+      <ol class="steps">
+        <li><strong>최근 영상 불러오기.</strong> YouTube에 공개된 최근 업로드 영상 최대 50개의 조회수, 길이, 올린 날짜를 가져와요.</li>
+        <li><strong>롱폼과 쇼츠 나누기.</strong> 3분 이하 영상은 쇼츠로 보고, 유형별로 평균 조회수와 한 달 업로드 수를 구해요. 조회수가 유난히 높거나 낮은 상·하위 10% 영상은 평균에서 뺍니다.</li>
+        <li><strong>광고 단가 곱하기.</strong> 한 달 동안 새로 생기는 조회수에 1,000회당 크리에이터 수익(RPM) 가정값을 곱해요.</li>
+      </ol>
+      <p class="formula">한 달 수익 = 평균 조회수 × 한 달 업로드 수 ÷ 1,000 × RPM (롱폼과 쇼츠를 따로 계산해 더함)</p>
+      <p>RPM은 채널마다 크게 달라서 세 가지 가정으로 보여 드려요. 기본값은 "보통"이에요.</p>
+      <table>
+        <thead><tr><th scope="col">광고 단가</th><th scope="col" class="num">롱폼 1,000회당</th><th scope="col" class="num">쇼츠 1,000회당</th></tr></thead>
+        <tbody>
+          <tr><td>보수적</td><td class="num">1,000원</td><td class="num">50원</td></tr>
+          <tr><td>보통</td><td class="num">2,000원</td><td class="num">100원</td></tr>
+          <tr><td>높게</td><td class="num">3,500원</td><td class="num">200원</td></tr>
+        </tbody>
+      </table>
+      <p>하루, 한 주, 1년 금액은 한 달 금액을 같은 비율로 나누거나 곱한 값이에요. RPM이 무엇인지는 <a href="/guide/rpm/">RPM 설명 글</a>에, 쇼츠 단가가 낮은 이유는 <a href="/guide/shorts-vs-longform/">쇼츠와 롱폼 비교 글</a>에 정리했어요.</p>
+
+      <h2>직장인 월급과 비교하는 기준</h2>
+      <table>
+        <thead><tr><th scope="col">비교 대상</th><th scope="col" class="num">월 소득 (세전)</th><th scope="col">기준</th></tr></thead>
+        <tbody>
+          <tr><td>최저임금</td><td class="num">2,156,880원</td><td>2026년, 월 209시간</td></tr>
+          <tr><td>중소기업 직장인</td><td class="num">307만 원</td><td>2024년 평균</td></tr>
+          <tr><td>직장인 평균</td><td class="num">375만 원</td><td>2024년 평균</td></tr>
+          <tr><td>대기업 직장인</td><td class="num">613만 원</td><td>2024년 평균</td></tr>
+        </tbody>
+      </table>
+      <p class="note">최저임금은 고용노동부 고시, 나머지는 국가데이터처 「2024년 임금근로일자리 소득(보수) 결과」를 썼어요.</p>
+
+      <h2>"우리 회사에 다닌다면?"</h2>
+      <p>상장사는 금융감독원 전자공시(DART)에 나온 직원 평균 연봉과 평균 근속연수를, 그 밖의 회사는 기업 규모·업종별 평균 임금 통계를 써요. 여기에 일반적인 승진 시점과 직급별 연봉 차이를 적용해, 유튜버의 1년 추정 수익이 그 회사에서 몇 년차 어느 직급 수준인지 어림해요. 실제 회사의 연봉 테이블과는 다릅니다.</p>
+      <p>함께 나오는 가상 사원증은 이 결과를 재미로 꾸민 카드예요. 회사 로고는 쓰지 않고 회사 이름 첫 글자로 만든 표시만 넣으며, 실제 회사와 관련이 없어요.</p>
+
+      <h2>"나도 이만큼 벌려면?"</h2>
+      <p>검색한 유튜버의 구독자 대비 조회수 비율을 내 구독자 수에 적용해 내 영상 한 편의 조회수를 어림하고, 같은 수익을 내는 데 필요한 영상 수와 조회수를 계산해요. 구독자 목표까지 걸리는 기간은 구독자 1천·1만·10만 명에 도달한 채널들의 평균 기간을 바탕으로 한 추정이에요.</p>
+
+      <h2>계산에 넣지 않는 것</h2>
+      <ul>
+        <li>협찬, 채널 멤버십, 슈퍼챗, 쇼핑 같은 광고 외 수익 (<a href="/guide/beyond-ads/">광고 외 수익 글</a> 참고)</li>
+        <li>예전에 올린 영상에서 계속 나오는 조회수</li>
+        <li>MCN 수수료, 세금, 편집자 인건비 같은 비용</li>
+      </ul>
+      <p>그래서 실제 수입보다 적게 나올 수도, 많게 나올 수도 있어요. 실제 수익은 채널 주제, 시청자 국가, 시기에 따라 몇 배까지 차이 날 수 있으니 참고용으로만 봐 주세요.</p>
+
+      <h2>쓰는 데이터</h2>
+      <ul>
+        <li>YouTube Data API: 채널 이름, 구독자 수, 영상 수, 최근 영상의 조회수·길이·올린 날짜</li>
+        <li>금융감독원 전자공시시스템(DART): 상장사 직원 평균 연봉, 근속연수, 임원 보수</li>
+        <li>국가데이터처, 고용노동부: 직장인 평균 소득, 최저임금</li>
+      </ul>
+      <p><a class="cta" href="/">유튜버 수익 계산해 보기</a></p>
+
+    </main>
+    <footer class="site-foot">
+      <ul class="foot-links"><li><a href="/">수익 계산기</a></li><li><a href="/channel/">유튜버별 수익</a></li><li><a href="/guide/">수익 가이드</a></li><li><a href="/how/">계산 방법</a></li><li><a href="/faq/">자주 묻는 질문</a></li><li><a href="/about/">사이트 소개</a></li><li><a href="/privacy/">개인정보처리방침</a></li><li><a href="/terms/">이용약관</a></li><li><a href="/contact/">문의</a></li></ul>
+      <p>수익, 직급, 필요한 영상 수 같은 숫자는 YouTube API 공개 데이터를 바탕으로 돈미터가 따로 계산한 제3자 추정치이며, Google 또는 YouTube가 발표하거나 승인한 수치가 아닙니다. 실제 정산 금액과 다릅니다.</p>
+      <p>돈미터는 YouTube API 서비스를 사용하며, YouTube 또는 Google과 제휴하거나 승인받은 서비스가 아닙니다.</p>
+    </footer>
+  </body>
+</html>

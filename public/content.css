@@ -380,3 +380,17 @@ a:hover {
   border-color: var(--seal);
   color: var(--seal);
 }
+
+/* 자주 묻는 질문 */
+.faq section {
+  padding: 18px 0 4px;
+  border-top: 1px solid var(--rule);
+}
+.faq section:first-child {
+  border-top: 0;
+  padding-top: 4px;
+}
+.doc .faq h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}

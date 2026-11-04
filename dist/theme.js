@@ -197,5 +197,20 @@
     if (menu && !menu.hidden) place()
   })
 
+  // 좁은 화면의 "메뉴" (details.site-menu): 바깥을 누르거나 Esc 를 누르면 닫는다
+  document.addEventListener('click', function (e) {
+    var open = document.querySelectorAll('details.site-menu[open]')
+    for (var i = 0; i < open.length; i++) if (!open[i].contains(e.target)) open[i].open = false
+  })
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return
+    var d = document.querySelector('details.site-menu[open]')
+    if (d) {
+      d.open = false
+      var s = d.querySelector('summary')
+      if (s) s.focus()
+    }
+  })
+
   window.__theme = { list: THEMES, choose: choose }
 })()
