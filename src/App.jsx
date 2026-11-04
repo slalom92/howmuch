@@ -210,7 +210,7 @@ export default function App() {
             <CompareChart channel={channel} analysis={analysis} period={period} tier={tier} />
             <CompanyCompare channel={channel} analysis={analysis} tier={tier} company={company} setCompany={setCompany} />
             <GoalPlan key={channel.id} channel={channel} analysis={analysis} tier={tier} />
-            {share && <ShareBar url={share.url} text={share.text} />}
+            {share && <ShareBar url={share.url} text={share.text} image={{ channel, analysis, period, tier, company }} />}
           </div>
         )}
 

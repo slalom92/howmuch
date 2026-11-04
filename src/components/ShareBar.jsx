@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { track } from '../lib/analytics.js'
 import { Scissors } from './Art.jsx'
+import ImageShare from './ImageShare.jsx'
 
 // 카카오톡 공유는 카카오 JavaScript 키(VITE_KAKAO_JS_KEY)와 카카오 디벨로퍼스의 사이트 도메인 등록이 필요하다.
 // 키가 없으면 휴대폰 기본 공유 창(지원되는 기기) 또는 링크 복사로 대신한다.
@@ -60,7 +61,7 @@ function ShareIcon({ name }) {
   )
 }
 
-export default function ShareBar({ url, text }) {
+export default function ShareBar({ url, text, image }) {
   const kakaoReady = useKakao()
   const [toast, setToast] = useState('')
   const canNative = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
@@ -133,6 +134,7 @@ export default function ShareBar({ url, text }) {
       <p className="share__toast" role="status" aria-live="polite">
         {toast}
       </p>
+      {image && <ImageShare {...image} />}
     </div>
   )
 }

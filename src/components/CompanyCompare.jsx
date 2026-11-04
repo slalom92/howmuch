@@ -7,6 +7,7 @@ import { won } from '../lib/format.js'
 import { track } from '../lib/analytics.js'
 import CareerCurve from './CareerCurve.jsx'
 import EmployeeBadge from './EmployeeBadge.jsx'
+import ImageShare from './ImageShare.jsx'
 import SourceTag from './SourceTag.jsx'
 
 const SIZES = ['대기업', '중견', '중소']
@@ -313,6 +314,7 @@ export default function CompanyCompare({ channel, analysis, tier, company, setCo
           </h3>
           <p className="badge-section__lede">{channel.title}의 {company.stockName || company.name} 가상 사원증이에요.</p>
           <EmployeeBadge channel={channel} company={company} place={result.place} />
+          <ImageShare variant="badge" channel={channel} company={company} place={result.place} />
         </section>
       )}
     </section>
