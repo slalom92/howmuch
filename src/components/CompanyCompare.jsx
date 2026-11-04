@@ -6,6 +6,7 @@ import { SIZE_AVG, INDUSTRIES } from '../lib/benchmarks.js'
 import { won } from '../lib/format.js'
 import { track } from '../lib/analytics.js'
 import CareerCurve from './CareerCurve.jsx'
+import EmployeeBadge from './EmployeeBadge.jsx'
 
 const SIZES = ['대기업', '중견', '중소']
 
@@ -302,6 +303,16 @@ export default function CompanyCompare({ channel, analysis, tier, company, setCo
             출처: {company.source}. 직급별 연봉은 회사 평균 연봉과 근속연수에 일반적인 승진 시점과 직급별 연봉 차이를 적용한 추정치로, 실제 회사의 연봉 테이블과 다릅니다.
           </p>
         </article>
+      )}
+
+      {status !== 'loading' && company && result && (
+        <section className="badge-section" aria-labelledby="badge-title">
+          <h3 className="badge-section__title" id="badge-title">
+            사원증도 나왔어요
+          </h3>
+          <p className="badge-section__lede">{channel.title}의 {company.stockName || company.name} 가상 사원증이에요.</p>
+          <EmployeeBadge channel={channel} company={company} place={result.place} />
+        </section>
       )}
     </section>
   )

@@ -1778,3 +1778,217 @@ input {
     width: 100%;
   }
 }
+
+/* ---------- 가상 사원증 ---------- */
+.badge-section {
+  margin-top: 28px;
+}
+.badge-section__title {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 700;
+}
+.badge-section__lede {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.badge-wrap {
+  margin: 0 auto;
+  width: min(300px, 100%);
+}
+.badge__lanyard {
+  display: block;
+  width: 120px;
+  height: 70px;
+  margin: 0 auto -14px;
+  position: relative;
+  z-index: 1;
+}
+.badge {
+  position: relative;
+  overflow: hidden;
+  padding: 0 0 16px;
+  border-radius: 16px;
+  background: var(--paper);
+  box-shadow:
+    0 0 0 1px var(--rule),
+    0 22px 40px -22px rgba(var(--shadow-rgb), 0.55);
+  text-align: center;
+}
+.badge__hole {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 40px;
+  height: 8px;
+  margin-left: -20px;
+  border-radius: 4px;
+  background: var(--desk);
+  box-shadow: inset 0 1px 2px rgba(var(--shadow-rgb), 0.35);
+  z-index: 2;
+}
+.badge__watermark {
+  position: absolute;
+  inset: -40% -40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-28deg);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 2.6;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  opacity: 0.045;
+  pointer-events: none;
+  user-select: none;
+  word-break: keep-all;
+  text-align: center;
+}
+.badge__head {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 10px;
+  padding: 30px 18px 16px;
+  background: var(--ink);
+  color: var(--on-ink);
+  text-align: left;
+}
+.badge__emblem {
+  grid-row: 1 / 3;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--seal);
+  color: var(--on-seal);
+  font-size: 19px;
+  font-weight: 800;
+}
+.badge__org {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.badge__kind {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.75;
+}
+.badge__photo {
+  position: relative;
+  display: block;
+  width: 112px;
+  height: 112px;
+  margin: 18px auto 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--paper-tint);
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 4px var(--rule);
+}
+.badge__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.badge__initial {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: var(--muted);
+  color: var(--on-ink);
+  font-size: 44px;
+  font-weight: 700;
+}
+.badge__credit {
+  margin: 6px 0 0;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.badge__name {
+  position: relative;
+  margin: 8px 16px 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.badge__role {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 8px 0 0;
+}
+.badge__grade,
+.badge__title {
+  padding: 3px 11px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.badge__grade {
+  background: var(--seal);
+  color: var(--on-seal);
+}
+.badge__title {
+  border: 1.5px solid var(--seal);
+  color: var(--seal);
+}
+.badge__facts {
+  position: relative;
+  margin: 14px 18px 0;
+  padding: 10px 0 0;
+  border-top: 1px dashed var(--rule);
+  text-align: left;
+}
+.badge__facts div {
+  display: flex;
+  gap: 10px;
+  padding: 2px 0;
+  font-size: 12.5px;
+}
+.badge__facts dt {
+  flex: none;
+  width: 30px;
+  color: var(--muted);
+}
+.badge__facts dd {
+  margin: 0;
+  font-weight: 600;
+}
+.badge__mono {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.badge__foot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 12px 18px 0;
+}
+.badge__barcode {
+  width: 150px;
+  height: 28px;
+}
+.badge__seal {
+  margin-left: 0;
+  transform: rotate(-12deg);
+}
+.badge__note {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
