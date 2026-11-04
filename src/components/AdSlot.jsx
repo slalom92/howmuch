@@ -32,7 +32,13 @@ function useIsDesktop() {
   return desktop
 }
 
-export default function AdSlot({ slot, variant, label = '광고' }) {
+// 서버에서 미리 그릴 때(홈 화면 HTML 미리 채우기)는 광고 자리를 만들지 않는다
+export default function AdSlot(props) {
+  if (typeof window === 'undefined') return null
+  return <AdSlotInner {...props} />
+}
+
+function AdSlotInner({ slot, variant, label = '광고' }) {
   const asideRef = useRef(null)
   const insRef = useRef(null)
   const [state, setState] = useState('pending') // pending | filled | unfilled

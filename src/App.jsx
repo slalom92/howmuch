@@ -17,6 +17,7 @@ import { won } from './lib/format.js'
 import { trackSearch, trackChannelView } from './lib/analytics.js'
 import { channelPath, channelSlug, slugFromPath, isChannelId, revenueTitle } from './lib/popular.js'
 import PopularChannels from './components/PopularChannels.jsx'
+import HomeGuide from './components/HomeGuide.jsx'
 import { FOOTER_NOTE } from './lib/disclaimer.js'
 
 const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 돈미터'
@@ -217,43 +218,47 @@ export default function App() {
 
         {!busy && <PopularChannels currentSlug={channel ? channelSlug(channel) : null} title={status === 'done' ? '다른 유튜버 수익도 보기' : '많이 찾는 유튜버'} />}
 
-        <details className="method">
-          <summary>이 금액은 어떻게 계산되나요?</summary>
-          <div className="method__body">
-            <p>
-              최근 업로드된 영상 최대 50개를 가져와 {SHORTS_MAX_SEC / 60}분 이하 영상은 쇼츠, 나머지는 롱폼으로 나눕니다.
-              유형별로 평균 조회수(조회수 상·하위 10%는 제외)와 한 달 업로드 수를 구해 곱하면 한 달 동안 새로 생기는 조회수가
-              됩니다. 여기에 1,000회당 크리에이터 수익(RPM)을 곱해 광고 수익을 추정합니다.
-            </p>
-            <table className="method__table">
-              <caption>1,000회당 수익 가정</caption>
-              <thead>
-                <tr>
-                  <th scope="col">가정</th>
-                  <th scope="col" className="num">
-                    롱폼
-                  </th>
-                  <th scope="col" className="num">
-                    쇼츠
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(RPM).map(([k, v]) => (
-                  <tr key={k}>
-                    <th scope="row">{v.label}</th>
-                    <td className="num">{v.long.toLocaleString('ko-KR')}원</td>
-                    <td className="num">{v.short.toLocaleString('ko-KR')}원</td>
+        {status === 'done' ? (
+                  <details className="method">
+            <summary>이 금액은 어떻게 계산되나요?</summary>
+            <div className="method__body">
+              <p>
+                최근 업로드된 영상 최대 50개를 가져와 {SHORTS_MAX_SEC / 60}분 이하 영상은 쇼츠, 나머지는 롱폼으로 나눕니다.
+                유형별로 평균 조회수(조회수 상·하위 10%는 제외)와 한 달 업로드 수를 구해 곱하면 한 달 동안 새로 생기는 조회수가
+                됩니다. 여기에 1,000회당 크리에이터 수익(RPM)을 곱해 광고 수익을 추정합니다.
+              </p>
+              <table className="method__table">
+                <caption>1,000회당 수익 가정</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">가정</th>
+                    <th scope="col" className="num">
+                      롱폼
+                    </th>
+                    <th scope="col" className="num">
+                      쇼츠
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <p>
-              협찬, 멤버십, 슈퍼챗, 쇼핑 수익과 예전 영상에서 계속 나오는 조회수는 포함하지 않습니다. 실제 수익은 채널 주제와
-              시청자 국가, 시즌에 따라 몇 배까지 차이 날 수 있으니 참고용으로만 보세요.
-            </p>
-          </div>
-        </details>
+                </thead>
+                <tbody>
+                  {Object.entries(RPM).map(([k, v]) => (
+                    <tr key={k}>
+                      <th scope="row">{v.label}</th>
+                      <td className="num">{v.long.toLocaleString('ko-KR')}원</td>
+                      <td className="num">{v.short.toLocaleString('ko-KR')}원</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p>
+                협찬, 멤버십, 슈퍼챗, 쇼핑 수익과 예전 영상에서 계속 나오는 조회수는 포함하지 않습니다. 실제 수익은 채널 주제와
+                시청자 국가, 시즌에 따라 몇 배까지 차이 날 수 있으니 참고용으로만 보세요.
+              </p>
+            </div>
+          </details>
+        ) : (
+          !busy && status !== 'picking' && <HomeGuide />
+        )}
       </main>
 
       <footer className="footer">

@@ -71,9 +71,12 @@ function applyHead(html, { title, desc, url, robots, jsonLd }) {
   return h
 }
 
+// 홈 화면 HTML이 미리 채워져 있어도(scripts/prerender-home.mjs) 그 자리를 채널 내용으로 바꾼다
+const ROOT_RE = /<div id="root">(?:<!--prerender-->[\s\S]*?<!--\/prerender-->)?<\/div>/
+
 function injectRoot(html, inner, boot) {
   const bootTag = boot ? `<script>window.__CHANNEL__=${scriptJson(boot)}</script>` : ''
-  return html.replace(/<div id="root"><\/div>/, `<div id="root">${inner}</div>${bootTag}`)
+  return html.replace(ROOT_RE, () => `<div id="root">${inner}</div>${bootTag}`)
 }
 
 function popularLinks(excludeSlug, trending, limit = 12) {
@@ -175,7 +178,7 @@ export default async function handler(req, res) {
   } catch {
     template = null
   }
-  if (!template || !template.includes('<div id="root"></div>')) {
+  if (!template || !ROOT_RE.test(template)) {
     return send(res, 503, '<!doctype html><title>잠시 후 다시 시도해 주세요</title>', 'no-store')
   }
 
