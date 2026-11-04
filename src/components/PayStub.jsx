@@ -3,6 +3,8 @@ import { Guilloche } from './Art.jsx'
 import { RPM, PERIODS, monthlyRevenue, overallAvgViews } from '../lib/calc.js'
 import { won, count } from '../lib/format.js'
 import { track } from '../lib/analytics.js'
+import { ESTIMATE_NOTE } from '../lib/disclaimer.js'
+import SourceTag from './SourceTag.jsx'
 
 // 채널 주소: 핸들(@이름)이 있으면 그 주소, 없으면 채널 ID 주소
 export function channelUrl(channel) {
@@ -108,6 +110,11 @@ export default function PayStub({ channel, analysis, period, setPeriod, tier, se
             <dd>{channel.videoCount.toLocaleString('ko-KR')}개</dd>
           </div>
         </dl>
+        <p className="stub__sources">
+          <SourceTag kind="yt" /> 구독자·전체 영상
+          <span className="stub__sources-sep" aria-hidden="true" />
+          <SourceTag kind="est">돈미터 계산</SourceTag> 최근 영상 50개로 낸 평균 조회수·월 업로드
+        </p>
       </header>
 
       <div className="stub__controls">
@@ -177,6 +184,11 @@ export default function PayStub({ channel, analysis, period, setPeriod, tier, se
           </span>
         </p>
       </div>
+
+      <p className="stub__disclaimer">
+        <SourceTag />
+        {ESTIMATE_NOTE}
+      </p>
 
       {warnings.length > 0 && (
         <ul className="stub__warn">

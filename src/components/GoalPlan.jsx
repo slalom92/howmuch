@@ -4,6 +4,7 @@ import { won } from '../lib/format.js'
 import { planGoal, duration, bigCount, PACES, GOAL_SOURCES } from '../lib/goal.js'
 import { track } from '../lib/analytics.js'
 import GoalCurve from './GoalCurve.jsx'
+import SourceTag from './SourceTag.jsx'
 
 const PRESETS = [
   [100, '100'],
@@ -135,7 +136,7 @@ export default function GoalPlan({ channel, analysis, tier }) {
         <article className="order goal__card" aria-labelledby="goal-card-title">
           <header className="order__head">
             <p className="order__kind" id="goal-card-title">
-              유튜버 도전 계획서
+              유튜버 도전 계획서 <SourceTag />
             </p>
             <p className="order__org">목표: {channel.title}</p>
           </header>

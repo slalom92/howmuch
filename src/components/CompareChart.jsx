@@ -1,3 +1,4 @@
+import SourceTag from './SourceTag.jsx'
 import { COMPARE, COMPARE_SOURCES } from '../lib/compare.js'
 import { PERIODS, monthlyRevenue } from '../lib/calc.js'
 import { won, ratioText } from '../lib/format.js'
@@ -28,7 +29,7 @@ export default function CompareChart({ channel, analysis, period, tier }) {
         직장인 평균의 <strong>{ratioText(mid, avg)}</strong>
       </h2>
       <p className="compare__sub">
-        {PERIOD_WORD[period]} 기준으로 비교했습니다. 직장인 소득은 세전 월급을 같은 기간으로 환산한 값입니다.
+        <SourceTag /> {PERIOD_WORD[period]} 기준으로 비교했습니다. 유튜버 수익은 돈미터 추정치, 직장인 소득은 공식 통계의 세전 월급을 같은 기간으로 환산한 값입니다.
       </p>
 
       <ol className="bars">

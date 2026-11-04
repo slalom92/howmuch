@@ -7,6 +7,7 @@ import { won } from '../lib/format.js'
 import { track } from '../lib/analytics.js'
 import CareerCurve from './CareerCurve.jsx'
 import EmployeeBadge from './EmployeeBadge.jsx'
+import SourceTag from './SourceTag.jsx'
 
 const SIZES = ['대기업', '중견', '중소']
 
@@ -227,7 +228,7 @@ export default function CompanyCompare({ channel, analysis, tier, company, setCo
         <article className="order" ref={cardRef} tabIndex={-1} aria-labelledby="order-title">
           <header className="order__head">
             <p className="order__kind" id="order-title">
-              가상 인사발령
+              가상 인사발령 <SourceTag />
             </p>
             <p className="order__org">{company.name}</p>
           </header>
@@ -300,7 +301,7 @@ export default function CompanyCompare({ channel, analysis, tier, company, setCo
             ) : null}
           </ul>
           <p className="order__note">
-            출처: {company.source}. 직급별 연봉은 회사 평균 연봉과 근속연수에 일반적인 승진 시점과 직급별 연봉 차이를 적용한 추정치로, 실제 회사의 연봉 테이블과 다릅니다.
+            출처: {company.source}. 유튜버 수익과 직급은 돈미터가 계산한 추정치로 Google·YouTube가 발표하거나 승인한 수치가 아닙니다. 직급별 연봉은 회사 평균 연봉과 근속연수에 일반적인 승진 시점과 직급별 연봉 차이를 적용한 추정치로, 실제 회사의 연봉 테이블과 다릅니다.
           </p>
         </article>
       )}

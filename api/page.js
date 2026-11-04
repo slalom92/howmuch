@@ -142,7 +142,7 @@ function channelBody(ch, a, slug, trending) {
       <tbody>${rows}</tbody>
     </table>
     <p>광고 단가를 낮게 잡으면 한 달 ${won(low)}, 높게 잡으면 ${won(high)}까지 달라져요. 롱폼 광고 수익은 ${won(monthlyRevenue(a, 'mid').long)}, 쇼츠 수익 배분은 ${won(monthlyRevenue(a, 'mid').short)}으로 추정했어요.</p>
-    <p class="ssr__note">YouTube 공개 데이터(최근 영상 최대 50개)로 계산한 추정치이며 협찬, 멤버십, 슈퍼챗 수익은 빠져 있어요. 실제 정산 금액과 다를 수 있어요.</p>
+    <p class="ssr__note"><span class="src-tag src-tag--est">돈미터 추정</span> YouTube API 공개 데이터(최근 영상 최대 50개)로 돈미터가 따로 계산한 제3자 추정치이며, Google이나 YouTube가 발표하거나 승인한 수치가 아니에요. 협찬, 멤버십, 슈퍼챗 수익은 빠져 있고 실제 정산 금액과 다를 수 있어요. 구독자 수와 전체 영상 수는 YouTube가 제공한 값이에요.</p>
     ${goalBlock(ch, a)}
     <p><a href="https://www.youtube.com/${esc(ch.handle || 'channel/' + ch.id)}" rel="noopener">${esc(ch.title)} 채널 바로가기</a></p>
     ${popularLinks(slug, trending)}`

@@ -17,6 +17,7 @@ import { won } from './lib/format.js'
 import { trackSearch, trackChannelView } from './lib/analytics.js'
 import { channelPath, channelSlug, slugFromPath, isChannelId, revenueTitle } from './lib/popular.js'
 import PopularChannels from './components/PopularChannels.jsx'
+import { FOOTER_NOTE } from './lib/disclaimer.js'
 
 const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 돈미터'
 
@@ -264,8 +265,8 @@ export default function App() {
           <li><a href="/terms/">이용약관</a></li>
           <li><a href="/contact/">문의</a></li>
         </ul>
-        <p>YouTube 공개 데이터(YouTube Data API)를 바탕으로 한 추정치이며, 실제 정산 금액과 다릅니다.</p>
-        <p>이 사이트는 YouTube 또는 Google과 관련이 없습니다.</p>
+        <p>{FOOTER_NOTE}</p>
+        <p>돈미터는 YouTube API 서비스를 사용하며, YouTube 또는 Google과 제휴하거나 승인받은 서비스가 아닙니다.</p>
       </footer>
 
       <AdSlot variant="anchor" slot={SLOTS.anchor} />
