@@ -14,7 +14,7 @@ function devApi() {
           const extra = ch[2] ? '&' + ch[2].slice(1) : ''
           req.url = `/api/page/?slug=${ch[1]}${extra}`
         }
-        const m = req.url.match(/^\/(?:api\/(search|channel|corps|company|benchmarks|share|page)|(s))\/?(?:\?|$)/)
+        const m = req.url.match(/^\/(?:api\/(search|channel|corps|company|benchmarks|share|page|trending)|(s))\/?(?:\?|$)/)
         if (!m) return next()
         try {
           const mod = await server.ssrLoadModule(`/api/${m[1] || 'share'}.js`)

@@ -147,8 +147,9 @@ export function bigCount(n) {
   if (!Number.isFinite(n)) return '-'
   const v = Math.round(n)
   if (v >= 1e12) return `${Math.round(v / 1e12).toLocaleString('ko-KR')}조`
-  if (v >= 1e8) return `${(v / 1e8).toFixed(v >= 1e9 ? 0 : 1).replace(/\.0$/, '')}억`
-  if (v >= 1e4) return `${(v / 1e4).toFixed(v >= 1e5 ? 0 : 1).replace(/\.0$/, '')}만`
+  if (v >= 99995000) return `${(v / 1e8).toFixed(v >= 1e9 ? 0 : 1).replace(/\.0$/, '')}억`
+  if (v >= 1e5) return `${Math.round(v / 1e4).toLocaleString('ko-KR')}만`
+  if (v >= 1e4) return `${(v / 1e4).toFixed(1).replace(/\.0$/, '')}만`
   return v.toLocaleString('ko-KR')
 }
 

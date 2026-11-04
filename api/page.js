@@ -9,7 +9,7 @@ import { query } from './_lib/youtube.js'
 import { analyze, monthlyRevenue, overallAvgViews, PERIODS } from '../src/lib/calc.js'
 import { won, count, ratioText } from '../src/lib/format.js'
 import { COMPARE } from '../src/lib/compare.js'
-import { POPULAR, channelSlug, channelPath, normalizeSlug, isChannelId } from '../src/lib/popular.js'
+import { channelSlug, channelPath, normalizeSlug, isChannelId, mergeChannels } from '../src/lib/popular.js'
 
 const SIX_HOURS = 6 * 3600
 const DAY = 86400
@@ -75,8 +75,8 @@ function injectRoot(html, inner, boot) {
   return html.replace(/<div id="root"><\/div>/, `<div id="root">${inner}</div>${bootTag}`)
 }
 
-function popularLinks(excludeSlug, limit = 12) {
-  const list = POPULAR.filter((p) => p.slug !== excludeSlug).slice(0, limit)
+function popularLinks(excludeSlug, trending, limit = 12) {
+  const list = mergeChannels(trending, excludeSlug, limit)
   return `<nav class="ssr__more" aria-label="다른 유튜버 수익">
     <h2>다른 유튜버 수익도 보기</h2>
     <ul>${list.map((p) => `<li><a href="${channelPath(p.slug)}">${esc(p.name)}</a></li>`).join('')}</ul>
@@ -91,7 +91,7 @@ function shell(inner) {
 </div>`
 }
 
-function channelBody(ch, a, slug) {
+function channelBody(ch, a, slug, trending) {
   const mid = monthlyRevenue(a, 'mid').total
   const low = monthlyRevenue(a, 'low').total
   const high = monthlyRevenue(a, 'high').total
@@ -121,7 +121,7 @@ function channelBody(ch, a, slug) {
     <p>광고 단가를 낮게 잡으면 한 달 ${won(low)}, 높게 잡으면 ${won(high)}까지 달라져요. 롱폼 광고 수익은 ${won(monthlyRevenue(a, 'mid').long)}, 쇼츠 수익 배분은 ${won(monthlyRevenue(a, 'mid').short)}으로 추정했어요.</p>
     <p class="ssr__note">YouTube 공개 데이터(최근 영상 최대 50개)로 계산한 추정치이며 협찬, 멤버십, 슈퍼챗 수익은 빠져 있어요. 실제 정산 금액과 다를 수 있어요.</p>
     <p><a href="https://www.youtube.com/${esc(ch.handle || 'channel/' + ch.id)}" rel="noopener">${esc(ch.title)} 채널 바로가기</a></p>
-    ${popularLinks(slug)}`
+    ${popularLinks(slug, trending)}`
 }
 
 function send(res, status, html, cache) {
@@ -162,7 +162,7 @@ export default async function handler(req, res) {
       url: null,
       robots: 'noindex, follow',
     })
-    const inner = shell(`<h1>채널을 찾지 못했어요</h1><p class="ssr__lede">${esc(message)}</p>${popularLinks(null)}`)
+    const inner = shell(`<h1>채널을 찾지 못했어요</h1><p class="ssr__lede">${esc(message)}</p>${popularLinks(null, null)}`)
     return send(res, status, injectRoot(html, inner, null), cache)
   }
 
@@ -197,6 +197,10 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', `public, s-maxage=${DAY}`)
     return res.end()
   }
+
+  // 다른 유튜버 링크: 자동 갱신 목록 (CDN 캐시, 실패하면 고정 목록)
+  const tr = await getJson(origin, '/api/trending/')
+  const trending = tr.body?.source === 'trending' ? tr.body.items : null
 
   const a = analyze(ch.videos)
   const mid = monthlyRevenue(a, 'mid').total
@@ -233,6 +237,6 @@ export default async function handler(req, res) {
   }
 
   const html = applyHead(template, { title, desc, url, robots: 'index, follow, max-image-preview:large', jsonLd })
-  const inner = shell(channelBody(ch, a, canonicalSlug))
+  const inner = shell(channelBody(ch, a, canonicalSlug, trending))
   return send(res, 200, injectRoot(html, inner, { id: ch.id, slug: canonicalSlug }), `public, s-maxage=${SIX_HOURS}, stale-while-revalidate=${DAY}`)
 }

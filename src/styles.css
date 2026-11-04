@@ -1533,9 +1533,12 @@ input {
   color: var(--seal);
   background: var(--seal-tint);
 }
+.popular__meta {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
 .popular__all {
-  display: inline-block;
-  margin-top: 12px;
   font-size: 14px;
   color: var(--muted);
 }

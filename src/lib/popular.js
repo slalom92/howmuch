@@ -72,3 +72,16 @@ export function slugFromPath(pathname) {
   const m = pathname.match(/^\/channel\/([^/]+)\/?$/)
   return m ? normalizeSlug(m[1]) : null
 }
+
+// 자동 갱신 목록(/api/trending/)을 앞에 두고, 모자라면 고정 목록으로 채운다
+export function mergeChannels(trending, excludeSlug, limit) {
+  const out = []
+  const seen = new Set(excludeSlug ? [excludeSlug] : [])
+  for (const c of [...(trending || []), ...POPULAR]) {
+    if (!c?.slug || seen.has(c.slug)) continue
+    seen.add(c.slug)
+    out.push({ slug: c.slug, name: c.name })
+    if (out.length >= limit) break
+  }
+  return out
+}
