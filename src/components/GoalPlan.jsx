@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { RPM } from '../lib/calc.js'
 import { won } from '../lib/format.js'
 import { planGoal, duration, bigCount, PACES, GOAL_SOURCES } from '../lib/goal.js'
@@ -20,6 +20,13 @@ const parseSubs = (raw) => {
   return Number.isFinite(n) ? Math.round(n) : null
 }
 
+// 숫자만 입력하면 세 자리마다 쉼표를 넣는다. '3.5만'처럼 단위를 쓰면 입력한 그대로 둔다.
+function withCommas(value) {
+  const digits = value.replace(/[,\s]/g, '')
+  if (!/^\d*$/.test(digits)) return value
+  return digits.replace(/^0+(?=\d)/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
 const pct = (p) => (p >= 10 ? `${Math.round(p)}%` : p >= 1 ? `${p.toFixed(1)}%` : p >= 0.01 ? `${p.toFixed(2)}%` : `${p.toPrecision(1)}%`)
 
 export default function GoalPlan({ channel, analysis, tier }) {
@@ -29,6 +36,32 @@ export default function GoalPlan({ channel, analysis, tier }) {
   const mySubs = parseSubs(raw)
   const valid = mySubs != null && mySubs >= 1 && mySubs <= 1e9
   const tracked = useRef(false)
+  const inputRef = useRef(null)
+  const caret = useRef(null) // 쉼표가 들어가도 커서가 같은 숫자 뒤에 머물게 한다
+
+  const onInput = (e) => {
+    const el = e.target
+    const next = withCommas(el.value)
+    // 쉼표가 실제로 바뀔 때만 커서를 다시 잡는다 ('3.5만'처럼 단위를 쓰는 중이면 그대로 둔다)
+    if (next !== el.value) {
+      const before = el.value.slice(0, el.selectionStart ?? el.value.length)
+      caret.current = before.replace(/[^\d]/g, '').length
+    } else caret.current = null
+    setRaw(next)
+  }
+
+  useLayoutEffect(() => {
+    const el = inputRef.current
+    if (caret.current == null || !el || document.activeElement !== el) return
+    let pos = 0
+    let seen = 0
+    while (pos < raw.length && seen < caret.current) {
+      if (/\d/.test(raw[pos])) seen++
+      pos++
+    }
+    el.setSelectionRange(pos, pos)
+    caret.current = null
+  }, [raw])
 
   const plan = useMemo(
     () => (valid ? planGoal({ channel, analysis, tier, mySubs, uploadsPerMonth: pace }) : null),
@@ -64,9 +97,10 @@ export default function GoalPlan({ channel, analysis, tier }) {
               className="goal__input"
               inputMode="numeric"
               autoComplete="off"
-              placeholder="예: 1200"
+              ref={inputRef}
+              placeholder="예: 1,200"
               value={raw}
-              onChange={(e) => setRaw(e.target.value)}
+              onChange={onInput}
               aria-describedby={`${id}-hint`}
             />
             <span className="goal__unit" aria-hidden="true">
@@ -75,7 +109,7 @@ export default function GoalPlan({ channel, analysis, tier }) {
           </div>
           <div className="goal__presets" id={`${id}-hint`}>
             {PRESETS.map(([n, label]) => (
-              <button key={n} type="button" className={`goal__preset${mySubs === n ? ' is-on' : ''}`} onClick={() => setRaw(String(n))}>
+              <button key={n} type="button" className={`goal__preset${mySubs === n ? ' is-on' : ''}`} onClick={() => setRaw(n.toLocaleString('ko-KR'))}>
                 {label}
               </button>
             ))}
@@ -95,7 +129,7 @@ export default function GoalPlan({ channel, analysis, tier }) {
         </div>
       </div>
 
-      {raw && !valid && <p className="notice notice--error">구독자 수는 숫자로 넣어 주세요. 예: 1200, 3.5만</p>}
+      {raw && !valid && <p className="notice notice--error">구독자 수는 숫자로 넣어 주세요. 예: 1,200, 3.5만</p>}
 
       {plan && (
         <article className="order goal__card" aria-labelledby="goal-card-title">
