@@ -77,7 +77,7 @@ export default function GoalCurve({ mySubs, targetSubs, ageMonths, channelTitle,
         {/* 평균적으로 걸리는 구간 */}
         {!ahead && (
           <g>
-            <rect x={sx(myM)} y={PAD.t} width={Math.max(2, sx(goalM) - sx(myM))} height={H - PAD.t - PAD.b} fill="#fbeceb" />
+            <rect x={sx(myM)} y={PAD.t} width={Math.max(2, sx(goalM) - sx(myM))} height={H - PAD.t - PAD.b} style={{ fill: 'var(--seal-tint)' }} />
             <text x={(sx(myM) + sx(goalM)) / 2} y={PAD.t - 8} textAnchor="middle" className="goal-curve__span">
               평균 {avgLabel}
             </text>
@@ -87,7 +87,7 @@ export default function GoalCurve({ mySubs, targetSubs, ageMonths, channelTitle,
         {/* 눈금 */}
         {yTicks.map((v) => (
           <g key={v}>
-            <line x1={PAD.l} x2={W - PAD.r} y1={sy(v)} y2={sy(v)} stroke="#cfd6e0" strokeWidth={v === 1 ? 1.4 : 0.8} strokeDasharray={v === 1 ? undefined : '3 4'} />
+            <line x1={PAD.l} x2={W - PAD.r} y1={sy(v)} y2={sy(v)} strokeWidth={v === 1 ? 1.4 : 0.8} strokeDasharray={v === 1 ? undefined : '3 4'} style={{ stroke: 'var(--rule)' }} />
             <text x={PAD.l - 6} y={sy(v) + 4} textAnchor="end" className="curve__tick">
               {v === 1 ? '0' : subsLabel(v)}
             </text>
@@ -100,16 +100,16 @@ export default function GoalCurve({ mySubs, targetSubs, ageMonths, channelTitle,
         ))}
 
         {/* 목표 구독자 가로선 */}
-        <line x1={PAD.l} x2={W - PAD.r} y1={sy(targetSubs)} y2={sy(targetSubs)} stroke="#c2362b" strokeWidth="1" strokeDasharray="2 3" opacity="0.7" />
+        <line x1={PAD.l} x2={W - PAD.r} y1={sy(targetSubs)} y2={sy(targetSubs)} strokeWidth="1" strokeDasharray="2 3" opacity="0.7" style={{ stroke: 'var(--seal)' }} />
 
         {/* 평균 곡선 */}
-        <path d={avgPath} fill="none" stroke="#1a2238" strokeWidth="2.6" strokeLinejoin="round" />
+        <path d={avgPath} fill="none" strokeWidth="2.6" strokeLinejoin="round" style={{ stroke: 'var(--ink)' }} />
 
         {/* 그 유튜버 실제 속도 */}
         {pacePath && (
           <g>
-            <path d={pacePath} fill="none" stroke="#c2362b" strokeWidth="2" strokeDasharray="7 5" />
-            <circle cx={sx(ageMonths)} cy={sy(targetSubs)} r="6" fill="#c2362b" stroke="#fff" strokeWidth="2" />
+            <path d={pacePath} fill="none" strokeWidth="2" strokeDasharray="7 5" style={{ stroke: 'var(--seal)' }} />
+            <circle cx={sx(ageMonths)} cy={sy(targetSubs)} r="6" strokeWidth="2" style={{ fill: 'var(--seal)', stroke: 'var(--paper)' }} />
             <text x={paceTagX} y={sy(targetSubs) - 12} textAnchor={sx(ageMonths) > W * 0.7 ? 'end' : 'middle'} className="goal-curve__them">
               {short(channelTitle, nameMax)}
             </text>
@@ -122,14 +122,14 @@ export default function GoalCurve({ mySubs, targetSubs, ageMonths, channelTitle,
         )}
 
         {/* 평균 곡선 위 목표 지점 */}
-        {!ahead && <circle cx={sx(goalM)} cy={sy(targetSubs)} r="4.5" fill="#fff" stroke="#1a2238" strokeWidth="2" />}
+        {!ahead && <circle cx={sx(goalM)} cy={sy(targetSubs)} r="4.5" strokeWidth="2" style={{ fill: 'var(--paper)', stroke: 'var(--ink)' }} />}
 
         {/* 지금 나 */}
-        <line x1={sx(myM)} x2={sx(myM)} y1={sy(mySubs)} y2={sy(1)} stroke="#c2362b" strokeWidth="1.2" />
-        <circle cx={sx(myM)} cy={sy(mySubs)} r="7" fill="#c2362b" stroke="#fff" strokeWidth="2.5" />
+        <line x1={sx(myM)} x2={sx(myM)} y1={sy(mySubs)} y2={sy(1)} strokeWidth="1.2" style={{ stroke: 'var(--seal)' }} />
+        <circle cx={sx(myM)} cy={sy(mySubs)} r="7" strokeWidth="2.5" style={{ fill: 'var(--seal)', stroke: 'var(--paper)' }} />
         <g transform={`translate(${Math.max(PAD.l + 22, sx(myM))} ${sy(mySubs)})`}>
-          <rect x="-22" y="10" width="44" height="22" rx="4" fill="#1a2238" />
-          <text x="0" y="25" textAnchor="middle" className="curve__me">
+          <rect x="-22" y="10" width="44" height="22" rx="4" style={{ fill: 'var(--ink)' }} />
+          <text x="0" y="25" textAnchor="middle" className="curve__me curve__me--ink">
             나
           </text>
         </g>

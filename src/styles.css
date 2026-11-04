@@ -1,14 +1,5 @@
+/* 색 변수(--desk, --ink, --seal …)는 public/themes.css 에서 테마별로 정한다 */
 :root {
-  --desk: #e7ebf0;
-  --paper: #ffffff;
-  --paper-tint: #f4f6f9;
-  --ink: #1a2238;
-  --muted: #5f6880;
-  --rule: #cfd6e0;
-  --bar: #a7b0c0;
-  --seal: #c2362b;
-  --seal-tint: #fbeceb;
-
   /* 하단 고정 광고 높이: AdSlot이 실제 높이로 채운다 */
   --anchor-h: 0px;
   --font: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
@@ -90,7 +81,8 @@ input {
 .topnav {
   display: flex;
   align-items: center;
-  gap: 14px;
+  flex-wrap: wrap;
+  gap: 8px 14px;
   font-size: 15px;
 }
 
@@ -135,11 +127,11 @@ input {
   margin: 0 auto;
   display: grid;
   place-items: center;
-  border: 1px dashed #b3bccb;
+  border: 1px dashed var(--bar);
   border-radius: 4px;
-  color: #8790a3;
+  color: var(--muted);
   font-size: 12px;
-  background: repeating-linear-gradient(-45deg, transparent 0 8px, rgba(26, 34, 56, 0.03) 8px 16px);
+  background: repeating-linear-gradient(-45deg, transparent 0 8px, rgba(var(--shadow-rgb), 0.04) 8px 16px);
 }
 
 .ad--inline {
@@ -171,7 +163,7 @@ input {
   overflow: hidden;
   margin: 0;
   padding: 4px 0 calc(4px + env(safe-area-inset-bottom));
-  background: rgba(255, 255, 255, 0.97);
+  background: rgba(var(--paper-rgb), 0.97);
   border-top: 1px solid var(--rule);
   line-height: 0;
 }
@@ -220,7 +212,7 @@ input {
 }
 
 .search__form:focus-within {
-  box-shadow: 0 0 0 4px rgba(194, 54, 43, 0.18);
+  box-shadow: 0 0 0 4px rgba(var(--seal-rgb), 0.18);
 }
 
 .search__input {
@@ -240,7 +232,7 @@ input {
 .search__button {
   border: 0;
   background: var(--ink);
-  color: #fff;
+  color: var(--on-ink);
   font-weight: 600;
   padding: 0 22px;
   cursor: pointer;
@@ -248,7 +240,7 @@ input {
 }
 
 .search__button:disabled {
-  background: #59627a;
+  background: var(--muted);
   cursor: default;
 }
 
@@ -350,7 +342,7 @@ input {
 .avatar--initial {
   display: grid;
   place-items: center;
-  color: #fff;
+  color: var(--on-ink);
   font-weight: 700;
   font-size: 20px;
 }
@@ -367,7 +359,7 @@ input {
   padding: 28px 28px 24px;
   box-shadow:
     0 1px 0 var(--rule),
-    0 18px 40px -24px rgba(26, 34, 56, 0.45);
+    0 18px 40px -24px rgba(var(--shadow-rgb), 0.45);
 }
 
 /* 위쪽 절취선 */
@@ -508,7 +500,7 @@ input {
 
 .seg__opt.is-on {
   background: var(--ink);
-  color: #fff;
+  color: var(--on-ink);
   font-weight: 600;
 }
 
@@ -714,7 +706,7 @@ input {
   position: absolute;
   top: 5px;
   bottom: 5px;
-  background: rgba(194, 54, 43, 0.22);
+  background: rgba(var(--seal-rgb), 0.22);
   border-radius: 2px;
   transition:
     left 300ms ease,
@@ -743,7 +735,7 @@ input {
   width: 22px;
   height: 10px;
   border-radius: 2px;
-  background: rgba(194, 54, 43, 0.22);
+  background: rgba(var(--seal-rgb), 0.22);
 }
 
 .sources {
@@ -943,7 +935,7 @@ input {
 
 .co-search__input:focus {
   outline: none;
-  box-shadow: 0 0 0 4px rgba(194, 54, 43, 0.18);
+  box-shadow: 0 0 0 4px rgba(var(--seal-rgb), 0.18);
 }
 
 .co-search__list {
@@ -958,7 +950,7 @@ input {
   background: var(--paper);
   border: 1px solid var(--rule);
   border-radius: 8px;
-  box-shadow: 0 12px 28px -12px rgba(26, 34, 56, 0.35);
+  box-shadow: 0 12px 28px -12px rgba(var(--shadow-rgb), 0.35);
   max-height: 320px;
   overflow: auto;
 }
@@ -1039,7 +1031,7 @@ input {
   border: 0;
   border-radius: 8px;
   background: var(--ink);
-  color: #fff;
+  color: var(--on-ink);
   font-weight: 600;
   padding: 10px 16px;
   cursor: pointer;
@@ -1058,7 +1050,7 @@ input {
   padding: 24px 28px;
   box-shadow:
     0 1px 0 var(--rule),
-    0 18px 40px -24px rgba(26, 34, 56, 0.45);
+    0 18px 40px -24px rgba(var(--shadow-rgb), 0.45);
 }
 
 .order:focus {
@@ -1405,7 +1397,7 @@ input {
 .share {
   position: relative;
   padding: 22px 20px 14px;
-  border: 2px dashed #b3bccb;
+  border: 2px dashed var(--bar);
   border-radius: 12px;
 }
 
@@ -1457,7 +1449,10 @@ input {
 .curve__me {
   font-size: 12px;
   font-weight: 700;
-  fill: #fff;
+  fill: var(--on-seal); /* 빨간(도장색) 이름표 위 글자 */
+}
+.curve__me--ink {
+  fill: var(--on-ink); /* 남색(글자색) 이름표 위 글자 */
 }
 
 .curve figcaption {
@@ -1562,7 +1557,7 @@ input {
   background: var(--paper);
   border-radius: 4px;
   padding: 24px 22px;
-  box-shadow: 0 1px 2px rgba(26, 34, 56, 0.08);
+  box-shadow: 0 1px 2px rgba(var(--shadow-rgb), 0.08);
 }
 .ssr__main h1 {
   margin: 0 0 10px;
@@ -1673,7 +1668,7 @@ input {
 }
 .goal__input:focus {
   outline: none;
-  box-shadow: 0 0 0 4px rgba(194, 54, 43, 0.18);
+  box-shadow: 0 0 0 4px rgba(var(--seal-rgb), 0.18);
 }
 .goal__unit {
   position: absolute;

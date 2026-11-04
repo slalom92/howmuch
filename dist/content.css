@@ -1,12 +1,6 @@
 /* 소개·정책·가이드 같은 정적 페이지 공통 스타일 (계산기와 같은 색·글꼴) */
+/* 색 변수는 /themes.css 에서 테마별로 정한다 */
 :root {
-  --desk: #e7ebf0;
-  --paper: #ffffff;
-  --paper-tint: #f4f6f9;
-  --ink: #1a2238;
-  --muted: #5f6880;
-  --rule: #cfd6e0;
-  --seal: #c2362b;
   --font: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 }
 
@@ -62,7 +56,9 @@ a:hover {
 
 .site-nav {
   display: flex;
-  gap: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
   font-size: 15px;
 }
 
@@ -184,15 +180,15 @@ a:hover {
   margin-top: 8px;
   padding: 12px 20px;
   background: var(--ink);
-  color: #fff;
+  color: var(--on-ink);
   border-radius: 8px;
   font-weight: 600;
   text-decoration: none;
 }
 
 .doc .cta:hover {
-  color: #fff;
-  background: #2b3656;
+  color: var(--on-seal);
+  background: var(--seal);
 }
 
 .doc .sources {
@@ -373,14 +369,14 @@ a:hover {
 .doc .channel-list a {
   display: inline-block;
   padding: 6px 13px;
-  border: 1px solid var(--rule, #cfd6e0);
+  border: 1px solid var(--rule);
   border-radius: 999px;
-  background: #fff;
-  color: var(--ink, #1a2238);
+  background: var(--paper);
+  color: var(--ink);
   font-size: 14px;
   text-decoration: none;
 }
 .doc .channel-list a:hover {
-  border-color: var(--seal, #c2362b);
-  color: var(--seal, #c2362b);
+  border-color: var(--seal);
+  color: var(--seal);
 }

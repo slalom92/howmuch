@@ -165,6 +165,11 @@ export default function App() {
           {DEMO_MODE && <span className="demo-flag">데모 데이터로 보는 중</span>}
           <a href="/channel/">유튜버별 수익</a>
           <a href="/guide/">수익 가이드</a>
+          {/* 색 테마 고르기: 메뉴와 동작은 public/theme.js 가 맡는다 */}
+          <button type="button" className="theme-pick__toggle" data-theme-toggle aria-expanded="false" aria-controls="theme-menu" aria-label="명세서 색 바꾸기">
+            <span className="theme-pick__dot" aria-hidden="true" />
+            테마
+          </button>
         </nav>
       </header>
 

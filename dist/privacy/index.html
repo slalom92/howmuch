@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/theme.js"></script>
     <title>개인정보처리방침 | 유튜버 월급명세서</title>
     <meta name="description" content="유튜버 월급명세서가 처리하는 정보, 쿠키와 광고, YouTube API 서비스 이용에 관한 안내입니다." />
     <link rel="canonical" href="https://howmuchyoutube.blog/privacy/" />
@@ -20,14 +21,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/themes.css" />
     <link rel="stylesheet" href="/content.css" />
     <script src="/ga.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539" crossorigin="anonymous"></script>
   </head>
   <body>
     <header class="site-head">
-      <a class="brand" href="/"><svg class="brand-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#c2362b" stroke-width="2.4"/><path d="M7.2 8.2l1.9 7.6 1.9-6.2 1.9 6.2 1.9-7.6M6.6 11.2h10.8M6.6 13.2h10.8" fill="none" stroke="#c2362b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>유튜버 월급명세서</a>
-      <nav class="site-nav" aria-label="주요 메뉴"><a href="/">수익 계산기</a><a href="/channel/">유튜버별 수익</a><a href="/guide/">수익 가이드</a></nav>
+      <a class="brand" href="/"><svg class="brand-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2.4" style="stroke:var(--seal)"/><path d="M7.2 8.2l1.9 7.6 1.9-6.2 1.9 6.2 1.9-7.6M6.6 11.2h10.8M6.6 13.2h10.8" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--seal)"/></svg>유튜버 월급명세서</a>
+      <nav class="site-nav" aria-label="주요 메뉴"><a href="/">수익 계산기</a><a href="/channel/">유튜버별 수익</a><a href="/guide/">수익 가이드</a><button type="button" class="theme-pick__toggle" data-theme-toggle aria-expanded="false" aria-controls="theme-menu" aria-label="명세서 색 바꾸기"><span class="theme-pick__dot" aria-hidden="true"></span>테마</button></nav>
     </header>
     <main class="doc">
 
@@ -40,8 +42,8 @@
       <ul>
         <li><strong>검색어:</strong> 이용자가 입력한 채널 이름, @핸들, 채널 주소는 검색 결과를 가져오기 위해 사이트 서버를 거쳐 YouTube API 서비스로 전송됩니다. 같은 검색의 결과는 응답 속도와 사용량 절약을 위해 최대 24시간 동안 캐시되며, 검색어는 이용자를 식별할 수 있는 정보와 함께 저장되지 않습니다.</li>
         <li><strong>회사 비교:</strong> 회사 이름은 이용자의 브라우저 안에서 상장사 목록을 찾는 데만 쓰입니다. 회사를 고르면 그 회사의 공시 정보(직원 평균 급여, 평균 근속연수, 임원 보수)를 금융감독원 전자공시 Open API에서 가져오며, 이용자의 실제 근무지나 급여는 묻지도 저장하지도 않습니다.</li>
-        <li><strong>이용 통계:</strong> 사이트 개선을 위해 Google Analytics로 방문 페이지, 검색어, 결과를 확인한 채널 이름, 비교한 회사 이름, "나도 이만큼 벌려면?"에 입력한 구독자 수와 업로드 속도, 대략적인 지역(국가·도시 단위), 기기 종류 같은 이용 통계를 수집합니다. 이 정보는 통계 형태로만 확인하며, 이름이나 연락처처럼 이용자를 직접 식별하는 정보는 수집하지 않습니다.</li>
-        <li><strong>브라우저 저장소:</strong> 같은 채널을 다시 볼 때 빠르게 보여 주기 위해 검색 결과(채널 공개 정보와 최근 영상 조회수)를 이용자의 브라우저 저장소(localStorage)에 최대 24시간 보관합니다. 이 정보는 이용자의 기기에만 남으며, 브라우저의 사이트 데이터 삭제 기능으로 언제든 지울 수 있습니다.</li>
+        <li><strong>이용 통계:</strong> 사이트 개선을 위해 Google Analytics로 방문 페이지, 고른 색 테마, 검색어, 결과를 확인한 채널 이름, 비교한 회사 이름, "나도 이만큼 벌려면?"에 입력한 구독자 수와 업로드 속도, 대략적인 지역(국가·도시 단위), 기기 종류 같은 이용 통계를 수집합니다. 이 정보는 통계 형태로만 확인하며, 이름이나 연락처처럼 이용자를 직접 식별하는 정보는 수집하지 않습니다.</li>
+        <li><strong>브라우저 저장소:</strong> 같은 채널을 다시 볼 때 빠르게 보여 주기 위해 검색 결과(채널 공개 정보와 최근 영상 조회수)를 이용자의 브라우저 저장소(localStorage)에 최대 24시간 보관합니다. 이용자가 고른 색 테마도 같은 저장소에 기억합니다. 이 정보는 이용자의 기기에만 남으며, 브라우저의 사이트 데이터 삭제 기능으로 언제든 지울 수 있습니다.</li>
         <li><strong>접속 기록:</strong> 사이트를 호스팅하는 Vercel은 서비스 운영과 보안을 위해 IP 주소, 브라우저 종류, 접속 시간 같은 접속 기록을 처리할 수 있습니다. 자세한 내용은 <a href="https://vercel.com/legal/privacy-policy" rel="noopener">Vercel 개인정보처리방침</a>을 참고해 주세요.</li>
       </ul>
 

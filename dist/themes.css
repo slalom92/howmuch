@@ -1,0 +1,220 @@
+/* 색 테마 (계산기, 채널 페이지, 정적 페이지가 함께 쓴다)
+ *
+ * <html data-theme="…"> 값에 따라 색 변수가 바뀐다. 테마는 /theme.js 가 정한다.
+ *   - 처음 방문: 방문할 때마다 무작위
+ *   - 이용자가 고르면: 그 색을 기억 (이 브라우저에만 저장)
+ *
+ * 변수
+ *   desk 바탕 / paper 명세서 종이 / paper-tint 옅은 칸 / ink 글자·선 / muted 보조 글자
+ *   rule 구분선 / bar 막대·점선 / seal 도장·강조 / seal-tint 옅은 강조
+ *   on-ink, on-seal: ink·seal 색 위에 올리는 글자색
+ *   *-rgb: 투명도를 줄 때 쓰는 같은 색의 RGB 값
+ */
+
+:root,
+[data-theme='navy'] {
+  --desk: #e7ebf0;
+  --paper: #ffffff;
+  --paper-tint: #f4f6f9;
+  --ink: #1a2238;
+  --muted: #5f6880;
+  --rule: #cfd6e0;
+  --bar: #a7b0c0;
+  --seal: #c2362b;
+  --seal-tint: #fbeceb;
+  --on-ink: #ffffff;
+  --on-seal: #ffffff;
+  --paper-rgb: 255, 255, 255;
+  --seal-rgb: 194, 54, 43;
+  --shadow-rgb: 26, 34, 56;
+  color-scheme: light;
+}
+
+/* 초록 수표 */
+[data-theme='cheque'] {
+  --desk: #e3ebe5;
+  --paper: #fcfefc;
+  --paper-tint: #eff5f1;
+  --ink: #15302a;
+  --muted: #536a60;
+  --rule: #c5d6cb;
+  --bar: #9db4a6;
+  --seal: #1a714a;
+  --seal-tint: #e3f2ea;
+  --on-ink: #ffffff;
+  --on-seal: #ffffff;
+  --paper-rgb: 252, 254, 252;
+  --seal-rgb: 26, 113, 74;
+  --shadow-rgb: 21, 48, 42;
+  color-scheme: light;
+}
+
+/* 보라 상품권 */
+[data-theme='voucher'] {
+  --desk: #ebe7f2;
+  --paper: #ffffff;
+  --paper-tint: #f6f3fa;
+  --ink: #261c40;
+  --muted: #645b7a;
+  --rule: #d7cfe3;
+  --bar: #b2a8c7;
+  --seal: #7b3fc0;
+  --seal-tint: #f2eafb;
+  --on-ink: #ffffff;
+  --on-seal: #ffffff;
+  --paper-rgb: 255, 255, 255;
+  --seal-rgb: 123, 63, 192;
+  --shadow-rgb: 38, 28, 64;
+  color-scheme: light;
+}
+
+/* 크라프트 봉투: 갈색 종이에 파란 고무도장 */
+[data-theme='kraft'] {
+  --desk: #e9dfcf;
+  --paper: #fffcf6;
+  --paper-tint: #f6efe3;
+  --ink: #33261a;
+  --muted: #6b5c49;
+  --rule: #dccdb5;
+  --bar: #c0ac8c;
+  --seal: #2d55a8;
+  --seal-tint: #e6edf9;
+  --on-ink: #ffffff;
+  --on-seal: #ffffff;
+  --paper-rgb: 255, 252, 246;
+  --seal-rgb: 45, 85, 168;
+  --shadow-rgb: 51, 38, 26;
+  color-scheme: light;
+}
+
+/* 야간 정산 (어두운 화면) */
+[data-theme='night'] {
+  --desk: #10141d;
+  --paper: #1a2030;
+  --paper-tint: #222a3c;
+  --ink: #e9edf5;
+  --muted: #a0aabd;
+  --rule: #343e54;
+  --bar: #5b6680;
+  --seal: #ff7a6b;
+  --seal-tint: #3b2329;
+  --on-ink: #10141d;
+  --on-seal: #10141d;
+  --paper-rgb: 26, 32, 48;
+  --seal-rgb: 255, 122, 107;
+  --shadow-rgb: 0, 0, 0;
+  color-scheme: dark;
+}
+
+/* 테마를 바꿀 때 색이 부드럽게 넘어가게 (움직임 줄이기 설정이면 바로 바뀜) */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-fade,
+  html.theme-fade * {
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, fill 0.25s ease, stroke 0.25s ease !important;
+  }
+}
+
+/* ---------- 테마 고르기 ---------- */
+.theme-pick__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px 0 8px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.theme-pick__toggle:hover {
+  border-color: var(--seal);
+}
+.theme-pick__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: conic-gradient(var(--seal) 0 50%, var(--ink) 0 100%);
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px var(--rule);
+}
+
+.theme-menu {
+  position: absolute;
+  z-index: 100;
+  width: 232px;
+  padding: 10px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 18px 40px -16px rgba(var(--shadow-rgb), 0.45);
+  font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+}
+.theme-menu[hidden] {
+  display: none;
+}
+.theme-menu__title {
+  margin: 2px 6px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.theme-menu__list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.theme-menu__opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.theme-menu__opt:hover {
+  background: var(--paper-tint);
+}
+.theme-menu__opt[aria-pressed='true'] {
+  background: var(--seal-tint);
+  font-weight: 700;
+}
+.theme-menu__opt[aria-pressed='true']::after {
+  content: '✓';
+  margin-left: auto;
+  color: var(--seal);
+}
+.theme-menu__sw {
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 36px;
+  height: 22px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+.theme-menu__sw--random {
+  display: grid;
+  place-items: center;
+  background: var(--paper-tint);
+  font-size: 13px;
+}
+.theme-menu__note {
+  margin: 8px 6px 2px;
+  font-size: 12px;
+  color: var(--muted);
+}

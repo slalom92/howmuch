@@ -1,19 +1,19 @@
 // 사이트 전체에서 쓰는 SVG 그래픽
-// 색은 styles.css 의 변수와 같은 값을 쓴다 (ink #1a2238, seal #c2362b, rule #cfd6e0, tint #f4f6f9)
+// 색은 테마 변수(public/themes.css)를 따른다. Safari 호환을 위해 SVG 속성 대신 style 로 칠한다.
 
-const INK = '#1a2238'
-const SEAL = '#c2362b'
-const RULE = '#cfd6e0'
-const TINT = '#f4f6f9'
-const BILL = '#e3e9f0'
-const BILL_LINE = '#8f9ab0'
+const INK = 'var(--ink)'
+const SEAL = 'var(--seal)'
+const RULE = 'var(--rule)'
+const TINT = 'var(--paper-tint)'
+const BILL = 'var(--desk)'
+const BILL_LINE = 'var(--bar)'
 
 // 브랜드 마크: 원 도장 안의 ₩
 export function BrandMark({ size = 22 }) {
   return (
     <svg className="brand-mark" width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="10" fill="none" stroke={SEAL} strokeWidth="2.4" />
-      <path d="M7.2 8.2l1.9 7.6 1.9-6.2 1.9 6.2 1.9-7.6M6.6 11.2h10.8M6.6 13.2h10.8" fill="none" stroke={SEAL} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="12" cy="12" r="10" fill="none" strokeWidth="2.4" style={{ stroke: SEAL }} />
+      <path d="M7.2 8.2l1.9 7.6 1.9-6.2 1.9 6.2 1.9-7.6M6.6 11.2h10.8M6.6 13.2h10.8" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ stroke: SEAL }} />
     </svg>
   )
 }
@@ -22,12 +22,12 @@ export function BrandMark({ size = 22 }) {
 function Bill({ x, y, r }) {
   return (
     <g transform={`translate(${x} ${y}) rotate(${r})`}>
-      <rect x="0" y="0" width="190" height="96" rx="6" fill={BILL} stroke={BILL_LINE} strokeWidth="2" />
-      <rect x="9" y="9" width="172" height="78" rx="3" fill="none" stroke={BILL_LINE} strokeWidth="1.2" strokeDasharray="2 3" />
-      <circle cx="140" cy="48" r="24" fill="#fff" stroke={BILL_LINE} strokeWidth="1.6" />
-      <text x="140" y="56" textAnchor="middle" fontSize="24" fontWeight="700" fill={BILL_LINE}>₩</text>
-      <path d="M24 30h62M24 42h46M24 54h54" stroke={BILL_LINE} strokeWidth="3" strokeLinecap="round" />
-      <path d="M24 72c10-8 20 8 30 0s20 8 30 0" fill="none" stroke={BILL_LINE} strokeWidth="1.4" />
+      <rect x="0" y="0" width="190" height="96" rx="6" strokeWidth="2" style={{ fill: BILL, stroke: BILL_LINE }} />
+      <rect x="9" y="9" width="172" height="78" rx="3" fill="none" strokeWidth="1.2" strokeDasharray="2 3" style={{ stroke: BILL_LINE }} />
+      <circle cx="140" cy="48" r="24" strokeWidth="1.6" style={{ fill: 'var(--paper)', stroke: BILL_LINE }} />
+      <text x="140" y="56" textAnchor="middle" fontSize="24" fontWeight="700" style={{ fill: BILL_LINE }}>₩</text>
+      <path d="M24 30h62M24 42h46M24 54h54" strokeWidth="3" strokeLinecap="round" style={{ stroke: BILL_LINE }} />
+      <path d="M24 72c10-8 20 8 30 0s20 8 30 0" fill="none" strokeWidth="1.4" style={{ stroke: BILL_LINE }} />
     </g>
   )
 }
@@ -35,9 +35,9 @@ function Bill({ x, y, r }) {
 function Coin({ x, y, r = 22 }) {
   return (
     <g transform={`translate(${x} ${y})`}>
-      <circle r={r} fill="#fff" stroke={INK} strokeWidth="2.4" />
-      <circle r={r - 5} fill="none" stroke={RULE} strokeWidth="1.4" />
-      <text y={r * 0.33} textAnchor="middle" fontSize={r * 0.95} fontWeight="700" fill={INK}>
+      <circle r={r} strokeWidth="2.4" style={{ fill: 'var(--paper)', stroke: INK }} />
+      <circle r={r - 5} fill="none" strokeWidth="1.4" style={{ stroke: RULE }} />
+      <text y={r * 0.33} textAnchor="middle" fontSize={r * 0.95} fontWeight="700" style={{ fill: INK }}>
         ₩
       </text>
     </g>
@@ -48,31 +48,31 @@ function Coin({ x, y, r = 22 }) {
 export function PayEnvelope({ className }) {
   return (
     <svg className={className} viewBox="0 0 360 280" role="img" aria-label="지폐가 든 월급봉투 그림">
-      <ellipse cx="180" cy="262" rx="140" ry="10" fill={INK} opacity="0.08" />
+      <ellipse cx="180" cy="262" rx="140" ry="10" opacity="0.08" style={{ fill: INK }} />
       {/* 봉투 뒷면과 열린 덮개 */}
-      <rect x="44" y="104" width="272" height="146" rx="6" fill={TINT} stroke={INK} strokeWidth="2.5" />
-      <path d="M44 110 L180 34 L316 110" fill="#fff" stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
+      <rect x="44" y="104" width="272" height="146" rx="6" strokeWidth="2.5" style={{ fill: TINT, stroke: INK }} />
+      <path d="M44 110 L180 34 L316 110" strokeWidth="2.5" strokeLinejoin="round" style={{ fill: 'var(--paper)', stroke: INK }} />
       {/* 지폐 */}
       <Bill x={70} y={58} r={-9} />
       <Bill x={104} y={44} r={6} />
       {/* 봉투 앞주머니 */}
-      <path d="M44 132 L180 196 L316 132 V244 a6 6 0 0 1 -6 6 H50 a6 6 0 0 1 -6 -6 Z" fill="#fff" stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
-      <path d="M44 244 L150 182 M316 244 L210 182" stroke={RULE} strokeWidth="2" />
-      <text x="84" y="236" fontSize="22" fontWeight="700" fill={INK} letterSpacing="6">
+      <path d="M44 132 L180 196 L316 132 V244 a6 6 0 0 1 -6 6 H50 a6 6 0 0 1 -6 -6 Z" strokeWidth="2.5" strokeLinejoin="round" style={{ fill: 'var(--paper)', stroke: INK }} />
+      <path d="M44 244 L150 182 M316 244 L210 182" strokeWidth="2" style={{ stroke: RULE }} />
+      <text x="84" y="236" fontSize="22" fontWeight="700" letterSpacing="6" style={{ fill: INK }}>
         급여
       </text>
-      <path d="M150 230h40" stroke={RULE} strokeWidth="2" />
+      <path d="M150 230h40" strokeWidth="2" style={{ stroke: RULE }} />
       {/* 도장 */}
       <g transform="translate(262 206) rotate(-14)">
-        <circle r="30" fill="none" stroke={SEAL} strokeWidth="3.5" opacity="0.92" />
-        <circle r="24" fill="none" stroke={SEAL} strokeWidth="1.2" opacity="0.8" />
-        <text y="7" textAnchor="middle" fontSize="18" fontWeight="800" fill={SEAL} letterSpacing="1">
+        <circle r="30" fill="none" strokeWidth="3.5" opacity="0.92" style={{ stroke: SEAL }} />
+        <circle r="24" fill="none" strokeWidth="1.2" opacity="0.8" style={{ stroke: SEAL }} />
+        <text y="7" textAnchor="middle" fontSize="18" fontWeight="800" letterSpacing="1" style={{ fill: SEAL }}>
           추정
         </text>
       </g>
       <Coin x={322} y={70} r={20} />
       <Coin x={30} y={92} r={15} />
-      <path d="M300 30l6 6M318 22l-2 9M286 44l-8 2" stroke={SEAL} strokeWidth="2.4" strokeLinecap="round" />
+      <path d="M300 30l6 6M318 22l-2 9M286 44l-8 2" strokeWidth="2.4" strokeLinecap="round" style={{ stroke: SEAL }} />
     </svg>
   )
 }
@@ -96,7 +96,7 @@ export function Guilloche({ className, color = SEAL }) {
   return (
     <svg className={className} viewBox="0 0 240 240" aria-hidden="true" focusable="false">
       {GUILLOCHE.map((d, i) => (
-        <path key={i} d={d} fill="none" stroke={color} strokeWidth="0.7" />
+        <path key={i} d={d} fill="none" strokeWidth="0.7" style={{ stroke: color }} />
       ))}
     </svg>
   )

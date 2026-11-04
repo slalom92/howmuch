@@ -77,7 +77,7 @@ export default function CareerCurve({ curve, annual, place, channelTitle, compan
         {/* 직급 띠 */}
         {curve.ranks.map((r, i) => (
           <g key={r.rank}>
-            <rect x={sx(r.from)} y={PAD.t} width={sx(r.to) - sx(r.from)} height={H - PAD.t - PAD.b} fill={i % 2 ? '#f4f6f9' : '#fff'} />
+            <rect x={sx(r.from)} y={PAD.t} width={sx(r.to) - sx(r.from)} height={H - PAD.t - PAD.b} style={{ fill: i % 2 ? 'var(--paper-tint)' : 'var(--paper)' }} />
             {sx(r.to) - sx(r.from) > (narrow ? 22 : 30) && (
               <text x={(sx(r.from) + sx(r.to)) / 2} y={H - PAD.b + 36} textAnchor="middle" className="curve__rank">
                 {r.rank}
@@ -85,7 +85,7 @@ export default function CareerCurve({ curve, annual, place, channelTitle, compan
             )}
           </g>
         ))}
-        <rect x={sx(curve.exec)} y={PAD.t} width={sx(xMax) - sx(curve.exec)} height={H - PAD.t - PAD.b} fill="#fbeceb" opacity="0.7" />
+        <rect x={sx(curve.exec)} y={PAD.t} width={sx(xMax) - sx(curve.exec)} height={H - PAD.t - PAD.b} opacity="0.7" style={{ fill: 'var(--seal-tint)' }} />
         <text x={(sx(curve.exec) + sx(xMax)) / 2} y={H - PAD.b + 36} textAnchor="middle" className="curve__rank">
           임원
         </text>
@@ -93,7 +93,7 @@ export default function CareerCurve({ curve, annual, place, channelTitle, compan
         {/* 눈금 */}
         {yTicks.map((v) => (
           <g key={v}>
-            <line x1={PAD.l} x2={W - PAD.r} y1={sy(v)} y2={sy(v)} stroke="#cfd6e0" strokeWidth={v ? 0.8 : 1.4} strokeDasharray={v ? '3 4' : undefined} />
+            <line x1={PAD.l} x2={W - PAD.r} y1={sy(v)} y2={sy(v)} strokeWidth={v ? 0.8 : 1.4} strokeDasharray={v ? '3 4' : undefined} style={{ stroke: 'var(--rule)' }} />
             <text x={PAD.l - 8} y={sy(v) + 4} textAnchor="end" className="curve__tick">
               {v ? axisWon(v) : '0'}
             </text>
@@ -106,23 +106,23 @@ export default function CareerCurve({ curve, annual, place, channelTitle, compan
         ))}
 
         {/* 연봉 곡선 */}
-        <path d={area} fill="#1a2238" opacity="0.05" />
-        <path d={line} fill="none" stroke="#1a2238" strokeWidth="2.6" strokeLinejoin="round" />
+        <path d={area} opacity="0.05" style={{ fill: 'var(--ink)' }} />
+        <path d={line} fill="none" strokeWidth="2.6" strokeLinejoin="round" style={{ stroke: 'var(--ink)' }} />
         {curve.points.slice(0, -1).map(([y, v]) => (
-          <circle key={y} cx={sx(y)} cy={sy(v)} r="3.2" fill="#fff" stroke="#1a2238" strokeWidth="1.8" />
+          <circle key={y} cx={sx(y)} cy={sy(v)} r="3.2" strokeWidth="1.8" style={{ fill: 'var(--paper)', stroke: 'var(--ink)' }} />
         ))}
 
         {/* 평균 근속 표시 */}
-        <line x1={sx(curve.tenure)} x2={sx(curve.tenure)} y1={sy(0)} y2={PAD.t} stroke="#8f9ab0" strokeWidth="1" strokeDasharray="2 3" />
+        <line x1={sx(curve.tenure)} x2={sx(curve.tenure)} y1={sy(0)} y2={PAD.t} strokeWidth="1" strokeDasharray="2 3" style={{ stroke: 'var(--bar)' }} />
         <text x={sx(curve.tenure) + 4} y={PAD.t + 12} className="curve__tick">
           {narrow ? '평균' : '평균 근속'}
         </text>
 
         {/* 유튜버 연수익 */}
-        <line x1={PAD.l} x2={W - PAD.r} y1={lineY} y2={lineY} stroke="#c2362b" strokeWidth="2" strokeDasharray="7 5" />
+        <line x1={PAD.l} x2={W - PAD.r} y1={lineY} y2={lineY} strokeWidth="2" strokeDasharray="7 5" style={{ stroke: 'var(--seal)' }} />
         {/* 이름표는 곡선과 겹치지 않게: 만나는 점이 오른쪽이면 왼쪽 끝에, 아니면 오른쪽 끝에 */}
         <g transform={`translate(${labelLeft ? PAD.l + tag + 6 : W - PAD.r} ${lineY})`}>
-          <rect x={-tag} y={above ? 4 : -28} width={tag} height="22" rx="4" fill="#c2362b" />
+          <rect x={-tag} y={above ? 4 : -28} width={tag} height="22" rx="4" style={{ fill: 'var(--seal)' }} />
           <text x={-tag / 2} y={above ? 19 : -13} textAnchor="middle" className="curve__me">
             {above ? '▲ ' : ''}
             {channelTitle.length > name ? channelTitle.slice(0, name) + '…' : channelTitle} {won(annual)}
@@ -130,11 +130,11 @@ export default function CareerCurve({ curve, annual, place, channelTitle, compan
         </g>
         {meet != null && (
           <g>
-            <line x1={sx(meet)} x2={sx(meet)} y1={sy(annual)} y2={sy(0)} stroke="#c2362b" strokeWidth="1.2" />
-            <circle cx={sx(meet)} cy={sy(annual)} r="7" fill="#c2362b" stroke="#fff" strokeWidth="2.5" />
+            <line x1={sx(meet)} x2={sx(meet)} y1={sy(annual)} y2={sy(0)} strokeWidth="1.2" style={{ stroke: 'var(--seal)' }} />
+            <circle cx={sx(meet)} cy={sy(annual)} r="7" strokeWidth="2.5" style={{ fill: 'var(--seal)', stroke: 'var(--paper)' }} />
           </g>
         )}
-        {below && <circle cx={sx(0)} cy={sy(annual)} r="6" fill="#c2362b" stroke="#fff" strokeWidth="2" />}
+        {below && <circle cx={sx(0)} cy={sy(annual)} r="6" strokeWidth="2" style={{ fill: 'var(--seal)', stroke: 'var(--paper)' }} />}
       </svg>
       <figcaption>
         굵은 선은 {companyName}의 연차별 추정 연봉, 빨간 점선은 {channelTitle}의 연 수익입니다.
