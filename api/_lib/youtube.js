@@ -30,7 +30,7 @@ export async function call(path, params) {
     const reason = body?.error?.errors?.[0]?.reason
     console.error('[youtube]', path, res.status, reason, body?.error?.message)
     if (['quotaExceeded', 'dailyLimitExceeded', 'rateLimitExceeded'].includes(reason))
-      throw new ApiError(429, '오늘 사용할 수 있는 검색량을 모두 썼습니다. 내일 다시 시도하거나 @핸들로 검색하세요.')
+      throw new ApiError(429, '오늘 쓸 수 있는 YouTube 검색량을 모두 썼어요. 아래 많이 찾는 유튜버는 바로 볼 수 있고, 검색은 매일 오후 4~5시(한국 시간)에 다시 열려요.')
     if (res.status === 400 || res.status === 403)
       throw new ApiError(500, '서버의 YouTube API 키 설정을 확인해야 합니다.')
     throw new ApiError(502, 'YouTube에서 데이터를 가져오지 못했습니다. 잠시 후 다시 검색하세요.')
@@ -93,7 +93,7 @@ export function send(res, status, data, cdnSeconds = 0) {
   // 성공한 응답만 CDN에 캐시. 오류(쿼터 초과 등)는 캐시하지 않는다.
   res.setHeader(
     'Cache-Control',
-    status === 200 && cdnSeconds ? `public, s-maxage=${cdnSeconds}, stale-while-revalidate=3600` : 'no-store',
+    status === 200 && cdnSeconds ? `public, s-maxage=${cdnSeconds}, stale-while-revalidate=86400` : 'no-store',
   )
   res.end(JSON.stringify(data))
 }
