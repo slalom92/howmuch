@@ -85,3 +85,8 @@ export function mergeChannels(trending, excludeSlug, limit) {
   }
   return out
 }
+
+// "○○ 유튜브 수익" 문구. 채널 이름이 이미 '유튜브'나 'YouTube'로 끝나면 겹치지 않게 '수익'만 붙인다.
+export function revenueTitle(name) {
+  return /(유튜브|youtube)\s*$/i.test(String(name).trim()) ? `${name} 수익` : `${name} 유튜브 수익`
+}

@@ -9,7 +9,8 @@ import { query } from './_lib/youtube.js'
 import { analyze, monthlyRevenue, overallAvgViews, PERIODS } from '../src/lib/calc.js'
 import { won, count, ratioText } from '../src/lib/format.js'
 import { COMPARE } from '../src/lib/compare.js'
-import { channelSlug, channelPath, normalizeSlug, isChannelId, mergeChannels } from '../src/lib/popular.js'
+import { planGoal, duration, bigCount } from '../src/lib/goal.js'
+import { channelSlug, channelPath, normalizeSlug, isChannelId, mergeChannels, revenueTitle } from '../src/lib/popular.js'
 
 const SIX_HOURS = 6 * 3600
 const DAY = 86400
@@ -91,6 +92,28 @@ function shell(inner) {
 </div>`
 }
 
+// "나도 ○○만큼 벌려면?" 예시 표 (구독자 1천·1만·10만 명, 주 2편 기준)
+function goalBlock(ch, a) {
+  if (ch.hiddenSubscribers || !ch.subscribers) return ''
+  const rows = [1000, 10000, 100000]
+    .filter((n) => n < ch.subscribers)
+    .map((n) => {
+      const p = planGoal({ channel: ch, analysis: a, tier: 'mid', mySubs: n, uploadsPerMonth: 8 })
+      return `<tr><th scope="row">${bigCount(n)}명</th><td>매달 ${bigCount(Math.max(1, Math.ceil(p.videosPerMonth)))}편</td><td>평균 ${duration(p.avgMonths)}</td></tr>`
+    })
+  if (!rows.length) return ''
+  const p = planGoal({ channel: ch, analysis: a, tier: 'mid', mySubs: 1000, uploadsPerMonth: 8 })
+  const share = p.targetShare >= 1 ? `${p.targetShare.toFixed(1)}%` : `${p.targetShare.toPrecision(1)}%`
+  return `<h2>나도 ${esc(ch.title)}만큼 벌려면?</h2>
+    <p>${esc(ch.title)}의 한 달 수익을 내 채널로 벌려면 구독자 수에 따라 필요한 영상 수가 크게 달라져요. 구독자 ${bigCount(ch.subscribers)}명 이상 채널은 전체의 ${share}예요.</p>
+    <table class="ssr__table">
+      <caption>내 구독자 수별로 같은 수익에 필요한 영상과 구독자 ${bigCount(ch.subscribers)}명까지 걸리는 평균 기간</caption>
+      <thead><tr><th scope="col">내 구독자</th><th scope="col">필요한 영상</th><th scope="col">구독자 따라잡기</th></tr></thead>
+      <tbody>${rows.join('')}</tbody>
+    </table>
+    <p class="ssr__note">내 구독자 수를 직접 넣으면 필요한 조회수와 제작 기간까지 계산해 볼 수 있어요.</p>`
+}
+
 function channelBody(ch, a, slug, trending) {
   const mid = monthlyRevenue(a, 'mid').total
   const low = monthlyRevenue(a, 'low').total
@@ -106,7 +129,7 @@ function channelBody(ch, a, slug, trending) {
       return `<tr><th scope="row">${label}</th><td>${won(mid * PERIODS[k].factor)}</td></tr>`
     })
     .join('')
-  return `<h1>${esc(ch.title)} 유튜브 수익은 얼마일까?</h1>
+  return `<h1>${esc(revenueTitle(ch.title))}은 얼마일까?</h1>
     <p class="ssr__lede">${esc(kstDate())} 기준, 최근 영상 조회수로 추정한 ${esc(ch.title)}의 한 달 광고 수익은 <strong>약 ${won(mid)}</strong>이에요. ${esc(eyo(vs))}.</p>
     <dl class="ssr__facts">
       <div><dt>구독자</dt><dd>${subs}</dd></div>
@@ -120,6 +143,7 @@ function channelBody(ch, a, slug, trending) {
     </table>
     <p>광고 단가를 낮게 잡으면 한 달 ${won(low)}, 높게 잡으면 ${won(high)}까지 달라져요. 롱폼 광고 수익은 ${won(monthlyRevenue(a, 'mid').long)}, 쇼츠 수익 배분은 ${won(monthlyRevenue(a, 'mid').short)}으로 추정했어요.</p>
     <p class="ssr__note">YouTube 공개 데이터(최근 영상 최대 50개)로 계산한 추정치이며 협찬, 멤버십, 슈퍼챗 수익은 빠져 있어요. 실제 정산 금액과 다를 수 있어요.</p>
+    ${goalBlock(ch, a)}
     <p><a href="https://www.youtube.com/${esc(ch.handle || 'channel/' + ch.id)}" rel="noopener">${esc(ch.title)} 채널 바로가기</a></p>
     ${popularLinks(slug, trending)}`
 }
@@ -206,8 +230,8 @@ export default async function handler(req, res) {
   const mid = monthlyRevenue(a, 'mid').total
   const url = `${origin}${channelPath(canonicalSlug)}`
   const subs = ch.hiddenSubscribers ? '' : `구독자 ${count(ch.subscribers)}명, `
-  const title = `${ch.title} 유튜브 수익 – 한 달 약 ${won(mid)} 추정 | ${SITE_NAME}`
-  const desc = `${subs}최근 영상 평균 조회수 ${count(overallAvgViews(a))}회인 ${ch.title}의 유튜브 광고 수익을 추정했어요. 하루 약 ${won(mid * PERIODS.day.factor)}, 1년 약 ${won(mid * 12)}. 직장인 월급, 우리 회사 연봉과도 비교해 보세요.`
+  const title = `${revenueTitle(ch.title)} – 한 달 약 ${won(mid)} 추정 | ${SITE_NAME}`
+  const desc = `${subs}최근 영상 평균 조회수 ${count(overallAvgViews(a))}회인 ${ch.title}의 유튜브 광고 수익을 추정했어요. 하루 약 ${won(mid * PERIODS.day.factor)}, 1년 약 ${won(mid * 12)}. 우리 회사 연봉과 비교하고, 내 채널로 같은 수익을 내려면 영상이 몇 편 필요한지도 계산해 보세요.`
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -217,7 +241,7 @@ export default async function handler(req, res) {
         '@type': 'WebPage',
         '@id': `${url}#page`,
         url,
-        name: `${ch.title} 유튜브 수익`,
+        name: revenueTitle(ch.title),
         description: desc,
         inLanguage: 'ko-KR',
         isPartOf: { '@id': `${origin}/#website` },
@@ -230,7 +254,7 @@ export default async function handler(req, res) {
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: '홈', item: `${origin}/` },
           { '@type': 'ListItem', position: 2, name: '유튜버별 수익', item: `${origin}/channel/` },
-          { '@type': 'ListItem', position: 3, name: `${ch.title} 유튜브 수익`, item: url },
+          { '@type': 'ListItem', position: 3, name: revenueTitle(ch.title), item: url },
         ],
       },
     ],

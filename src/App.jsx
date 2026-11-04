@@ -15,7 +15,7 @@ import { loadCompany } from './lib/company.js'
 import { placeInCompany } from './lib/career.js'
 import { won } from './lib/format.js'
 import { trackSearch, trackChannelView } from './lib/analytics.js'
-import { channelPath, channelSlug, slugFromPath, isChannelId } from './lib/popular.js'
+import { channelPath, channelSlug, slugFromPath, isChannelId, revenueTitle } from './lib/popular.js'
 import PopularChannels from './components/PopularChannels.jsx'
 
 const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 유튜버 월급명세서'
@@ -136,7 +136,7 @@ export default function App() {
   // 탭 제목도 채널에 맞춘다
   useEffect(() => {
     if (status === 'done' && channel && analysis) {
-      document.title = `${channel.title} 유튜브 수익 – 한 달 약 ${won(monthlyRevenue(analysis, 'mid').total)} 추정 | 유튜버 월급명세서`
+      document.title = `${revenueTitle(channel.title)} – 한 달 약 ${won(monthlyRevenue(analysis, 'mid').total)} 추정 | 유튜버 월급명세서`
     } else if (status === 'searching' || status === 'picking') {
       document.title = HOME_TITLE
     }
@@ -175,7 +175,8 @@ export default function App() {
           <div className="hero__text">
             <h1 className="hero__title">이 유튜버, 한 달에 얼마 벌까?</h1>
             <p className="hero__lede">
-              구독자 수와 최근 영상 조회수로 광고 수익을 추정하고 직장인 월급, 우리 회사 연봉과 나란히 놓아 봅니다.
+              구독자 수와 최근 영상 조회수로 광고 수익을 추정하고 직장인 월급, 우리 회사 연봉과 나란히 놓아 봅니다. 내 채널로
+              따라잡으려면 얼마나 걸릴지도 계산해 드려요.
             </p>
           </div>
           <PayEnvelope className="hero__art" />

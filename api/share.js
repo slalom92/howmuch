@@ -45,7 +45,7 @@ export default async function handler(req, res) {
   for (const [k, v] of app.searchParams) self.searchParams.set(k, v)
 
   let title = '이 유튜버, 한 달에 얼마 벌까? | 유튜버 월급명세서'
-  let desc = '좋아하는 유튜버를 검색하면 한 달 광고 수익을 추정해 드려요. 우리 회사에 다닌다면 몇 년차 무슨 직급일지도 알려 드립니다.'
+  let desc = '좋아하는 유튜버의 한 달 광고 수익을 추정해 드려요. 우리 회사에 다닌다면 몇 년차 무슨 직급일지, 내 채널로 따라잡으려면 얼마나 걸릴지도 알려 드립니다.'
 
   const channel = app.searchParams.get('c') ? await getJson(origin, `/api/channel/?id=${encodeURIComponent(c)}`) : null
   if (channel?.videos) {
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
       desc = `한 달 추정 수익 ${won(monthly)}${place.sub ? `, ${place.sub}에 해당하는 연봉` : ''}. ${vsWorker}. 우리 회사로도 계산해 보세요.`
     } else {
       title = `${channel.title} 한 달 추정 수익 ${won(monthly)}`
-      desc = `${vsWorker}. 우리 회사에 다닌다면 몇 년차 무슨 직급일지 확인해 보세요.`
+      desc = `${vsWorker}. 우리 회사에 다닌다면 몇 년차 무슨 직급일지, 내 채널로는 얼마나 걸릴지 확인해 보세요.`
     }
   }
 

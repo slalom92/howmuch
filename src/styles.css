@@ -1606,6 +1606,12 @@ input {
   border-bottom: 1px solid var(--rule);
   text-align: left;
 }
+.ssr__table thead th {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.ssr__table thead th + th,
 .ssr__table td {
   text-align: right;
   font-weight: 700;
@@ -1615,6 +1621,7 @@ input {
   font-size: 13px;
   color: var(--muted);
 }
+.ssr__main h2,
 .ssr__more h2 {
   font-size: 17px;
   margin: 28px 0 10px;
