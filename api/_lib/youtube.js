@@ -87,13 +87,14 @@ export function query(req) {
   return new URL(req.url, 'http://localhost').searchParams
 }
 
-export function send(res, status, data, cdnSeconds = 0) {
+// swr: 캐시 시간이 지난 뒤에도 이전 결과를 먼저 보여 주며 뒤에서 새로 받는 시간
+export function send(res, status, data, cdnSeconds = 0, swr = 86400) {
   res.statusCode = status
   res.setHeader('Content-Type', 'application/json; charset=utf-8')
   // 성공한 응답만 CDN에 캐시. 오류(쿼터 초과 등)는 캐시하지 않는다.
   res.setHeader(
     'Cache-Control',
-    status === 200 && cdnSeconds ? `public, s-maxage=${cdnSeconds}, stale-while-revalidate=86400` : 'no-store',
+    status === 200 && cdnSeconds ? `public, s-maxage=${cdnSeconds}, stale-while-revalidate=${swr}` : 'no-store',
   )
   res.end(JSON.stringify(data))
 }
