@@ -8,6 +8,7 @@ import { FOOTER_MENU } from '../../lib/menu.js'
 import { RELATIONS, REGIONS, VENUES, PARTY, RECEIVED, DEFAULTS, calculate, fromSearch, toSearch } from './gift.js'
 import GiftGuide from './GiftGuide.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
+import FloatingLink, { CreatorIncomeIcon } from '../../components/FloatingLink.jsx'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
@@ -265,6 +266,8 @@ export default function GiftApp() {
         </ul>
         <p>축의금 금액은 공개된 설문과 통계를 바탕으로 돈미터가 정리한 참고용 기준이에요. 정답은 없으니 서로의 사정에 맞게 정하세요.</p>
       </footer>
+
+      <FloatingLink href="/" title="유튜버 수익은?" sub="한 달 광고 수익 계산" icon={<CreatorIncomeIcon />} />
 
       <AdSlot variant="anchor" slot={SLOTS.anchor} />
     </div>
