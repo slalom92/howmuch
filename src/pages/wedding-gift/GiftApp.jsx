@@ -18,6 +18,7 @@ const SLOTS = {
 
 const PATH = '/wedding-gift/'
 const DEFAULT_QUERY = toSearch(normalize(DEFAULTS))
+const GIFT_KEYS = ['rel', 'go', 'n', 'venue', 'region', 'got']
 
 // 카테고리 메뉴는 라우터 정리 때 사이트 전체로 옮길 예정
 const GIFT_MENU = [
@@ -163,10 +164,12 @@ export default function GiftApp() {
 
   // 고른 값을 주소에 남겨 새로고침·공유해도 같은 결과가 보이게 한다
   useEffect(() => {
-    // 기본값 그대로면 주소를 깔끔하게 /wedding-gift/ 로 둔다
+    // 기본값 그대로면 주소를 깔끔하게 /wedding-gift/ 로 둔다.
+    // 계산기 값만 바꾸고 다른 값(utm_source 같은 유입 추적 값)은 그대로 둔다.
     const url = new URL(window.location.href)
+    for (const k of GIFT_KEYS) url.searchParams.delete(k)
     const q = toSearch(result.state)
-    url.search = q === DEFAULT_QUERY ? '' : q
+    if (q !== DEFAULT_QUERY) for (const [k, v] of new URLSearchParams(q)) url.searchParams.set(k, v)
     if (url.href !== window.location.href) window.history.replaceState(null, '', url)
   }, [result.state])
 
