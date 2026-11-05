@@ -2,6 +2,7 @@
 // 후보 채널 목록을 돌려준다. 같은 검색어는 Vercel CDN에 7일 캐시된다 (채널 ID는 거의 바뀌지 않고, 숫자는 /api/channel 에서 따로 새로 받는다).
 import { call, channelsBy, query, send, sendError } from './_lib/youtube.js'
 import { knownHandle, cleanQuery } from './_lib/known.js'
+import { remember } from './_lib/store.js'
 
 // 같은 사이트의 다른 주소를 부른다 (CDN 캐시를 같이 쓰므로 대부분 YouTube 호출 없이 끝난다)
 async function getSelf(req, path, ms = 1500) {
@@ -64,6 +65,8 @@ export default async function handler(req, res) {
       items = ids.length ? await channelsBy({ id: ids.join(',') }) : []
       items.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id))
     }
+    // 검색에서 만난 채널을 자동완성 목록에 쌓는다 (저장소가 없으면 그냥 넘어간다)
+    await remember(items)
     return send(res, 200, { items }, WEEK)
   } catch (e) {
     return sendError(res, e)

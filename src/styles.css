@@ -2261,3 +2261,56 @@ input {
   font-size: 12px;
   color: var(--muted);
 }
+
+/* 검색창 자동완성 */
+.search {
+  position: relative;
+}
+.suggest {
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  margin: 6px 0 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--paper);
+  box-shadow: 0 18px 40px -18px rgba(var(--shadow-rgb), 0.45);
+}
+.suggest[hidden] {
+  display: none;
+}
+.suggest__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.suggest__item.is-active {
+  background: var(--paper-tint);
+}
+.suggest__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--ink);
+}
+.suggest__meta {
+  flex: none;
+  font-size: 13px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 600px) {
+  .suggest__item {
+    flex-direction: column;
+    gap: 2px;
+  }
+}

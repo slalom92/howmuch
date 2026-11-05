@@ -13,6 +13,7 @@
 // API 사용량은 갱신 1번에 약 8 (인기 영상 6 + 채널 정보 2). 결과는 CDN에 6시간 캐시된다.
 // 실패하면 src/lib/popular.js 의 고정 목록을 돌려준다.
 import { call, send } from './_lib/youtube.js'
+import { remember } from './_lib/store.js'
 import { POPULAR, channelSlug } from '../src/lib/popular.js'
 
 const SIX_HOURS = 6 * 3600
@@ -78,6 +79,7 @@ export default async function handler(req, res) {
     const byId = new Map(infos.map((c) => [c.id, c]))
 
     const items = []
+    const keep = []
     for (const id of ids) {
       const c = byId.get(id)
       if (!c) continue
@@ -91,9 +93,11 @@ export default async function handler(req, res) {
       // 한국 인기 차트에 섞여 들어온 외국 채널 (채널 국가가 한국이 아니라고 적힌 경우만)
       if (c.snippet?.country && c.snippet.country !== 'KR') continue
       items.push({ slug: channelSlug({ id, handle }), name, subs })
+      keep.push({ id, handle, title: name, subscribers: subs })
       if (items.length >= LIMIT) break
     }
     if (items.length < 5) throw new Error('too few')
+    await remember(keep)
     // 오래된 목록을 오래 붙잡지 않게, 6시간이 지나면 길어도 10분 안에 새 목록으로 바뀐다
     return send(res, 200, { source: 'trending', updatedAt: new Date().toISOString(), items }, SIX_HOURS, 600)
   } catch (e) {

@@ -23,7 +23,7 @@ const ALIASES = {
 }
 
 // 많이 찾는 유튜버 목록에는 없지만 핸들을 확인한 채널 (2026년 11월, 구독자 10만 명 이상만)
-const EXTRA = [
+export const EXTRA = [
   { slug: 'ssoyoung', name: '쏘영' },
   { slug: 'koreanenglishman', name: '영국남자' },
   { slug: 'wassupman', name: '와썹맨' },
