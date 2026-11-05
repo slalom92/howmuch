@@ -2410,6 +2410,14 @@ input {
   transform: translateX(-50%);
 }
 
+/* 잠시 숨김: 다시 보이면 등장 애니메이션이 한 번 더 나온다 */
+.float-link.is-hidden {
+  animation: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 @keyframes float-in {
   from {
     transform: translateY(24px) scale(0.9);

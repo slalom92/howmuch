@@ -31,7 +31,8 @@ export function CreatorIncomeIcon() {
   )
 }
 
-export default function FloatingLink({ href, title, sub, badge, icon, event = 'floating_link' }) {
+// hidden: 잠시 숨길 때 (예: 축의금 계산기에서 하단 요약 바가 떠 있는 동안)
+export default function FloatingLink({ href, title, sub, badge, icon, hidden = false, event = 'floating_link' }) {
   const [compact, setCompact] = useState(false)
 
   useEffect(() => {
@@ -55,8 +56,10 @@ export default function FloatingLink({ href, title, sub, badge, icon, event = 'f
 
   return (
     <a
-      className={`float-link${compact ? ' is-compact' : ''}`}
+      className={`float-link${compact ? ' is-compact' : ''}${hidden ? ' is-hidden' : ''}`}
       href={href}
+      tabIndex={hidden ? -1 : undefined}
+      aria-hidden={hidden || undefined}
       aria-label={sub ? `${title} – ${sub}` : title}
       onClick={() => track(event, { link_url: href })}
     >

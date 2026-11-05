@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import AdSlot from '../../components/AdSlot.jsx'
 import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { won } from '../../lib/format.js'
 import { track } from '../../lib/analytics.js'
 import { FOOTER_MENU } from '../../lib/menu.js'
-import { RELATIONS, REGIONS, VENUES, PARTY, RECEIVED, DEFAULTS, calculate, fromSearch, toSearch } from './gift.js'
+import { RELATIONS, REGIONS, VENUES, PARTY, RECEIVED, DEFAULTS, calculate, fromSearch, toSearch, normalize } from './gift.js'
 import GiftGuide from './GiftGuide.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingLink, { CreatorIncomeIcon } from '../../components/FloatingLink.jsx'
@@ -17,6 +17,7 @@ const SLOTS = {
 }
 
 const PATH = '/wedding-gift/'
+const DEFAULT_QUERY = toSearch(normalize(DEFAULTS))
 
 // 카테고리 메뉴는 라우터 정리 때 사이트 전체로 옮길 예정
 const GIFT_MENU = [
@@ -162,9 +163,11 @@ export default function GiftApp() {
 
   // 고른 값을 주소에 남겨 새로고침·공유해도 같은 결과가 보이게 한다
   useEffect(() => {
+    // 기본값 그대로면 주소를 깔끔하게 /wedding-gift/ 로 둔다
     const url = new URL(window.location.href)
-    url.search = toSearch(result.state)
-    window.history.replaceState(null, '', url)
+    const q = toSearch(result.state)
+    url.search = q === DEFAULT_QUERY ? '' : q
+    if (url.href !== window.location.href) window.history.replaceState(null, '', url)
   }, [result.state])
 
   // 계산 결과 보기 이벤트 (선택을 바꿀 때마다 보내지 않도록 잠깐 기다린다)
@@ -174,6 +177,33 @@ export default function GiftApp() {
     }, 1500)
     return () => clearTimeout(t)
   }, [s, result.amount])
+
+  // 결과 봉투가 화면 아래(아직 안 보임) / 화면 안 / 위로 지나감 중 어디에 있는지
+  // 아래에 있으면 하단 요약 바를 띄우고, 다른 계산기 바로가기는 숨긴다 (서로 겹치지 않게)
+  const resultRef = useRef(null)
+  const [resultPos, setResultPos] = useState(null) // null(아직 모름) | 'below' | 'visible' | 'above'
+  useEffect(() => {
+    const el = resultRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) setResultPos('visible')
+        else setResultPos(e.boundingClientRect.top > 0 ? 'below' : 'above')
+      },
+      // 봉투 윗부분 120px 정도가 보이면 "보인다"로 친다
+      { rootMargin: '0px 0px -120px 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  const scrollToResult = () => {
+    const el = resultRef.current
+    if (!el) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+    track('gift_bar_click', { amount: result.amount })
+  }
 
   const share = useMemo(() => {
     if (typeof window === 'undefined') return null
@@ -239,7 +269,7 @@ export default function GiftApp() {
           />
         </form>
 
-        <div className="gift-result" aria-live="polite">
+        <div className="gift-result" aria-live="polite" ref={resultRef}>
           <Envelope result={result} />
           <MealMeter result={result} />
           <p className="gift-avg">
@@ -267,7 +297,34 @@ export default function GiftApp() {
         <p>축의금 금액은 공개된 설문과 통계를 바탕으로 돈미터가 정리한 참고용 기준이에요. 정답은 없으니 서로의 사정에 맞게 정하세요.</p>
       </footer>
 
-      <FloatingLink href="/" title="유튜버 수익은?" sub="한 달 광고 수익 계산" icon={<CreatorIncomeIcon />} />
+      {/* 결과가 아직 아래에 있을 때: 고를 때마다 금액이 바로 보이는 요약 바 */}
+      <button
+        type="button"
+        className={`gift-bar${resultPos === 'below' ? ' is-on' : ''}`}
+        onClick={scrollToResult}
+        tabIndex={resultPos === 'below' ? 0 : -1}
+        aria-hidden={resultPos === 'below' ? undefined : true}
+      >
+        <span className="gift-bar__label">적정 축의금</span>
+        <span className="gift-bar__amount" key={result.amount}>
+          {won(result.amount)}
+        </span>
+        <span className={`gift-bar__verdict gift-bar__verdict--${result.verdict.key}`}>{result.verdict.title}</span>
+        <span className="gift-bar__go" aria-hidden="true">
+          결과 보기
+          <svg viewBox="0 0 16 16" focusable="false">
+            <path d="M8 3v10M3.5 8.5L8 13l4.5-4.5" />
+          </svg>
+        </span>
+      </button>
+
+      <FloatingLink
+        href="/"
+        title="유튜버 수익은?"
+        sub="한 달 광고 수익 계산"
+        icon={<CreatorIncomeIcon />}
+        hidden={resultPos === null || resultPos === 'below'}
+      />
 
       <AdSlot variant="anchor" slot={SLOTS.anchor} />
     </div>

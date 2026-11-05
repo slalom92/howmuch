@@ -858,3 +858,143 @@
     max-width: 260px;
   }
 }
+
+/* ---------- 하단 요약 바 (결과가 아직 화면 아래에 있을 때) ---------- */
+.gift-bar {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--anchor-h, 0px) + 12px);
+  z-index: 46; /* 하단 고정 광고(50) 아래 */
+  width: min(728px, calc(100vw - 24px));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 10px 18px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--on-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 16px 34px -14px rgba(var(--shadow-rgb), 0.6);
+  transform: translate(-50%, calc(100% + 40px));
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1), opacity 0.2s ease, visibility 0s linear 0.3s;
+}
+
+.gift-bar.is-on {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  visibility: visible;
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1), opacity 0.2s ease;
+}
+
+.gift-bar:focus-visible {
+  outline: 3px solid var(--seal);
+  outline-offset: 3px;
+}
+
+.gift-bar__label {
+  font-size: 13px;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.gift-bar__amount {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  animation: gift-pop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.4);
+}
+
+.gift-bar__verdict {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(var(--paper-rgb), 0.16);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.gift-bar__verdict--loss {
+  background: var(--seal);
+  color: var(--on-seal);
+}
+
+.gift-bar__go {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.gift-bar__go svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes gift-pop {
+  from {
+    transform: scale(1.25);
+    color: var(--seal-tint);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* "결과 보기"로 내려왔을 때 봉투 위에 살짝 여백 */
+.gift-result {
+  scroll-margin-top: 16px;
+}
+
+@media (max-width: 420px) {
+  .gift-bar {
+    gap: 8px;
+    padding: 9px 10px 9px 14px;
+  }
+
+  .gift-bar__label {
+    display: none;
+  }
+
+  .gift-bar__amount {
+    font-size: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gift-bar,
+  .gift-bar.is-on {
+    transition: none;
+  }
+
+  .gift-bar__amount {
+    animation: none;
+  }
+}
+
+@media print {
+  .gift-bar {
+    display: none;
+  }
+}
