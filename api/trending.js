@@ -10,13 +10,13 @@
 //    - 영상이 2만 개 넘는 채널 (방송사 규모)
 //    - 구독자 10만 명 미만, 구독자 비공개, @핸들 없는 채널
 //    - 채널 국가가 한국이 아닌 채널
-// API 사용량은 갱신 1번에 약 8 (인기 영상 6 + 채널 정보 2). 결과는 CDN에 6시간 캐시된다.
+// API 사용량은 갱신 1번에 약 8 (인기 영상 6 + 채널 정보 2). 결과는 CDN에 1시간 캐시된다 (하루 약 200단위).
 // 실패하면 src/lib/popular.js 의 고정 목록을 돌려준다.
 import { call, send } from './_lib/youtube.js'
 import { remember } from './_lib/store.js'
 import { POPULAR, channelSlug } from '../src/lib/popular.js'
 
-const SIX_HOURS = 6 * 3600
+const HOUR = 3600
 const MIN_SUBS = 100000
 const MAX_VIDEOS = 20000
 const LIMIT = 20
@@ -98,8 +98,8 @@ export default async function handler(req, res) {
     }
     if (items.length < 5) throw new Error('too few')
     await remember(keep)
-    // 오래된 목록을 오래 붙잡지 않게, 6시간이 지나면 길어도 10분 안에 새 목록으로 바뀐다
-    return send(res, 200, { source: 'trending', updatedAt: new Date().toISOString(), items }, SIX_HOURS, 600)
+    // 오래된 목록을 오래 붙잡지 않게, 1시간이 지나면 길어도 10분 안에 새 목록으로 바뀐다
+    return send(res, 200, { source: 'trending', updatedAt: new Date().toISOString(), items }, HOUR, 600)
   } catch (e) {
     if (e?.message && !['empty', 'too few'].includes(e.message)) console.error('[trending]', e.message)
     // 고정 목록은 짧게 캐시해서 다음 요청 때 다시 인기 목록을 시도한다

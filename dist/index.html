@@ -110,6 +110,8 @@
       .quick strong { display: block; font-size: 15px; }
       .quick span span { display: block; margin-top: 3px; font-size: 13px; color: var(--muted); }
       .quick svg { flex: none; width: 20px; height: 20px; }
+      .quick strong { transition: opacity 0.18s ease; }
+      .quick strong.is-swapping { opacity: 0; }
 
       .about { margin: 28px 8px 0; font-size: 14px; color: var(--muted); }
       .foot { margin-top: auto; padding: 36px 0 26px; font-size: 12px; line-height: 1.6; color: var(--muted); }
@@ -192,13 +194,13 @@
 
         <ul class="quick" aria-label="바로 해 보기">
           <li>
-            <a href="/channel/chimchakman_official/">
-              <span><strong>침착맨은 한 달에 얼마 벌까?</strong><span>많이 찾는 유튜버 바로 보기</span></span>
+            <a href="/channel/chimchakman_official/" id="quick-yt">
+              <span><strong>침착맨, 한 달에 얼마 벌까?</strong><span>요즘 많이 보는 유튜버 바로 보기</span></span>
               <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--muted)"/></svg>
             </a>
           </li>
           <li>
-            <a href="/wedding-gift/">
+            <a href="/wedding-gift/?rel=friend&amp;go=1&amp;n=1&amp;venue=hall&amp;region=seoul" id="quick-gift">
               <span><strong>친한 친구 결혼식, 10만 원이면 될까?</strong><span>관계와 식장으로 적정 금액 계산</span></span>
               <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--muted)"/></svg>
             </a>
@@ -220,5 +222,57 @@
         <p>모든 금액은 공개 자료로 낸 재미용 추정치예요. 돈미터는 YouTube 또는 Google과 제휴하거나 승인받은 서비스가 아니에요.</p>
       </footer>
     </div>
+
+    <script>
+      // 바로 해 보기: 검색 로봇은 위에 적힌 기본 문구를 읽고, 방문자에게는 들어올 때마다 다른 예시를 보여 준다
+      ;(function () {
+        var pickOne = function (list) { return list[Math.floor(Math.random() * list.length)] }
+        var swap = function (a, href, text) {
+          var strong = a && a.querySelector('strong')
+          if (!strong) return
+          strong.classList.add('is-swapping')
+          setTimeout(function () {
+            a.setAttribute('href', href)
+            strong.textContent = text
+            strong.classList.remove('is-swapping')
+          }, 180)
+        }
+
+        // 1) 축의금: 고른 조건이 미리 들어간 계산기로 보낸다
+        var GIFTS = [
+          ['친한 친구 결혼식, 10만 원이면 될까?', 'rel=friend&go=1&n=1&venue=hall&region=seoul'],
+          ['일로만 아는 동료 결혼식, 얼마가 무난할까?', 'rel=work&go=1&n=1&venue=hall&region=seoul'],
+          ['못 가고 봉투만 보낼 땐 얼마?', 'rel=friend&go=0'],
+          ['호텔 결혼식이면 더 내야 할까?', 'rel=friend&go=1&n=1&venue=hotel&region=seoul'],
+          ['둘이 같이 가면 얼마 내야 할까?', 'rel=friend&go=1&n=2&venue=hall&region=seoul'],
+          ['상사 결혼식, 얼마가 적당할까?', 'rel=boss&go=1&n=1&venue=hall&region=seoul'],
+          ['절친 결혼식, 20만 원은 해야 할까?', 'rel=bestie&go=1&n=1&venue=hall&region=seoul'],
+        ]
+        var g = pickOne(GIFTS)
+        swap(document.getElementById('quick-gift'), '/wedding-gift/?' + g[1], g[0])
+
+        // 2) 유튜버: "다른 유튜버 수익도 보기"와 같은 인기 목록(1시간마다 갱신)에서 한 명
+        var yt = document.getElementById('quick-yt')
+        // "알파남 - 부업으로 …" 처럼 설명이 붙은 이름은 앞부분만, 그래도 긴 이름(13자 넘음)은 고르지 않는다
+        var shortName = function (n) { return String(n).split(/\s+[-|·]\s+/)[0].trim() }
+        var useList = function (items) {
+          var list = (items || [])
+            .filter(function (x) { return x && x.slug && x.name && Array.from(shortName(x.name)).length <= 13 })
+            .slice(0, 12)
+          if (!list.length) return
+          var c = pickOne(list)
+          swap(yt, '/channel/' + encodeURIComponent(c.slug) + '/', shortName(c.name) + ', 한 달에 얼마 벌까?')
+        }
+        try {
+          var saved = JSON.parse(localStorage.getItem('yt:trending') || 'null')
+          var v = saved && saved.v
+          if (v && v.source === 'trending' && Date.now() - Date.parse(v.updatedAt || '') < 3600 * 1000) return useList(v.items)
+        } catch (e) {}
+        fetch('/api/trending/')
+          .then(function (r) { return r.ok ? r.json() : null })
+          .then(function (b) { if (b && b.source === 'trending') useList(b.items) })
+          .catch(function () {})
+      })()
+    </script>
   </body>
 </html>
