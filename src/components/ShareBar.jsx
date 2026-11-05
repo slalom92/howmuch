@@ -61,7 +61,7 @@ function ShareIcon({ name }) {
   )
 }
 
-export default function ShareBar({ url, text, image }) {
+export default function ShareBar({ url, text, image, sub = '링크를 받은 사람도 같은 결과를 보고, 자기 회사로 바꿔 계산해 볼 수 있어요.' }) {
   const kakaoReady = useKakao()
   const [toast, setToast] = useState('')
   const canNative = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
@@ -120,7 +120,7 @@ export default function ShareBar({ url, text, image }) {
     <div className="share">
       <Scissors />
       <p className="share__title">결과를 잘라서 보내기</p>
-      <p className="share__sub">링크를 받은 사람도 같은 결과를 보고, 자기 회사로 바꿔 계산해 볼 수 있어요.</p>
+      <p className="share__sub">{sub}</p>
       <ul className="share__list">
         {buttons.map(([k, label]) => (
           <li key={k}>

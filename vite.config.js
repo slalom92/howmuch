@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv } from 'vite'
+import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
 
 // npm run dev 에서도 /api/* 서버 함수가 동작하도록 Vite 개발 서버에 연결한다.
@@ -38,5 +39,16 @@ export default defineConfig(({ mode }) => {
     plugins: [react(), devApi()],
     // 채널 페이지(/channel/…/)에서도 자산을 찾도록 절대 경로로 둔다
     base: '/',
+    // 페이지마다 HTML 진입점을 따로 둔다 (라우터로 합치기 전까지)
+    //   /               → index.html (유튜버 수익 계산기)
+    //   /wedding-gift/  → wedding-gift/index.html (축의금 계산기)
+    build: {
+      rollupOptions: {
+        input: {
+          main: fileURLToPath(new URL('./index.html', import.meta.url)),
+          weddingGift: fileURLToPath(new URL('./wedding-gift/index.html', import.meta.url)),
+        },
+      },
+    },
   }
 })

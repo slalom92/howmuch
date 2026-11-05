@@ -2,10 +2,11 @@ import { MENU } from '../lib/menu.js'
 
 // 넓은 화면은 링크를 줄지어, 좁은 화면은 "메뉴" 버튼 하나로 접는다 (모양은 public/themes.css)
 // 바깥 클릭·Esc 로 닫는 동작은 public/theme.js 가 맡는다.
-export default function SiteMenu({ current = '/' }) {
+// items: 접힌 메뉴에 보일 목록, links: 넓은 화면에 줄지어 보일 링크 (기본은 유튜버 수익 메뉴)
+export default function SiteMenu({ current = '/', items = MENU, links = items.slice(1) }) {
   return (
     <>
-      {MENU.slice(1).map((m) => (
+      {links.map((m) => (
         <a key={m.href} className="navlink" href={m.href} aria-current={current === m.href ? 'page' : undefined}>
           {m.label}
         </a>
@@ -18,7 +19,7 @@ export default function SiteMenu({ current = '/' }) {
           메뉴
         </summary>
         <ul className="site-menu__list">
-          {MENU.map((m) => (
+          {items.map((m) => (
             <li key={m.href}>
               <a href={m.href} aria-current={current === m.href ? 'page' : undefined}>
                 {m.label}
