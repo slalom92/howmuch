@@ -20,7 +20,7 @@ import PopularChannels from './components/PopularChannels.jsx'
 import HomeGuide from './components/HomeGuide.jsx'
 import SiteMenu from './components/SiteMenu.jsx'
 import FloatingLink, { GiftEnvelopeIcon } from './components/FloatingLink.jsx'
-import { FOOTER_MENU } from './lib/menu.js'
+import { FOOTER_MENU, YOUTUBER } from './lib/menu.js'
 import { FOOTER_NOTE } from './lib/disclaimer.js'
 
 const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 돈미터'
@@ -43,7 +43,7 @@ function setUrlParams(params) {
 // 채널을 보면 주소를 /channel/<핸들>/ 로 바꾼다 (새로고침·주소 복사 시 검색에 잡히는 채널 페이지로 열림)
 function setChannelUrl(ch) {
   const url = new URL(window.location.href)
-  url.pathname = ch ? channelPath(ch) : '/'
+  url.pathname = ch ? channelPath(ch) : YOUTUBER
   url.searchParams.delete('c')
   if (!ch) url.searchParams.delete('co')
   window.history.replaceState(null, '', url)
@@ -168,7 +168,7 @@ export default function App() {
         </a>
         <nav className="topnav" aria-label="주요 메뉴">
           {DEMO_MODE && <span className="demo-flag">데모 데이터로 보는 중</span>}
-          <SiteMenu current="/" />
+          <SiteMenu current={YOUTUBER} />
           {/* 색 테마 고르기: 메뉴와 동작은 public/theme.js 가 맡는다 */}
           <button type="button" className="theme-pick__toggle" data-theme-toggle aria-expanded="false" aria-controls="theme-menu" aria-label="명세서 색 바꾸기">
             <span className="theme-pick__dot" aria-hidden="true" />

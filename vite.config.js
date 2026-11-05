@@ -40,12 +40,14 @@ export default defineConfig(({ mode }) => {
     // 채널 페이지(/channel/…/)에서도 자산을 찾도록 절대 경로로 둔다
     base: '/',
     // 페이지마다 HTML 진입점을 따로 둔다 (라우터로 합치기 전까지)
-    //   /               → index.html (유튜버 수익 계산기)
+    //   /               → index.html (계산기 고르는 첫 화면, 정적 HTML)
+    //   /youtuber/      → youtuber/index.html (유튜버 수익 계산기)
     //   /wedding-gift/  → wedding-gift/index.html (축의금 계산기)
     build: {
       rollupOptions: {
         input: {
           main: fileURLToPath(new URL('./index.html', import.meta.url)),
+          youtuber: fileURLToPath(new URL('./youtuber/index.html', import.meta.url)),
           weddingGift: fileURLToPath(new URL('./wedding-gift/index.html', import.meta.url)),
         },
       },

@@ -3,13 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // 예전 공유 링크(/?c=채널ID&co=회사코드)는 유튜버 수익 계산기로 넘긴다
+      if (/[?&](c|co)=/.test(location.search)) location.replace('/youtuber/' + location.search + location.hash)
+    </script>
     <!-- 색 테마: 화면이 그려지기 전에 정해야 색이 번쩍이지 않는다 -->
     <script src="/theme.js"></script>
     <link rel="stylesheet" href="/themes.css" />
-    <title>유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 돈미터</title>
-    <meta name="description" content="유튜버 이름만 검색하면 구독자와 최근 조회수로 하루·한 달·1년 광고 수익을 추정해요. 직장인 월급, 우리 회사 연봉과 비교하고 내 구독자 수로 같은 수익까지 필요한 영상 수와 기간도 계산해 보세요." />
-    <!-- 구글은 keywords 태그를 순위에 쓰지 않지만 일부 검색엔진·도구가 참고합니다 -->
-    <meta name="keywords" content="유튜브 수익 계산기, 유튜버 수익, 유튜버 한달 수익, 유튜버 월수입, 유튜버 연봉, 유튜브 광고 수익, 유튜브 조회수 수익, 쇼츠 수익, 유튜브 RPM, 구독자 수익, 구독자 1만 수익, 유튜브 구독자 늘리기 기간" />
+    <title>돈미터 – 유튜버 수익, 축의금까지 궁금한 돈을 재미로 계산해요</title>
+    <meta name="description" content="유튜버 한 달 수익 추정, 관계별 적정 축의금 계산처럼 궁금했던 돈을 공개 자료와 요즘 시세로 어림해 보는 무료 계산기 모음, 돈미터예요." />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://donmeter.com/" />
     <meta name="theme-color" content="#e7ebf0" />
@@ -17,15 +19,14 @@
     <meta property="og:site_name" content="돈미터" />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:url" content="https://donmeter.com/" />
-    <meta property="og:title" content="이 유튜버, 한 달에 얼마 벌까? | 돈미터" />
-    <meta property="og:description" content="좋아하는 유튜버의 한 달 광고 수익을 추정해 드려요. 우리 회사에 다닌다면 몇 년차 무슨 직급일지, 내 채널로 따라잡으려면 얼마나 걸릴지도 알려 드립니다." />
+    <meta property="og:title" content="돈미터 – 오늘은 뭘 계산해 볼까요?" />
+    <meta property="og:description" content="유튜버 한 달 수익부터 축의금 적정 금액까지, 궁금했던 돈을 재미로 계산해 보세요." />
     <meta property="og:image" content="https://donmeter.com/og/share-v2.png" />
     <meta property="og:image:width" content="1600" />
     <meta property="og:image:height" content="800" />
-    <meta property="og:image:alt" content="돈미터: 이 유튜버, 한 달에 얼마 벌까?" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="이 유튜버, 한 달에 얼마 벌까? | 돈미터" />
-    <meta name="twitter:description" content="좋아하는 유튜버의 한 달 광고 수익을 추정하고, 우리 회사 연봉이나 내 채널 목표와 비교해 보세요." />
+    <meta name="twitter:title" content="돈미터 – 오늘은 뭘 계산해 볼까요?" />
+    <meta name="twitter:description" content="유튜버 한 달 수익부터 축의금 적정 금액까지, 궁금했던 돈을 재미로 계산해 보세요." />
     <meta name="twitter:image" content="https://donmeter.com/og/share-v2.png" />
     <script type="application/ld+json">
     {
@@ -39,30 +40,11 @@
           "inLanguage": "ko-KR"
         },
         {
-          "@type": "WebApplication",
-          "@id": "https://donmeter.com/#app",
-          "name": "유튜브 수익 계산기 – 돈미터",
-          "url": "https://donmeter.com/",
-          "description": "유튜브 채널의 구독자와 최근 영상 조회수로 하루·한 달·1년 광고 수익을 추정하고, 직장인 월급과 회사별 연봉, 내 채널로 같은 수익을 내는 데 필요한 영상 수와 기간까지 비교해 주는 무료 계산기입니다.",
-          "applicationCategory": "UtilitiesApplication",
-          "operatingSystem": "Web",
-          "inLanguage": "ko-KR",
-          "isAccessibleForFree": true,
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "KRW"
-          },
-          "isPartOf": {
-            "@id": "https://donmeter.com/#website"
-          },
-          "featureList": [
-            "유튜버 하루·한 주·한 달·1년 광고 수익 추정",
-            "롱폼과 쇼츠 수익 구분",
-            "최저임금·직장인 평균 월급과 비교",
-            "상장사 연봉 기준 가상 직급과 연차",
-            "내 구독자 수로 같은 수익까지 필요한 영상·조회수·기간 계산",
-            "인기 유튜버 채널별 수익 페이지"
+          "@type": "ItemList",
+          "name": "돈미터 계산기",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "유튜버 수익 계산기", "url": "https://donmeter.com/youtuber/" },
+            { "@type": "ListItem", "position": 2, "name": "축의금 계산기", "url": "https://donmeter.com/wedding-gift/" }
           ]
         }
       ]
@@ -79,9 +61,164 @@
     <script src="/ga.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539"
      crossorigin="anonymous"></script>
+    <style>
+      /* 첫 화면: 계산기를 아이콘으로 고르는 화면 (색은 /themes.css 의 테마 변수) */
+      *, *::before, *::after { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: var(--desk);
+        color: var(--ink);
+        font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+        line-height: 1.5;
+        word-break: keep-all;
+      }
+      a { color: inherit; }
+      .wrap { width: 100%; max-width: 560px; margin: 0 auto; padding: 0 16px; }
+
+      .head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 4px 10px; }
+      .brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 18px; text-decoration: none; color: var(--ink); }
+      .nav { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; }
+      .navlink { color: var(--muted); text-decoration: none; }
+      .navlink:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+      .hero { padding: 34px 8px 0; }
+      .kicker { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--seal); }
+      .hero h1 { margin: 0; font-size: 34px; line-height: 1.25; font-weight: 700; letter-spacing: -0.02em; }
+
+      .apps { margin: 30px 0 0; padding: 26px 8px 22px; border-radius: 22px; background: var(--paper); box-shadow: 0 1px 0 var(--rule), 0 18px 36px -24px rgba(var(--shadow-rgb), 0.45); }
+      .apps ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 26px; }
+      .app { display: flex; flex-direction: column; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); border-radius: 22px; padding: 4px 0; }
+      .app__icon { position: relative; width: 76px; height: 76px; border-radius: 22px; display: grid; place-items: center; background: var(--seal-tint); transition: transform 0.15s ease; }
+      .app__icon svg { width: 44px; height: 44px; }
+      .app:hover .app__icon { transform: translateY(-2px); }
+      .app:focus-visible { outline: 3px solid var(--seal); outline-offset: 4px; }
+      .app__name { font-size: 14px; font-weight: 700; text-align: center; line-height: 1.3; }
+      .badge { position: absolute; top: -7px; right: -9px; padding: 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 700; line-height: 1.4; background: var(--seal); color: var(--on-seal); }
+      .soon { display: flex; flex-direction: column; align-items: center; gap: 9px; color: var(--muted); padding: 4px 0; }
+      .soon__icon { width: 76px; height: 76px; border-radius: 22px; display: grid; place-items: center; border: 2px dashed var(--bar); }
+      .soon__icon svg { width: 26px; height: 26px; }
+      .soon__name { font-size: 13px; font-weight: 500; text-align: center; line-height: 1.3; }
+
+      .quick { margin: 18px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+      .quick a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border-radius: 16px; text-decoration: none; background: var(--paper); color: var(--ink); border: 1px solid var(--rule); }
+      .quick a:hover { border-color: var(--ink); }
+      .quick a:focus-visible { outline: 3px solid var(--seal); outline-offset: 2px; }
+      .quick strong { display: block; font-size: 15px; }
+      .quick span span { display: block; margin-top: 3px; font-size: 13px; color: var(--muted); }
+      .quick svg { flex: none; width: 20px; height: 20px; }
+
+      .about { margin: 28px 8px 0; font-size: 14px; color: var(--muted); }
+      .foot { margin-top: auto; padding: 36px 0 26px; font-size: 12px; line-height: 1.6; color: var(--muted); }
+      .foot ul { margin: 0 0 8px; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+      .foot a { color: var(--muted); }
+      .foot p { margin: 0; }
+
+      @media (min-width: 720px) {
+        .wrap { max-width: 640px; }
+        .hero { padding-top: 56px; }
+        .hero h1 { font-size: 44px; }
+        .apps { padding: 34px 16px 30px; }
+        .app__icon, .soon__icon { width: 92px; height: 92px; border-radius: 26px; }
+        .app__icon svg { width: 52px; height: 52px; }
+        .app__name { font-size: 15px; }
+      }
+      @media (prefers-reduced-motion: reduce) { .app__icon { transition: none; } }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div class="wrap">
+      <header class="head">
+        <a class="brand" href="/">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2.4" style="stroke:var(--seal)"/><path d="M7.2 8.2l1.9 7.6 1.9-6.2 1.9 6.2 1.9-7.6M6.6 11.2h10.8M6.6 13.2h10.8" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--seal)"/></svg>
+          돈미터
+        </a>
+        <nav class="nav" aria-label="주요 메뉴">
+          <a class="navlink" href="/channel/">유튜버별 수익</a>
+          <a class="navlink" href="/guide/">수익 가이드</a>
+          <a class="navlink" href="/faq/">자주 묻는 질문</a>
+          <details class="site-menu">
+            <summary class="site-menu__btn" aria-label="메뉴 열기"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 4h11M2.5 8h11M2.5 12h11"/></svg>메뉴</summary>
+            <ul class="site-menu__list">
+              <li><a href="/" aria-current="page">돈미터 홈</a></li>
+              <li><a href="/youtuber/">유튜버 수익 계산기</a></li>
+              <li><a href="/wedding-gift/">축의금 계산기</a></li>
+              <li><a href="/channel/">유튜버별 수익</a></li>
+              <li><a href="/guide/">수익 가이드</a></li>
+              <li><a href="/how/">계산 방법</a></li>
+              <li><a href="/faq/">자주 묻는 질문</a></li>
+            </ul>
+          </details>
+          <button type="button" class="theme-pick__toggle" data-theme-toggle aria-expanded="false" aria-controls="theme-menu" aria-label="화면 색 바꾸기"><span class="theme-pick__dot" aria-hidden="true"></span>테마</button>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <p class="kicker">돈 얘기를 재미로 재는 곳</p>
+          <h1>오늘은 뭘<br />계산해 볼까요?</h1>
+        </section>
+
+        <nav class="apps" aria-label="계산기">
+          <ul>
+            <li>
+              <a class="app" href="/youtuber/">
+                <span class="app__icon">
+                  <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3.5" y="6" width="25" height="17" rx="3" stroke-width="2" style="fill:var(--paper);stroke:var(--seal)"/><path d="M11 28h10M16 23v5" fill="none" stroke-width="2" stroke-linecap="round" style="stroke:var(--seal)"/><circle cx="16" cy="14.5" r="5.5" stroke-width="1.6" style="fill:var(--seal-tint);stroke:var(--seal)"/><path d="M13.4 12.4l.9 4.2 1.7-3.2 1.7 3.2.9-4.2M12.9 14.2h6.2" fill="none" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--seal)"/></svg>
+                </span>
+                <span class="app__name">유튜버<br />수익 보기</span>
+              </a>
+            </li>
+            <li>
+              <a class="app" href="/wedding-gift/">
+                <span class="app__icon">
+                  <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="4" width="22" height="25" rx="2.5" stroke-width="2" style="fill:var(--paper);stroke:var(--seal)"/><path d="M5 8.5l11 7 11-7" fill="none" stroke-width="2" stroke-linejoin="round" style="stroke:var(--seal)"/><text x="16" y="26" text-anchor="middle" font-size="9" font-weight="700" style="fill:var(--seal)">祝</text></svg>
+                  <span class="badge">NEW</span>
+                </span>
+                <span class="app__name">축의금<br />얼마?</span>
+              </a>
+            </li>
+            <li>
+              <div class="soon">
+                <span class="soon__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke-width="2" stroke-linecap="round" style="stroke:var(--bar)"/></svg></span>
+                <span class="soon__name">다음 계산기<br />준비 중</span>
+              </div>
+            </li>
+          </ul>
+        </nav>
+
+        <ul class="quick" aria-label="바로 해 보기">
+          <li>
+            <a href="/channel/chimchakman_official/">
+              <span><strong>침착맨은 한 달에 얼마 벌까?</strong><span>많이 찾는 유튜버 바로 보기</span></span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--muted)"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="/wedding-gift/">
+              <span><strong>친한 친구 결혼식, 10만 원이면 될까?</strong><span>관계와 식장으로 적정 금액 계산</span></span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--muted)"/></svg>
+            </a>
+          </li>
+        </ul>
+
+        <p class="about">돈미터는 유튜버 수익, 축의금처럼 한 번쯤 궁금했던 돈을 공개 자료와 요즘 시세로 어림해 보는 무료 계산기 모음이에요. 계산 방식은 <a href="/how/">계산 방법</a>과 <a href="/faq/">자주 묻는 질문</a>에 모두 공개해 두었어요.</p>
+      </main>
+
+      <footer class="foot">
+        <ul>
+          <li><a href="/youtuber/">유튜버 수익 계산기</a></li>
+          <li><a href="/wedding-gift/">축의금 계산기</a></li>
+          <li><a href="/about/">사이트 소개</a></li>
+          <li><a href="/privacy/">개인정보처리방침</a></li>
+          <li><a href="/terms/">이용약관</a></li>
+          <li><a href="/contact/">문의</a></li>
+        </ul>
+        <p>모든 금액은 공개 자료로 낸 재미용 추정치예요. 돈미터는 YouTube 또는 Google과 제휴하거나 승인받은 서비스가 아니에요.</p>
+      </footer>
+    </div>
   </body>
 </html>

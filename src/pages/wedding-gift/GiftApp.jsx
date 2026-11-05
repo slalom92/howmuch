@@ -4,7 +4,7 @@ import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { won } from '../../lib/format.js'
 import { track } from '../../lib/analytics.js'
-import { FOOTER_MENU } from '../../lib/menu.js'
+import { FOOTER_MENU, HOME, YOUTUBER } from '../../lib/menu.js'
 import { RELATIONS, REGIONS, VENUES, PARTY, RECEIVED, DEFAULTS, calculate, fromSearch, toSearch, normalize } from './gift.js'
 import GiftGuide from './GiftGuide.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
@@ -20,11 +20,12 @@ const PATH = '/wedding-gift/'
 const DEFAULT_QUERY = toSearch(normalize(DEFAULTS))
 const GIFT_KEYS = ['rel', 'go', 'n', 'venue', 'region', 'got']
 
-// 카테고리 메뉴는 라우터 정리 때 사이트 전체로 옮길 예정
+// 넓은 화면에 줄지어 보일 링크와, 좁은 화면의 "메뉴" 목록
 const GIFT_MENU = [
-  { href: '/', label: '유튜버 수익 계산기' },
+  { href: YOUTUBER, label: '유튜버 수익 계산기' },
   { href: PATH, label: '축의금 계산기' },
 ]
+const GIFT_ITEMS = [{ href: HOME, label: '돈미터 홈' }, ...GIFT_MENU]
 
 // 부호가 있는 금액 (won()은 음수를 0으로 바꾸므로 따로 처리)
 const signed = (n) => (n >= 0 ? `+${won(n)}` : `-${won(-n)}`)
@@ -225,7 +226,7 @@ export default function GiftApp() {
           돈미터
         </a>
         <nav className="topnav" aria-label="주요 메뉴">
-          <SiteMenu current={PATH} items={GIFT_MENU} links={GIFT_MENU} />
+          <SiteMenu current={PATH} items={GIFT_ITEMS} links={GIFT_MENU} />
           <button type="button" className="theme-pick__toggle" data-theme-toggle aria-expanded="false" aria-controls="theme-menu" aria-label="화면 색 바꾸기">
             <span className="theme-pick__dot" aria-hidden="true" />
             테마
@@ -291,7 +292,7 @@ export default function GiftApp() {
 
       <footer className="footer">
         <ul className="footer__links">
-          {[{ href: '/', label: '유튜버 수익 계산기' }, ...FOOTER_MENU].map((m) => (
+          {FOOTER_MENU.map((m) => (
             <li key={m.href}>
               <a href={m.href}>{m.label}</a>
             </li>
@@ -322,7 +323,7 @@ export default function GiftApp() {
       </button>
 
       <FloatingLink
-        href="/"
+        href={YOUTUBER}
         title="유튜버 수익은?"
         sub="한 달 광고 수익 계산"
         icon={<CreatorIncomeIcon />}

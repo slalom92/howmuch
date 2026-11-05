@@ -1,9 +1,9 @@
-import { MENU } from '../lib/menu.js'
+import { MENU, YOUTUBER, YOUTUBER_LINKS } from '../lib/menu.js'
 
 // 넓은 화면은 링크를 줄지어, 좁은 화면은 "메뉴" 버튼 하나로 접는다 (모양은 public/themes.css)
 // 바깥 클릭·Esc 로 닫는 동작은 public/theme.js 가 맡는다.
-// items: 접힌 메뉴에 보일 목록, links: 넓은 화면에 줄지어 보일 링크 (기본은 유튜버 수익 메뉴)
-export default function SiteMenu({ current = '/', items = MENU, links = items.slice(1) }) {
+// items: 접힌 메뉴에 보일 목록, links: 넓은 화면에 줄지어 보일 링크 (기본은 유튜버 수익 계산기 쪽 메뉴)
+export default function SiteMenu({ current = YOUTUBER, items = MENU, links = YOUTUBER_LINKS }) {
   return (
     <>
       {links.map((m) => (

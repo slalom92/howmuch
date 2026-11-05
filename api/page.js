@@ -173,7 +173,8 @@ export default async function handler(req, res) {
 
   let template
   try {
-    const r = await fetch(origin + '/')
+    // 유튜버 수익 계산기 화면을 틀로 쓴다 (첫 화면 / 는 계산기 고르는 화면)
+    const r = await fetch(origin + '/youtuber/')
     template = await r.text()
   } catch {
     template = null

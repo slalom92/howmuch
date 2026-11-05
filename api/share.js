@@ -37,7 +37,7 @@ export default async function handler(req, res) {
   const proto = req.headers['x-forwarded-proto'] || (/^(localhost|127\.)/.test(host) ? 'http' : 'https')
   const origin = `${proto}://${host}`
 
-  const app = new URL(origin + '/')
+  const app = new URL(origin + '/youtuber/')
   if (/^[\w-]{10,64}$/.test(c)) app.searchParams.set('c', c)
   if (/^\d{8}$/.test(co)) app.searchParams.set('co', co)
 

@@ -1,4 +1,5 @@
-// 빌드 뒤 각 페이지(dist/index.html, dist/wedding-gift/index.html)에 첫 화면 HTML을 미리 채운다.
+// 빌드 뒤 각 계산기 페이지(dist/youtuber/index.html, dist/wedding-gift/index.html)에 첫 화면 HTML을 미리 채운다.
+// (사이트 첫 화면 dist/index.html 은 계산기를 고르는 정적 페이지라 채울 것이 없다)
 //
 // SPA는 처음 받는 HTML이 <div id="root"></div> 뿐이라, 자바스크립트를 실행하지 않는
 // 검색·광고 심사 로봇에게는 빈 페이지로 보인다. 그래서 React로 홈 화면을 한 번 그려
@@ -16,7 +17,7 @@ const outDir = path.join(root, 'node_modules', '.prerender')
 
 // 미리 채울 페이지: 진입점 → 빌드된 HTML
 const PAGES = [
-  { name: '홈 화면', entry: 'src/entry-server.jsx', html: 'dist/index.html' },
+  { name: '유튜버 수익 계산기', entry: 'src/entry-server.jsx', html: 'dist/youtuber/index.html' },
   { name: '축의금 계산기', entry: 'src/pages/wedding-gift/entry-server.jsx', html: 'dist/wedding-gift/index.html' },
 ]
 
