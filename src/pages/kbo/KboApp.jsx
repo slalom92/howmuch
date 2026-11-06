@@ -17,7 +17,11 @@ const SLOTS = {
 }
 
 const PATH = KBO
+// 검색 로봇용으로 미리 그리는 첫 화면은 연봉 1위(양의지)로 고정하고,
+// 방문자 브라우저에서는 연봉 1억 원 이상이면서 올해 1군 기록이 있는 선수 중 한 명을 무작위로 보여 준다.
 const DEFAULT_NAME = PLAYERS[0].name
+const RANDOM_POOL = PLAYERS.filter((p) => p.pay >= 10000 && p.stats).map((p) => p.name)
+const pickRandom = () => RANDOM_POOL[Math.floor(Math.random() * RANDOM_POOL.length)] || DEFAULT_NAME
 const MAN = 10000
 
 const KBO_MENU = [
@@ -65,10 +69,11 @@ function times(r) {
 
 const pct = (r) => `${r > 0 ? '+' : ''}${Math.round(r * 1000) / 10}%`
 
+// 주소의 ?name= 선수 (없거나 모르는 이름이면 null)
 function readName() {
-  if (typeof window === 'undefined') return DEFAULT_NAME
+  if (typeof window === 'undefined') return null
   const q = new URLSearchParams(window.location.search).get('name')
-  return (q && findExact(q)?.name) || DEFAULT_NAME
+  return (q && findExact(q)?.name) || null
 }
 
 // ---------- 이름 찾기 ----------
@@ -501,7 +506,9 @@ function Ranking({ current, onPick }) {
 // ---------- 화면 ----------
 
 export default function KboApp() {
-  const [name, setName] = useState(readName)
+  // 이름 없이 들어왔을 때 보여 줄 선수 (들어올 때 한 번 정한다)
+  const [startName] = useState(() => (typeof window === 'undefined' ? DEFAULT_NAME : pickRandom()))
+  const [name, setName] = useState(() => readName() || startName)
   const pr = useMemo(() => profile(findExact(name) || PLAYERS[0]), [name])
   const resultRef = useRef(null)
   const baseTitle = useRef('')
@@ -529,16 +536,16 @@ export default function KboApp() {
   // 고른 선수를 주소에 남긴다 (기본 선수면 /kbo/ 그대로)
   useEffect(() => {
     const url = new URL(window.location.href)
-    if (name === DEFAULT_NAME) url.searchParams.delete('name')
+    if (name === startName && !readName()) url.searchParams.delete('name')
     else url.searchParams.set('name', name)
     if (url.href !== window.location.href) window.history.replaceState(null, '', url)
     if (!baseTitle.current) baseTitle.current = document.title
-    document.title = name === DEFAULT_NAME ? baseTitle.current : `${name} 연봉 ${krwMan(pr.player.pay)}, 1경기에 ${krw(pr.b.game)} | 돈미터`
+    document.title = name === startName && !readName() ? baseTitle.current : `${name} 연봉 ${krwMan(pr.player.pay)}, 1경기에 ${krw(pr.b.game)} | 돈미터`
   }, [name, pr])
 
   // 브라우저 뒤로 가기 등으로 주소가 바뀌면 따라간다
   useEffect(() => {
-    const onPop = () => setName(readName())
+    const onPop = () => setName(readName() || startName)
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
   }, [])
