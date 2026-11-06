@@ -8,6 +8,7 @@ import { track } from '../../lib/analytics.js'
 import { FOOTER_MENU, HOME, YOUTUBER, WEDDING_GIFT, KBO } from '../../lib/menu.js'
 import { SEASON, GAMES, INNINGS, LEAGUE, TEAMS, TEAM_BY_ID, PLAYERS, SOURCES, WORKER_YEAR, breakdown, profile, findExact, suggest } from './kbo.js'
 import KboGuide from './KboGuide.jsx'
+import KboImageShare from './KboImageShare.jsx'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
@@ -542,6 +543,7 @@ export default function KboApp() {
           <Headline pr={pr} />
           {pr.player.note && <p className="kbo-note">{pr.player.note}</p>}
           <Sources ids={pr.player.src} />
+          {share && <KboImageShare pr={pr} caption={share.text.replace(/ \| 돈미터$/, '')} />}
           <div className="kbo-grid">
             <Compare pr={pr} />
             <History pr={pr} />

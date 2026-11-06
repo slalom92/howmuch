@@ -743,3 +743,8 @@
     animation: none;
   }
 }
+
+/* 전광판 이미지 저장 버튼 (모양은 src/styles.css 의 .imgshare__solo) */
+.kbo-imgbtn {
+  margin: 16px 0 0;
+}

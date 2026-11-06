@@ -459,3 +459,6 @@ export async function drawBadge({ channel, company, place }) {
   footer(ctx, c, CARD_H - 96, '내 회사로 바꿔 계산해 보세요', img ? ['프로필 사진 · YouTube', '실제 사원증·신분증으로 쓸 수 없어요'] : ['', '실제 사원증·신분증으로 쓸 수 없어요'])
   return toBlob(canvas)
 }
+
+// 다른 계산기의 공유 카드(예: 프로야구 선수 연봉 전광판)에서 같은 그리기 도구를 쓴다
+export { themeColors, loadFonts, makeCanvas, toBlob, text, fitText, roundRect, fillRound, dashed, stamp, brand, footer }
