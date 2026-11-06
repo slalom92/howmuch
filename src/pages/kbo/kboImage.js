@@ -15,6 +15,12 @@ function krw(n) {
     }
     return `${eok.toLocaleString('ko-KR')}억${man ? ` ${man.toLocaleString('ko-KR')}만` : ''} 원`
   }
+  // 100만 원 밑은 천 원 자리까지 ("11만 8천 원")
+  if (v >= 1e4 && v < 1e6) {
+    const chun = Math.round(v / 1e3)
+    const man = Math.floor(chun / 10)
+    return `${man}만${chun % 10 ? ` ${chun % 10}천` : ''} 원`
+  }
   if (v >= 1e4) return `${Math.round(v / 1e4).toLocaleString('ko-KR')}만 원`
   return `${Math.round(v).toLocaleString('ko-KR')}원`
 }
@@ -36,11 +42,13 @@ export async function drawScoreboard(pr) {
   const c = themeColors()
   const pay = krw(b.year)
   const games = g < 10 ? Math.round(g * 10) / 10 : Math.round(g)
+  // 기록이 있으면 '1시간' 칸 대신 '안타 하나에' 또는 '공 하나에'를 넣는다
+  const first = pr.rec?.items.find((it) => it.won !== null) || null
   const cells = [
     ['1경기', krw(b.game)],
     ['1이닝', krw(b.inning)],
     ['하루', krw(b.day)],
-    ['1시간', krw(b.hour)],
+    first ? [first.approx ? `${first.label}(어림)` : first.label, krw(first.won)] : ['1시간', krw(b.hour)],
     ['1초', krw(b.second)],
     ['직장인 연봉 벌기', `${games}경기`],
   ]
@@ -48,7 +56,7 @@ export async function drawScoreboard(pr) {
   const changeText = change === null || player.approx ? '' : change === 0 ? '작년과 같은 연봉' : `작년보다 ${change > 0 ? '+' : ''}${Math.round(change * 1000) / 10}%`
   const sub = `${SEASON} ${team.full} ${player.pos}`
 
-  await loadFonts([player.name, sub, pay, headline, changeText, ...cells.flat(), `${SEASON} 연봉 어림값 선수 이름으로 찾기 KBO·구단 발표 연봉 기준 계약금·옵션 제외 정규시즌 144경기, 경기당 9이닝, 1년 365일로 나눴어요`])
+  await loadFonts([player.name, sub, pay, headline, changeText, ...cells.flat(), `${SEASON} 연봉 어림값 선수 이름으로 찾기 KBO·구단 발표 연봉 기준 계약금·옵션 제외 정규시즌 144경기, 경기당 9이닝, 1년 365일로 나눴어요 시간은 144경기·9이닝·365일, 기록은 정규시즌 기준 연봉 KBO·구단 발표, 기록 TVING 안타 하나에 공 하나에(어림) 홈런 타점 아웃 탈삼진 승리 세이브 홀드`])
   const [canvas, ctx] = makeCanvas()
 
   ctx.fillStyle = c.desk
@@ -102,7 +110,7 @@ export async function drawScoreboard(pr) {
 
   // 전광판 아래 한 줄
   ctx.globalAlpha = 0.6
-  text(ctx, '정규시즌 144경기, 경기당 9이닝, 1년 365일로 나눴어요', ix, py + ph - 38, { size: 24, weight: 400, color: c.onInk })
+  text(ctx, first ? `시간은 144경기·9이닝·365일, 기록은 ${SEASON} 정규시즌 기준` : '정규시즌 144경기, 경기당 9이닝, 1년 365일로 나눴어요', ix, py + ph - 38, { size: 24, weight: 400, color: c.onInk })
   ctx.globalAlpha = 1
 
   // 요약
@@ -115,6 +123,6 @@ export async function drawScoreboard(pr) {
     fitText(ctx, changeText, px + 32, sy + 69, tw - 48, { size: 28, min: 20, weight: 700, color: change > 0 ? c.seal : c.muted })
   }
 
-  footer(ctx, c, CARD_H - 104, '선수 이름으로 찾기', ['KBO·구단 발표 연봉 기준', '계약금·옵션 제외'])
+  footer(ctx, c, CARD_H - 104, '선수 이름으로 찾기', first ? ['연봉 KBO·구단 발표, 기록 TVING', '계약금·옵션 제외'] : ['KBO·구단 발표 연봉 기준', '계약금·옵션 제외'])
   return toBlob(canvas)
 }

@@ -1,4 +1,4 @@
-import { SEASON, LEAGUE, SOURCES } from './kbo.js'
+import { SEASON, LEAGUE, SOURCES, PITCH_SOURCE } from './kbo.js'
 
 // 결과 아래 안내 글 (검색·광고 심사용 본문이기도 하다)
 // 질문과 답은 kbo/index.html 의 FAQ 구조화 데이터와 같게 유지한다.
@@ -10,6 +10,10 @@ export const FAQ = [
   {
     q: '같은 선수인데 해마다 연봉이 왜 이렇게 달라요?',
     a: '여러 해 계약을 맺으면 총액은 정해 두고 해마다 받을 금액을 나눠요. 샐러리캡(구단 연봉 총액 상한)을 맞추려고 특정 해에 몰아서 주거나, 계약 마지막 해에 일부러 낮추기도 해요.',
+  },
+  {
+    q: '안타 하나에, 공 하나에 금액은 어떻게 계산했나요?',
+    a: '올해 연봉을 올해 정규시즌 기록(안타, 홈런, 아웃, 탈삼진 등)으로 나눴어요. 공개된 선수 기록에는 투구수가 없어서, 공 하나에는 던진 이닝에 이닝당 16구를 곱해 어림했어요. 실제 투구수와는 다를 수 있어요.',
   },
   {
     q: '외국인 선수 연봉은 왜 없나요?',
@@ -63,6 +67,9 @@ export default function KboGuide() {
             <strong>하루, 1시간, 1초</strong> 연봉 ÷ 365일, 다시 24시간, 3,600초. 쉬는 날과 비시즌도 모두 넣었어요.
           </li>
           <li>
+            <strong>기록 하나에</strong> 연봉 ÷ 올해 정규시즌 기록. 타자는 안타·홈런·타점, 투수는 아웃(이닝 × 3)·탈삼진·승리 또는 세이브·홀드로 나눴어요. 공 하나에는 이닝 × 16구로 어림한 값이에요.
+          </li>
+          <li>
             <strong>직장인 평균</strong> 국가데이터처 2024년 임금근로일자리 평균 소득(월 375만 원)을 12달로 곱한 4,500만 원이에요.
           </li>
         </ul>
@@ -95,6 +102,18 @@ export default function KboGuide() {
               </a>
             </li>
           ))}
+        </ul>
+        <ul>
+          <li>
+            <a href="https://www.tving.com/sports/kbo" target="_blank" rel="noopener noreferrer">
+              TVING KBO 선수 기록 (2026 정규시즌 최종)
+            </a>
+          </li>
+          <li>
+            <a href={PITCH_SOURCE.url} target="_blank" rel="noopener noreferrer">
+              {PITCH_SOURCE.label}
+            </a>
+          </li>
         </ul>
         <p>선수별 출처는 선수를 고르면 결과 아래에 나와요. 2026년 11월에 정리했어요.</p>
       </section>

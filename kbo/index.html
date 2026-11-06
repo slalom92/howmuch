@@ -7,7 +7,7 @@
     <script src="/theme.js"></script>
     <link rel="stylesheet" href="/themes.css" />
     <title>프로야구 선수 연봉 – 2026 KBO 연봉 순위와 1경기 연봉 계산 | 돈미터</title>
-    <meta name="description" content="양의지 42억, 류현진 21억… 2026 KBO 프로야구 선수 연봉을 이름으로 찾아 한 경기, 한 이닝, 1초에 얼마인지 계산하고 리그 평균, 직장인 연봉과 비교해 보세요." />
+    <meta name="description" content="양의지 42억, 류현진 21억… 2026 KBO 프로야구 선수 연봉을 이름으로 찾아 한 경기, 안타 하나, 공 하나에 얼마인지 계산하고 리그 평균, 직장인 연봉과 비교해 보세요." />
     <meta name="keywords" content="프로야구 연봉, KBO 연봉, 야구선수 연봉, 2026 프로야구 연봉 순위, 양의지 연봉, 류현진 연봉, 김도영 연봉, 노시환 연봉, 프로야구 평균 연봉" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://donmeter.com/kbo/" />
@@ -17,13 +17,13 @@
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:url" content="https://donmeter.com/kbo/" />
     <meta property="og:title" content="프로야구 선수, 연봉 얼마 받을까? | 돈미터" />
-    <meta property="og:description" content="선수 이름만 넣으면 2026 연봉을 1경기, 1이닝, 1초 단위로 쪼개 드려요." />
+    <meta property="og:description" content="선수 이름만 넣으면 2026 연봉을 1경기, 안타 하나, 공 하나 단위로 쪼개 드려요." />
     <meta property="og:image" content="https://donmeter.com/og/share-v2.png" />
     <meta property="og:image:width" content="1600" />
     <meta property="og:image:height" content="800" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="프로야구 선수, 연봉 얼마 받을까? | 돈미터" />
-    <meta name="twitter:description" content="선수 이름만 넣으면 2026 연봉을 1경기, 1이닝, 1초 단위로 쪼개 드려요." />
+    <meta name="twitter:description" content="선수 이름만 넣으면 2026 연봉을 1경기, 안타 하나, 공 하나 단위로 쪼개 드려요." />
     <meta name="twitter:image" content="https://donmeter.com/og/share-v2.png" />
     <!-- FAQ 문구는 src/pages/kbo/KboGuide.jsx 의 FAQ 와 같게 유지한다 -->
     <script type="application/ld+json">
@@ -35,7 +35,7 @@
       "@id": "https://donmeter.com/kbo/#app",
       "name": "프로야구 선수 연봉 – 돈미터",
       "url": "https://donmeter.com/kbo/",
-      "description": "KBO 프로야구 선수 이름을 넣으면 2026 연봉을 한 경기, 한 이닝, 1초 단위로 나누고 리그 평균, 직장인 평균과 비교해 주는 무료 서비스입니다.",
+      "description": "KBO 프로야구 선수 이름을 넣으면 2026 연봉을 한 경기, 한 이닝, 1초 단위와 안타·공 하나당 금액으로 나누고 리그 평균, 직장인 평균과 비교해 주는 무료 서비스입니다.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "Web",
       "inLanguage": "ko-KR",
@@ -66,6 +66,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "여러 해 계약을 맺으면 총액은 정해 두고 해마다 받을 금액을 나눠요. 샐러리캡(구단 연봉 총액 상한)을 맞추려고 특정 해에 몰아서 주거나, 계약 마지막 해에 일부러 낮추기도 해요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "안타 하나에, 공 하나에 금액은 어떻게 계산했나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "올해 연봉을 올해 정규시즌 기록(안타, 홈런, 아웃, 탈삼진 등)으로 나눴어요. 공개된 선수 기록에는 투구수가 없어서, 공 하나에는 던진 이닝에 이닝당 16구를 곱해 어림했어요. 실제 투구수와는 다를 수 있어요."
           }
         },
         {

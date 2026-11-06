@@ -65,42 +65,51 @@ export const TEAM_BY_ID = Object.fromEntries(TEAMS.map((t) => [t.id, t]))
 
 // 선수 (2026 연봉 순)
 // prev: 2025년 연봉, history: 해마다 받은 연봉, approx: 정확한 해당 연도 금액이 공개되지 않아 계약 조건으로 어림한 값
+// stats: 2026 정규시즌 1군 최종 기록 (TVING 선수 기록, 정규시즌은 2026.10.12 종료). null 이면 1군 기록 없음
+//   타자 { g 경기, ab 타수, h 안타, hr 홈런, rbi 타점, avg 타율 }, 투수 { g, w 승, l 패, sv 세이브, hld 홀드, ip 이닝, so 탈삼진, era 평균자책 }
+// tving: TVING 선수 페이지 번호 (https://www.tving.com/sports/kbo/athlete/번호)
 export const PLAYERS = [
-  { name: '양의지', team: 'doosan', pos: '포수', pay: 420000, prev: 160000, history: { 2023: 30000, 2024: 50000, 2025: 160000, 2026: 420000 }, note: '2026 리그 연봉 1위. 4+2년 최대 152억 원 FA 계약 4년째로, 연봉이 해마다 크게 오르는 구조예요.', src: ['yang', 'kbo_top'] },
-  { name: '고영표', team: 'kt', pos: '투수', pay: 260000, note: '2026 리그 연봉 2위, 투수 1위예요.', src: ['kbo_x', 'kbo_top'] },
-  { name: '최정', team: 'ssg', pos: '내야수', pay: 220000, prev: 170000, note: '2026 리그 연봉 3위예요.', src: ['kbo_x', 'kbo_star'] },
-  { name: '류현진', team: 'hanwha', pos: '투수', pay: 210000, note: '박세웅과 함께 리그 연봉 공동 4위예요.', src: ['kbo_x', 'kbo_top'] },
-  { name: '박세웅', team: 'lotte', pos: '투수', pay: 210000, note: '류현진과 함께 리그 연봉 공동 4위, 롯데 1위예요.', src: ['kbo_x', 'kbo_top'] },
-  { name: '김광현', team: 'ssg', pos: '투수', pay: 150000, prev: 300000, approx: true, note: '2026~2027년 2년 계약의 연봉 총액 30억 원을 해마다 같게 나눠 어림했어요. 해마다 받는 정확한 금액은 공개되지 않았어요.', src: ['ssg_kim'] },
-  { name: '오지환', team: 'lg', pos: '내야수', pay: 140000, prev: 30000, history: { 2024: 30000, 2025: 30000, 2026: 140000 }, note: '야수 연봉 3위, LG 1위예요. 6년 FA 계약 3년째라 연봉이 크게 올랐어요.', src: ['kbo_x', 'lg_osen'] },
-  { name: '원태인', team: 'samsung', pos: '투수', pay: 100000, prev: 63000, note: '8년 차 선수 최고 연봉 기록이에요.', src: ['samsung'] },
-  { name: '노시환', team: 'hanwha', pos: '내야수', pay: 100000, prev: 33000, note: '한화 연봉 재계약 선수 중 최고 인상액(약 203%)이에요.', src: ['hanwha'] },
-  { name: '구창모', team: 'nc', pos: '투수', pay: 90000, prev: 10000, note: '2026 연봉 인상률 1위(800%)예요.', src: ['yang'] },
-  { name: '홍창기', team: 'lg', pos: '외야수', pay: 52000, prev: 65000, src: ['lg'] },
-  { name: '박동원', team: 'lg', pos: '포수', pay: 50000, prev: 120000, note: 'FA 계약 마지막 해라 연봉이 줄었어요.', src: ['lg_osen'] },
-  { name: '문보경', team: 'lg', pos: '내야수', pay: 48000, prev: 41000, src: ['lg'] },
-  { name: '안우진', team: 'kiwoom', pos: '투수', pay: 48000, prev: 48000, note: '키움 연봉 재계약 선수 중 최고 연봉이에요.', src: ['kiwoom'] },
-  { name: '김진성', team: 'lg', pos: '투수', pay: 45000, prev: 33000, note: 'LG 구단 첫 다년 계약(3년 최대 16억 원)이에요.', src: ['lg'] },
-  { name: '박성한', team: 'ssg', pos: '내야수', pay: 42000, prev: 37000, src: ['ssg_twig'] },
-  { name: '최형우', team: 'samsung', pos: '외야수', pay: 40000, note: 'KBO 첫 25년 차 연봉 선수이자 2026 최고령 선수예요.', src: ['choi_hw'] },
-  { name: '신민재', team: 'lg', pos: '내야수', pay: 38000, prev: 20000, note: 'LG 재계약 선수 중 최고 인상액이에요.', src: ['lg'] },
-  { name: '최지훈', team: 'ssg', pos: '외야수', pay: 37000, prev: 30000, src: ['ssg'] },
-  { name: '김주원', team: 'nc', pos: '내야수', pay: 35000, prev: 20000, note: 'NC 재계약 선수 중 최고 연봉이에요.', src: ['nc'] },
-  { name: '곽빈', team: 'doosan', pos: '투수', pay: 30500, prev: 38000, src: ['doosan_kwak'] },
-  { name: '김도영', team: 'kia', pos: '내야수', pay: 25000, prev: 50000, note: '2025년 연봉에서 절반(50%)이 깎였어요.', src: ['kia'] },
-  { name: '김택연', team: 'doosan', pos: '투수', pay: 22000, prev: 14000, src: ['doosan_kim'] },
-  { name: '하영민', team: 'kiwoom', pos: '투수', pay: 21000, src: ['kiwoom'] },
-  { name: '이로운', team: 'ssg', pos: '투수', pay: 20000, prev: 7400, note: 'SSG 재계약 선수 중 최고 인상액이에요.', src: ['ssg_newsis'] },
-  { name: '안현민', team: 'kt', pos: '외야수', pay: 18000, prev: 3300, note: 'KT 구단 역대 최고 인상률(445.5%)이에요.', src: ['kt'] },
-  { name: '김서현', team: 'hanwha', pos: '투수', pay: 16800, prev: 5600, src: ['hanwha_x'] },
-  { name: '송승기', team: 'lg', pos: '투수', pay: 13600, prev: 3600, note: 'LG 재계약 선수 중 최고 인상률(277.8%)이에요.', src: ['lg'] },
-  { name: '전사민', team: 'nc', pos: '투수', pay: 13000, prev: 3800, src: ['nc'] },
-  { name: '이용규', team: 'kiwoom', pos: '외야수', pay: 12000, prev: 20000, note: '플레잉코치를 겸하는 시즌이에요.', src: ['kiwoom_lee'] },
-  { name: '오명진', team: 'doosan', pos: '내야수', pay: 11200, prev: 3100, note: '두산 재계약 선수 중 최고 인상률(261.3%)이에요.', src: ['doosan_oh'] },
-  { name: '전민재', team: 'lotte', pos: '내야수', pay: 11000, prev: 7500, note: '데뷔 뒤 첫 억대 연봉이에요.', src: ['lotte'] },
-  { name: '이지강', team: 'lg', pos: '투수', pay: 11000, note: '데뷔 뒤 첫 억대 연봉이에요.', src: ['lg'] },
-  { name: '임지열', team: 'kiwoom', pos: '외야수', pay: 11000, src: ['kiwoom'] },
+  { name: '양의지', team: 'doosan', pos: '포수', pay: 420000, prev: 160000, history: { 2023: 30000, 2024: 50000, 2025: 160000, 2026: 420000 }, note: '2026 리그 연봉 1위. 4+2년 최대 152억 원 FA 계약 4년째로, 연봉이 해마다 크게 오르는 구조예요.', stats: { g: 135, ab: 449, h: 112, hr: 23, rbi: 79, avg: '0.249' }, tving: 76232, src: ['yang', 'kbo_top'] },
+  { name: '고영표', team: 'kt', pos: '투수', pay: 260000, note: '2026 리그 연봉 2위, 투수 1위예요.', stats: { g: 29, w: 15, l: 7, sv: 0, hld: 0, ip: '172 2/3', so: 183, era: '3.28' }, tving: 64001, src: ['kbo_x', 'kbo_top'] },
+  { name: '최정', team: 'ssg', pos: '내야수', pay: 220000, prev: 170000, note: '2026 리그 연봉 3위예요.', stats: { g: 71, ab: 255, h: 78, hr: 20, rbi: 57, avg: '0.306' }, tving: 75847, src: ['kbo_x', 'kbo_star'] },
+  { name: '류현진', team: 'hanwha', pos: '투수', pay: 210000, note: '박세웅과 함께 리그 연봉 공동 4위예요.', stats: { g: 25, w: 9, l: 6, sv: 0, hld: 0, ip: '134 2/3', so: 115, era: '3.88' }, tving: 76715, src: ['kbo_x', 'kbo_top'] },
+  { name: '박세웅', team: 'lotte', pos: '투수', pay: 210000, note: '류현진과 함께 리그 연봉 공동 4위, 롯데 1위예요.', stats: { g: 27, w: 3, l: 9, sv: 0, hld: 0, ip: '147 1/3', so: 127, era: '4.64' }, tving: 64021, src: ['kbo_x', 'kbo_top'] },
+  { name: '김광현', team: 'ssg', pos: '투수', pay: 150000, prev: 300000, approx: true, note: '2026~2027년 2년 계약의 연봉 총액 30억 원을 해마다 같게 나눠 어림했어요. 해마다 받는 정확한 금액은 공개되지 않았어요.', stats: null, tving: 77829, src: ['ssg_kim'] },
+  { name: '오지환', team: 'lg', pos: '내야수', pay: 140000, prev: 30000, history: { 2024: 30000, 2025: 30000, 2026: 140000 }, note: '야수 연봉 3위, LG 1위예요. 6년 FA 계약 3년째라 연봉이 크게 올랐어요.', stats: { g: 126, ab: 392, h: 95, hr: 14, rbi: 61, avg: '0.242' }, tving: 79109, src: ['kbo_x', 'lg_osen'] },
+  { name: '원태인', team: 'samsung', pos: '투수', pay: 100000, prev: 63000, note: '8년 차 선수 최고 연봉 기록이에요.', stats: { g: 26, w: 7, l: 9, sv: 0, hld: 0, ip: '145 1/3', so: 117, era: '4.52' }, tving: 69446, src: ['samsung'] },
+  { name: '노시환', team: 'hanwha', pos: '내야수', pay: 100000, prev: 33000, note: '한화 연봉 재계약 선수 중 최고 인상액(약 203%)이에요.', stats: { g: 127, ab: 505, h: 143, hr: 29, rbi: 96, avg: '0.283' }, tving: 69737, src: ['hanwha'] },
+  { name: '구창모', team: 'nc', pos: '투수', pay: 90000, prev: 10000, note: '2026 연봉 인상률 1위(800%)예요.', stats: { g: 29, w: 12, l: 8, sv: 0, hld: 0, ip: '163', so: 133, era: '4.03' }, tving: 65933, src: ['yang'] },
+  { name: '홍창기', team: 'lg', pos: '외야수', pay: 52000, prev: 65000, stats: { g: 128, ab: 415, h: 99, hr: 0, rbi: 33, avg: '0.239' }, tving: 66108, src: ['lg'] },
+  { name: '박동원', team: 'lg', pos: '포수', pay: 50000, prev: 120000, note: 'FA 계약 마지막 해라 연봉이 줄었어요.', stats: { g: 128, ab: 346, h: 78, hr: 14, rbi: 56, avg: '0.225' }, tving: 79365, src: ['lg_osen'] },
+  { name: '문보경', team: 'lg', pos: '내야수', pay: 48000, prev: 41000, stats: { g: 108, ab: 357, h: 92, hr: 10, rbi: 60, avg: '0.258' }, tving: 69102, src: ['lg'] },
+  { name: '안우진', team: 'kiwoom', pos: '투수', pay: 48000, prev: 48000, note: '키움 연봉 재계약 선수 중 최고 연봉이에요.', stats: { g: 23, w: 5, l: 8, sv: 0, hld: 0, ip: '112', so: 132, era: '3.54' }, tving: 68341, src: ['kiwoom'] },
+  { name: '김진성', team: 'lg', pos: '투수', pay: 45000, prev: 33000, note: 'LG 구단 첫 다년 계약(3년 최대 16억 원)이에요.', stats: { g: 53, w: 6, l: 2, sv: 1, hld: 18, ip: '47 1/3', so: 35, era: '4.94' }, tving: 75867, src: ['lg'] },
+  { name: '박성한', team: 'ssg', pos: '내야수', pay: 42000, prev: 37000, stats: { g: 144, ab: 530, h: 175, hr: 5, rbi: 71, avg: '0.330' }, tving: 67893, src: ['ssg_twig'] },
+  { name: '최형우', team: 'samsung', pos: '외야수', pay: 40000, note: 'KBO 첫 25년 차 연봉 선수이자 2026 최고령 선수예요.', stats: { g: 137, ab: 491, h: 148, hr: 18, rbi: 106, avg: '0.301' }, tving: 72443, src: ['choi_hw'] },
+  { name: '신민재', team: 'lg', pos: '내야수', pay: 38000, prev: 20000, note: 'LG 재계약 선수 중 최고 인상액이에요.', stats: { g: 138, ab: 399, h: 100, hr: 0, rbi: 26, avg: '0.251' }, tving: 65207, src: ['lg'] },
+  { name: '최지훈', team: 'ssg', pos: '외야수', pay: 37000, prev: 30000, stats: { g: 141, ab: 519, h: 130, hr: 13, rbi: 64, avg: '0.250' }, tving: 50854, src: ['ssg'] },
+  { name: '김주원', team: 'nc', pos: '내야수', pay: 35000, prev: 20000, note: 'NC 재계약 선수 중 최고 연봉이에요.', stats: { g: 131, ab: 517, h: 145, hr: 18, rbi: 61, avg: '0.280' }, tving: 51907, src: ['nc'] },
+  { name: '곽빈', team: 'doosan', pos: '투수', pay: 30500, prev: 38000, stats: { g: 27, w: 11, l: 7, sv: 0, hld: 0, ip: '161', so: 197, era: '2.24' }, tving: 68220, src: ['doosan_kwak'] },
+  { name: '김도영', team: 'kia', pos: '내야수', pay: 25000, prev: 50000, note: '2025년 연봉에서 절반(50%)이 깎였어요.', stats: { g: 135, ab: 496, h: 153, hr: 45, rbi: 118, avg: '0.308' }, tving: 52605, src: ['kia'] },
+  { name: '김택연', team: 'doosan', pos: '투수', pay: 22000, prev: 14000, stats: { g: 55, w: 3, l: 3, sv: 4, hld: 13, ip: '56 2/3', so: 73, era: '2.54' }, tving: 54263, src: ['doosan_kim'] },
+  { name: '하영민', team: 'kiwoom', pos: '투수', pay: 21000, stats: { g: 27, w: 8, l: 9, sv: 0, hld: 0, ip: '134', so: 115, era: '4.37' }, tving: 64350, src: ['kiwoom'] },
+  { name: '이로운', team: 'ssg', pos: '투수', pay: 20000, prev: 7400, note: 'SSG 재계약 선수 중 최고 인상액이에요.', stats: { g: 50, w: 8, l: 4, sv: 0, hld: 7, ip: '69', so: 66, era: '5.61' }, tving: 53892, src: ['ssg_newsis'] },
+  { name: '안현민', team: 'kt', pos: '외야수', pay: 18000, prev: 3300, note: 'KT 구단 역대 최고 인상률(445.5%)이에요.', stats: { g: 94, ab: 326, h: 97, hr: 14, rbi: 63, avg: '0.298' }, tving: 52001, src: ['kt'] },
+  { name: '김서현', team: 'hanwha', pos: '투수', pay: 16800, prev: 5600, stats: { g: 30, w: 1, l: 4, sv: 2, hld: 0, ip: '26', so: 28, era: '6.92' }, tving: 53754, src: ['hanwha_x'] },
+  { name: '송승기', team: 'lg', pos: '투수', pay: 13600, prev: 3600, note: 'LG 재계약 선수 중 최고 인상률(277.8%)이에요.', stats: { g: 16, w: 3, l: 3, sv: 0, hld: 0, ip: '70', so: 54, era: '5.53' }, tving: 51111, src: ['lg'] },
+  { name: '전사민', team: 'nc', pos: '투수', pay: 13000, prev: 3800, stats: { g: 69, w: 6, l: 6, sv: 10, hld: 6, ip: '63', so: 46, era: '5.43' }, tving: 69969, src: ['nc'] },
+  { name: '이용규', team: 'kiwoom', pos: '외야수', pay: 12000, prev: 20000, note: '플레잉코치를 겸하는 시즌이에요.', stats: null, src: ['kiwoom_lee'] },
+  { name: '오명진', team: 'doosan', pos: '내야수', pay: 11200, prev: 3100, note: '두산 재계약 선수 중 최고 인상률(261.3%)이에요.', stats: { g: 77, ab: 142, h: 35, hr: 3, rbi: 17, avg: '0.246' }, tving: 50208, src: ['doosan_oh'] },
+  { name: '전민재', team: 'lotte', pos: '내야수', pay: 11000, prev: 7500, note: '데뷔 뒤 첫 억대 연봉이에요.', stats: { g: 140, ab: 472, h: 131, hr: 9, rbi: 70, avg: '0.278' }, tving: 68205, src: ['lotte'] },
+  { name: '이지강', team: 'lg', pos: '투수', pay: 11000, note: '데뷔 뒤 첫 억대 연봉이에요.', stats: null, tving: 69108, src: ['lg'] },
+  { name: '임지열', team: 'kiwoom', pos: '외야수', pay: 11000, stats: { g: 31, ab: 72, h: 15, hr: 1, rbi: 4, avg: '0.208' }, tving: 64340, src: ['kiwoom'] },
 ]
+
+// 투구수는 공개된 선수 기록에 없어 '이닝 × 이닝당 투구수'로 어림한다.
+// 2025년 이닝당 투구수가 가장 적은 구단이 15.5개(LG)였다는 보도를 바탕으로, 리그 투수의 평균을 16개로 잡았다.
+export const PITCHES_PER_INNING = 16
+export const PITCH_SOURCE = { label: '문화일보, 2025시즌 초 LG 이닝당 투구수 15.5개(10개 구단 중 가장 적음) 보도', url: 'https://v.daum.net/v/9tGooDOJCr' }
+export const STATS_SOURCE = (code) => ({ label: 'TVING 선수 기록, 2026 정규시즌', url: `https://www.tving.com/sports/kbo/athlete/${code}` })
 
 // 직장인 평균 연봉 (국가데이터처 2024년 임금근로일자리 소득, 월 375만 원 × 12)
 export const WORKER_YEAR = 4500
@@ -121,6 +130,42 @@ export function breakdown(payMan) {
 }
 
 // 선수 한 명의 결과 화면에 필요한 숫자
+// "56 2/3" → 56.667
+export function innings(ip) {
+  const [whole, frac] = String(ip).split(' ')
+  const [a, b] = (frac || '0/1').split('/').map(Number)
+  return Number(whole) + (b ? a / b : 0)
+}
+
+// 기록 하나당 연봉 (원). 투수와 타자가 다르다. 기록이 0이면 그 칸은 빼고, 1군 기록이 없으면 null
+export function perRecord(p) {
+  const s = p.stats
+  if (!s) return null
+  const year = p.pay * MAN
+  const each = (label, n, opts = {}) => ({ label, n, won: n > 0 ? year / n : null, ...opts })
+  if ('h' in s) {
+    return {
+      kind: 'batter',
+      line: `${s.g}경기 타율 ${s.avg.replace(/^0/, '')}, ${s.h}안타 ${s.hr}홈런 ${s.rbi}타점`,
+      items: [each('안타 하나에', s.h, { unit: '안타' }), each('홈런 하나에', s.hr, { unit: '홈런' }), each('타점 하나에', s.rbi, { unit: '타점' })],
+    }
+  }
+  const ip = innings(s.ip)
+  const pitches = Math.round(ip * PITCHES_PER_INNING)
+  // 선발은 승리, 마무리는 세이브, 셋업은 홀드가 가장 많다: 셋 중 많은 것 하나만 보여 준다
+  const [mainLabel, mainN, mainUnit] = [['승리 하나에', s.w, '승'], ['세이브 하나에', s.sv, '세이브'], ['홀드 하나에', s.hld, '홀드']].sort((a, b) => b[1] - a[1])[0]
+  return {
+    kind: 'pitcher',
+    line: `${s.g}경기 ${s.ip}이닝, ${s.w}승 ${s.l}패${s.sv ? ` ${s.sv}세이브` : ''}${s.hld ? ` ${s.hld}홀드` : ''}, 탈삼진 ${s.so}개, 평균자책 ${s.era}`,
+    items: [
+      each('공 하나에', pitches, { unit: '구', approx: true }),
+      each('아웃 하나에', Math.round(ip * 3), { unit: '아웃' }),
+      each('탈삼진 하나에', s.so, { unit: '탈삼진' }),
+      each(mainLabel, mainN, { unit: mainUnit }),
+    ],
+  }
+}
+
 export function profile(p) {
   const team = TEAM_BY_ID[p.team]
   const b = breakdown(p.pay)
@@ -137,6 +182,7 @@ export function profile(p) {
     vsWorker: p.pay / WORKER_YEAR,
     // 직장인 평균 연봉을 버는 데 걸리는 경기 수
     gamesForWorkerYear: (WORKER_YEAR * MAN) / b.game,
+    rec: perRecord(p),
   }
 }
 

@@ -6,7 +6,7 @@ import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingLink, { CreatorIncomeIcon } from '../../components/FloatingLink.jsx'
 import { track } from '../../lib/analytics.js'
 import { FOOTER_MENU, HOME, YOUTUBER, WEDDING_GIFT, KBO } from '../../lib/menu.js'
-import { SEASON, GAMES, INNINGS, LEAGUE, TEAMS, TEAM_BY_ID, PLAYERS, SOURCES, WORKER_YEAR, breakdown, profile, findExact, suggest } from './kbo.js'
+import { SEASON, GAMES, INNINGS, LEAGUE, TEAMS, TEAM_BY_ID, PLAYERS, SOURCES, WORKER_YEAR, PITCHES_PER_INNING, PITCH_SOURCE, STATS_SOURCE, breakdown, profile, findExact, suggest } from './kbo.js'
 import KboGuide from './KboGuide.jsx'
 import KboImageShare from './KboImageShare.jsx'
 
@@ -42,6 +42,12 @@ export function krw(n) {
       man = 0
     }
     return `${eok.toLocaleString('ko-KR')}억${man ? ` ${man.toLocaleString('ko-KR')}만` : ''} 원`
+  }
+  // 100만 원 밑은 천 원 자리까지 ("11만 8천 원")
+  if (v >= 1e4 && v < 1e6) {
+    const chun = Math.round(v / 1e3)
+    const man = Math.floor(chun / 10)
+    return `${man}만${chun % 10 ? ` ${chun % 10}천` : ''} 원`
   }
   if (v >= 1e4) return `${Math.round(v / 1e4).toLocaleString('ko-KR')}만 원`
   return `${Math.round(v).toLocaleString('ko-KR')}원`
@@ -310,6 +316,64 @@ function Headline({ pr }) {
   return <p className="kbo-headline">{text}</p>
 }
 
+// ---------- 기록으로 보면 ----------
+
+// 올해 연봉을 올해 기록으로 나눈다 (안타 하나에, 공 하나에 …)
+function Records({ pr }) {
+  const { player, rec } = pr
+  if (!rec) {
+    return (
+      <section className="kbo-rec" aria-labelledby="kbo-rec-title">
+        <h2 className="kbo-rec__title" id="kbo-rec-title">
+          {SEASON} 기록으로 보면
+        </h2>
+        <p className="kbo-rec__empty">{player.name} 선수는 {SEASON} 정규시즌 1군 기록이 없어 기록 하나당 금액을 낼 수 없어요.</p>
+      </section>
+    )
+  }
+  const src = player.tving ? STATS_SOURCE(player.tving) : null
+  return (
+    <section className="kbo-rec" aria-labelledby="kbo-rec-title">
+      <h2 className="kbo-rec__title" id="kbo-rec-title">
+        {SEASON} 기록으로 보면
+      </h2>
+      <p className="kbo-rec__line">{rec.line}</p>
+      <ul className={`kbo-rec__grid kbo-rec__grid--${rec.items.length}`}>
+        {rec.items.map((it) => (
+          <li key={it.label} className={it.won === null ? 'is-none' : undefined}>
+            <span className="kbo-rec__label">
+              {it.label}
+              {it.approx && <em>어림</em>}
+            </span>
+            <strong className="kbo-rec__won">{it.won === null ? '기록 없음' : krw(it.won)}</strong>
+            <span className="kbo-rec__n">{it.won === null ? `올해 0${it.unit}` : `${it.approx ? '약 ' : ''}${it.n.toLocaleString('ko-KR')}${it.unit} 기준`}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="kbo-rec__note">
+        연봉은 지난 성적과 계약으로 정해져요. 올해 연봉을 올해 정규시즌 기록으로 나눠 본 재미용 숫자예요.
+        {rec.kind === 'pitcher' && ` 투구수는 공개된 기록에 없어 이닝 × ${PITCHES_PER_INNING}구로 어림했어요.`}
+      </p>
+      {src && (
+        <p className="kbo-src">
+          기록 출처:{' '}
+          <a href={src.url} target="_blank" rel="noopener noreferrer">
+            {src.label}
+          </a>
+          {rec.kind === 'pitcher' && (
+            <>
+              , 투구수 어림 기준:{' '}
+              <a href={PITCH_SOURCE.url} target="_blank" rel="noopener noreferrer">
+                {PITCH_SOURCE.label}
+              </a>
+            </>
+          )}
+        </p>
+      )}
+    </section>
+  )
+}
+
 // ---------- 그래프 ----------
 
 function Bars({ title, rows, note, id }) {
@@ -524,7 +588,7 @@ export default function KboApp() {
         <section className="hero kbo-hero">
           <div className="hero__text">
             <h1 className="hero__title">프로야구 선수, 연봉 얼마 받을까?</h1>
-            <p className="hero__lede">선수 이름만 넣으면 {SEASON} 연봉을 한 경기, 한 이닝, 1초 단위로 쪼개 직장인 연봉과 비교해 드려요.</p>
+            <p className="hero__lede">선수 이름만 넣으면 {SEASON} 연봉을 한 경기, 1초, 안타 하나, 공 하나 단위로 쪼개 직장인 연봉과 비교해 드려요.</p>
           </div>
           <PlayerSearch onPick={choose} />
           <ul className="kbo-picks" aria-label="많이 찾는 선수">
@@ -541,6 +605,7 @@ export default function KboApp() {
         <div className="kbo-result" ref={resultRef} aria-live="polite">
           <Scoreboard pr={pr} />
           <Headline pr={pr} />
+          <Records pr={pr} />
           {pr.player.note && <p className="kbo-note">{pr.player.note}</p>}
           <Sources ids={pr.player.src} />
           {share && <KboImageShare pr={pr} caption={share.text.replace(/ \| 돈미터$/, '')} />}
