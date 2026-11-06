@@ -43,12 +43,14 @@ export default defineConfig(({ mode }) => {
     //   /               → index.html (계산기 고르는 첫 화면, 정적 HTML)
     //   /youtuber/      → youtuber/index.html (유튜버 수익 계산기)
     //   /wedding-gift/  → wedding-gift/index.html (축의금 계산기)
+    //   /kbo/           → kbo/index.html (프로야구 선수 연봉)
     build: {
       rollupOptions: {
         input: {
           main: fileURLToPath(new URL('./index.html', import.meta.url)),
           youtuber: fileURLToPath(new URL('./youtuber/index.html', import.meta.url)),
           weddingGift: fileURLToPath(new URL('./wedding-gift/index.html', import.meta.url)),
+          kbo: fileURLToPath(new URL('./kbo/index.html', import.meta.url)),
         },
       },
     },

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 색 테마: 화면이 그려지기 전에 정해야 색이 번쩍이지 않는다 -->
+    <script src="/theme.js"></script>
+    <link rel="stylesheet" href="/themes.css" />
+    <title>프로야구 선수 연봉 – 2026 KBO 연봉 순위와 1경기 연봉 계산 | 돈미터</title>
+    <meta name="description" content="양의지 42억, 류현진 21억… 2026 KBO 프로야구 선수 연봉을 이름으로 찾아 한 경기, 한 이닝, 1초에 얼마인지 계산하고 리그 평균, 직장인 연봉과 비교해 보세요." />
+    <meta name="keywords" content="프로야구 연봉, KBO 연봉, 야구선수 연봉, 2026 프로야구 연봉 순위, 양의지 연봉, 류현진 연봉, 김도영 연봉, 노시환 연봉, 프로야구 평균 연봉" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://donmeter.com/kbo/" />
+    <meta name="theme-color" content="#e7ebf0" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="돈미터" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:url" content="https://donmeter.com/kbo/" />
+    <meta property="og:title" content="프로야구 선수, 연봉 얼마 받을까? | 돈미터" />
+    <meta property="og:description" content="선수 이름만 넣으면 2026 연봉을 1경기, 1이닝, 1초 단위로 쪼개 드려요." />
+    <meta property="og:image" content="https://donmeter.com/og/share-v2.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="800" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="프로야구 선수, 연봉 얼마 받을까? | 돈미터" />
+    <meta name="twitter:description" content="선수 이름만 넣으면 2026 연봉을 1경기, 1이닝, 1초 단위로 쪼개 드려요." />
+    <meta name="twitter:image" content="https://donmeter.com/og/share-v2.png" />
+    <!-- FAQ 문구는 src/pages/kbo/KboGuide.jsx 의 FAQ 와 같게 유지한다 -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://donmeter.com/kbo/#app",
+      "name": "프로야구 선수 연봉 – 돈미터",
+      "url": "https://donmeter.com/kbo/",
+      "description": "KBO 프로야구 선수 이름을 넣으면 2026 연봉을 한 경기, 한 이닝, 1초 단위로 나누고 리그 평균, 직장인 평균과 비교해 주는 무료 서비스입니다.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ko-KR",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "isPartOf": {
+        "@id": "https://donmeter.com/#website"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "프로야구 연봉에 계약금도 들어 있나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "아니요. 여기 금액은 그해 받는 연봉만이에요. FA 계약의 계약금과 성적에 따른 옵션(인센티브)은 따로 받기 때문에 실제 수입은 더 많을 수 있어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "같은 선수인데 해마다 연봉이 왜 이렇게 달라요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "여러 해 계약을 맺으면 총액은 정해 두고 해마다 받을 금액을 나눠요. 샐러리캡(구단 연봉 총액 상한)을 맞추려고 특정 해에 몰아서 주거나, 계약 마지막 해에 일부러 낮추기도 해요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "외국인 선수 연봉은 왜 없나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "외국인과 아시아쿼터 선수는 달러로 계약하고, KBO 평균 연봉 집계에서도 빠져요. 국내 선수와 같은 기준으로 비교하기 어려워 이 목록에는 넣지 않았어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "찾는 선수가 없어요.",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "KBO는 모든 선수의 연봉표를 공개하지 않아요. 그래서 KBO나 구단이 발표해 보도된 선수만 넣었어요. 새 발표가 나오면 계속 추가할게요."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="/ga.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539"
+     crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/pages/kbo/main.jsx"></script>
+  </body>
+</html>
