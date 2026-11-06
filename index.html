@@ -10,6 +10,8 @@
     <!-- 색 테마: 화면이 그려지기 전에 정해야 색이 번쩍이지 않는다 -->
     <script src="/theme.js"></script>
     <link rel="stylesheet" href="/themes.css" />
+    <!-- 첫 화면(계산기 고르는 화면) 모양 -->
+    <link rel="stylesheet" href="/hub.css" />
     <title>돈미터 – 유튜버 수익, 축의금, 야구선수 연봉까지 궁금한 돈을 재미로 계산해요</title>
     <meta name="description" content="유튜버 한 달 수익 추정, 관계별 적정 축의금, 프로야구 선수 연봉처럼 궁금했던 돈을 공개 자료와 요즘 시세로 어림해 보는 무료 계산기 모음, 돈미터예요." />
     <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -62,75 +64,6 @@
     <script src="/ga.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539"
      crossorigin="anonymous"></script>
-    <style>
-      /* 첫 화면: 계산기를 아이콘으로 고르는 화면 (색은 /themes.css 의 테마 변수) */
-      *, *::before, *::after { box-sizing: border-box; }
-      html { -webkit-text-size-adjust: 100%; }
-      body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background: var(--desk);
-        color: var(--ink);
-        font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
-        line-height: 1.5;
-        word-break: keep-all;
-      }
-      a { color: inherit; }
-      .wrap { width: 100%; max-width: 560px; margin: 0 auto; padding: 0 16px; }
-
-      .head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 4px 10px; }
-      .brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 18px; text-decoration: none; color: var(--ink); }
-      .nav { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; }
-      .navlink { color: var(--muted); text-decoration: none; }
-      .navlink:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
-
-      .hero { padding: 34px 8px 0; }
-      .kicker { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--seal); }
-      .hero h1 { margin: 0; font-size: 34px; line-height: 1.25; font-weight: 700; letter-spacing: -0.02em; }
-
-      .apps { margin: 30px 0 0; padding: 26px 8px 22px; border-radius: 22px; background: var(--paper); box-shadow: 0 1px 0 var(--rule), 0 18px 36px -24px rgba(var(--shadow-rgb), 0.45); }
-      .apps ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 26px; }
-      .app { display: flex; flex-direction: column; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); border-radius: 22px; padding: 4px 0; }
-      .app__icon { position: relative; width: 76px; height: 76px; border-radius: 22px; display: grid; place-items: center; background: var(--seal-tint); transition: transform 0.15s ease; }
-      .app__icon svg { width: 44px; height: 44px; }
-      .app:hover .app__icon { transform: translateY(-2px); }
-      .app:focus-visible { outline: 3px solid var(--seal); outline-offset: 4px; }
-      .app__name { font-size: 14px; font-weight: 700; text-align: center; line-height: 1.3; }
-      .badge { position: absolute; top: -7px; right: -9px; padding: 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 700; line-height: 1.4; background: var(--seal); color: var(--on-seal); }
-      .soon { display: flex; flex-direction: column; align-items: center; gap: 9px; color: var(--muted); padding: 4px 0; }
-      .soon__icon { width: 76px; height: 76px; border-radius: 22px; display: grid; place-items: center; border: 2px dashed var(--bar); }
-      .soon__icon svg { width: 26px; height: 26px; }
-      .soon__name { font-size: 13px; font-weight: 500; text-align: center; line-height: 1.3; }
-
-      .quick { margin: 18px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
-      .quick a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border-radius: 16px; text-decoration: none; background: var(--paper); color: var(--ink); border: 1px solid var(--rule); }
-      .quick a:hover { border-color: var(--ink); }
-      .quick a:focus-visible { outline: 3px solid var(--seal); outline-offset: 2px; }
-      .quick strong { display: block; font-size: 15px; }
-      .quick span span { display: block; margin-top: 3px; font-size: 13px; color: var(--muted); }
-      .quick svg { flex: none; width: 20px; height: 20px; }
-      .quick strong { transition: opacity 0.18s ease; }
-      .quick strong.is-swapping { opacity: 0; }
-
-      .about { margin: 28px 8px 0; font-size: 14px; color: var(--muted); }
-      .foot { margin-top: auto; padding: 36px 0 26px; font-size: 12px; line-height: 1.6; color: var(--muted); }
-      .foot ul { margin: 0 0 8px; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 14px; }
-      .foot a { color: var(--muted); }
-      .foot p { margin: 0; }
-
-      @media (min-width: 720px) {
-        .wrap { max-width: 640px; }
-        .hero { padding-top: 56px; }
-        .hero h1 { font-size: 44px; }
-        .apps { padding: 34px 16px 30px; }
-        .app__icon, .soon__icon { width: 92px; height: 92px; border-radius: 26px; }
-        .app__icon svg { width: 52px; height: 52px; }
-        .app__name { font-size: 15px; }
-      }
-      @media (prefers-reduced-motion: reduce) { .app__icon { transition: none; } }
-    </style>
   </head>
   <body>
     <div class="wrap">

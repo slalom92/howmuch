@@ -19,7 +19,7 @@ import { channelPath, channelSlug, slugFromPath, isChannelId, revenueTitle } fro
 import PopularChannels from './components/PopularChannels.jsx'
 import HomeGuide from './components/HomeGuide.jsx'
 import SiteMenu from './components/SiteMenu.jsx'
-import FloatingLink, { GiftEnvelopeIcon } from './components/FloatingLink.jsx'
+import FloatingSwitch from './components/FloatingSwitch.jsx'
 import { FOOTER_MENU, YOUTUBER } from './lib/menu.js'
 import { FOOTER_NOTE } from './lib/disclaimer.js'
 
@@ -275,7 +275,7 @@ export default function App() {
         <p>돈미터는 YouTube API 서비스를 사용하며, YouTube 또는 Google과 제휴하거나 승인받은 서비스가 아닙니다.</p>
       </footer>
 
-      <FloatingLink href="/wedding-gift/" title="축의금 얼마?" sub="관계별 적정 금액 계산" badge="NEW" icon={<GiftEnvelopeIcon />} />
+      <FloatingSwitch current={YOUTUBER} />
 
       <AdSlot variant="anchor" slot={SLOTS.anchor} />
     </div>

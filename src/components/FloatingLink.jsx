@@ -31,6 +31,17 @@ export function CreatorIncomeIcon() {
   )
 }
 
+// 야구공 아이콘 (실밥은 곡선 두 줄로만)
+export function BaseballIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <circle cx="16" cy="16" r="12" strokeWidth="2" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <path d="M9.2 6.6c2.6 2.4 3.9 5.6 3.9 9.4s-1.3 7-3.9 9.4M22.8 6.6c-2.6 2.4-3.9 5.6-3.9 9.4s1.3 7 3.9 9.4" fill="none" strokeWidth="1.6" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+      <path d="M10.6 9.6l1.8-.9M12 12.6l1.9-.5M12 19.4l1.9.5M10.6 22.4l1.8.9M21.4 9.6l-1.8-.9M20 12.6l-1.9-.5M20 19.4l-1.9.5M21.4 22.4l-1.8.9" fill="none" strokeWidth="1.2" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+    </svg>
+  )
+}
+
 // hidden: 잠시 숨길 때 (예: 축의금 계산기에서 하단 요약 바가 떠 있는 동안)
 export default function FloatingLink({ href, title, sub, badge, icon, hidden = false, event = 'floating_link' }) {
   const [compact, setCompact] = useState(false)

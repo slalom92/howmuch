@@ -8,7 +8,7 @@ import { FOOTER_MENU, HOME, YOUTUBER, KBO } from '../../lib/menu.js'
 import { RELATIONS, REGIONS, VENUES, PARTY, RECEIVED, DEFAULTS, calculate, fromSearch, toSearch, normalize } from './gift.js'
 import GiftGuide from './GiftGuide.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
-import FloatingLink, { CreatorIncomeIcon } from '../../components/FloatingLink.jsx'
+import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
@@ -323,13 +323,7 @@ export default function GiftApp() {
         </span>
       </button>
 
-      <FloatingLink
-        href={YOUTUBER}
-        title="유튜버 수익은?"
-        sub="한 달 광고 수익 계산"
-        icon={<CreatorIncomeIcon />}
-        hidden={resultPos === null || resultPos === 'below'}
-      />
+      <FloatingSwitch current={PATH} hidden={resultPos === null || resultPos === 'below'} />
 
       <AdSlot variant="anchor" slot={SLOTS.anchor} />
     </div>

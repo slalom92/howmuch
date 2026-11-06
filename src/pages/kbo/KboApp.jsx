@@ -3,7 +3,7 @@ import AdSlot from '../../components/AdSlot.jsx'
 import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
-import FloatingLink, { CreatorIncomeIcon } from '../../components/FloatingLink.jsx'
+import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
 import { FOOTER_MENU, HOME, YOUTUBER, WEDDING_GIFT, KBO } from '../../lib/menu.js'
 import { SEASON, GAMES, INNINGS, LEAGUE, TEAMS, TEAM_BY_ID, PLAYERS, SOURCES, WORKER_YEAR, PITCHES_PER_INNING, PITCH_SOURCE, STATS_SOURCE, breakdown, profile, findExact, suggest } from './kbo.js'
@@ -69,19 +69,6 @@ function readName() {
   if (typeof window === 'undefined') return DEFAULT_NAME
   const q = new URLSearchParams(window.location.search).get('name')
   return (q && findExact(q)?.name) || DEFAULT_NAME
-}
-
-// ---------- 그림 ----------
-
-// 야구공 (실밥은 곡선 두 줄로만)
-export function BaseballIcon() {
-  return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-      <circle cx="16" cy="16" r="12" strokeWidth="2" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
-      <path d="M9.2 6.6c2.6 2.4 3.9 5.6 3.9 9.4s-1.3 7-3.9 9.4M22.8 6.6c-2.6 2.4-3.9 5.6-3.9 9.4s1.3 7 3.9 9.4" fill="none" strokeWidth="1.6" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
-      <path d="M10.6 9.6l1.8-.9M12 12.6l1.9-.5M12 19.4l1.9.5M10.6 22.4l1.8.9M21.4 9.6l-1.8-.9M20 12.6l-1.9-.5M20 19.4l-1.9.5M21.4 22.4l-1.8.9" fill="none" strokeWidth="1.2" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
-    </svg>
-  )
 }
 
 // ---------- 이름 찾기 ----------
@@ -635,7 +622,7 @@ export default function KboApp() {
         <p>연봉은 KBO와 각 구단이 발표하고 언론이 보도한 금액을 돈미터가 옮겨 정리한 참고 자료예요. 계약금, 옵션, 광고 수입은 들어 있지 않아요. 돈미터는 KBO나 구단과 관계없는 개인 사이트예요.</p>
       </footer>
 
-      <FloatingLink href={YOUTUBER} title="유튜버 수익은?" sub="한 달 광고 수익 계산" icon={<CreatorIncomeIcon />} hidden={!pastResult} />
+      <FloatingSwitch current={PATH} hidden={!pastResult} />
 
       <AdSlot variant="anchor" slot={SLOTS.anchor} />
     </div>
