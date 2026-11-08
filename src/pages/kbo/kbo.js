@@ -35,6 +35,18 @@ export const SOURCES = {
   doosan_kim: { label: 'OSEN, 두산 김택연 연봉 보도', url: 'https://osen.co.kr/article/G1112734065' },
   doosan_oh: { label: '노컷뉴스, 두산 2026 연봉 계약 보도', url: 'https://nocutnews.co.kr/news/6459529' },
   lotte: { label: '엑스포츠뉴스, 롯데 2026 연봉 계약 발표 보도', url: 'https://www.xportsnews.com/article/2103416' },
+  fa_park_hm: { label: '엑스포츠뉴스, LG 박해민 FA 계약 보도', url: 'https://www.xportsnews.com/article/2081215' },
+  fa_kang: { label: '엑스포츠뉴스, 한화 강백호 FA 계약 보도', url: 'https://www.xportsnews.com/article/2080928' },
+  fa_kim_hs: { label: '뉴시스, KT 김현수 FA 계약 보도', url: 'https://mobile.newsis.com/view/NISX20251125_0003416037' },
+  fa_kt: { label: 'OSEN, KT 김현수·최원준 FA 계약 보도', url: 'https://osen.co.kr/article/G1112702530' },
+  fa_list: { label: 'OSEN, 두산 박찬호·이영하·조수행 FA 계약 조건 보도', url: 'https://osen.co.kr/article/G1112718059' },
+  fa_jang: { label: 'OSEN, LG 장현식 FA 계약 보도', url: 'https://osen.co.kr/article/G1112454831' },
+  fa_choi_wt: { label: 'OSEN, 삼성 최원태 FA 계약 보도', url: 'https://osen.co.kr/article/G1112469896' },
+  fa_eom: { label: 'OSEN, 한화 엄상백 FA 계약 보도', url: 'https://osen.co.kr/article/G1112453212' },
+  fa_sim: { label: 'OSEN, 한화 심우준 FA 계약 보도', url: 'https://osen.co.kr/article/G1112452996' },
+  fa_na: { label: '엑스포츠뉴스, KIA 나성범 FA 계약 보도', url: 'https://www.xportsnews.com/article/1527268' },
+  fa_yoo: { label: '일간스포츠, 롯데 유강남 FA 계약 보도', url: 'https://isplus.com/article/view/isp202211210149' },
+  koo: { label: '데일리안, 구자욱 2026 연봉 보도', url: 'https://www.dailian.co.kr/news/view/1672324/' },
   minimum: { label: '스포츠조선, KBO 최저 연봉 규정 보도', url: 'https://v.daum.net/v/1v6ZnzkPzQ' },
 }
 
@@ -103,7 +115,24 @@ export const PLAYERS = [
   { name: '전민재', team: 'lotte', pos: '내야수', pay: 11000, prev: 7500, note: '데뷔 뒤 첫 억대 연봉이에요.', stats: { g: 140, ab: 472, h: 131, hr: 9, rbi: 70, avg: '0.278' }, tving: 68205, src: ['lotte'] },
   { name: '이지강', team: 'lg', pos: '투수', pay: 11000, note: '데뷔 뒤 첫 억대 연봉이에요.', stats: null, tving: 69108, src: ['lg'] },
   { name: '임지열', team: 'kiwoom', pos: '외야수', pay: 11000, stats: { g: 31, ab: 72, h: 15, hr: 1, rbi: 4, avg: '0.208' }, tving: 64340, src: ['kiwoom'] },
+  // 아래는 FA·다년 계약 조건으로 어림한 선수 (approx: true)
+  { name: '나성범', team: 'kia', pos: '외야수', pay: 100000, approx: true, note: '2022~2027년 6년 계약의 연봉 총액 60억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 140, ab: 508, h: 154, hr: 31, rbi: 97, avg: '0.303' }, tving: 62947, src: ['fa_na'] },
+  { name: '장현식', team: 'lg', pos: '투수', pay: 90000, approx: true, note: '2025~2028년 4년 계약의 연봉 총액 36억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 32, w: 7, l: 3, sv: 2, hld: 7, ip: '53 2/3', so: 39, era: '4.02' }, tving: 63950, src: ['fa_jang'] },
+  { name: '최원태', team: 'samsung', pos: '투수', pay: 85000, approx: true, note: '2025~2028년 4년 계약의 연봉 총액 34억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 24, w: 7, l: 5, sv: 0, hld: 0, ip: '125', so: 119, era: '4.68' }, tving: 65320, src: ['fa_choi_wt'] },
+  { name: '유강남', team: 'lotte', pos: '포수', pay: 85000, approx: true, note: '2023~2026년 4년 계약의 연봉 총액 34억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 58, ab: 122, h: 27, hr: 3, rbi: 9, avg: '0.221' }, tving: 61102, src: ['fa_yoo'] },
+  { name: '엄상백', team: 'hanwha', pos: '투수', pay: 81300, approx: true, note: '2025~2028년 4년 계약의 연봉 총액 32억 5천만 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: null, statsNote: '2026 정규시즌 1군 등판이 1경기(⅓이닝)뿐이라 기록 하나당 금액은 계산하지 않았어요.', tving: 65056, src: ['fa_eom'] },
+  { name: '강백호', team: 'hanwha', pos: '내야수', pay: 75000, approx: true, note: '2026~2029년 4년 계약의 연봉 총액 30억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 131, ab: 508, h: 145, hr: 34, rbi: 118, avg: '0.285' }, tving: 68050, src: ['fa_kang'] },
+  { name: '박찬호', team: 'doosan', pos: '내야수', pay: 70000, approx: true, note: '2026~2029년 4년 계약의 연봉 총액 28억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 143, ab: 537, h: 152, hr: 5, rbi: 54, avg: '0.283' }, tving: 64646, src: ['fa_list'] },
+  { name: '김현수', team: 'kt', pos: '외야수', pay: 66700, approx: true, note: '2026~2028년 3년 계약의 연봉 총액 20억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 142, ab: 555, h: 159, hr: 14, rbi: 95, avg: '0.286' }, tving: 76290, src: ['fa_kim_hs'] },
+  { name: '박해민', team: 'lg', pos: '외야수', pay: 62500, approx: true, note: '2026~2029년 4년 계약의 연봉 총액 25억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 144, ab: 496, h: 143, hr: 5, rbi: 57, avg: '0.288' }, tving: 62415, src: ['fa_park_hm'] },
+  { name: '이영하', team: 'doosan', pos: '투수', pay: 57500, approx: true, note: '2026~2029년 4년 계약의 연봉 총액 23억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 61, w: 6, l: 5, sv: 26, hld: 0, ip: '68', so: 90, era: '3.18' }, tving: 66291, src: ['fa_list'] },
+  { name: '최원준', team: 'kt', pos: '외야수', pay: 50000, approx: true, note: '2026~2029년 4년 계약의 연봉 총액 20억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 140, ab: 585, h: 208, hr: 9, rbi: 74, avg: '0.356' }, tving: 66606, src: ['fa_kt'] },
+  { name: '구자욱', team: 'samsung', pos: '외야수', pay: 50000, approx: true, note: '2022~2026년 비FA 다년 계약(보장 90억 원)의 마지막 해로, 언론이 보도한 ‘5억 원 수준’을 넣었어요. 정확한 금액은 공개되지 않았어요.', stats: { g: 114, ab: 420, h: 156, hr: 15, rbi: 102, avg: '0.371' }, tving: 62404, src: ['koo'] },
+  { name: '심우준', team: 'hanwha', pos: '내야수', pay: 45000, approx: true, note: '2025~2028년 4년 계약의 연봉 총액 18억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 128, ab: 394, h: 104, hr: 7, rbi: 47, avg: '0.264' }, tving: 64006, src: ['fa_sim'] },
+  { name: '조수행', team: 'doosan', pos: '외야수', pay: 20000, approx: true, note: '2026~2029년 4년 계약의 연봉 총액 8억 원을 해마다 같게 나눠 어림했어요. FA 계약은 해마다 받는 금액이 다른 경우가 많아 실제 2026년 연봉과 다를 수 있어요.', stats: { g: 119, ab: 189, h: 61, hr: 0, rbi: 21, avg: '0.323' }, tving: 66209, src: ['fa_list'] },
 ]
+// 연봉 많은 순 (같으면 적은 순서대로). 순위와 기본 선수가 이 순서를 쓴다
+PLAYERS.sort((x, y) => y.pay - x.pay)
 
 // 투구수는 공개된 선수 기록에 없어 '이닝 × 이닝당 투구수'로 어림한다.
 // 2025년 이닝당 투구수가 가장 적은 구단이 15.5개(LG)였다는 보도를 바탕으로, 리그 투수의 평균을 16개로 잡았다.

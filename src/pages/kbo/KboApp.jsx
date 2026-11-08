@@ -18,9 +18,9 @@ const SLOTS = {
 
 const PATH = KBO
 // 검색 로봇용으로 미리 그리는 첫 화면은 연봉 1위(양의지)로 고정하고,
-// 방문자 브라우저에서는 연봉 1억 원 이상이면서 올해 1군 기록이 있는 선수 중 한 명을 무작위로 보여 준다.
+// 방문자 브라우저에서는 연봉 1억 원 이상이면서 올해 1군 기록이 있고 어림값이 아닌 선수 중 한 명을 무작위로 보여 준다.
 const DEFAULT_NAME = PLAYERS[0].name
-const RANDOM_POOL = PLAYERS.filter((p) => p.pay >= 10000 && p.stats).map((p) => p.name)
+const RANDOM_POOL = PLAYERS.filter((p) => p.pay >= 10000 && p.stats && !p.approx).map((p) => p.name)
 const pickRandom = () => RANDOM_POOL[Math.floor(Math.random() * RANDOM_POOL.length)] || DEFAULT_NAME
 const MAN = 10000
 
@@ -175,7 +175,7 @@ function PlayerSearch({ onPick }) {
       </div>
       {miss && (
         <p className="kbo-search__miss" role="status">
-          ‘{miss}’ 선수는 아직 정리하지 않았어요. 연봉이 공식 발표로 확인된 선수부터 차례로 넣고 있어요. 아래 순위에서 골라 보세요.
+          ‘{miss}’ 선수는 아직 정리하지 않았어요. 구단 발표나 계약 보도로 연봉을 확인한 선수부터 차례로 넣고 있어요. 아래 순위에서 골라 보세요.
         </p>
       )}
     </form>
@@ -319,7 +319,7 @@ function Records({ pr }) {
         <h2 className="kbo-rec__title" id="kbo-rec-title">
           {SEASON} 기록으로 보면
         </h2>
-        <p className="kbo-rec__empty">{player.name} 선수는 {SEASON} 정규시즌 1군 기록이 없어 기록 하나당 금액을 낼 수 없어요.</p>
+        <p className="kbo-rec__empty">{player.statsNote || `${player.name} 선수는 ${SEASON} 정규시즌 1군 기록이 없어 기록 하나당 금액을 낼 수 없어요.`}</p>
       </section>
     )
   }
@@ -463,7 +463,7 @@ function Ranking({ current, onPick }) {
       <h2 className="kbo-card__title" id="kbo-rank">
         {SEASON} 선수 연봉 순위
       </h2>
-      <p className="kbo-card__lede">공식 발표로 연봉이 확인된 국내 선수 {PLAYERS.length}명이에요. 이름을 누르면 자세히 볼 수 있어요.</p>
+      <p className="kbo-card__lede">구단 발표나 계약 보도로 연봉을 확인한 국내 선수 {PLAYERS.length}명이에요. ‘어림값’은 FA·다년 계약의 연봉 총액을 해마다 같게 나눈 금액이에요. 이름을 누르면 자세히 볼 수 있어요.</p>
       <ol className="kbo-rank__list">
         {PLAYERS.map((p, i) => {
           const same = i > 0 && PLAYERS[i - 1].pay === p.pay

@@ -56,7 +56,7 @@ export async function drawScoreboard(pr) {
   const changeText = change === null || player.approx ? '' : change === 0 ? '작년과 같은 연봉' : `작년보다 ${change > 0 ? '+' : ''}${Math.round(change * 1000) / 10}%`
   const sub = `${SEASON} ${team.full} ${player.pos}`
 
-  await loadFonts([player.name, sub, pay, headline, changeText, ...cells.flat(), `${SEASON} 연봉 어림값 선수 이름으로 찾기 KBO·구단 발표 연봉 기준 계약금·옵션 제외 정규시즌 144경기, 경기당 9이닝, 1년 365일로 나눴어요 시간은 144경기·9이닝·365일, 기록은 정규시즌 기준 연봉 KBO·구단 발표, 기록 TVING 안타 하나에 공 하나에(어림) 홈런 타점 아웃 탈삼진 승리 세이브 홀드`])
+  await loadFonts([player.name, sub, pay, headline, changeText, ...cells.flat(), `${SEASON} 연봉 어림값 선수 이름으로 찾기 KBO·구단 발표 연봉 기준 계약금·옵션 제외 정규시즌 144경기, 경기당 9이닝, 1년 365일로 나눴어요 시간은 144경기·9이닝·365일, 기록은 정규시즌 기준 연봉 KBO·구단 발표, 기록 TVING 계약 보도 연평균 안타 하나에 공 하나에(어림) 홈런 타점 아웃 탈삼진 승리 세이브 홀드`])
   const [canvas, ctx] = makeCanvas()
 
   ctx.fillStyle = c.desk
@@ -123,6 +123,7 @@ export async function drawScoreboard(pr) {
     fitText(ctx, changeText, px + 32, sy + 69, tw - 48, { size: 28, min: 20, weight: 700, color: change > 0 ? c.seal : c.muted })
   }
 
-  footer(ctx, c, CARD_H - 104, '선수 이름으로 찾기', first ? ['연봉 KBO·구단 발표, 기록 TVING', '계약금·옵션 제외'] : ['KBO·구단 발표 연봉 기준', '계약금·옵션 제외'])
+  const payFrom = player.approx ? '계약 보도 연평균' : 'KBO·구단 발표'
+  footer(ctx, c, CARD_H - 104, '선수 이름으로 찾기', first ? [`연봉 ${payFrom}, 기록 TVING`, '계약금·옵션 제외'] : [`${payFrom} 연봉 기준`, '계약금·옵션 제외'])
   return toBlob(canvas)
 }
