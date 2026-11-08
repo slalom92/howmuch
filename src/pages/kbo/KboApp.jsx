@@ -175,7 +175,7 @@ function PlayerSearch({ onPick }) {
       </div>
       {miss && (
         <p className="kbo-search__miss" role="status">
-          ‘{miss}’ 선수는 아직 정리하지 않았어요. 구단 발표나 계약 보도로 연봉을 확인한 선수부터 차례로 넣고 있어요. 아래 순위에서 골라 보세요.
+          ‘{miss}’ 선수는 아직 정리하지 않았어요. KBO 선수 정보나 구단 발표로 연봉을 확인한 선수부터 차례로 넣고 있어요. 아래 순위에서 골라 보세요.
         </p>
       )}
     </form>
@@ -463,7 +463,7 @@ function Ranking({ current, onPick }) {
       <h2 className="kbo-card__title" id="kbo-rank">
         {SEASON} 선수 연봉 순위
       </h2>
-      <p className="kbo-card__lede">구단 발표나 계약 보도로 연봉을 확인한 국내 선수 {PLAYERS.length}명이에요. ‘어림값’은 FA·다년 계약의 연봉 총액을 해마다 같게 나눈 금액이에요. 이름을 누르면 자세히 볼 수 있어요.</p>
+      <p className="kbo-card__lede">KBO 선수 정보와 구단 발표로 연봉을 확인한 국내 선수 {PLAYERS.length}명이에요. ‘어림값’은 FA 계약의 연봉 총액을 해마다 같게 나눈 금액이에요. 이름을 누르면 자세히 볼 수 있어요.</p>
       <ol className="kbo-rank__list">
         {PLAYERS.map((p, i) => {
           const same = i > 0 && PLAYERS[i - 1].pay === p.pay
