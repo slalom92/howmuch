@@ -23,6 +23,7 @@ const PAGES = [
   { url: '/kbo/', files: ['kbo/index.html', 'src/pages/kbo'] },
   { url: '/klpga/', files: ['klpga/index.html', 'src/pages/klpga'] },
   { url: '/kpga/', files: ['kpga/index.html', 'src/pages/kpga', 'src/pages/klpga'] },
+  { url: '/pga/', files: ['pga/index.html', 'src/pages/pga', 'src/pages/klpga'] },
 ]
 
 // 채널 페이지는 서버(api/page.js)가 그린다

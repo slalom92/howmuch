@@ -52,7 +52,7 @@ export async function drawScorecard(pr) {
   const { T, player, b, perEvent, workerYears, rank } = pr
   const { SEASON, TOUR_DAYS } = T
   const c = themeColors()
-  const prize = krw(b.year)
+  const prize = `${player.rounded ? '약 ' : ''}${krw(b.year)}`
   const years = workerYears < 10 ? Math.round(workerYears * 10) / 10 : Math.round(workerYears)
   const cells = [
     ['한 달', krw(b.month)],
@@ -63,10 +63,11 @@ export async function drawScorecard(pr) {
     ['직장인 연봉', `${years}년 치`],
   ]
   const headline = `직장인 평균 연봉(4,500만 원) ${years}년 치를 한 시즌에 벌었어요`
-  const tags = [player.wins ? `${player.wins}승` : '', ...player.titles].filter(Boolean).join(' · ')
+  const dollars = player.usd ? `${player.rounded ? '약 ' : ''}$${player.usd.toLocaleString('en-US')}` : ''
+  const tags = [dollars, player.wins ? `${player.wins}승` : '', ...player.titles].filter(Boolean).join(' · ')
   const sub = `${SEASON} ${T.text.org} 투어 · ${player.team} · 상금 ${rank}위`
 
-  await loadFonts([player.name, sub, prize, headline, tags, ...cells.flat(), `${SEASON} 상금 선수 이름으로 찾기 언론 보도 시즌 최종 상금 후원 계약금 제외 투어 하루는 개막전~최종전 날짜, 하루·1초는 365일로 나눴어요 승 상금왕 대상 신인상 다승왕 최저타수상 제네시스 KPGA KLPGA ${T.text.card}`])
+  await loadFonts([player.name, sub, prize, headline, tags, ...cells.flat(), `${SEASON} 상금 선수 이름으로 찾기 언론 보도 시즌 최종 상금 후원 계약금 제외 투어 하루는 개막전~최종전 날짜, 하루·1초는 365일로 나눴어요 승 상금왕 대상 신인상 다승왕 최저타수상 제네시스 KPGA KLPGA PGA 페덱스컵 우승 한국 선수 최초 1천만 달러 약 $0123456789, ${T.text.card}`])
   const [canvas, ctx] = makeCanvas()
 
   ctx.fillStyle = c.desk

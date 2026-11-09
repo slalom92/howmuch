@@ -127,3 +127,19 @@
 .kbo-result > .kbo-card {
   margin-top: 22px;
 }
+
+/* PGA: 원화 아래 달러 금액과 환율 */
+.golf-usd {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 투어가 셋이라 좁은 휴대폰에서는 단추를 조금 줄인다 */
+@media (max-width: 400px) {
+  .golf-tabs a {
+    padding: 7px 11px;
+    font-size: 13.5px;
+  }
+}

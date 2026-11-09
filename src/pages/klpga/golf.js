@@ -20,7 +20,7 @@ export function chosung(s) {
 }
 
 const clean = (s) => String(s || '').replace(/\s+/g, '').toLowerCase()
-// 등록 이름 끝의 번호(김민선7, 정재현2575)는 빼고도 찾을 수 있게
+// 등록 이름 끝의 번호(김민선7, 정재현2575)는 빼고도 찾을 수 있게 (외국 선수는 aliases 로 성·영문 이름도 찾는다)
 const bare = (name) => name.replace(/\d+$/, '')
 const isChosungOnly = (s) => /^[ㄱ-ㅎ]+$/.test(s)
 
@@ -56,7 +56,13 @@ export function makeTour(cfg) {
   const findExact = (q) => {
     const k = clean(q)
     if (!k) return null
-    return PLAYERS.find((p) => p.name === k) || PLAYERS.find((p) => bare(p.name) === k && PLAYERS.filter((x) => bare(x.name) === k).length === 1) || null
+    const alias = (p) => (p.aliases || []).some((a) => clean(a) === k)
+    return (
+      PLAYERS.find((p) => clean(p.name) === k) ||
+      PLAYERS.find((p) => bare(p.name) === k && PLAYERS.filter((x) => bare(x.name) === k).length === 1) ||
+      PLAYERS.find(alias) ||
+      null
+    )
   }
 
   // 이름(앞부분 우선) → 이름 일부 → 초성 → 소속 순으로 찾는다
@@ -65,11 +71,13 @@ export function makeTour(cfg) {
     if (!k) return []
     const scored = []
     for (const p of PLAYERS) {
+      const name = clean(p.name)
+      const aliases = (p.aliases || []).map(clean)
       let s = 0
-      if (p.name === k || bare(p.name) === k) s = 100
-      else if (p.name.startsWith(k)) s = 80
-      else if (p.name.includes(k)) s = 60
-      else if (isChosungOnly(k) && chosung(p.name).startsWith(k)) s = 50
+      if (name === k || bare(name) === k || aliases.includes(k)) s = 100
+      else if (name.startsWith(k) || aliases.some((a) => a.startsWith(k))) s = 80
+      else if (name.includes(k) || aliases.some((a) => a.includes(k))) s = 60
+      else if (isChosungOnly(k) && chosung(name).includes(k)) s = chosung(name).startsWith(k) ? 50 : 40
       else if (clean(p.team).includes(k)) s = 20
       if (s) scored.push({ p, s })
     }

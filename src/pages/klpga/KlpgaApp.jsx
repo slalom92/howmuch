@@ -5,7 +5,7 @@ import { BrandMark } from '../../components/Art.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
-import { FOOTER_MENU, MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA, KPGA } from '../../lib/menu.js'
+import { FOOTER_MENU, MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA, KPGA, PGA } from '../../lib/menu.js'
 import { WORKER_YEAR } from './golf.js'
 import KlpgaGuide from './KlpgaGuide.jsx'
 import KlpgaImageShare from './KlpgaImageShare.jsx'
@@ -24,7 +24,7 @@ const golfMenu = (T) => [
   { href: KBO, label: '프로야구 선수 연봉' },
   { href: T.path, label: `${T.text.who} 선수 상금` },
 ]
-const GOLF_ITEMS = MENU.slice(0, 6)
+const GOLF_ITEMS = MENU.slice(0, 7)
 
 // 원 단위 금액을 "16억 2,844만 원", "4,500만 원", "11만 8천 원", "52원" 처럼 쓴다
 export function krw(n) {
@@ -47,6 +47,9 @@ export function krw(n) {
   if (v >= 1e4) return `${Math.round(v / 1e4).toLocaleString('ko-KR')}만 원`
   return `${Math.round(v).toLocaleString('ko-KR')}원`
 }
+
+// 달러 금액 ("$30,937,525", 어림값은 "약 $15,100,000")
+const usd = (p) => `${p.rounded ? '약 ' : ''}$${p.usd.toLocaleString('en-US')}`
 
 // 순위표에 쓰는 짧은 금액 ("16.3억")
 const eok = (won) => `${(Math.round(won / 1e7) / 10).toLocaleString('ko-KR')}억`
@@ -197,8 +200,16 @@ function Scorecard({ pr }) {
         <h2 className="kbo-board__name">{player.name}</h2>
         <p className="kbo-board__pay">
           <span className="kbo-board__pay-label">{T.SEASON} 상금</span>
-          <strong key={player.name}>{krw(player.prize)}</strong>
+          <strong key={player.name}>
+            {player.rounded ? '약 ' : ''}
+            {krw(player.prize)}
+          </strong>
         </p>
+        {player.usd && (
+          <p className="golf-usd">
+            {usd(player)} · 1달러 {T.USD_KRW.toLocaleString('ko-KR')}원({T.FX_DATE} 종가)으로 바꾼 금액
+          </p>
+        )}
         {(player.wins > 0 || player.titles.length > 0) && (
           <ul className="klpga-tags" aria-label="올해 기록">
             {player.wins > 0 && <li>{player.wins}승</li>}
@@ -295,8 +306,10 @@ function GolfFacts({ pr }) {
       ? { label: '대회 하나에', won: krw(perEvent), n: `출전 ${player.events}개 대회 평균` }
       : { label: '시즌 상금 순위', won: `${rank}위`, n: `${T.SEASON} ${T.text.org} 투어` },
     { label: '투어 하루에', won: krw(b.tourDay), n: `시즌 ${T.TOUR_DAYS}일 기준` },
-    { label: '우승', won: player.wins ? `${player.wins}번` : '없음', n: `올해 열린 ${T.EVENTS_HELD}개 대회 중` },
-    { label: '최종전 우승 상금의', won: times(player.prize / T.FINAL_WIN), n: `우승 상금 ${krw(T.FINAL_WIN)} 기준` },
+    player.wins === null || player.wins === undefined
+      ? { label: '달러로는', won: usd(player), n: `1달러 = ${T.USD_KRW.toLocaleString('ko-KR')}원` }
+      : { label: '우승', won: player.wins ? `${player.wins}번` : '없음', n: `올해 열린 ${T.EVENTS_HELD}개 대회 중` },
+    { label: '최종전 우승 상금의', won: times(player.prize / T.FINAL_WIN), n: `우승 상금 ${T.FINAL_WIN_USD ? `${(T.FINAL_WIN_USD / 1e4).toLocaleString('ko-KR')}만 달러` : krw(T.FINAL_WIN)} 기준` },
   ]
   return (
     <section className="kbo-rec" aria-labelledby="klpga-rec-title">
@@ -412,11 +425,12 @@ function Ranking({ T, current, onPick }) {
 
 // ---------- 화면 ----------
 
-// 여자/남자 투어 바꾸기 (각자 주소가 따로 있어 링크로 옮겨 간다)
+// 투어 바꾸기: 여자 KLPGA, 남자 KPGA, 미국 PGA (각자 주소가 따로 있어 링크로 옮겨 간다)
 function TourTabs({ T }) {
   const tabs = [
     { href: KLPGA, label: '여자 KLPGA' },
     { href: KPGA, label: '남자 KPGA' },
+    { href: PGA, label: '미국 PGA' },
   ]
   return (
     <nav className="golf-tabs" aria-label="투어 고르기">
@@ -464,7 +478,7 @@ export default function GolfApp({ T }) {
     else url.searchParams.set('name', name)
     if (url.href !== window.location.href) window.history.replaceState(null, '', url)
     if (!baseTitle.current) baseTitle.current = document.title
-    document.title = name === startName && !readName(T) ? baseTitle.current : `${name} 상금 ${krw(pr.player.prize)}, 하루에 ${krw(pr.b.day)} | 돈미터`
+    document.title = name === startName && !readName(T) ? baseTitle.current : `${name} 상금 ${pr.player.rounded ? '약 ' : ''}${krw(pr.player.prize)}, 하루에 ${krw(pr.b.day)} | 돈미터`
   }, [name, pr])
 
   useEffect(() => {
@@ -479,7 +493,7 @@ export default function GolfApp({ T }) {
     url.searchParams.set('name', pr.player.name)
     return {
       url: url.toString(),
-      text: `${pr.player.name} ${T.SEASON} 상금 ${krw(pr.player.prize)}, 직장인 연봉 ${roundYears(pr.workerYears)}년 치 | 돈미터`,
+      text: `${pr.player.name} ${T.SEASON} 상금 ${pr.player.rounded ? '약 ' : ''}${krw(pr.player.prize)}, 직장인 연봉 ${roundYears(pr.workerYears)}년 치 | 돈미터`,
     }
   }, [pr])
 

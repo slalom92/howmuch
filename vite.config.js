@@ -46,6 +46,7 @@ export default defineConfig(({ mode }) => {
     //   /kbo/           → kbo/index.html (프로야구 선수 연봉)
     //   /klpga/         → klpga/index.html (여자골프 선수 상금)
     //   /kpga/          → kpga/index.html (남자골프 선수 상금, 화면은 klpga 와 같이 쓴다)
+    //   /pga/           → pga/index.html (PGA 투어 선수 상금, 화면은 klpga 와 같이 쓴다)
     build: {
       rollupOptions: {
         input: {
@@ -55,6 +56,7 @@ export default defineConfig(({ mode }) => {
           kbo: fileURLToPath(new URL('./kbo/index.html', import.meta.url)),
           klpga: fileURLToPath(new URL('./klpga/index.html', import.meta.url)),
           kpga: fileURLToPath(new URL('./kpga/index.html', import.meta.url)),
+          pga: fileURLToPath(new URL('./pga/index.html', import.meta.url)),
         },
       },
     },
