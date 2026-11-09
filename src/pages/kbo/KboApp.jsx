@@ -10,6 +10,7 @@ import { FOOTER_MENU, MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA } from '../../lib
 import { SEASON, GAMES, INNINGS, LEAGUE, TEAMS, TEAM_BY_ID, PLAYERS, SOURCES, WORKER_YEAR, PITCHES_PER_INNING, PITCH_SOURCE, STATS_SOURCE, breakdown, profile, findExact, suggest } from './kbo.js'
 import KboGuide from './KboGuide.jsx'
 import KboImageShare from './KboImageShare.jsx'
+import SocialLinks from '../../components/Social.jsx'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
@@ -633,6 +634,7 @@ export default function KboApp() {
             </li>
           ))}
         </ul>
+        <SocialLinks />
         <p>연봉은 KBO와 각 구단이 발표하고 언론이 보도한 금액을 돈미터가 옮겨 정리한 참고 자료예요. 계약금, 옵션, 광고 수입은 들어 있지 않아요. 돈미터는 KBO나 구단과 관계없는 개인 사이트예요.</p>
       </footer>
 

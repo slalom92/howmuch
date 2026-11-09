@@ -22,6 +22,7 @@ import SiteMenu from './components/SiteMenu.jsx'
 import FloatingSwitch from './components/FloatingSwitch.jsx'
 import { FOOTER_MENU, YOUTUBER } from './lib/menu.js'
 import { FOOTER_NOTE } from './lib/disclaimer.js'
+import SocialLinks from './components/Social.jsx'
 
 const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 돈미터'
 
@@ -271,6 +272,7 @@ export default function App() {
             </li>
           ))}
         </ul>
+        <SocialLinks />
         <p>{FOOTER_NOTE}</p>
         <p>돈미터는 YouTube API 서비스를 사용하며, YouTube 또는 Google과 제휴하거나 승인받은 서비스가 아닙니다.</p>
       </footer>

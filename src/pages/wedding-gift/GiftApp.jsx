@@ -9,6 +9,7 @@ import { RELATIONS, REGIONS, VENUES, PARTY, RECEIVED, DEFAULTS, calculate, fromS
 import GiftGuide from './GiftGuide.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
+import SocialLinks from '../../components/Social.jsx'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
@@ -300,6 +301,7 @@ export default function GiftApp() {
             </li>
           ))}
         </ul>
+        <SocialLinks />
         <p>축의금 금액은 공개된 설문과 통계를 바탕으로 돈미터가 정리한 참고용 기준이에요. 정답은 없으니 서로의 사정에 맞게 정하세요.</p>
       </footer>
 

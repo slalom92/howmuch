@@ -11,6 +11,7 @@ import { FOOTER_MENU, MENU, APT, YOUTUBER, KBO, KLPGA } from '../../lib/menu.js'
 import { SALARIES, YEARS, AREAS, BASES, SOURCES, SIDO, sidoOf, loadSido, calculate, fromSearch, toSearch, sortNear } from './apt.js'
 import { hasMap, loadKakao, locate, regionOf, sggCenters } from './kakaoMap.js'
 import AptGuide from './AptGuide.jsx'
+import SocialLinks from '../../components/Social.jsx'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
@@ -605,6 +606,7 @@ export default function AptApp({ initialSearch = '' }) {
             </li>
           ))}
         </ul>
+        <SocialLinks />
         <p>
           아파트 가격은 {SOURCES.molit.label.replace('공공데이터포털, ', '')}를 돈미터가 단지별로 정리한 참고 자료예요. 실제 매물 가격, 대출, 세금은 들어 있지 않아요.
         </p>

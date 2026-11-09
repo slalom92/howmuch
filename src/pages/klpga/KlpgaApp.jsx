@@ -10,6 +10,7 @@ import { FOOTER_MENU, MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA, KPGA, PGA, LPGA 
 import { WORKER_YEAR } from './golf.js'
 import KlpgaGuide from './KlpgaGuide.jsx'
 import KlpgaImageShare from './KlpgaImageShare.jsx'
+import SocialLinks from '../../components/Social.jsx'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
@@ -580,6 +581,7 @@ export default function GolfApp({ T }) {
             </li>
           ))}
         </ul>
+        <SocialLinks />
         <p>{T.text.footer}</p>
       </footer>
 
