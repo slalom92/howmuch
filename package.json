@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build && node scripts/prerender-home.mjs",
     "sitemap": "node scripts/build-sitemap.mjs",
+    "apt": "node scripts/build-apt.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { track } from '../lib/analytics.js'
-import { YOUTUBER, WEDDING_GIFT, KBO, KLPGA } from '../lib/menu.js'
-import { CreatorIncomeIcon, GiftEnvelopeIcon, BaseballIcon, GolfIcon } from './FloatingLink.jsx'
+import { YOUTUBER, WEDDING_GIFT, KBO, KLPGA, APT } from '../lib/menu.js'
+import { CreatorIncomeIcon, GiftEnvelopeIcon, BaseballIcon, GolfIcon, HouseIcon } from './FloatingLink.jsx'
 
-// 네 콘텐츠(유튜버 수익, 축의금, 야구선수 연봉, 골프선수 상금)를 오가는 떠 있는 버튼 (오른쪽 아래, 하단 고정 광고 위)
+// 다섯 콘텐츠(유튜버 수익, 축의금, 야구선수 연봉, 골프선수 상금, 연봉 모아 집 사기)를 오가는 떠 있는 버튼 (오른쪽 아래, 하단 고정 광고 위)
 // 누르면 위로 목록이 펼쳐진다. 모양은 FloatingLink(.float-link)를 그대로 쓰고, 목록만 .float-switch__menu 로 더한다.
 // 아래로 스크롤하는 동안은 아이콘만 남기고 접어 본문을 덜 가린다.
 //
@@ -12,8 +12,9 @@ import { CreatorIncomeIcon, GiftEnvelopeIcon, BaseballIcon, GolfIcon } from './F
 export const APPS = [
   { href: YOUTUBER, title: '유튜버 수익 보기', short: '유튜버', sub: '한 달 광고 수익 계산', Icon: CreatorIncomeIcon },
   { href: WEDDING_GIFT, title: '축의금 얼마?', short: '축의금', sub: '관계별 적정 금액 계산', Icon: GiftEnvelopeIcon },
-  { href: KBO, title: '야구선수 연봉 보기', short: '야구 연봉', sub: '1경기, 안타 하나에 얼마', Icon: BaseballIcon },
+  { href: KBO, title: '야구선수 연봉 보기', short: '야구 연봉', sub: '1경기, 안타 하나에 얼마', Icon: BaseballIcon, badge: 'NEW' },
   { href: KLPGA, title: '골프선수 상금 보기', short: '골프 상금', sub: '시즌 상금, 하루에 얼마', Icon: GolfIcon, badge: 'NEW' },
+  { href: APT, title: '연봉 모아 집 사기', short: '집 사기', sub: '몇 년 모으면 이 아파트', Icon: HouseIcon, badge: 'NEW' },
 ]
 
 function Chevron({ open }) {

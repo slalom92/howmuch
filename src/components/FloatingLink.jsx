@@ -53,6 +53,19 @@ export function GolfIcon() {
   )
 }
 
+// 집 한 채와 동전 (연봉 모아 집 사기)
+export function HouseIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <path d="M4.5 15L16 5.5 27.5 15" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ stroke: 'var(--seal)' }} />
+      <path d="M7.5 13v14h17V13" strokeWidth="2" strokeLinejoin="round" style={{ fill: 'var(--seal-tint)', stroke: 'var(--seal)' }} />
+      <rect x="13" y="18.5" width="6" height="8.5" rx="0.8" strokeWidth="1.6" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <circle cx="24.5" cy="24.5" r="4.5" strokeWidth="1.6" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <path d="M24.5 22.3v4.4" fill="none" strokeWidth="1.4" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+    </svg>
+  )
+}
+
 // hidden: 잠시 숨길 때 (예: 축의금 계산기에서 하단 요약 바가 떠 있는 동안)
 export default function FloatingLink({ href, title, sub, badge, icon, hidden = false, event = 'floating_link' }) {
   const [compact, setCompact] = useState(false)

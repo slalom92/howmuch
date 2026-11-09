@@ -32,7 +32,7 @@ const KBO_MENU = [
   { href: KLPGA, label: '골프 선수 상금' },
 ]
 // 좁은 화면의 "메뉴": 홈과 계산기 전부 (여자·남자 골프 따로)
-const KBO_ITEMS = MENU.slice(0, 8)
+const KBO_ITEMS = MENU.slice(0, 9)
 
 // 처음 화면에 보여 줄 이름 단추 (연봉이 큰 선수와 화제가 된 선수를 섞는다)
 const PICKS = ['양의지', '류현진', '김광현', '노시환', '김도영', '안현민', '원태인', '김택연']

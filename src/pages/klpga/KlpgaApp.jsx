@@ -25,7 +25,7 @@ const golfMenu = (T) => [
   { href: KBO, label: '프로야구 선수 연봉' },
   { href: T.path, label: `${T.text.who} 선수 상금` },
 ]
-const GOLF_ITEMS = MENU.slice(0, 8)
+const GOLF_ITEMS = MENU.slice(0, 9)
 
 // 원 단위 금액을 "16억 2,844만 원", "4,500만 원", "11만 8천 원", "52원" 처럼 쓴다
 export function krw(n) {

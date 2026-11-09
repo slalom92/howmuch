@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 색 테마: 화면이 그려지기 전에 정해야 색이 번쩍이지 않는다 -->
+    <script src="/theme.js"></script>
+    <link rel="stylesheet" href="/themes.css" />
+    <title>연봉 모아 집 사기 – 내 연봉으로 몇 년 모으면 살 수 있는 서울 아파트 | 돈미터</title>
+    <meta name="description" content="연봉 4,500만 원을 20년 모으면 서울 84㎡ 아파트 몇 곳을 살 수 있을까? 연봉과 기간을 고르면 국토교통부 실거래가로 살 수 있는 아파트 목록을 보여 드려요." />
+    <meta name="keywords" content="연봉 아파트, 연봉으로 집 사기, 내 집 마련 기간, 서울 아파트 실거래가, 연봉 몇 년 모으면 아파트, 84제곱미터 아파트 가격, 59제곱미터 아파트 가격" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://donmeter.com/apt/" />
+    <meta name="theme-color" content="#e7ebf0" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="돈미터" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:url" content="https://donmeter.com/apt/" />
+    <meta property="og:title" content="연봉 모아 집 사기, 몇 년 모으면 이 아파트? | 돈미터" />
+    <meta property="og:description" content="연봉과 모으는 기간만 고르면, 한 푼도 안 쓰고 모았을 때 살 수 있는 서울 아파트를 국토교통부 실거래가로 찾아 드려요. 84㎡·59㎡, 구별로 볼 수 있어요." />
+    <meta property="og:image" content="https://donmeter.com/og/share-v2.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="800" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="연봉 모아 집 사기, 몇 년 모으면 이 아파트? | 돈미터" />
+    <meta name="twitter:description" content="연봉과 모으는 기간만 고르면, 한 푼도 안 쓰고 모았을 때 살 수 있는 서울 아파트를 국토교통부 실거래가로 찾아 드려요. 84㎡·59㎡, 구별로 볼 수 있어요." />
+    <meta name="twitter:image" content="https://donmeter.com/og/share-v2.png" />
+    <!-- FAQ 문구는 src/pages/apt/apt.js 의 FAQ 와 같게 유지한다 -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://donmeter.com/apt/#app",
+      "name": "연봉 모아 집 사기 – 돈미터",
+      "url": "https://donmeter.com/apt/",
+      "description": "세전 연봉과 모으는 기간, 아파트 면적, 지역을 고르면 실수령액을 한 푼도 안 쓰고 모았을 때 살 수 있는 서울 아파트를 국토교통부 실거래가 중간값으로 보여 주는 무료 서비스입니다.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ko-KR",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "isPartOf": {
+        "@id": "https://donmeter.com/#website"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "아파트 가격은 어디서 가져왔나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "국토교통부가 공공데이터포털에 공개하는 아파트 매매 실거래가 자료를 받아, 단지마다 최근 1년 동안 같은 면적으로 거래된 값의 중간값을 냈어요. 계약이 해제된 거래와 직거래는 뺐어요. 실제 매물 호가와는 다를 수 있어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "84㎡, 59㎡는 몇 평인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "전용면적이에요. 전용 84㎡는 흔히 34평(국민평형), 59㎡는 24·25평이라고 불러요. 계산에는 전용 83~86㎡, 58~61㎡ 거래를 각각 넣었어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "실수령과 세전 연봉은 무엇이 다른가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "세전 연봉에서 4대보험과 소득세를 뺀 돈이 실수령액이에요. 2026년 연봉 실수령액표(본인 1명, 비과세 식대 월 20만 원 기준)를 썼어요. 한 푼도 안 쓰고 모은다면 실제로 쌓이는 돈은 실수령액이라서 기본으로 실수령을 골라 두었어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "이자나 집값 오르는 것도 넣었나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "아니요. 모으는 동안의 이자, 앞으로의 집값 변동, 대출, 취득세와 중개 수수료는 넣지 않았어요. 지금 연봉과 지금 집값으로만 본 단순 계산이에요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "찾는 아파트가 없어요.",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "최근 1년 동안 고른 면적으로 거래가 한 번도 없었던 단지는 가격을 낼 수 없어서 빠져요. 거래가 1~2건뿐인 단지는 거래 적음으로 표시했어요."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="/ga.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539"
+     crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/pages/apt/main.jsx"></script>
+  </body>
+</html>

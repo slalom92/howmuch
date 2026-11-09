@@ -1,0 +1,111 @@
+// 연봉 모아 집 사기: 고르는 값과 계산 (아파트 자료는 apt-data.json, 만드는 법은 scripts/build-apt.mjs)
+//
+// - 사용자는 숫자를 직접 쓰지 않고 연봉·기간·면적·지역을 고른다 (콘텐츠 입력은 대표 값 고르기만).
+// - "한 푼도 안 쓰고 모으면": 1년 모으는 돈 = 실수령 연봉(기본) 또는 세전 연봉. 이자, 집값 변동, 대출, 취득세는 넣지 않는다.
+import DATA from './apt-data.json'
+
+export { DATA }
+
+export const SOURCES = {
+  molit: { label: '공공데이터포털, 국토교통부_아파트 매매 실거래가 상세 자료', url: 'https://www.data.go.kr/data/15126468/openapi.do' },
+  netpay: { label: '잡플래닛, 2026년 연봉 실수령액표 (본인 1명, 비과세 식대 월 20만 원 기준)', url: 'https://www.jobplanet.co.kr/contents/news-7982' },
+  worker: { label: '국가데이터처, 2024년 임금근로일자리 소득 (월평균 375만 원)', url: 'https://kostat.go.kr/' },
+}
+
+// 세전 연봉과 2026년 연 실수령액 (잡플래닛 2026 연봉 실수령액표)
+export const SALARIES = [
+  { id: '3000', label: '3,000만', gross: 30000000, net: 26933280 },
+  { id: '4000', label: '4,000만', gross: 40000000, net: 35229400 },
+  { id: '4500', label: '4,500만', note: '직장인 평균', gross: 45000000, net: 39116760 },
+  { id: '6000', label: '6,000만', gross: 60000000, net: 50344920 },
+  { id: '8000', label: '8,000만', gross: 80000000, net: 64650680 },
+  { id: '10000', label: '1억', gross: 100000000, net: 78687400 },
+]
+
+export const YEARS = [5, 10, 20, 30]
+
+export const AREAS = [
+  { id: '84', label: '84㎡', note: '흔히 34평' },
+  { id: '59', label: '59㎡', note: '흔히 24·25평' },
+]
+
+export const BASES = [
+  { id: 'net', label: '실수령' },
+  { id: 'gross', label: '세전 연봉' },
+]
+
+export const DEFAULTS = { pay: '4500', y: 20, a: '84', gu: 'all', b: 'net' }
+
+// apt-data.json 의 한 줄 → 객체
+// [이름, 구 번호, 동, 준공연도, 84 중간값(만원), 84 건수, 84 최근월, 59 중간값, 59 건수, 59 최근월]
+export const APTS = DATA.apts.map(([name, gu, dong, built, p84, n84, l84, p59, n59, l59], i) => ({
+  id: i,
+  name,
+  gu: DATA.gu[gu],
+  dong,
+  built: built || null,
+  84: p84 ? { price: p84 * 10000, n: n84, last: l84 } : null,
+  59: p59 ? { price: p59 * 10000, n: n59, last: l59 } : null,
+}))
+
+export const salaryOf = (id) => SALARIES.find((s) => s.id === id) || SALARIES.find((s) => s.id === DEFAULTS.pay)
+
+export function normalize(s) {
+  return {
+    pay: SALARIES.some((x) => x.id === s.pay) ? s.pay : DEFAULTS.pay,
+    y: YEARS.includes(Number(s.y)) ? Number(s.y) : DEFAULTS.y,
+    a: AREAS.some((x) => x.id === s.a) ? s.a : DEFAULTS.a,
+    gu: s.gu === 'all' || DATA.gu.includes(s.gu) ? s.gu : DEFAULTS.gu,
+    b: BASES.some((x) => x.id === s.b) ? s.b : DEFAULTS.b,
+  }
+}
+
+export const fromSearch = (search) => {
+  const q = new URLSearchParams(search)
+  return normalize({ pay: q.get('pay'), y: q.get('y'), a: q.get('a'), gu: q.get('gu') || 'all', b: q.get('b') })
+}
+
+export const toSearch = (s) => {
+  const q = new URLSearchParams()
+  for (const k of ['pay', 'y', 'a', 'gu', 'b']) if (String(s[k]) !== String(DEFAULTS[k])) q.set(k, s[k])
+  return q.toString()
+}
+
+// 고른 조건으로 살 수 있는 단지 (비싼 순) + 요약
+export function calculate(state) {
+  const s = normalize(state)
+  const salary = salaryOf(s.pay)
+  const yearly = s.b === 'net' ? salary.net : salary.gross
+  const budget = yearly * s.y
+  const pool = APTS.filter((a) => a[s.a] && (s.gu === 'all' || a.gu === s.gu))
+  const yearsFor = (a) => a[s.a].price / yearly
+  const fits = pool.filter((a) => a[s.a].price <= budget).sort((x, y) => y[s.a].price - x[s.a].price)
+  const cheapest = pool.reduce((m, a) => (!m || a[s.a].price < m[s.a].price ? a : m), null)
+  // 몇 년 모으면 몇 곳? (사다리 그래프)
+  const ladder = [5, 10, 15, 20, 30, 40].map((n) => ({ years: n, count: pool.filter((a) => a[s.a].price <= yearly * n).length }))
+  return { state: s, salary, yearly, budget, pool, fits, cheapest, ladder, yearsFor }
+}
+
+// 질문과 답은 apt/index.html 의 FAQ 구조화 데이터와 같게 유지한다 (scripts 로 만들어 붙인다)
+export const FAQ = [
+  {
+    q: '아파트 가격은 어디서 가져왔나요?',
+    a: '국토교통부가 공공데이터포털에 공개하는 아파트 매매 실거래가 자료를 받아, 단지마다 최근 1년 동안 같은 면적으로 거래된 값의 중간값을 냈어요. 계약이 해제된 거래와 직거래는 뺐어요. 실제 매물 호가와는 다를 수 있어요.',
+  },
+  {
+    q: '84㎡, 59㎡는 몇 평인가요?',
+    a: '전용면적이에요. 전용 84㎡는 흔히 34평(국민평형), 59㎡는 24·25평이라고 불러요. 계산에는 전용 83~86㎡, 58~61㎡ 거래를 각각 넣었어요.',
+  },
+  {
+    q: '실수령과 세전 연봉은 무엇이 다른가요?',
+    a: '세전 연봉에서 4대보험과 소득세를 뺀 돈이 실수령액이에요. 2026년 연봉 실수령액표(본인 1명, 비과세 식대 월 20만 원 기준)를 썼어요. 한 푼도 안 쓰고 모은다면 실제로 쌓이는 돈은 실수령액이라서 기본으로 실수령을 골라 두었어요.',
+  },
+  {
+    q: '이자나 집값 오르는 것도 넣었나요?',
+    a: '아니요. 모으는 동안의 이자, 앞으로의 집값 변동, 대출, 취득세와 중개 수수료는 넣지 않았어요. 지금 연봉과 지금 집값으로만 본 단순 계산이에요.',
+  },
+  {
+    q: '찾는 아파트가 없어요.',
+    a: '최근 1년 동안 고른 면적으로 거래가 한 번도 없었던 단지는 가격을 낼 수 없어서 빠져요. 거래가 1~2건뿐인 단지는 거래 적음으로 표시했어요.',
+  },
+]
