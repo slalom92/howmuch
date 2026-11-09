@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import AdSlot from '../../components/AdSlot.jsx'
+import AdSlot, { AdRails } from '../../components/AdSlot.jsx'
 import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { useGrowOnView, CountUp } from '../../components/Motion.jsx'
@@ -14,6 +14,8 @@ import SocialLinks from '../../components/Social.jsx'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
+  // PC 좌우 배너용 단위가 따로 없으면 상단 배너 단위를 같이 쓴다
+  rail: import.meta.env.VITE_AD_SLOT_RAIL || import.meta.env.VITE_AD_SLOT_TOP,
   inline: import.meta.env.VITE_AD_SLOT_INLINE,
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
@@ -534,7 +536,8 @@ export default function GolfApp({ T }) {
         </nav>
       </header>
 
-      <AdSlot variant="top" slot={SLOTS.top} />
+      {/* PC: 본문 좌우 세로 배너 / 모바일: 이 자리 대신 본문 중간 광고(mid) */}
+      <AdRails slot={SLOTS.rail} />
 
       <main className="main">
         <section className="hero kbo-hero">
@@ -570,6 +573,9 @@ export default function GolfApp({ T }) {
         <AdSlot variant="inline" slot={SLOTS.inline} />
 
         <Ranking T={T} current={name} onPick={choose} />
+
+        <AdSlot variant="mid" slot={SLOTS.top} />
+
         <KlpgaGuide T={T} />
       </main>
 

@@ -1,6 +1,6 @@
 // 연봉 모아 집 사기 (/apt/): 연봉·기간·면적·지역을 고르면, 한 푼도 안 쓰고 모았을 때 살 수 있는 아파트를 실거래가로 보여 준다
 import { useEffect, useMemo, useRef, useState } from 'react'
-import AdSlot from '../../components/AdSlot.jsx'
+import AdSlot, { AdRails } from '../../components/AdSlot.jsx'
 import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { useGrowOnView, CountUp } from '../../components/Motion.jsx'
@@ -15,6 +15,8 @@ import SocialLinks from '../../components/Social.jsx'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
+  // PC 좌우 배너용 단위가 따로 없으면 상단 배너 단위를 같이 쓴다
+  rail: import.meta.env.VITE_AD_SLOT_RAIL || import.meta.env.VITE_AD_SLOT_TOP,
   inline: import.meta.env.VITE_AD_SLOT_INLINE,
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
@@ -526,7 +528,8 @@ export default function AptApp({ initialSearch = '' }) {
         </nav>
       </header>
 
-      <AdSlot variant="top" slot={SLOTS.top} />
+      {/* PC: 본문 좌우 세로 배너 / 모바일: 이 자리 대신 본문 중간 광고(mid) */}
+      <AdRails slot={SLOTS.rail} />
 
       <main className="main">
         <section className="hero apt-hero">
@@ -595,7 +598,7 @@ export default function AptApp({ initialSearch = '' }) {
 
         <AdSlot variant="inline" slot={SLOTS.inline} />
 
-        <AptGuide />
+        <AptGuide ad={<AdSlot variant="mid" slot={SLOTS.top} />} />
       </main>
 
       <footer className="footer">

@@ -151,6 +151,37 @@ input {
   overflow: hidden;
 }
 
+/* 본문 중간 (좌우 배너가 없는 화면) */
+.ad--mid {
+  margin: 40px auto;
+}
+
+/* PC 좌우 세로 배너: 본문(760px) 바깥에 고정.
+   하단 고정 광고와 오른쪽 아래 바로가기 버튼(약 76px)을 뺀 높이의 가운데, 너무 낮은 화면에서는 위에서 16px */
+.ad--rail {
+  position: fixed;
+  top: max(16px, calc((100vh - var(--anchor-h, 0px) - 76px - 620px) / 2));
+  z-index: 40;
+  width: 160px;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ad--left {
+  left: calc(50% - 380px - 24px - 160px);
+}
+
+.ad--right {
+  right: calc(50% - 380px - 24px - 160px);
+}
+
+@media print {
+  .ad--rail {
+    display: none;
+  }
+}
+
 /* 하단 고정: 광고 높이만큼만 차지하고, 어떤 경우에도 화면의 20%를 넘지 않게 자른다 */
 .ad--anchor {
   position: fixed;

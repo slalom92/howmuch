@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import AdSlot from '../../components/AdSlot.jsx'
+import AdSlot, { AdRails } from '../../components/AdSlot.jsx'
 import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { won } from '../../lib/format.js'
@@ -13,6 +13,8 @@ import SocialLinks from '../../components/Social.jsx'
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
+  // PC 좌우 배너용 단위가 따로 없으면 상단 배너 단위를 같이 쓴다
+  rail: import.meta.env.VITE_AD_SLOT_RAIL || import.meta.env.VITE_AD_SLOT_TOP,
   inline: import.meta.env.VITE_AD_SLOT_INLINE,
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
@@ -237,7 +239,8 @@ export default function GiftApp() {
         </nav>
       </header>
 
-      <AdSlot variant="top" slot={SLOTS.top} />
+      {/* PC: 본문 좌우 세로 배너 / 모바일: 이 자리 대신 본문 중간 광고(mid) */}
+      <AdRails slot={SLOTS.rail} />
 
       <main className="main">
         <section className="hero gift-hero">
@@ -290,7 +293,7 @@ export default function GiftApp() {
 
         <AdSlot variant="inline" slot={SLOTS.inline} />
 
-        <GiftGuide />
+        <GiftGuide ad={<AdSlot variant="mid" slot={SLOTS.top} />} />
       </main>
 
       <footer className="footer">

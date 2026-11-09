@@ -181,7 +181,8 @@ function EnvelopeHowTo() {
   )
 }
 
-export default function GiftGuide() {
+// ad: 가이드 중간(03과 04 사이)에 넣을 광고. 모바일 본문 중간 광고 자리
+export default function GiftGuide({ ad = null }) {
   return (
     <article className="gift-guide">
       <Section no="01" icon="table" title="관계별 축의금 기준표 (2026년)">
@@ -274,6 +275,8 @@ export default function GiftGuide() {
           같은 금액을 보내기도 해요.
         </p>
       </Section>
+
+      {ad}
 
       <Section no="04" icon="meal" title="식대가 축의금을 정한다">
         <Bars

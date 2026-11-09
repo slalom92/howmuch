@@ -3,7 +3,7 @@ import SearchBar from './components/SearchBar.jsx'
 import ChannelPicker from './components/ChannelPicker.jsx'
 import PayStub from './components/PayStub.jsx'
 import CompareChart from './components/CompareChart.jsx'
-import AdSlot from './components/AdSlot.jsx'
+import AdSlot, { AdRails } from './components/AdSlot.jsx'
 import CompanyCompare from './components/CompanyCompare.jsx'
 import GoalPlan from './components/GoalPlan.jsx'
 import ShareBar from './components/ShareBar.jsx'
@@ -28,6 +28,8 @@ const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추�
 
 const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
+  // PC 좌우 배너용 단위가 따로 없으면 상단 배너 단위를 같이 쓴다
+  rail: import.meta.env.VITE_AD_SLOT_RAIL || import.meta.env.VITE_AD_SLOT_TOP,
   inline: import.meta.env.VITE_AD_SLOT_INLINE,
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
@@ -178,7 +180,8 @@ export default function App() {
         </nav>
       </header>
 
-      <AdSlot variant="top" slot={SLOTS.top} />
+      {/* PC: 본문 좌우 세로 배너 / 모바일: 이 자리 대신 본문 중간 광고(mid) */}
+      <AdRails slot={SLOTS.rail} />
 
       <main className="main">
         <section className="hero">
@@ -217,6 +220,8 @@ export default function App() {
         {status === 'done' && <AdSlot variant="inline" slot={SLOTS.inline} />}
 
         {!busy && <PopularChannels currentSlug={channel ? channelSlug(channel) : null} title={status === 'done' ? '다른 유튜버 수익도 보기' : '많이 찾는 유튜버'} limit={status === 'done' ? 14 : 8} />}
+
+        <AdSlot variant="mid" slot={SLOTS.top} />
 
         {status === 'done' ? (
                   <details className="method">

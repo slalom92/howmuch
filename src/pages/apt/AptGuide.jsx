@@ -11,7 +11,8 @@ const man = (v) => {
 }
 const period = DATA.from ? `${DATA.from.replace('-', '년 ')}월부터 ${DATA.to.replace('-', '년 ')}월까지` : '최근 1년'
 
-export default function AptGuide() {
+// ad: 첫 카드(이렇게 계산했어요) 다음에 넣을 광고. 모바일 본문 중간 광고 자리
+export default function AptGuide({ ad = null }) {
   return (
     <article className="kbo-guide">
       <section className="kbo-card">
@@ -31,6 +32,8 @@ export default function AptGuide() {
           </li>
         </ul>
       </section>
+
+      {ad}
 
       <section className="kbo-card">
         <h2 className="kbo-card__title">자주 묻는 질문</h2>
