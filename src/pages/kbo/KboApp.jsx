@@ -5,7 +5,7 @@ import { BrandMark } from '../../components/Art.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
-import { FOOTER_MENU, HOME, YOUTUBER, WEDDING_GIFT, KBO } from '../../lib/menu.js'
+import { FOOTER_MENU, MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA } from '../../lib/menu.js'
 import { SEASON, GAMES, INNINGS, LEAGUE, TEAMS, TEAM_BY_ID, PLAYERS, SOURCES, WORKER_YEAR, PITCHES_PER_INNING, PITCH_SOURCE, STATS_SOURCE, breakdown, profile, findExact, suggest } from './kbo.js'
 import KboGuide from './KboGuide.jsx'
 import KboImageShare from './KboImageShare.jsx'
@@ -28,8 +28,10 @@ const KBO_MENU = [
   { href: YOUTUBER, label: '유튜버 수익 계산기' },
   { href: WEDDING_GIFT, label: '축의금 계산기' },
   { href: PATH, label: '프로야구 선수 연봉' },
+  { href: KLPGA, label: '골프 선수 상금' },
 ]
-const KBO_ITEMS = [{ href: HOME, label: '돈미터 홈' }, ...KBO_MENU]
+// 좁은 화면의 "메뉴": 홈과 계산기 전부 (여자·남자 골프 따로)
+const KBO_ITEMS = MENU.slice(0, 6)
 
 // 처음 화면에 보여 줄 이름 단추 (연봉이 큰 선수와 화제가 된 선수를 섞는다)
 const PICKS = ['양의지', '류현진', '김광현', '노시환', '김도영', '안현민', '원태인', '김택연']

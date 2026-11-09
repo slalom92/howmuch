@@ -3,6 +3,8 @@ export const HOME = '/'
 export const YOUTUBER = '/youtuber/'
 export const WEDDING_GIFT = '/wedding-gift/'
 export const KBO = '/kbo/'
+export const KLPGA = '/klpga/'
+export const KPGA = '/kpga/'
 
 // 좁은 화면에서 "메뉴"를 누르면 보이는 전체 목록
 export const MENU = [
@@ -10,6 +12,8 @@ export const MENU = [
   { href: YOUTUBER, label: '유튜버 수익 계산기' },
   { href: WEDDING_GIFT, label: '축의금 계산기' },
   { href: KBO, label: '프로야구 선수 연봉' },
+  { href: KLPGA, label: '여자골프 선수 상금' },
+  { href: KPGA, label: '남자골프 선수 상금' },
   { href: '/channel/', label: '유튜버별 수익' },
   { href: '/guide/', label: '수익 가이드' },
   { href: '/how/', label: '계산 방법' },
@@ -17,7 +21,7 @@ export const MENU = [
 ]
 
 // 유튜버 수익 계산기 쪽 넓은 화면에서 줄지어 보이는 링크
-export const YOUTUBER_LINKS = MENU.slice(4)
+export const YOUTUBER_LINKS = MENU.slice(6)
 
 export const FOOTER_MENU = [
   ...MENU.slice(1),

@@ -1,4 +1,4 @@
-// 빌드 뒤 각 계산기 페이지(dist/youtuber/, dist/wedding-gift/, dist/kbo/ 의 index.html)에 첫 화면 HTML을 미리 채운다.
+// 빌드 뒤 각 계산기 페이지(dist/youtuber/, dist/wedding-gift/, dist/kbo/, dist/klpga/, dist/kpga/ 의 index.html)에 첫 화면 HTML을 미리 채운다.
 // (사이트 첫 화면 dist/index.html 은 계산기를 고르는 정적 페이지라 채울 것이 없다)
 //
 // SPA는 처음 받는 HTML이 <div id="root"></div> 뿐이라, 자바스크립트를 실행하지 않는
@@ -20,6 +20,8 @@ const PAGES = [
   { name: '유튜버 수익 계산기', entry: 'src/entry-server.jsx', html: 'dist/youtuber/index.html' },
   { name: '축의금 계산기', entry: 'src/pages/wedding-gift/entry-server.jsx', html: 'dist/wedding-gift/index.html' },
   { name: '프로야구 선수 연봉', entry: 'src/pages/kbo/entry-server.jsx', html: 'dist/kbo/index.html' },
+  { name: '여자골프 선수 상금', entry: 'src/pages/klpga/entry-server.jsx', html: 'dist/klpga/index.html' },
+  { name: '남자골프 선수 상금', entry: 'src/pages/kpga/entry-server.jsx', html: 'dist/kpga/index.html' },
 ]
 
 // Vite 처럼 VITE_ 로 시작하는 환경변수를 import.meta.env 로 넘긴다

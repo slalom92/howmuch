@@ -26,7 +26,7 @@ a { color: inherit; }
 .hero h1 { margin: 0; font-size: 34px; line-height: 1.25; font-weight: 700; letter-spacing: -0.02em; }
 
 .apps { margin: 30px 0 0; padding: 26px 8px 22px; border-radius: 22px; background: var(--paper); box-shadow: 0 1px 0 var(--rule), 0 18px 36px -24px rgba(var(--shadow-rgb), 0.45); }
-.apps ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 26px; }
+.apps ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 26px; }
 .app { display: flex; flex-direction: column; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); border-radius: 22px; padding: 4px 0; }
 .app__icon { position: relative; width: 76px; height: 76px; border-radius: 22px; display: grid; place-items: center; background: var(--seal-tint); transition: transform 0.15s ease; }
 .app__icon svg { width: 44px; height: 44px; }
@@ -63,5 +63,11 @@ a { color: inherit; }
   .app__icon, .soon__icon { width: 92px; height: 92px; border-radius: 26px; }
   .app__icon svg { width: 52px; height: 52px; }
   .app__name { font-size: 15px; }
+}
+/* 계산기가 넷이라 좁은 휴대폰에서는 아이콘을 조금 줄인다 */
+@media (max-width: 400px) {
+  .app__icon { width: 66px; height: 66px; border-radius: 20px; }
+  .app__icon svg { width: 38px; height: 38px; }
+  .app__name { font-size: 13px; }
 }
 @media (prefers-reduced-motion: reduce) { .app__icon { transition: none; } }

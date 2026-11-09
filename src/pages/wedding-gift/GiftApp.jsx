@@ -4,7 +4,7 @@ import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { won } from '../../lib/format.js'
 import { track } from '../../lib/analytics.js'
-import { FOOTER_MENU, HOME, YOUTUBER, KBO } from '../../lib/menu.js'
+import { FOOTER_MENU, MENU, YOUTUBER, KBO, KLPGA } from '../../lib/menu.js'
 import { RELATIONS, REGIONS, VENUES, PARTY, RECEIVED, DEFAULTS, calculate, fromSearch, toSearch, normalize } from './gift.js'
 import GiftGuide from './GiftGuide.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
@@ -25,8 +25,9 @@ const GIFT_MENU = [
   { href: YOUTUBER, label: '유튜버 수익 계산기' },
   { href: PATH, label: '축의금 계산기' },
   { href: KBO, label: '프로야구 선수 연봉' },
+  { href: KLPGA, label: '골프 선수 상금' },
 ]
-const GIFT_ITEMS = [{ href: HOME, label: '돈미터 홈' }, ...GIFT_MENU]
+const GIFT_ITEMS = MENU.slice(0, 6)
 
 // 부호가 있는 금액 (won()은 음수를 0으로 바꾸므로 따로 처리)
 const signed = (n) => (n >= 0 ? `+${won(n)}` : `-${won(-n)}`)

@@ -42,6 +42,17 @@ export function BaseballIcon() {
   )
 }
 
+export function GolfIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <ellipse cx="16" cy="25" rx="12" ry="4" strokeWidth="2" style={{ fill: 'var(--seal-tint)', stroke: 'var(--seal)' }} />
+      <path d="M14 25V5" fill="none" strokeWidth="2" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+      <path d="M14.6 5.5l9.4 3.6-9.4 3.6z" strokeWidth="1.6" strokeLinejoin="round" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <circle cx="21.5" cy="22.2" r="2.2" strokeWidth="1.4" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+    </svg>
+  )
+}
+
 // hidden: 잠시 숨길 때 (예: 축의금 계산기에서 하단 요약 바가 떠 있는 동안)
 export default function FloatingLink({ href, title, sub, badge, icon, hidden = false, event = 'floating_link' }) {
   const [compact, setCompact] = useState(false)

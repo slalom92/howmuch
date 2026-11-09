@@ -44,6 +44,8 @@ export default defineConfig(({ mode }) => {
     //   /youtuber/      → youtuber/index.html (유튜버 수익 계산기)
     //   /wedding-gift/  → wedding-gift/index.html (축의금 계산기)
     //   /kbo/           → kbo/index.html (프로야구 선수 연봉)
+    //   /klpga/         → klpga/index.html (여자골프 선수 상금)
+    //   /kpga/          → kpga/index.html (남자골프 선수 상금, 화면은 klpga 와 같이 쓴다)
     build: {
       rollupOptions: {
         input: {
@@ -51,6 +53,8 @@ export default defineConfig(({ mode }) => {
           youtuber: fileURLToPath(new URL('./youtuber/index.html', import.meta.url)),
           weddingGift: fileURLToPath(new URL('./wedding-gift/index.html', import.meta.url)),
           kbo: fileURLToPath(new URL('./kbo/index.html', import.meta.url)),
+          klpga: fileURLToPath(new URL('./klpga/index.html', import.meta.url)),
+          kpga: fileURLToPath(new URL('./kpga/index.html', import.meta.url)),
         },
       },
     },
