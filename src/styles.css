@@ -2652,3 +2652,43 @@ input {
     display: none;
   }
 }
+
+/* ---------- 막대 그래프가 화면에 들어올 때 자라기 (src/components/Motion.jsx 의 useGrowOnView) ----------
+   data-grow 가 없으면(SSR, JS 전, 이미 보이는 그래프) 막대는 처음부터 제 길이다.
+   wait: 화면 아래에서 접어 둔 상태, go: 보이는 순간 줄마다 조금씩(--i) 늦게 자란다. */
+[data-grow] .bars__fill,
+[data-grow] .bars__range,
+[data-grow] .kbo-bars__fill {
+  transform-origin: left center;
+  transition:
+    transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 55ms),
+    width 300ms ease;
+}
+
+[data-grow] .kbo-cols__bar {
+  transform-origin: center bottom;
+  transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 90ms);
+}
+
+/* 접을 때는 바로 접는다 (자라는 움직임은 go 에서만) */
+[data-grow='wait'] .bars__fill,
+[data-grow='wait'] .bars__range,
+[data-grow='wait'] .kbo-bars__fill {
+  transform: scaleX(0);
+  transition: none;
+}
+
+[data-grow='wait'] .kbo-cols__bar {
+  transform: scaleY(0);
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-grow] .bars__fill,
+  [data-grow] .bars__range,
+  [data-grow] .kbo-bars__fill,
+  [data-grow] .kbo-cols__bar {
+    transition: none;
+    transform: none;
+  }
+}

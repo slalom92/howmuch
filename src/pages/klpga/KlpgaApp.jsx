@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import AdSlot from '../../components/AdSlot.jsx'
 import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
+import { useGrowOnView, CountUp } from '../../components/Motion.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
@@ -205,9 +206,9 @@ function Scorecard({ pr }) {
         <h2 className="kbo-board__name">{player.name}</h2>
         <p className="kbo-board__pay">
           <span className="kbo-board__pay-label">{T.SEASON} 상금</span>
-          <strong key={player.name}>
+          <strong>
             {player.rounded ? '약 ' : ''}
-            {krw(player.prize)}
+            <CountUp value={player.prize} format={krw} />
           </strong>
         </p>
         {player.usd && (
@@ -350,14 +351,15 @@ function GolfFacts({ pr }) {
 
 function Bars({ title, rows, note, id }) {
   const max = Math.max(...rows.map((r) => r.value))
+  const growRef = useGrowOnView()
   return (
     <section className="kbo-card" aria-labelledby={id}>
       <h2 className="kbo-card__title" id={id}>
         {title}
       </h2>
-      <ul className="kbo-bars">
-        {rows.map((r) => (
-          <li key={r.label} className={r.me ? 'is-me' : undefined}>
+      <ul className="kbo-bars" ref={growRef}>
+        {rows.map((r, i) => (
+          <li key={r.label} className={r.me ? 'is-me' : undefined} style={{ '--i': i }}>
             <span className="kbo-bars__label">{r.label}</span>
             <span className="kbo-bars__track" aria-hidden="true">
               <span className="kbo-bars__fill" style={{ width: `${Math.max(0.6, (r.value / max) * 100)}%` }} />

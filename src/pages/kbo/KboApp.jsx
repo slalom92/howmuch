@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import AdSlot from '../../components/AdSlot.jsx'
 import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
+import { useGrowOnView, CountUp } from '../../components/Motion.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
@@ -212,7 +213,9 @@ function Scoreboard({ pr }) {
         <h2 className="kbo-board__name">{player.name}</h2>
         <p className="kbo-board__pay">
           <span className="kbo-board__pay-label">{SEASON} 연봉</span>
-          <strong key={player.name}>{krwMan(player.pay)}</strong>
+          <strong>
+            <CountUp value={player.pay} format={krwMan} />
+          </strong>
           {player.approx && <span className="kbo-board__approx">어림값</span>}
         </p>
       </div>
@@ -372,14 +375,15 @@ function Records({ pr }) {
 
 function Bars({ title, rows, note, id }) {
   const max = Math.max(...rows.map((r) => r.value))
+  const growRef = useGrowOnView()
   return (
     <section className="kbo-card" aria-labelledby={id}>
       <h2 className="kbo-card__title" id={id}>
         {title}
       </h2>
-      <ul className="kbo-bars">
-        {rows.map((r) => (
-          <li key={r.label} className={r.me ? 'is-me' : undefined}>
+      <ul className="kbo-bars" ref={growRef}>
+        {rows.map((r, i) => (
+          <li key={r.label} className={r.me ? 'is-me' : undefined} style={{ '--i': i }}>
             <span className="kbo-bars__label">{r.label}</span>
             <span className="kbo-bars__track" aria-hidden="true">
               <span className="kbo-bars__fill" style={{ width: `${Math.max(0.6, (r.value / max) * 100)}%` }} />
@@ -411,6 +415,7 @@ function Compare({ pr }) {
 // 해마다 받은 연봉 (자료가 있는 선수만)
 function History({ pr }) {
   const { player, change } = pr
+  const growRef = useGrowOnView() // 아래에서 일찍 return 하기 전에 불러야 한다 (훅 순서)
   const years = player.history || (player.prev ? { [SEASON - 1]: player.prev, [SEASON]: player.pay } : null)
   if (!years) return null
   const entries = Object.entries(years)
@@ -421,9 +426,9 @@ function History({ pr }) {
         연봉은 얼마나 바뀌었나
         {change !== null && <span className={`kbo-chip ${change >= 0 ? 'is-up' : 'is-down'}`}>{change === 0 ? '동결' : `작년보다 ${pct(change)}`}</span>}
       </h2>
-      <ol className="kbo-cols" style={{ '--n': entries.length }}>
-        {entries.map(([y, v]) => (
-          <li key={y} className={Number(y) === SEASON ? 'is-me' : undefined}>
+      <ol className="kbo-cols" style={{ '--n': entries.length }} ref={growRef}>
+        {entries.map(([y, v], i) => (
+          <li key={y} className={Number(y) === SEASON ? 'is-me' : undefined} style={{ '--i': i }}>
             <span className="kbo-cols__value">{krwMan(v)}</span>
             <span className="kbo-cols__bar" aria-hidden="true" style={{ height: `${Math.max(3, (v / max) * 100)}%` }} />
             <span className="kbo-cols__year">{y}</span>

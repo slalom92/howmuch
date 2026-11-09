@@ -3,6 +3,7 @@ import { COMPARE, COMPARE_SOURCES } from '../lib/compare.js'
 import { PERIODS, monthlyRevenue } from '../lib/calc.js'
 import { won, ratioText } from '../lib/format.js'
 import { IconVideo, IconClock, IconShop, IconPerson, IconTower } from './Art.jsx'
+import { useGrowOnView } from './Motion.jsx'
 
 const ICONS = { me: IconVideo, min: IconClock, sme: IconShop, avg: IconPerson, big: IconTower }
 
@@ -22,6 +23,7 @@ export default function CompareChart({ channel, analysis, period, tier }) {
   const max = Math.max(...rows.map((r) => r.high ?? r.value), 1)
   const pct = (v) => `${Math.max(0.6, (v / max) * 100)}%`
   const avg = COMPARE.find((c) => c.id === 'avg').monthly * f
+  const growRef = useGrowOnView()
 
   return (
     <section className="compare" aria-labelledby="compare-title">
@@ -32,9 +34,9 @@ export default function CompareChart({ channel, analysis, period, tier }) {
         <SourceTag /> {PERIOD_WORD[period]} 기준으로 비교했습니다. 유튜버 수익은 돈미터 추정치, 직장인 소득은 공식 통계의 세전 월급을 같은 기간으로 환산한 값입니다.
       </p>
 
-      <ol className="bars">
-        {rows.map((r) => (
-          <li key={r.id} className={`bars__row${r.me ? ' is-me' : ''}`}>
+      <ol className="bars" ref={growRef}>
+        {rows.map((r, i) => (
+          <li key={r.id} className={`bars__row${r.me ? ' is-me' : ''}`} style={{ '--i': i }}>
             <span className="bars__label">
               {(() => {
                 const I = ICONS[r.id]
