@@ -97,7 +97,7 @@ const authError = (text) => {
 // 실거래가 API 의 시군구 코드는 법정동 코드 앞 5자리. 구가 있는 시(수원시 등)는 구 코드로 부른다.
 async function loadSigungu() {
   const file = path.join(CACHE, 'sigungu.json')
-  if (fs.existsSync(file) && Date.now() - fs.statSync(file).mtimeMs < 30 * 86400000) return JSON.parse(fs.readFileSync(file, 'utf8'))
+  if (fs.existsSync(file) && Date.now() - fs.statSync(file).mtimeMs < 30 * 86400000) return fillSido(JSON.parse(fs.readFileSync(file, 'utf8')))
   const rows = []
   for (let page = 1; page < 100; page++) {
     const text = await get(`${CODE_API}?ServiceKey=${KEY_Q}&type=json&pageNo=${page}&numOfRows=1000&flag=Y`)
@@ -144,7 +144,20 @@ async function loadSigungu() {
   }
   fs.mkdirSync(CACHE, { recursive: true })
   fs.writeFileSync(file, JSON.stringify(out))
-  return out
+  return fillSido(out)
+}
+
+// 시도 행이 없는 시군구(예: 세종특별자치시 36110)는 그 자신을 시도로 세운다.
+function fillSido(data) {
+  const have = new Set(data.sido.map((d) => d.code))
+  for (const s of data.sgg) {
+    const code = s.code.slice(0, 2)
+    if (have.has(code)) continue
+    data.sido.push({ code, name: s.full })
+    have.add(code)
+  }
+  data.sido.sort((a, b) => a.code.localeCompare(b.code))
+  return data
 }
 
 // ---------- 2) 거래 (아파트 매매 실거래가 상세) ----------
