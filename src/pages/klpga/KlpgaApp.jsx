@@ -288,11 +288,12 @@ function Headline({ pr }) {
 // ---------- 골프로 보면 ----------
 
 function GolfFacts({ pr }) {
-  const { T, player, perEvent, b } = pr
+  const { T, player, perEvent, b, rank } = pr
+  // 출전 대회 수가 알려진 선수만 '대회 하나에'를 맨 앞에 두고, 모르면 상금 순위로 바꾼다
   const items = [
     perEvent
       ? { label: '대회 하나에', won: krw(perEvent), n: `출전 ${player.events}개 대회 평균` }
-      : { label: '대회 하나에', won: '출전 수 미공개', n: '출전 대회 수가 보도되지 않았어요', none: true },
+      : { label: '시즌 상금 순위', won: `${rank}위`, n: `${T.SEASON} ${T.text.org} 투어` },
     { label: '투어 하루에', won: krw(b.tourDay), n: `시즌 ${T.TOUR_DAYS}일 기준` },
     { label: '우승', won: player.wins ? `${player.wins}번` : '없음', n: `올해 열린 ${T.EVENTS_HELD}개 대회 중` },
     { label: '최종전 우승 상금의', won: times(player.prize / T.FINAL_WIN), n: `우승 상금 ${krw(T.FINAL_WIN)} 기준` },
@@ -304,7 +305,7 @@ function GolfFacts({ pr }) {
       </h2>
       <ul className="kbo-rec__grid kbo-rec__grid--4">
         {items.map((it) => (
-          <li key={it.label} className={it.none ? 'is-none' : undefined}>
+          <li key={it.label}>
             <span className="kbo-rec__label">{it.label}</span>
             <strong className="kbo-rec__won">{it.won}</strong>
             <span className="kbo-rec__n">{it.n}</span>
@@ -347,9 +348,9 @@ function Bars({ title, rows, note, id }) {
 function Compare({ pr }) {
   const { T, player } = pr
   const top = T.PLAYERS[0]
-  const rows = [{ label: player.name, value: player.prize, short: eok(player.prize), me: true }]
-  if (top !== player) rows.push({ label: '상금왕', value: top.prize, short: eok(top.prize), tag: times(player.prize / top.prize) })
-  rows.push({ label: '최종전 우승', value: T.FINAL_WIN, short: eok(T.FINAL_WIN), tag: times(player.prize / T.FINAL_WIN) })
+  const rows = [{ label: player.name, value: player.prize, me: true }]
+  if (top !== player) rows.push({ label: '상금왕', value: top.prize, tag: times(player.prize / top.prize) })
+  rows.push({ label: '최종전 우승', value: T.FINAL_WIN, tag: times(player.prize / T.FINAL_WIN) })
   rows.push({ label: '직장인 평균', value: WORKER_YEAR, tag: times(player.prize / WORKER_YEAR) })
   return <Bars id="klpga-cmp" title="누구랑 비교하면?" rows={rows} note="오른쪽 숫자는 이 선수 상금이 각 기준의 몇 배인지예요. 직장인 평균은 국가데이터처 2024년 임금근로일자리 평균 소득(월 375만 원)을 1년으로 늘린 값이에요." />
 }

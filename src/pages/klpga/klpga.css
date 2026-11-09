@@ -122,3 +122,8 @@
   outline: 3px solid var(--seal);
   outline-offset: 2px;
 }
+
+/* 결과 아래 카드(누구랑 비교하면?)는 이미지 저장 버튼과 띄운다 (프로야구 화면은 .kbo-grid 가 띄운다) */
+.kbo-result > .kbo-card {
+  margin-top: 22px;
+}
