@@ -1,7 +1,14 @@
 // 연봉 모아 집 사기 화면 아래 안내 (계산 방법, 자주 묻는 질문, 출처)
 import { DATA, FAQ, SOURCES, SALARIES } from './apt.js'
 
-const man = (v) => `${Math.round(v / 1e4).toLocaleString('ko-KR')}만 원`
+// 원 → "1억 840만 원", "3,912만 원"
+const man = (v) => {
+  const m = Math.round(v / 1e4)
+  const eok = Math.floor(m / 1e4)
+  const rest = m % 1e4
+  if (!eok) return `${rest.toLocaleString('ko-KR')}만 원`
+  return rest ? `${eok}억 ${rest.toLocaleString('ko-KR')}만 원` : `${eok}억 원`
+}
 const period = DATA.from ? `${DATA.from.replace('-', '년 ')}월부터 ${DATA.to.replace('-', '년 ')}월까지` : '최근 1년'
 
 export default function AptGuide() {
