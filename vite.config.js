@@ -47,6 +47,7 @@ export default defineConfig(({ mode }) => {
     //   /klpga/         → klpga/index.html (여자골프 선수 상금)
     //   /kpga/          → kpga/index.html (남자골프 선수 상금, 화면은 klpga 와 같이 쓴다)
     //   /pga/           → pga/index.html (PGA 투어 선수 상금, 화면은 klpga 와 같이 쓴다)
+    //   /lpga/          → lpga/index.html (LPGA 투어 선수 상금, 화면은 klpga 와 같이 쓴다)
     build: {
       rollupOptions: {
         input: {
@@ -57,6 +58,7 @@ export default defineConfig(({ mode }) => {
           klpga: fileURLToPath(new URL('./klpga/index.html', import.meta.url)),
           kpga: fileURLToPath(new URL('./kpga/index.html', import.meta.url)),
           pga: fileURLToPath(new URL('./pga/index.html', import.meta.url)),
+          lpga: fileURLToPath(new URL('./lpga/index.html', import.meta.url)),
         },
       },
     },

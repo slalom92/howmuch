@@ -50,7 +50,8 @@
             { "@type": "ListItem", "position": 3, "name": "프로야구 선수 연봉", "url": "https://donmeter.com/kbo/" },
             { "@type": "ListItem", "position": 4, "name": "여자골프 선수 상금", "url": "https://donmeter.com/klpga/" },
             { "@type": "ListItem", "position": 5, "name": "남자골프 선수 상금", "url": "https://donmeter.com/kpga/" },
-            { "@type": "ListItem", "position": 6, "name": "PGA 투어 선수 상금", "url": "https://donmeter.com/pga/" }
+            { "@type": "ListItem", "position": 6, "name": "PGA 투어 선수 상금", "url": "https://donmeter.com/pga/" },
+            { "@type": "ListItem", "position": 7, "name": "LPGA 투어 선수 상금", "url": "https://donmeter.com/lpga/" }
           ]
         }
       ]
@@ -89,6 +90,7 @@
               <li><a href="/klpga/">여자골프 선수 상금</a></li>
               <li><a href="/kpga/">남자골프 선수 상금</a></li>
               <li><a href="/pga/">PGA 선수 상금</a></li>
+              <li><a href="/lpga/">LPGA 선수 상금</a></li>
               <li><a href="/channel/">유튜버별 수익</a></li>
               <li><a href="/guide/">수익 가이드</a></li>
               <li><a href="/how/">계산 방법</a></li>
@@ -181,6 +183,7 @@
           <li><a href="/klpga/">여자골프 선수 상금</a></li>
           <li><a href="/kpga/">남자골프 선수 상금</a></li>
           <li><a href="/pga/">PGA 선수 상금</a></li>
+          <li><a href="/lpga/">LPGA 선수 상금</a></li>
           <li><a href="/about/">사이트 소개</a></li>
           <li><a href="/privacy/">개인정보처리방침</a></li>
           <li><a href="/terms/">이용약관</a></li>
@@ -231,7 +234,7 @@
         var k = pickOne(KBO)
         swap(document.getElementById('quick-kbo'), '/kbo/?name=' + encodeURIComponent(k[1]), k[0])
 
-        // 3) 골프: 시즌 최종 상금이 확인된 선수 중 한 명 (금액은 src/pages/klpga/klpga.js, src/pages/kpga/kpga.js, src/pages/pga/pga.js 와 맞춘다)
+        // 3) 골프: 상금이 보도된 선수 중 한 명 (금액은 src/pages/klpga/klpga.js, src/pages/kpga/kpga.js, src/pages/pga/pga.js, src/pages/lpga/lpga.js 와 맞춘다)
         var GOLF = [
           ['김민솔 상금 16억, 하루에 얼마?', '/klpga/', '김민솔'],
           ['4승 서교림, 상금 14억은 직장인 몇 년 치?', '/klpga/', '서교림'],
@@ -241,6 +244,8 @@
           ['제네시스 대상 신상훈, 대회 하나에 얼마?', '/kpga/', '신상훈'],
           ['김시우 상금 1,027만 달러, 원화로 얼마?', '/pga/', '김시우'],
           ['셰플러 상금 3,094만 달러, 하루에 얼마?', '/pga/', '스코티 셰플러'],
+          ['메이저 2승 유해란, 상금 452만 달러는 원화로?', '/lpga/', '유해란'],
+          ['넬리 코다 상금 622만 달러, 하루에 얼마?', '/lpga/', '넬리 코다'],
         ]
         var g2 = pickOne(GOLF)
         swap(document.getElementById('quick-klpga'), g2[1] + '?name=' + encodeURIComponent(g2[2]), g2[0])

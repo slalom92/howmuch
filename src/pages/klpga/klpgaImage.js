@@ -49,25 +49,38 @@ function flag(ctx, x, y, c) {
 }
 
 export async function drawScorecard(pr) {
-  const { T, player, b, perEvent, workerYears, rank } = pr
+  const { T, player, b, perEvent, perStroke, workerYears, rank } = pr
   const { SEASON, TOUR_DAYS } = T
   const c = themeColors()
   const prize = `${player.rounded ? '약 ' : ''}${krw(b.year)}`
   const years = workerYears < 10 ? Math.round(workerYears * 10) / 10 : Math.round(workerYears)
-  const cells = [
-    ['한 달', krw(b.month)],
-    [`투어 하루 (${TOUR_DAYS}일)`, krw(b.tourDay)],
-    ['하루', krw(b.day)],
-    perEvent ? ['대회 하나에', krw(perEvent)] : ['1시간', krw(b.hour)],
-    ['1초', krw(b.second)],
-    ['직장인 연봉', `${years}년 치`],
-  ]
+  // 출전 대회 수를 알면 '대회 하나에'와 '1타에'(72타 × 라운드 수)를 넣는다
+  const cells = perEvent
+    ? [
+        ['대회 하나에', krw(perEvent)],
+        [`1타에 (${T.PAR}타×${T.ROUNDS}R)`, krw(perStroke)],
+        [`투어 하루 (${TOUR_DAYS}일)`, krw(b.tourDay)],
+        ['하루', krw(b.day)],
+        ['1초', krw(b.second)],
+        ['직장인 연봉', `${years}년 치`],
+      ]
+    : [
+        ['한 달', krw(b.month)],
+        [`투어 하루 (${TOUR_DAYS}일)`, krw(b.tourDay)],
+        ['하루', krw(b.day)],
+        ['1시간', krw(b.hour)],
+        ['1초', krw(b.second)],
+        ['직장인 연봉', `${years}년 치`],
+      ]
   const headline = `직장인 평균 연봉(4,500만 원) ${years}년 치를 한 시즌에 벌었어요`
+  const note = perEvent
+    ? `1타는 한 대회 ${T.PAR}타 × ${T.ROUNDS}라운드로, 하루·1초는 365일로 나눴어요`
+    : '투어 하루는 개막전~최종전 날짜, 하루·1초는 365일로 나눴어요'
   const dollars = player.usd ? `${player.rounded ? '약 ' : ''}$${player.usd.toLocaleString('en-US')}` : ''
   const tags = [dollars, player.wins ? `${player.wins}승` : '', ...player.titles].filter(Boolean).join(' · ')
   const sub = `${SEASON} ${T.text.org} 투어 · ${player.team} · 상금 ${rank}위`
 
-  await loadFonts([player.name, sub, prize, headline, tags, ...cells.flat(), `${SEASON} 상금 선수 이름으로 찾기 언론 보도 시즌 최종 상금 후원 계약금 제외 투어 하루는 개막전~최종전 날짜, 하루·1초는 365일로 나눴어요 승 상금왕 대상 신인상 다승왕 최저타수상 제네시스 KPGA KLPGA PGA 페덱스컵 우승 한국 선수 최초 1천만 달러 약 $0123456789, ${T.text.card}`])
+  await loadFonts([player.name, sub, prize, headline, note, tags, ...cells.flat(), `${SEASON} 상금 선수 이름으로 찾기 언론 보도 시즌 최종 상금 후원 계약금 제외 투어 하루는 개막전~최종전 날짜, 하루·1초는 365일로 나눴어요 승 상금왕 대상 신인상 다승왕 최저타수상 제네시스 KPGA KLPGA PGA 페덱스컵 우승 한국 선수 최초 1천만 달러 약 $0123456789, ${T.text.card}`])
   const [canvas, ctx] = makeCanvas()
 
   ctx.fillStyle = c.desk
@@ -119,7 +132,7 @@ export async function drawScorecard(pr) {
   })
 
   ctx.globalAlpha = 0.6
-  text(ctx, '투어 하루는 개막전~최종전 날짜, 하루·1초는 365일로 나눴어요', ix, py + ph - 38, { size: 24, weight: 400, color: c.onInk })
+  fitText(ctx, note, ix, py + ph - 38, iw, { size: 24, min: 18, weight: 400, color: c.onInk })
   ctx.globalAlpha = 1
 
   const sy = py + ph + 96

@@ -7,6 +7,11 @@
 // 직장인 평균 연봉 (국가데이터처 2024년 임금근로일자리 소득, 월 375만 원 × 12) — 프로야구 화면과 같은 기준
 export const WORKER_YEAR = 45000000
 
+// 1타에 얼마: 한 대회를 라운드마다 72타(파 72)씩 4라운드 친다고 본다.
+// 컷 탈락(2라운드)이나 3라운드 대회도 있지만 모두 4라운드로 셈한다. 투어마다 cfg.ROUNDS 로 바꿀 수 있다.
+export const PAR = 72
+export const ROUNDS = 4
+
 const CHO = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
 
 // "김민솔" → "ㄱㅁㅅ"
@@ -46,6 +51,8 @@ export function makeTour(cfg) {
       b,
       rank: PLAYERS.filter((x) => x.prize > p.prize).length + 1,
       perEvent: p.events ? p.prize / p.events : null,
+      // 대회 하나 평균 상금 ÷ (72타 × 라운드 수). 출전 대회 수를 모르면 계산하지 않는다.
+      perStroke: p.events ? p.prize / p.events / (PAR * (cfg.ROUNDS || ROUNDS)) : null,
       // 직장인 평균 연봉 몇 년 치를 한 시즌에 벌었나
       workerYears: p.prize / WORKER_YEAR,
       // 직장인 평균 연봉을 버는 데 걸리는 투어 날짜 수
@@ -87,6 +94,6 @@ export function makeTour(cfg) {
       .map((x) => x.p)
   }
 
-  const tour = { ...cfg, PLAYERS, WORKER_YEAR, breakdown, profile, findExact, suggest }
+  const tour = { ...cfg, PAR, ROUNDS: cfg.ROUNDS || ROUNDS, PLAYERS, WORKER_YEAR, breakdown, profile, findExact, suggest }
   return tour
 }

@@ -5,13 +5,12 @@
 // - 페덱스컵 보너스(셰플러 2,300만 달러 등)는 공식 상금이 아니라서 넣지 않았다.
 // - 시즌은 11월 22일 RSM 클래식까지 이어진다(가을 시리즈). 지금 금액은 페덱스컵 플레이오프가 끝난 8월 30일 기준이고,
 //   반올림한 금액(rounded)은 9월 22일 기준 보도다. 시즌이 끝나면 최종 금액으로 고친다.
-// - 달러는 아래 환율 하나로 고정해 원으로 바꾼다. 환율을 바꾸면 USD_KRW 와 FX_DATE 만 고치면 된다.
+// - 달러는 ./fx.js 의 환율 하나로 고정해 원으로 바꾼다 (LPGA 도 같은 환율을 쓴다).
 import { PGA, KLPGA } from '../../lib/menu.js'
 import { makeTour } from '../klpga/golf.js'
+import { USD_KRW, FX_DATE } from './fx.js'
 
 const SEASON = 2026
-export const USD_KRW = 1356.6 // 2026년 11월 6일 서울외환시장 원·달러 주간 종가
-export const FX_DATE = '2026년 11월 6일'
 // 1월 15일(소니 오픈 1라운드) ~ 8월 30일(투어 챔피언십 마지막 날): 정규 대회 34개와 플레이오프 3개
 const TOUR_DAYS = 228
 const EVENTS_HELD = 37

@@ -30,7 +30,10 @@ export default function KlpgaGuide({ T }) {
             <strong>하루, 1시간, 1초</strong> 시즌 상금 ÷ 365일, 다시 24시간, 3,600초.
           </li>
           <li>
-            <strong>대회 하나에</strong> 시즌 상금 ÷ 출전한 대회 수. 출전 수가 알려진 선수만 계산했어요. 올해는 {T.EVENTS_HELD}개 대회가 열렸어요.
+            <strong>대회 하나에</strong> 시즌 상금 ÷ 출전한 대회 수. 출전 수가 알려진 선수만 계산했어요.{T.EVENTS_HELD ? ` 올해는 ${T.EVENTS_HELD}개 대회가 열렸어요.` : ''}
+          </li>
+          <li>
+            <strong>1타에</strong> 대회 하나 평균 상금 ÷ {T.PAR * T.ROUNDS}타. 한 대회를 {T.PAR}타씩 {T.ROUNDS}라운드 친다고 봤어요. 컷 탈락으로 2라운드만 친 대회나 3라운드 대회도 모두 {T.ROUNDS}라운드로 셈해서, 실제 타수와는 차이가 있어요.
           </li>
           <li>
             <strong>직장인 평균</strong> 국가데이터처 2024년 임금근로일자리 평균 소득(월 375만 원)을 12달로 곱한 4,500만 원이에요.

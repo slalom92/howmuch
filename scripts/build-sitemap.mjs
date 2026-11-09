@@ -24,6 +24,7 @@ const PAGES = [
   { url: '/klpga/', files: ['klpga/index.html', 'src/pages/klpga'] },
   { url: '/kpga/', files: ['kpga/index.html', 'src/pages/kpga', 'src/pages/klpga'] },
   { url: '/pga/', files: ['pga/index.html', 'src/pages/pga', 'src/pages/klpga'] },
+  { url: '/lpga/', files: ['lpga/index.html', 'src/pages/lpga', 'src/pages/pga/fx.js', 'src/pages/klpga'] },
 ]
 
 // 채널 페이지는 서버(api/page.js)가 그린다

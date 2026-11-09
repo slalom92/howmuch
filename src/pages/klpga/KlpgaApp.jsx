@@ -5,7 +5,7 @@ import { BrandMark } from '../../components/Art.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
-import { FOOTER_MENU, MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA, KPGA, PGA } from '../../lib/menu.js'
+import { FOOTER_MENU, MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA, KPGA, PGA, LPGA } from '../../lib/menu.js'
 import { WORKER_YEAR } from './golf.js'
 import KlpgaGuide from './KlpgaGuide.jsx'
 import KlpgaImageShare from './KlpgaImageShare.jsx'
@@ -16,7 +16,7 @@ const SLOTS = {
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
 
-// 여자(KLPGA)와 남자(KPGA) 투어가 같은 화면을 쓴다. T 는 klpga.js 또는 ../kpga/kpga.js 가 만든 투어 자료.
+// KLPGA, KPGA, PGA, LPGA 투어가 같은 화면을 쓴다. T 는 klpga.js, ../kpga/kpga.js, ../pga/pga.js, ../lpga/lpga.js 가 만든 투어 자료.
 // 넓은 화면에 줄지어 보일 링크와, 좁은 화면의 "메뉴" 목록
 const golfMenu = (T) => [
   { href: YOUTUBER, label: '유튜버 수익 계산기' },
@@ -24,7 +24,7 @@ const golfMenu = (T) => [
   { href: KBO, label: '프로야구 선수 연봉' },
   { href: T.path, label: `${T.text.who} 선수 상금` },
 ]
-const GOLF_ITEMS = MENU.slice(0, 7)
+const GOLF_ITEMS = MENU.slice(0, 8)
 
 // 원 단위 금액을 "16억 2,844만 원", "4,500만 원", "11만 8천 원", "52원" 처럼 쓴다
 export function krw(n) {
@@ -61,6 +61,11 @@ function times(r) {
 }
 
 const roundYears = (y) => (y < 10 ? Math.round(y * 10) / 10 : Math.round(y))
+// 직장인 한 달 월급(연 4,500만 원 ÷ 12)을 몇 타 만에 버나
+const strokesForMonth = (perStroke) => {
+  const n = WORKER_YEAR / 12 / perStroke
+  return (n < 10 ? Math.round(n * 10) / 10 : Math.round(n)).toLocaleString('ko-KR')
+}
 
 // 주소의 ?name= 선수 (없거나 모르는 이름이면 null)
 function readName(T) {
@@ -287,11 +292,17 @@ function Scorecard({ pr }) {
 
 // 한 줄 요약: 직장인 평균 연봉 몇 년 치를 한 시즌에 벌었나
 function Headline({ pr }) {
-  const { T, player, workerYears, daysForWorkerYear } = pr
+  const { T, player, workerYears, daysForWorkerYear, perStroke } = pr
   const d = Math.max(1, Math.round(daysForWorkerYear))
   return (
     <p className="kbo-headline">
       <strong>{player.name}</strong> 선수는 직장인 평균 연봉 <strong>{roundYears(workerYears)}년 치</strong>를 한 시즌에 벌었어요. 투어가 열린 {T.TOUR_DAYS}일로 나누면 직장인 연봉 1년 치를 <strong>{d}일</strong>마다 번 셈이에요.
+      {perStroke && (
+        <>
+          {' '}
+          한 대회를 {T.PAR}타씩 {T.ROUNDS}라운드 친다고 보면 <strong>1타에 {krw(perStroke)}</strong>, 직장인 한 달 월급(375만 원)을 <strong>{strokesForMonth(perStroke)}타</strong>마다 번 셈이에요.
+        </>
+      )}
     </p>
   )
 }
@@ -299,16 +310,21 @@ function Headline({ pr }) {
 // ---------- 골프로 보면 ----------
 
 function GolfFacts({ pr }) {
-  const { T, player, perEvent, b, rank } = pr
-  // 출전 대회 수가 알려진 선수만 '대회 하나에'를 맨 앞에 두고, 모르면 상금 순위로 바꾼다
+  const { T, player, perEvent, perStroke, b, rank } = pr
+  // 출전 대회 수가 알려진 선수는 '대회 하나에'와 '1타에'를, 모르면 상금 순위와 투어 하루를 보여 준다
   const items = [
-    perEvent
-      ? { label: '대회 하나에', won: krw(perEvent), n: `출전 ${player.events}개 대회 평균` }
-      : { label: '시즌 상금 순위', won: `${rank}위`, n: `${T.SEASON} ${T.text.org} 투어` },
-    { label: '투어 하루에', won: krw(b.tourDay), n: `시즌 ${T.TOUR_DAYS}일 기준` },
+    ...(perEvent
+      ? [
+          { label: '대회 하나에', won: krw(perEvent), n: `출전 ${player.events}개 대회 평균` },
+          { label: '1타에', won: krw(perStroke), n: `한 대회 ${T.PAR}타 × ${T.ROUNDS}라운드 기준` },
+        ]
+      : [
+          { label: '시즌 상금 순위', won: `${rank}위`, n: `${T.SEASON} ${T.text.org} 투어` },
+          { label: '투어 하루에', won: krw(b.tourDay), n: `시즌 ${T.TOUR_DAYS}일 기준` },
+        ]),
     player.wins === null || player.wins === undefined
       ? { label: '달러로는', won: usd(player), n: `1달러 = ${T.USD_KRW.toLocaleString('ko-KR')}원` }
-      : { label: '우승', won: player.wins ? `${player.wins}번` : '없음', n: `올해 열린 ${T.EVENTS_HELD}개 대회 중` },
+      : { label: '우승', won: player.wins ? `${player.wins}번` : '없음', n: T.EVENTS_HELD ? `올해 열린 ${T.EVENTS_HELD}개 대회 중` : `${T.SEASON} 시즌` },
     { label: '최종전 우승 상금의', won: times(player.prize / T.FINAL_WIN), n: `우승 상금 ${T.FINAL_WIN_USD ? `${(T.FINAL_WIN_USD / 1e4).toLocaleString('ko-KR')}만 달러` : krw(T.FINAL_WIN)} 기준` },
   ]
   return (
@@ -410,7 +426,8 @@ function Ranking({ T, current, onPick }) {
               <span className="kbo-rank__who">
                 <strong>{p.name}</strong>
                 <span>
-                  {p.team} · {p.wins}승
+                  {p.team}
+                  {p.wins === null || p.wins === undefined ? '' : ` · ${p.wins}승`}
                 </span>
               </span>
               <span className="kbo-rank__pay">{krw(p.prize).replace(/ 원$/, '')}</span>
@@ -425,12 +442,13 @@ function Ranking({ T, current, onPick }) {
 
 // ---------- 화면 ----------
 
-// 투어 바꾸기: 여자 KLPGA, 남자 KPGA, 미국 PGA (각자 주소가 따로 있어 링크로 옮겨 간다)
+// 투어 바꾸기: 여자 KLPGA, 남자 KPGA, 미국 PGA, 미국 LPGA (각자 주소가 따로 있어 링크로 옮겨 간다)
 function TourTabs({ T }) {
   const tabs = [
     { href: KLPGA, label: '여자 KLPGA' },
     { href: KPGA, label: '남자 KPGA' },
     { href: PGA, label: '미국 PGA' },
+    { href: LPGA, label: '미국 LPGA' },
   ]
   return (
     <nav className="golf-tabs" aria-label="투어 고르기">

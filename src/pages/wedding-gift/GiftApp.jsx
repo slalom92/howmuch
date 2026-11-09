@@ -27,7 +27,7 @@ const GIFT_MENU = [
   { href: KBO, label: '프로야구 선수 연봉' },
   { href: KLPGA, label: '골프 선수 상금' },
 ]
-const GIFT_ITEMS = MENU.slice(0, 7)
+const GIFT_ITEMS = MENU.slice(0, 8)
 
 // 부호가 있는 금액 (won()은 음수를 0으로 바꾸므로 따로 처리)
 const signed = (n) => (n >= 0 ? `+${won(n)}` : `-${won(-n)}`)

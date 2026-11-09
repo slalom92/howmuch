@@ -102,6 +102,7 @@
 
 .golf-tabs a {
   padding: 7px 14px;
+  white-space: nowrap;
   border-radius: 999px;
   color: var(--muted);
   font-size: 14px;
@@ -136,10 +137,18 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* 투어가 셋이라 좁은 휴대폰에서는 단추를 조금 줄인다 */
-@media (max-width: 400px) {
+/* 투어가 넷이라 좁은 휴대폰에서는 두 줄(2×2)로 놓는다 */
+@media (max-width: 480px) {
+  .golf-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    border-radius: 20px;
+  }
+
   .golf-tabs a {
-    padding: 7px 11px;
+    padding: 7px 8px;
     font-size: 13.5px;
+    text-align: center;
   }
 }
