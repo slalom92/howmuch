@@ -6,9 +6,9 @@
     <!-- 색 테마: 화면이 그려지기 전에 정해야 색이 번쩍이지 않는다 -->
     <script src="/theme.js"></script>
     <link rel="stylesheet" href="/themes.css" />
-    <title>연봉 모아 집 사기 – 내 연봉으로 몇 년 모으면 살 수 있는 서울 아파트 | 돈미터</title>
-    <meta name="description" content="연봉 4,500만 원을 20년 모으면 서울 84㎡ 아파트 몇 곳을 살 수 있을까? 연봉과 기간을 고르면 국토교통부 실거래가로 살 수 있는 아파트 목록을 보여 드려요." />
-    <meta name="keywords" content="연봉 아파트, 연봉으로 집 사기, 내 집 마련 기간, 서울 아파트 실거래가, 연봉 몇 년 모으면 아파트, 84제곱미터 아파트 가격, 59제곱미터 아파트 가격" />
+    <title>연봉 모아 집 사기 – 내 연봉으로 몇 년 모으면 살 수 있는 아파트 | 돈미터</title>
+    <meta name="description" content="연봉 4,500만 원을 20년 모으면 84㎡ 아파트 몇 곳을 살 수 있을까? 연봉과 기간, 지역을 고르면 국토교통부 실거래가로 전국에서 살 수 있는 아파트 목록을 보여 드려요." />
+    <meta name="keywords" content="연봉 아파트, 연봉으로 집 사기, 내 집 마련 기간, 아파트 실거래가, 지역별 아파트 가격, 연봉 몇 년 모으면 아파트, 84제곱미터 아파트 가격, 59제곱미터 아파트 가격" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://donmeter.com/apt/" />
     <meta name="theme-color" content="#e7ebf0" />
@@ -17,13 +17,13 @@
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:url" content="https://donmeter.com/apt/" />
     <meta property="og:title" content="연봉 모아 집 사기, 몇 년 모으면 이 아파트? | 돈미터" />
-    <meta property="og:description" content="연봉과 모으는 기간만 고르면, 한 푼도 안 쓰고 모았을 때 살 수 있는 서울 아파트를 국토교통부 실거래가로 찾아 드려요. 84㎡·59㎡, 구별로 볼 수 있어요." />
+    <meta property="og:description" content="연봉과 모으는 기간만 고르면, 한 푼도 안 쓰고 모았을 때 살 수 있는 아파트를 국토교통부 실거래가로 찾아 드려요. 전국 시군구, 84㎡·59㎡로 볼 수 있어요." />
     <meta property="og:image" content="https://donmeter.com/og/share-v2.png" />
     <meta property="og:image:width" content="1600" />
     <meta property="og:image:height" content="800" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="연봉 모아 집 사기, 몇 년 모으면 이 아파트? | 돈미터" />
-    <meta name="twitter:description" content="연봉과 모으는 기간만 고르면, 한 푼도 안 쓰고 모았을 때 살 수 있는 서울 아파트를 국토교통부 실거래가로 찾아 드려요. 84㎡·59㎡, 구별로 볼 수 있어요." />
+    <meta name="twitter:description" content="연봉과 모으는 기간만 고르면, 한 푼도 안 쓰고 모았을 때 살 수 있는 아파트를 국토교통부 실거래가로 찾아 드려요. 전국 시군구, 84㎡·59㎡로 볼 수 있어요." />
     <meta name="twitter:image" content="https://donmeter.com/og/share-v2.png" />
     <!-- FAQ 문구는 src/pages/apt/apt.js 의 FAQ 와 같게 유지한다 -->
     <script type="application/ld+json">
@@ -35,7 +35,7 @@
       "@id": "https://donmeter.com/apt/#app",
       "name": "연봉 모아 집 사기 – 돈미터",
       "url": "https://donmeter.com/apt/",
-      "description": "세전 연봉과 모으는 기간, 아파트 면적, 지역을 고르면 실수령액을 한 푼도 안 쓰고 모았을 때 살 수 있는 서울 아파트를 국토교통부 실거래가 중간값으로 보여 주는 무료 서비스입니다.",
+      "description": "세전 연봉과 모으는 기간, 아파트 면적, 지역을 고르면 실수령액을 한 푼도 안 쓰고 모았을 때 살 수 있는 전국 아파트를 국토교통부 실거래가 중간값으로 보여 주는 무료 서비스입니다.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "Web",
       "inLanguage": "ko-KR",
@@ -82,6 +82,22 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "아니요. 모으는 동안의 이자, 앞으로의 집값 변동, 대출, 취득세와 중개 수수료는 넣지 않았어요. 지금 연봉과 지금 집값으로만 본 단순 계산이에요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "내 주변 먼저는 어떻게 정하나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "버튼을 누르면 브라우저가 위치 권한을 물어요. 허용하면 카카오맵으로 내가 있는 시도와 시군구를 확인하고, 그 시도의 시군구를 내 위치에서 가까운 순서로 늘어놓아요. 같은 시군구 안에서는 비싼 순이에요. 위치는 지역을 찾는 데만 쓰고 돈미터 서버로 보내거나 저장하지 않아요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "지도 위치는 정확한가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "단지를 누르는 순간 카카오맵에서 지번 주소로 위치를 찾아 보여 드려요. 주소로 찾지 못하면 단지 이름으로 찾고, 그래도 없으면 동 중심을 보여 드려요. 찾은 위치는 저장하지 않아요."
           }
         },
         {
