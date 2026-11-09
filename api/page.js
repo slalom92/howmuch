@@ -84,7 +84,7 @@ function popularLinks(excludeSlug, trending, limit = 12) {
   return `<nav class="ssr__more" aria-label="다른 유튜버 수익">
     <h2>다른 유튜버 수익도 보기</h2>
     <ul>${list.map((p) => `<li><a href="${channelPath(p.slug)}">${esc(p.name)}</a></li>`).join('')}</ul>
-    <p><a href="/channel/">유튜버별 수익 전체 보기</a> · <a href="/guide/">유튜브 수익 가이드</a></p>
+    <p><a href="/channel/">유튜버별 수익 전체 보기</a> · <a href="/guide/">유튜브 돈 가이드</a></p>
   </nav>`
 }
 

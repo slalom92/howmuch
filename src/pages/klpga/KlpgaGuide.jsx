@@ -59,6 +59,15 @@ export default function KlpgaGuide({ T }) {
       </section>
 
       <section className="kbo-card kbo-sources">
+        <h2 className="kbo-card__title">더 읽어 보기</h2>
+        <ul>
+          <li>
+            <a href="/guide/golf-prize/">골프 선수 상금, 전부 선수 몫일까: 상금 배분, 캐디피, 세금</a>
+          </li>
+        </ul>
+      </section>
+
+      <section className="kbo-card kbo-sources">
         <h2 className="kbo-card__title">출처</h2>
         <ul>
           {T.guide.sources.map((id) => (

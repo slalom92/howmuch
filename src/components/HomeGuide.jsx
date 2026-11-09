@@ -2,7 +2,7 @@
 const LINKS = [
   { href: '/how/', title: '계산 방법', desc: '숫자가 어떻게 나오는지 세 단계로 설명해요.' },
   { href: '/faq/', title: '자주 묻는 질문', desc: '실제 수익인가요? 협찬도 들어가나요?' },
-  { href: '/guide/', title: '수익 가이드', desc: 'RPM, 쇼츠 수익, 수익 창출 조건을 정리했어요.' },
+  { href: '/guide/', title: '돈 가이드', desc: '유튜브 RPM부터 연봉 실수령액, 선수 연봉, 내 집 마련까지 정리했어요.' },
 ]
 
 export default function HomeGuide() {

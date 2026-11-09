@@ -93,6 +93,18 @@ export default function KboGuide() {
       </section>
 
       <section className="kbo-card kbo-sources">
+        <h2 className="kbo-card__title">더 읽어 보기</h2>
+        <ul>
+          <li>
+            <a href="/guide/kbo-salary/">프로야구 선수 연봉은 어떻게 정해질까: 최저연봉, 경쟁균형세, FA</a>
+          </li>
+          <li>
+            <a href="/guide/take-home-pay/">연봉 실수령액은 어떻게 정해질까: 2026년 4대보험과 소득세</a>
+          </li>
+        </ul>
+      </section>
+
+      <section className="kbo-card kbo-sources">
         <h2 className="kbo-card__title">출처</h2>
         <ul>
           {['kbo', 'kbo_x', 'minimum'].map((id) => (

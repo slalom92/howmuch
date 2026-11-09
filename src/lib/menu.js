@@ -21,7 +21,7 @@ export const MENU = [
   { href: LPGA, label: 'LPGA 선수 상금' },
   { href: APT, label: '연봉 모아 집 사기' },
   { href: '/channel/', label: '유튜버별 수익' },
-  { href: '/guide/', label: '수익 가이드' },
+  { href: '/guide/', label: '돈 가이드' },
   { href: '/how/', label: '계산 방법' },
   { href: '/faq/', label: '자주 묻는 질문' },
 ]
