@@ -17,6 +17,8 @@ const SLOTS = {
   top: import.meta.env.VITE_AD_SLOT_TOP,
   // PC 좌우 배너용 단위가 따로 없으면 상단 배너 단위를 같이 쓴다
   rail: import.meta.env.VITE_AD_SLOT_RAIL || import.meta.env.VITE_AD_SLOT_TOP,
+  // 모바일 본문 중간 광고: 따로 만든 단위가 없으면 상단 배너 단위를 쓴다
+  mid: import.meta.env.VITE_AD_SLOT_MID || import.meta.env.VITE_AD_SLOT_TOP,
   inline: import.meta.env.VITE_AD_SLOT_INLINE,
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
@@ -598,7 +600,7 @@ export default function AptApp({ initialSearch = '' }) {
 
         <AdSlot variant="inline" slot={SLOTS.inline} />
 
-        <AptGuide ad={<AdSlot variant="mid" slot={SLOTS.top} />} />
+        <AptGuide ad={<AdSlot variant="mid" slot={SLOTS.mid} />} />
       </main>
 
       <footer className="footer">
