@@ -8,12 +8,19 @@ const TINT = 'var(--paper-tint)'
 const BILL = 'var(--desk)'
 const BILL_LINE = 'var(--bar)'
 
-// 브랜드 마크: 원 도장 안의 ₩
+// 돈미터 로고: 파비콘(public/favicon.svg)과 같은 계기판 그림. 테마와 상관없이 같은 색을 쓰고,
+// 어두운 테마에서도 네모가 보이게 가장자리에 옅은 흰 테두리를 둔다.
 export function BrandMark({ size = 22 }) {
   return (
-    <svg className="brand-mark" width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="10" fill="none" strokeWidth="2.4" style={{ stroke: SEAL }} />
-      <path d="M7.2 8.2l1.9 7.6 1.9-6.2 1.9 6.2 1.9-7.6M6.6 11.2h10.8M6.6 13.2h10.8" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ stroke: SEAL }} />
+    <svg className="brand-mark" width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <rect x="1" y="1" width="62" height="62" rx="13" fill="#111827" stroke="#fff" strokeOpacity=".18" strokeWidth="2" />
+      <g fill="none" strokeWidth="8">
+        <path d="M12 42 A20 20 0 0 1 21.6 24.9" stroke="#22C55E" />
+        <path d="M23.4 23.9 A20 20 0 0 1 40.6 23.9" stroke="#FACC15" />
+        <path d="M42.4 24.9 A20 20 0 0 1 52 42" stroke="#EF4444" />
+      </g>
+      <line x1="32" y1="42" x2="47" y2="33.5" stroke="#fff" strokeWidth="5" strokeLinecap="round" />
+      <circle cx="32" cy="42" r="5.5" fill="#fff" />
     </svg>
   )
 }
