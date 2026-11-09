@@ -278,6 +278,11 @@
   opacity: 0.66;
 }
 
+/* 흐린 줄 안의 작은 설명(연 4,500만)은 한 번 더 흐리게 하지 않는다 (명도 대비 4.5:1) */
+.kbo-board__table tbody tr:not(.is-me) th span {
+  opacity: 1;
+}
+
 .kbo-board__table tr.is-me td {
   background: rgba(var(--paper-rgb), 0.16);
   font-weight: 700;

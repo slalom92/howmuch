@@ -1,7 +1,10 @@
+/* 골프 스코어카드 (프로야구 전광판 .kbo-board 위에 덧씌운다)
+   Vite 빌드에서는 이 파일이 kbo.css 보다 먼저 들어올 수 있어서, 순서와 상관없이 이기도록
+   선택자를 .kbo-board.klpga-card 로 한 단계 높여 둔다. */
 /* 여자골프 선수 상금 — 프로야구 화면(kbo.css)의 틀을 쓰고, 결과판만 골프 스코어카드 모양으로 바꾼다 (색 변수는 public/themes.css) */
 
 /* 스코어카드: 밝은 종이에 인쇄된 칸 */
-.klpga-card {
+.kbo-board.klpga-card {
   background: var(--paper);
   color: var(--ink);
   border: 2px solid var(--ink);
@@ -9,15 +12,15 @@
 }
 
 /* 전구 줄 대신 티잉 그라운드 표시처럼 짧은 눈금 */
-.klpga-card::before {
+.kbo-board.klpga-card::before {
   height: 5px;
   background: repeating-linear-gradient(90deg, var(--seal) 0 8px, transparent 8px 16px);
   opacity: 1;
 }
 
-.klpga-card .kbo-board__team,
-.klpga-card .kbo-board__pay-label,
-.klpga-card .kbo-board__foot {
+.kbo-board.klpga-card .kbo-board__team,
+.kbo-board.klpga-card .kbo-board__pay-label,
+.kbo-board.klpga-card .kbo-board__foot {
   color: var(--muted);
   opacity: 1;
 }
@@ -41,50 +44,55 @@
 }
 
 /* 표: 스코어카드처럼 칸마다 선을 긋는다 */
-.klpga-card .kbo-board__table {
+.kbo-board.klpga-card .kbo-board__table {
   border-spacing: 0;
   border-top: 1px solid var(--rule);
   border-left: 1px solid var(--rule);
 }
 
-.klpga-card .kbo-board__table th,
-.klpga-card .kbo-board__table td {
+.kbo-board.klpga-card .kbo-board__table th,
+.kbo-board.klpga-card .kbo-board__table td {
   border-right: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
   border-radius: 0;
 }
 
-.klpga-card .kbo-board__table thead th {
+.kbo-board.klpga-card .kbo-board__table thead th {
   background: var(--paper-tint);
   color: var(--ink);
   opacity: 1;
 }
 
-.klpga-card .kbo-board__table td {
+.kbo-board.klpga-card .kbo-board__table td {
   background: transparent;
 }
 
-.klpga-card .kbo-board__table tbody tr:not(.is-me) {
+.kbo-board.klpga-card .kbo-board__table tbody tr:not(.is-me) {
   opacity: 1;
   color: var(--muted);
 }
 
-.klpga-card .kbo-board__table tr.is-me td,
-.klpga-card .kbo-board__table--tall td.is-me {
+/* 보조 글자색(muted) 위에 투명도를 더하면 명도 대비가 모자라서 그대로 둔다 */
+.kbo-board.klpga-card .kbo-board__table tbody th span {
+  opacity: 1;
+}
+
+.kbo-board.klpga-card .kbo-board__table tr.is-me td,
+.kbo-board.klpga-card .kbo-board__table--tall td.is-me {
   background: var(--seal-tint);
   color: var(--ink);
 }
 
-.klpga-card .kbo-board__table--tall tbody th,
-.klpga-card .kbo-board__table--tall td {
+.kbo-board.klpga-card .kbo-board__table--tall tbody th,
+.kbo-board.klpga-card .kbo-board__table--tall td {
   opacity: 1;
 }
 
-.klpga-card .kbo-board__table--tall td:not(.is-me) {
+.kbo-board.klpga-card .kbo-board__table--tall td:not(.is-me) {
   color: var(--muted);
 }
 
-.klpga-card .kbo-board__table--tall thead th.is-me {
+.kbo-board.klpga-card .kbo-board__table--tall thead th.is-me {
   background: var(--seal-tint);
   color: var(--seal);
 }
