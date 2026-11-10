@@ -2694,6 +2694,14 @@ input {
   letter-spacing: 0.04em;
 }
 
+/* 인기 콘텐츠: 홈 화면 HOT 뱃지(public/hub.css)와 같은 주황색 */
+.float-switch__tag--hot {
+  border-color: #ff6b1a;
+  background: #ff6b1a;
+  color: #2b1300;
+  letter-spacing: 0.04em;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .float-switch__menu,
   .float-switch__chev,

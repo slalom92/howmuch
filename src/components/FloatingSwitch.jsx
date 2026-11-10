@@ -10,11 +10,11 @@ import { CreatorIncomeIcon, GiftEnvelopeIcon, BaseballIcon, GolfIcon, HouseIcon,
 // 정책 메모: 광고 위에 겹치거나 광고처럼 보이면 안 되므로 --anchor-h 만큼 띄우고 "광고" 표시를 하지 않는다.
 
 export const APPS = [
-  { href: YOUTUBER, title: '유튜버 수익 보기', short: '유튜버', sub: '한 달 광고 수익 계산', Icon: CreatorIncomeIcon },
-  { href: WEDDING_GIFT, title: '축의금 얼마?', short: '축의금', sub: '관계별 적정 금액 계산', Icon: GiftEnvelopeIcon },
-  { href: KBO, title: '야구선수 연봉 보기', short: '야구 연봉', sub: '1경기, 안타 하나에 얼마', Icon: BaseballIcon, badge: 'NEW' },
-  { href: KLPGA, title: '골프선수 상금 보기', short: '골프 상금', sub: '시즌 상금, 하루에 얼마', Icon: GolfIcon, badge: 'NEW' },
-  { href: APT, title: '연봉 모아 집 사기', short: '집 사기', sub: '몇 년 모으면 이 아파트', Icon: HouseIcon, badge: 'NEW' },
+  { href: YOUTUBER, title: '유튜버 수익 보기', short: '유튜버', sub: '한 달 광고 수익 계산', Icon: CreatorIncomeIcon, badge: 'HOT' },
+  { href: WEDDING_GIFT, title: '축의금 얼마?', short: '축의금', sub: '관계별 적정 금액 계산', Icon: GiftEnvelopeIcon, badge: 'HOT' },
+  { href: KBO, title: '야구선수 연봉 보기', short: '야구 연봉', sub: '1경기, 안타 하나에 얼마', Icon: BaseballIcon },
+  { href: KLPGA, title: '골프선수 상금 보기', short: '골프 상금', sub: '시즌 상금, 하루에 얼마', Icon: GolfIcon },
+  { href: APT, title: '연봉 모아 집 사기', short: '집 사기', sub: '몇 년 모으면 이 아파트', Icon: HouseIcon, badge: 'HOT' },
   { href: JONBER, title: '월급 분당 계산기', short: '분당', sub: '이거 사려면 몇 시간 일할까', Icon: ClockIcon, badge: 'NEW' },
   { href: SURVIVE, title: '존버 계산기', short: '존버', sub: '내 월급은 며칠 버틸까', Icon: CalendarIcon, badge: 'NEW' },
 ]
@@ -121,7 +121,7 @@ export default function FloatingSwitch({ current, hidden = false }) {
                   {here ? (
                     <span className="float-switch__tag">지금 보는 중</span>
                   ) : (
-                    badge && <span className="float-switch__tag float-switch__tag--new">{badge}</span>
+                    badge && <span className={`float-switch__tag float-switch__tag--${badge === 'HOT' ? 'hot' : 'new'}`}>{badge}</span>
                   )}
                 </a>
               </li>
