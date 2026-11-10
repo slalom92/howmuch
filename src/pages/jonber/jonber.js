@@ -30,21 +30,34 @@ export const SOURCES = {
   rent: { label: '머니투데이, 다방여지도 2026년 6월 서울 원룸 평균 월세 (보증금 1,000만 원 기준)', url: 'https://www.mt.co.kr/estate/2026/07/28/2026072808575932587' },
   galaxy: { label: '아이뉴스24, 갤럭시 S26 울트라 256GB 출고가 194만 7,000원 (2026년 10월 1일 인상 뒤)', url: 'https://inews24.com/view/2010655' },
   iphone: { label: '디지털데일리, 아이폰 18 프로 256GB 국내 출고가 199만 원', url: 'https://www.ddaily.co.kr/page/view/2026091003374504524' },
+  lotteworld: { label: 'SBS Biz, 롯데월드 성인 종합이용권 6만 4천 원 → 6만 7천 원 (2026년 4월 1일부터)', url: 'https://biz.sbs.co.kr/amp/article/20000297877' },
+  gas: { label: 'SBS Biz, 오피넷 2026년 11월 첫째 주 전국 휘발유 평균 리터당 1,855.4원 (50L로 계산)', url: 'https://supple.kr/news/cmw5nprjm5g78al9pr2ml17cq' },
+  gift: { label: '세계일보, 카카오페이 2025 머니리포트 모바일 축의금 평균 10만 6천 원', url: 'https://www.segye.com/newsView/20260131501309' },
+  musical: { label: 'NOL 티켓, 뮤지컬 오페라의 유령 40주년 스페셜 시즌 VIP석 19만 원', url: 'https://nol.yanolja.com/ticket/products/26013995' },
+  buffet: { label: 'SBS Biz, 롯데호텔 서울 라세느 성인 저녁 20만 3천 원 (2026년 1월부터, 연말 성수기 요금 별도)', url: 'https://biz.sbs.co.kr/amp/article/20000315306' },
+  airpods: { label: 'YTN, 에어팟 프로 3 국내 판매가 36만 9천 원부터', url: 'https://www.ytn.co.kr/_ln/0134_202509211357056286' },
 }
 
-// 생활 속 물건 값 (가격 순). note 는 기준을 짧게, icon 은 ItemIcon.jsx 의 그림 이름 (없으면 글자만).
+// 생활 속 물건 값 (가격 순). note 는 기준을 짧게, icon 은 ItemIcon.jsx 의 그림 이름.
 export const ITEMS = [
-  { id: 'subway', name: '지하철 한 번', note: '수도권 기본요금', price: 1550, src: 'subway' },
-  { id: 'gimbap', name: '김밥 한 줄', note: '서울 평균', price: 3800, src: 'price' },
+  { id: 'subway', name: '지하철 한 번', note: '수도권 기본요금', price: 1550, src: 'subway', icon: 'train' },
+  { id: 'gimbap', name: '김밥 한 줄', note: '서울 평균', price: 3800, src: 'price', icon: 'gimbap' },
   { id: 'americano', name: '스타벅스 아메리카노', note: '톨 사이즈', price: 4700, src: 'starbucks', icon: 'coffee' },
-  { id: 'jjajang', name: '짜장면 한 그릇', note: '서울 평균', price: 7692, src: 'price' },
-  { id: 'kimchi', name: '김치찌개 백반', note: '서울 평균', price: 8654, src: 'price' },
-  { id: 'naengmyeon', name: '냉면 한 그릇', note: '서울 평균', price: 12538, src: 'price' },
-  { id: 'netflix', name: '넷플릭스 한 달', note: '스탠다드 요금제', price: 13500, src: 'netflix' },
-  { id: 'movie', name: '영화 한 편', note: '주말 성인 2D', price: 15000, src: 'movie' },
-  { id: 'samgye', name: '삼계탕 한 그릇', note: '서울 평균', price: 18154, src: 'price' },
+  { id: 'jjajang', name: '짜장면 한 그릇', note: '서울 평균', price: 7692, src: 'price', icon: 'noodles' },
+  { id: 'kimchi', name: '김치찌개 백반', note: '서울 평균', price: 8654, src: 'price', icon: 'pot' },
+  { id: 'naengmyeon', name: '냉면 한 그릇', note: '서울 평균', price: 12538, src: 'price', icon: 'coldnoodle' },
+  { id: 'netflix', name: '넷플릭스 한 달', note: '스탠다드 요금제', price: 13500, src: 'netflix', icon: 'tv' },
+  { id: 'movie', name: '영화 한 편', note: '주말 성인 2D', price: 15000, src: 'movie', icon: 'ticket' },
+  { id: 'samgye', name: '삼계탕 한 그릇', note: '서울 평균', price: 18154, src: 'price', icon: 'samgye' },
   { id: 'chicken', name: '치킨 한 마리', note: 'BBQ 황금올리브', price: 23000, src: 'chicken', icon: 'chicken' },
-  { id: 'rent', name: '서울 원룸 월세', note: '보증금 1,000만 원 기준', price: 640000, src: 'rent' },
+  { id: 'movie2', name: '영화 데이트', note: '주말 성인 2D 두 장', price: 30000, src: 'movie', icon: 'tickets' },
+  { id: 'lotteworld', name: '롯데월드 하루', note: '성인 종합이용권', price: 67000, src: 'lotteworld', icon: 'wheel' },
+  { id: 'gas', name: '휘발유 가득', note: '50L, 전국 평균', price: 92770, src: 'gas', icon: 'fuel' },
+  { id: 'gift', name: '결혼식 축의금', note: '모바일 송금 평균', price: 106000, src: 'gift', icon: 'envelope' },
+  { id: 'musical', name: '뮤지컬 VIP석', note: '대극장 한 장', price: 190000, src: 'musical', icon: 'masks' },
+  { id: 'buffet', name: '호텔 뷔페', note: '롯데호텔 라세느 저녁', price: 203000, src: 'buffet', icon: 'cloche' },
+  { id: 'airpods', name: '에어팟 프로 3', note: '국내 판매가', price: 369000, src: 'airpods', icon: 'earbuds' },
+  { id: 'rent', name: '서울 원룸 월세', note: '보증금 1,000만 원 기준', price: 640000, src: 'rent', icon: 'house' },
   { id: 'galaxy', name: '갤럭시 S26 울트라', note: '256GB 출고가', price: 1947000, src: 'galaxy', icon: 'phone' },
   { id: 'iphone', name: '아이폰 18 프로', note: '256GB 출고가', price: 1990000, src: 'iphone', icon: 'phone' },
 ]
@@ -162,7 +175,7 @@ export const FAQ = [
   },
   {
     q: '물건 가격은 어디서 가져왔나요?',
-    a: '회사가 발표한 판매가(스타벅스, 넷플릭스, BBQ, 갤럭시, 아이폰), 한국소비자원 참가격의 서울 외식 평균 가격, 지하철 기본요금, 다방이 국토교통부 실거래가로 낸 서울 원룸 평균 월세를 썼어요. 출처와 기준 날짜는 아래 출처에 있어요. 매장과 시기에 따라 실제 가격은 다를 수 있어요.',
+    a: '회사가 발표한 판매가(스타벅스, 넷플릭스, BBQ, 롯데월드, 갤럭시, 아이폰, 에어팟, 호텔 뷔페, 뮤지컬), 한국소비자원 참가격의 서울 외식 평균 가격, 오피넷 전국 평균 휘발유 값, 카카오페이 모바일 축의금 평균, 지하철 기본요금, 다방이 국토교통부 실거래가로 낸 서울 원룸 평균 월세를 썼어요. 출처와 기준 날짜는 아래 출처에 있어요. 매장과 시기에 따라 실제 가격은 다를 수 있어요.',
   },
   {
     q: '최저시급과 비교한 숫자는 무엇인가요?',
