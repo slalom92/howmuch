@@ -12,7 +12,8 @@ import SourceTag from './SourceTag.jsx'
 
 const SIZES = ['대기업', '중견', '중소']
 
-// 버튼 한 번으로 고르는 상장사 (code 는 전자공시 DART 고유번호). 비교 화면이 열릴 때마다 4곳을 무작위로 보여 준다.
+// 버튼 한 번으로 고르는 상장사 (code 는 전자공시 DART 고유번호).
+// 앞의 두 곳(삼성전자, SK하이닉스)은 늘 보여 주고, 나머지 두 자리는 비교 화면이 열릴 때마다 무작위로 채운다.
 const PICKS = [
   { code: '00126380', name: '삼성전자' },
   { code: '00164779', name: 'SK하이닉스' },
@@ -50,17 +51,20 @@ const PICKS = [
   { code: '01390344', name: 'HD현대중공업' },
 ]
 
-// 목록에서 n곳을 무작위로 (except 에 있던 회사는 되도록 빼고)
+const FIXED = 2
+
+// 고정 회사 + 나머지에서 무작위 (except 에 있던 회사는 되도록 빼고)
 function sample(n, except = []) {
+  const fixed = PICKS.slice(0, FIXED)
   const skip = new Set(except.map((c) => c.code))
-  const pool = PICKS.filter((c) => !skip.has(c.code))
-  const src = pool.length >= n ? pool : PICKS
-  const a = [...src]
+  const rest = PICKS.slice(FIXED)
+  const pool = rest.filter((c) => !skip.has(c.code))
+  const a = [...(pool.length >= n - FIXED ? pool : rest)]
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[a[i], a[j]] = [a[j], a[i]]
   }
-  return a.slice(0, n)
+  return [...fixed, ...a.slice(0, n - FIXED)]
 }
 
 function CompanyPicks({ onPick, disabled, current }) {
