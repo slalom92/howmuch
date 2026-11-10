@@ -15,7 +15,7 @@
 //   src/pages/apt/apt-data.json      시도 목록과 시군구 이름, 단지 수 (화면에 묶인다, 작다)
 //   public/data/apt/<시도코드>.json  시도별 단지 요약 (고른 시도만 화면이 불러온다)
 //
-// 단지 가격 = 기간 안 해당 면적 거래가의 중간값. 계약 해제(cdealType=O)와 직거래는 뺀다.
+// 단지 가격 = 기간 안 해당 면적 거래가의 '최근 가중 중간값'(최근 거래일수록 무게를 크게). 계약 해제(cdealType=O)와 직거래는 뺀다.
 //   84㎡: 전용 83㎡ 이상 86㎡ 미만, 59㎡: 58㎡ 이상 61㎡ 미만.
 // 좌표는 만들지도 저장하지도 않는다 (지도와 '내 주변 먼저'는 화면에서 그때그때 카카오맵으로 찾는다).
 //
@@ -218,10 +218,20 @@ async function monthDeals(lawd, ym, fresh) {
   return all
 }
 
-const median = (arr) => {
-  const s = [...arr].sort((a, b) => a - b)
-  const h = Math.floor(s.length / 2)
-  return s.length % 2 ? s[h] : Math.round((s[h - 1] + s[h]) / 2)
+// 최근 가중 중간값: 거래 달이 기준 달(받은 자료의 마지막 달)에서 HALF_LIFE개월 멀어질 때마다 무게를 절반으로.
+// 가격 순으로 줄 세워 무게를 쌓다가 전체의 절반을 넘는 거래의 가격을 쓴다. 무게가 모두 같으면 보통 중간값과 같다.
+const HALF_LIFE = 3
+const monthsBetween = (from, to) => (Number(to.slice(0, 4)) - Number(from.slice(0, 4))) * 12 + Number(to.slice(5, 7)) - Number(from.slice(5, 7))
+function weightedMedian(list, latest) {
+  const items = list.map(([amount, ym]) => [amount, 0.5 ** (Math.max(0, monthsBetween(ym, latest)) / HALF_LIFE)]).sort((a, b) => a[0] - b[0])
+  const half = items.reduce((s, [, w]) => s + w, 0) / 2
+  let acc = 0
+  for (let i = 0; i < items.length; i++) {
+    acc += items[i][1]
+    if (Math.abs(acc - half) < 1e-9 && i + 1 < items.length) return Math.round((items[i][0] + items[i + 1][0]) / 2)
+    if (acc > half) return items[i][0]
+  }
+  return items.at(-1)[0]
 }
 
 // 시도 이름 줄임 (화면 버튼용). 모르는 이름은 그대로 쓴다.
@@ -270,8 +280,9 @@ async function main() {
     }
     process.stdout.write('\n')
 
-    const sum = (list) => (list.length ? [median(list.map((d) => d[0])), list.length, list.map((d) => d[1]).sort().at(-1)] : [0, 0, ''])
-    // [이름, 시군구 번호, 동, 준공연도, 84 중간값(만원), 84 건수, 84 최근월, 59 중간값, 59 건수, 59 최근월, 지번]
+    const latest = `${months.at(-1).slice(0, 4)}-${months.at(-1).slice(4)}`
+    const sum = (list) => (list.length ? [weightedMedian(list, latest), list.length, list.map((d) => d[1]).sort().at(-1)] : [0, 0, ''])
+    // [이름, 시군구 번호, 동, 준공연도, 84 가격(만원, 최근 가중 중간값), 84 건수, 84 최근월, 59 가격, 59 건수, 59 최근월, 지번]
     const apts = [...groups.values()]
       .map((g) => [g.name, g.sgg, g.dong, g.built || 0, ...sum(g[84]), ...sum(g[59]), g.jibun || ''])
       .sort((a, b) => a[0].localeCompare(b[0], 'ko'))

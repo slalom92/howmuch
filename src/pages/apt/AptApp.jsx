@@ -173,7 +173,7 @@ function Listing({ a, r, onOpen }) {
         <strong>{yearsText(y)}</strong> 모으면 살 수 있어요
       </p>
       <p className="apt-card__meta">
-        전용 {r.state.a}㎡ 거래 {d.n}건의 중간값 · 최근 {ym(d.last)}
+        전용 {r.state.a}㎡ 거래 {d.n}건, 최근 거래 우선 중간값 · 마지막 거래 {ym(d.last)}
         {d.n < 3 && <span className="apt-card__few">거래 적음</span>}
       </p>
       {onOpen && (
@@ -432,7 +432,7 @@ function Window({ r, nearCtl }) {
         모은 돈으로 살 수 있는 곳
       </h2>
       <p className="apt-window__lede">
-        {man(r.budget)} 안에서 최근 1년 거래가(중간값) 기준이에요.
+        {man(r.budget)} 안에서 최근 1년 거래가 기준이에요. 단지 가격은 최근 거래에 무게를 더 둔 중간값이에요.
       </p>
       <SortBar sort={sort} setSort={setSort} near={near} />
       <ul className="apt-cards">

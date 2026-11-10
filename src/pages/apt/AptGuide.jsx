@@ -25,7 +25,7 @@ export default function AptGuide({ ad = null }) {
             <strong>1년에 모으는 돈</strong> 기본은 실수령액이에요. 연봉 {SALARIES.map((s) => s.label).join(', ')} 원의 2026년 연 실수령액({SALARIES.map((s) => man(s.net)).join(', ')})을 썼어요.
           </li>
           <li>
-            <strong>아파트 가격</strong> {period} 신고된 전국 아파트 매매 실거래 중 같은 단지, 같은 면적 거래가의 중간값이에요. 계약 해제와 직거래는 뺐어요.
+            <strong>아파트 가격</strong> {period} 신고된 전국 아파트 매매 실거래 중 같은 단지, 같은 면적 거래가의 중간값이에요. 최근 거래일수록 무게를 더 둬서, 3개월 전 거래는 이번 달 거래의 절반, 6개월 전 거래는 4분의 1만큼만 반영해요. 계약 해제와 직거래는 뺐어요.
           </li>
           <li>
             <strong>몇 년 모으면</strong> 아파트 가격 ÷ 1년에 모으는 돈. 개월은 올림했어요.
