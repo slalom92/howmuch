@@ -27,12 +27,23 @@ export const APPS = [
   { id: 'survive', match: (p) => p === '/survive/' },
 ]
 
+// 오류 이유는 응답에도 보여 준다 (키 값은 절대 담지 않는다)
+class Reason extends Error {}
+
 function serviceAccount() {
-  const raw = (process.env.GA4_SA_KEY || '').trim()
+  let raw = (process.env.GA4_SA_KEY || '').trim()
   if (!raw) return null
-  const text = raw.startsWith('{') ? raw : Buffer.from(raw, 'base64').toString('utf8')
-  const key = JSON.parse(text)
-  if (!key.client_email || !key.private_key) throw new Error('GA4_SA_KEY 에 client_email, private_key 가 없어요')
+  // 따옴표로 한 번 더 감싸 넣은 경우
+  if (/^['"`]/.test(raw) && raw.at(-1) === raw[0]) raw = raw.slice(1, -1).trim()
+  let key
+  try {
+    key = JSON.parse(raw.startsWith('{') ? raw : Buffer.from(raw, 'base64').toString('utf8'))
+  } catch {
+    throw new Reason('GA4_SA_KEY 를 JSON 으로 읽지 못했어요. 내려받은 JSON 파일 내용을 { 부터 } 까지 그대로 넣어 주세요')
+  }
+  if (!key.client_email || !key.private_key) throw new Reason('GA4_SA_KEY 에 client_email, private_key 가 없어요. 서비스 계정 키 JSON 이 맞는지 확인해 주세요')
+  // 줄바꿈이 \\n 글자로 들어간 경우
+  key.private_key = key.private_key.replace(/\\n/g, '\n')
   return key
 }
 
@@ -51,14 +62,19 @@ async function accessToken(key) {
     iat: now,
     exp: now + 3600,
   })
-  const sig = crypto.createSign('RSA-SHA256').update(`${head}.${claim}`).sign(key.private_key).toString('base64url')
+  let sig
+  try {
+    sig = crypto.createSign('RSA-SHA256').update(`${head}.${claim}`).sign(key.private_key).toString('base64url')
+  } catch {
+    throw new Reason('private_key 로 서명하지 못했어요. 키 JSON 을 고치지 말고 그대로 넣어 주세요')
+  }
   const r = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer', assertion: `${head}.${claim}.${sig}` }),
   })
   const j = await r.json()
-  if (!r.ok || !j.access_token) throw new Error(`토큰 실패 ${r.status} ${j.error || ''}`)
+  if (!r.ok || !j.access_token) throw new Reason(`구글 로그인 실패 (${r.status} ${j.error || ''} ${j.error_description || ''}). 키가 삭제됐거나 다른 키일 수 있어요`)
   cached = { token: j.access_token, exp: now + (j.expires_in || 3600) }
   return cached.token
 }
@@ -76,7 +92,17 @@ async function pageViews(token, property) {
     }),
   })
   const j = await r.json()
-  if (!r.ok) throw new Error(`GA4 ${r.status} ${j.error?.message || ''}`)
+  if (!r.ok) {
+    const msg = String(j.error?.message || '')
+    const hint = /has not been used|is disabled|SERVICE_DISABLED/i.test(msg)
+      ? 'Google Cloud 에서 Google Analytics Data API 를 켜 주세요'
+      : r.status === 403
+        ? '서비스 계정 이메일을 GA4 속성에 뷰어로 추가했는지, GA4_PROPERTY_ID 가 속성 ID 인지 확인해 주세요'
+        : r.status === 400 || r.status === 404
+          ? 'GA4_PROPERTY_ID 가 숫자로 된 속성 ID 인지 확인해 주세요'
+          : '잠시 뒤 다시 확인해 주세요'
+    throw new Reason(`GA4 조회 실패 (${r.status}, 속성 ${property}). ${hint}. 구글 메시지: ${msg.slice(0, 200)}`)
+  }
   return (j.rows || []).map((row) => ({ path: row.dimensionValues[0].value, views: Number(row.metricValues[0].value) || 0 }))
 }
 
@@ -99,11 +125,11 @@ export default async function handler(req, res) {
   try {
     const key = serviceAccount()
     if (!key) return send(res, 503, { error: 'GA4_SA_KEY 가 없어요' })
-    const property = (process.env.GA4_PROPERTY_ID || DEFAULT_PROPERTY).trim()
+    const property = (process.env.GA4_PROPERTY_ID || DEFAULT_PROPERTY).trim().replace(/^properties\//, '')
     const rows = await pageViews(await accessToken(key), property)
     return send(res, 200, { days: DAYS, updatedAt: new Date().toISOString(), ...rank(rows) }, HOUR)
   } catch (e) {
     console.error('[ranking]', e.message)
-    return send(res, 503, { error: '인기 순서를 불러오지 못했어요' })
+    return send(res, 503, { error: '인기 순서를 불러오지 못했어요', reason: e instanceof Reason ? e.message : '알 수 없는 오류 (Vercel 함수 로그 확인)' })
   }
 }
