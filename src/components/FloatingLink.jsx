@@ -66,6 +66,19 @@ export function HouseIcon() {
   )
 }
 
+// 월급 버티기 계산기: 달력 + 동전
+export function CalendarIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <rect x="3.5" y="7" width="22" height="19.5" rx="2.5" strokeWidth="2" style={{ fill: 'var(--seal-tint)', stroke: 'var(--seal)' }} />
+      <path d="M3.5 12.5h22M9 4.5v5M20 4.5v5" fill="none" strokeWidth="2" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+      <path d="M8.5 17h2M13.5 17h2M18.5 17h2M8.5 21.5h2M13.5 21.5h2" fill="none" strokeWidth="2" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+      <circle cx="24.5" cy="24.5" r="4.5" strokeWidth="1.6" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <path d="M24.5 22.3v4.4" fill="none" strokeWidth="1.4" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+    </svg>
+  )
+}
+
 // 존버 계산기: 시계 + 동전
 export function ClockIcon() {
   return (

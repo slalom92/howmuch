@@ -9,6 +9,7 @@ export const PGA = '/pga/'
 export const LPGA = '/lpga/'
 export const APT = '/apt/'
 export const JONBER = '/jonber/'
+export const SURVIVE = '/survive/'
 
 // 좁은 화면에서 "메뉴"를 누르면 보이는 전체 목록
 export const MENU = [
@@ -22,6 +23,7 @@ export const MENU = [
   { href: LPGA, label: 'LPGA 선수 상금' },
   { href: APT, label: '연봉 모아 집 사기' },
   { href: JONBER, label: '존버 계산기' },
+  { href: SURVIVE, label: '월급 버티기 계산기' },
   { href: '/channel/', label: '유튜버별 수익' },
   { href: '/guide/', label: '돈 가이드' },
   { href: '/how/', label: '계산 방법' },
@@ -29,7 +31,7 @@ export const MENU = [
 ]
 
 // 유튜버 수익 계산기 쪽 넓은 화면에서 줄지어 보이는 링크
-export const YOUTUBER_LINKS = MENU.slice(10)
+export const YOUTUBER_LINKS = MENU.slice(11)
 
 export const FOOTER_MENU = [
   ...MENU.slice(1),

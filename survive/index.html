@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 색 테마: 화면이 그려지기 전에 정해야 색이 번쩍이지 않는다 -->
+    <script src="/theme.js"></script>
+    <link rel="stylesheet" href="/themes.css" />
+    <title>월급 버티기 계산기 – 내 월급으로 며칠 버틸까, 1인 가구 생활비로 계산 | 돈미터</title>
+    <meta name="description" content="연봉과 사는 방식을 고르면 월급 한 번으로 며칠 버티는지 보여 주는 무료 계산기예요. 2024년 1인 가구 평균 생활비 168만 9천 원, 서울 원룸 월세, 2026년 최소 생활비(생계급여 기준)로 계산하고 월급이 어디에 쓰이는지 나눠 보여 드려요." />
+    <meta name="keywords" content="월급 버티기, 생활비 계산기, 1인 가구 생활비, 자취 생활비, 한 달 생활비, 월급 며칠, 텅장, 서울 원룸 월세, 최저생계비 2026, 생계급여" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://donmeter.com/survive/" />
+    <meta name="theme-color" content="#e7ebf0" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="돈미터" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:url" content="https://donmeter.com/survive/" />
+    <meta property="og:title" content="월급 버티기 계산기, 내 월급은 며칠 버틸까? | 돈미터" />
+    <meta property="og:description" content="연봉만 고르면 1인 가구 평균처럼 살 때, 서울 원룸에 살 때, 최소 생활비로 살 때 월급 한 번으로 며칠 버티는지 알려 드려요." />
+    <meta property="og:image" content="https://donmeter.com/og/survive-v1.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="800" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="월급 버티기 계산기, 내 월급은 며칠 버틸까? | 돈미터" />
+    <meta name="twitter:description" content="연봉만 고르면 1인 가구 평균처럼 살 때, 서울 원룸에 살 때, 최소 생활비로 살 때 월급 한 번으로 며칠 버티는지 알려 드려요." />
+    <meta name="twitter:image" content="https://donmeter.com/og/survive-v1.png" />
+    <!-- FAQ 문구는 src/pages/survive/survive.js 의 FAQ 와 같게 유지한다 -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://donmeter.com/survive/#app",
+      "name": "월급 버티기 계산기 – 돈미터",
+      "url": "https://donmeter.com/survive/",
+      "description": "연봉과 사는 방식을 고르면 2026년 실수령 월급으로 1인 가구 평균 생활비, 서울 원룸 자취, 최소 생활비 기준 며칠을 버티는지와 월급이 어디에 쓰이는지 보여 주는 무료 서비스입니다.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ko-KR",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "isPartOf": {
+        "@id": "https://donmeter.com/#website"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "버티는 날은 어떻게 계산했나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "고른 연봉의 실수령액을 12로 나눠 한 달 월급을 구하고, 한 달 생활비를 30.42일(365일 ÷ 12)로 나눈 하루 생활비로 월급을 나눴어요. 소수점 아래는 버렸어요. 월급이 생활비보다 많으면 30일을 넘겨 다음 달까지 버틸 수 있다는 뜻이에요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "1인 가구 평균 생활비는 어디서 왔나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "국가데이터처가 2025년 12월 발표한 '2025 통계로 보는 1인가구'에 실린 2024년 1인 가구 월평균 소비지출 168만 9천 원과 12개 비목별 금액이에요. 세금, 4대보험, 대출 이자처럼 소비가 아닌 지출은 들어 있지 않고, 70세 이상 1인 가구도 함께 평균을 낸 값이에요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "서울 원룸 자취는 무엇이 다른가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "1인 가구 평균의 집 항목(주거·수도·광열 31만 1천 원) 대신 다방이 국토교통부 실거래가로 낸 2026년 6월 서울 원룸 평균 월세 64만 원(보증금 1,000만 원 기준)을 넣었어요. 관리비와 전기·가스 요금은 들어 있지 않아서 실제로는 조금 더 들 수 있어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "최소 생활은 무엇을 기준으로 했나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "2026년 1인 가구 생계급여 지급기준 820,556원이에요. 기준 중위소득의 32%로, 나라가 보장하는 최저 생활 수준이에요. 비목별 금액은 1인 가구 평균 비중대로 나눈 값이에요. 2027년 1월부터는 875,533원으로 올라요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "달력의 날짜는 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "월급날을 매달 25일로 잡고, 오늘에서 가장 가까운 지난 25일에 월급을 받았다고 할 때 그 월급으로 며칠까지 버티는지 보여 드려요. 회사마다 월급날이 다르니 날 수를 기준으로 보세요."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="/ga.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539"
+     crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/pages/survive/main.jsx"></script>
+  </body>
+</html>

@@ -23,7 +23,7 @@ const SLOTS = {
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
 
-const APT_ITEMS = MENU.slice(0, 10)
+const APT_ITEMS = MENU.slice(0, 11)
 const APT_MENU = [
   { href: YOUTUBER, label: '유튜버 수익 계산기' },
   { href: APT, label: '연봉 모아 집 사기' },

@@ -1,4 +1,4 @@
-// 빌드 뒤 각 계산기 페이지(dist/youtuber/, dist/wedding-gift/, dist/kbo/, dist/klpga/, dist/kpga/, dist/pga/, dist/lpga/, dist/apt/, dist/jonber/ 의 index.html)에 첫 화면 HTML을 미리 채운다.
+// 빌드 뒤 각 계산기 페이지(dist/youtuber/, dist/wedding-gift/, dist/kbo/, dist/klpga/, dist/kpga/, dist/pga/, dist/lpga/, dist/apt/, dist/jonber/, dist/survive/ 의 index.html)에 첫 화면 HTML을 미리 채운다.
 // (사이트 첫 화면 dist/index.html 은 계산기를 고르는 정적 페이지라 채울 것이 없다)
 //
 // SPA는 처음 받는 HTML이 <div id="root"></div> 뿐이라, 자바스크립트를 실행하지 않는
@@ -26,6 +26,7 @@ const PAGES = [
   { name: 'LPGA 투어 선수 상금', entry: 'src/pages/lpga/entry-server.jsx', html: 'dist/lpga/index.html' },
   { name: '연봉 모아 집 사기', entry: 'src/pages/apt/entry-server.jsx', html: 'dist/apt/index.html' },
   { name: '존버 계산기', entry: 'src/pages/jonber/entry-server.jsx', html: 'dist/jonber/index.html' },
+  { name: '월급 버티기 계산기', entry: 'src/pages/survive/entry-server.jsx', html: 'dist/survive/index.html' },
 ]
 
 // Vite 처럼 VITE_ 로 시작하는 환경변수를 import.meta.env 로 넘긴다

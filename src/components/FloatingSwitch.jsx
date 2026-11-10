@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { track } from '../lib/analytics.js'
-import { YOUTUBER, WEDDING_GIFT, KBO, KLPGA, APT, JONBER } from '../lib/menu.js'
-import { CreatorIncomeIcon, GiftEnvelopeIcon, BaseballIcon, GolfIcon, HouseIcon, ClockIcon } from './FloatingLink.jsx'
+import { YOUTUBER, WEDDING_GIFT, KBO, KLPGA, APT, JONBER, SURVIVE } from '../lib/menu.js'
+import { CreatorIncomeIcon, GiftEnvelopeIcon, BaseballIcon, GolfIcon, HouseIcon, ClockIcon, CalendarIcon } from './FloatingLink.jsx'
 
-// 여섯 콘텐츠(유튜버 수익, 축의금, 야구선수 연봉, 골프선수 상금, 연봉 모아 집 사기, 존버 계산기)를 오가는 떠 있는 버튼 (오른쪽 아래, 하단 고정 광고 위)
+// 일곱 콘텐츠(유튜버 수익, 축의금, 야구선수 연봉, 골프선수 상금, 연봉 모아 집 사기, 존버 계산기, 월급 버티기 계산기)를 오가는 떠 있는 버튼 (오른쪽 아래, 하단 고정 광고 위)
 // 누르면 위로 목록이 펼쳐진다. 모양은 FloatingLink(.float-link)를 그대로 쓰고, 목록만 .float-switch__menu 로 더한다.
 // 아래로 스크롤하는 동안은 아이콘만 남기고 접어 본문을 덜 가린다.
 //
@@ -16,6 +16,7 @@ export const APPS = [
   { href: KLPGA, title: '골프선수 상금 보기', short: '골프 상금', sub: '시즌 상금, 하루에 얼마', Icon: GolfIcon, badge: 'NEW' },
   { href: APT, title: '연봉 모아 집 사기', short: '집 사기', sub: '몇 년 모으면 이 아파트', Icon: HouseIcon, badge: 'NEW' },
   { href: JONBER, title: '존버 계산기', short: '존버', sub: '이거 사려면 몇 시간 일할까', Icon: ClockIcon, badge: 'NEW' },
+  { href: SURVIVE, title: '월급 버티기 계산기', short: '버티기', sub: '내 월급은 며칠 버틸까', Icon: CalendarIcon, badge: 'NEW' },
 ]
 
 function Chevron({ open }) {

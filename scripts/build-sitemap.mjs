@@ -27,6 +27,7 @@ const PAGES = [
   { url: '/lpga/', files: ['lpga/index.html', 'src/pages/lpga', 'src/pages/pga/fx.js', 'src/pages/klpga'] },
   { url: '/apt/', files: ['apt/index.html', 'src/pages/apt'] },
   { url: '/jonber/', files: ['jonber/index.html', 'src/pages/jonber'] },
+  { url: '/survive/', files: ['survive/index.html', 'src/pages/survive'] },
 ]
 
 // 채널 페이지는 서버(api/page.js)가 그린다

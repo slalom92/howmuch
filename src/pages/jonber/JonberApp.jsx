@@ -23,7 +23,7 @@ const SLOTS = {
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
 
-const ITEMS_MENU = MENU.slice(0, 10)
+const ITEMS_MENU = MENU.slice(0, 11)
 const LINKS = [
   { href: YOUTUBER, label: '유튜버 수익 계산기' },
   { href: JONBER, label: '존버 계산기' },

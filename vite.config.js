@@ -50,6 +50,7 @@ export default defineConfig(({ mode }) => {
     //   /lpga/          → lpga/index.html (LPGA 투어 선수 상금, 화면은 klpga 와 같이 쓴다)
     //   /apt/           → apt/index.html (연봉 모아 집 사기, 자료는 npm run apt 로 만든다)
     //   /jonber/        → jonber/index.html (존버 계산기)
+    //   /survive/       → survive/index.html (월급 버티기 계산기)
     build: {
       rollupOptions: {
         input: {
@@ -63,6 +64,7 @@ export default defineConfig(({ mode }) => {
           lpga: fileURLToPath(new URL('./lpga/index.html', import.meta.url)),
           apt: fileURLToPath(new URL('./apt/index.html', import.meta.url)),
           jonber: fileURLToPath(new URL('./jonber/index.html', import.meta.url)),
+          survive: fileURLToPath(new URL('./survive/index.html', import.meta.url)),
         },
       },
     },
