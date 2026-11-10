@@ -1016,6 +1016,25 @@ input {
   padding: 10px 14px;
 }
 
+.co-picks {
+  margin: 12px 0 0;
+}
+
+.chip[aria-pressed='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--on-ink);
+}
+
+.chip:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.co-picks .co-picks__more {
+  margin: 0 0 0 2px;
+}
+
 .linkish {
   margin: 10px 0 0;
   padding: 0;

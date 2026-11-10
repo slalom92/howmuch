@@ -12,6 +12,82 @@ import SourceTag from './SourceTag.jsx'
 
 const SIZES = ['대기업', '중견', '중소']
 
+// 버튼 한 번으로 고르는 상장사 (code 는 전자공시 DART 고유번호). 비교 화면이 열릴 때마다 4곳을 무작위로 보여 준다.
+const PICKS = [
+  { code: '00126380', name: '삼성전자' },
+  { code: '00164779', name: 'SK하이닉스' },
+  { code: '00164742', name: '현대자동차' },
+  { code: '00106641', name: '기아' },
+  { code: '00266961', name: 'NAVER' },
+  { code: '00258801', name: '카카오' },
+  { code: '00401731', name: 'LG전자' },
+  { code: '00413046', name: '셀트리온' },
+  { code: '00877059', name: '삼성바이오로직스' },
+  { code: '00356361', name: 'LG화학' },
+  { code: '00126362', name: '삼성SDI' },
+  { code: '00164788', name: '현대모비스' },
+  { code: '00159193', name: '한국전력공사' },
+  { code: '00190321', name: 'KT' },
+  { code: '00159023', name: 'SK텔레콤' },
+  { code: '00113526', name: '대한항공' },
+  { code: '00635134', name: 'CJ제일제당' },
+  { code: '01204056', name: '하이브' },
+  { code: '00261443', name: '엔씨소프트' },
+  { code: '00760971', name: '크래프톤' },
+  { code: '00583424', name: '아모레퍼시픽' },
+  { code: '01515323', name: 'LG에너지솔루션' },
+  { code: '00126566', name: '한화에어로스페이스' },
+  { code: '00872984', name: '이마트' },
+  { code: '00108241', name: '농심' },
+  { code: '01238169', name: '오리온' },
+  { code: '00904672', name: '넷마블' },
+  { code: '01133217', name: '카카오뱅크' },
+  { code: '00105873', name: 'LG디스플레이' },
+  { code: '00126371', name: '삼성전기' },
+  { code: '00126186', name: '삼성에스디에스' },
+  { code: '00164645', name: 'HMM' },
+  { code: '00138279', name: 'S-Oil' },
+  { code: '01390344', name: 'HD현대중공업' },
+]
+
+// 목록에서 n곳을 무작위로 (except 에 있던 회사는 되도록 빼고)
+function sample(n, except = []) {
+  const skip = new Set(except.map((c) => c.code))
+  const pool = PICKS.filter((c) => !skip.has(c.code))
+  const src = pool.length >= n ? pool : PICKS
+  const a = [...src]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a.slice(0, n)
+}
+
+function CompanyPicks({ onPick, disabled, current }) {
+  const [list, setList] = useState(() => sample(4))
+  return (
+    <p className="search__examples co-picks">
+      <span id="co-picks-label">이런 회사는 어때요?</span>
+      {list.map((c) => (
+        <button
+          key={c.code}
+          type="button"
+          className="chip"
+          aria-describedby="co-picks-label"
+          aria-pressed={current === c.code}
+          disabled={disabled}
+          onClick={() => onPick(c)}
+        >
+          {c.name}
+        </button>
+      ))}
+      <button type="button" className="linkish co-picks__more" disabled={disabled} onClick={() => setList((l) => sample(4, l))}>
+        다른 회사
+      </button>
+    </p>
+  )
+}
+
 function CompanySearch({ onPick, disabled }) {
   const id = useId()
   const [q, setQ] = useState('')
@@ -215,6 +291,7 @@ export default function CompanyCompare({ channel, analysis, tier, company, setCo
       <p className="hire__lede">회사 이름을 넣으면 그 회사 연봉으로 {channel.title}의 직급과 연차를 맞춰 봅니다.</p>
 
       <CompanySearch onPick={pickCorp} disabled={status === 'loading'} />
+      <CompanyPicks onPick={pickCorp} disabled={status === 'loading'} current={company?.code} />
       <button type="button" className="linkish" aria-expanded={manual} onClick={() => setManual((m) => !m)}>
         {manual ? '회사 규모 비교 닫기' : '목록에 없나요? 회사 규모로 비교하기'}
       </button>
