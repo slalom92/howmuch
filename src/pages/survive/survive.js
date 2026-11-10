@@ -10,13 +10,18 @@ export { SALARIES }
 export const DAYS_PER_MONTH = 365 / 12
 export const PAYDAY = 25 // 달력에 쓰는 월급날
 
-export const DEFAULTS = { pay: '4500', s: 'avg' }
+export const DEFAULTS = { pay: '4500', s: 'avg', a: {} }
 
 export const SOURCES = {
   ...PAY_SOURCES,
   oneperson: { label: '국가데이터처, 2025 통계로 보는 1인가구 (2024년 1인 가구 월평균 소비지출 비목별)', url: 'https://mods.go.kr/board.es?act=view&bid=10820&list_no=442130&mid=a10301010000' },
   rent: { label: '머니투데이, 다방여지도 2026년 6월 서울 원룸 평균 월세 (보증금 1,000만 원 기준)', url: 'https://www.mt.co.kr/estate/2026/07/28/2026072808575932587' },
   minliving: { label: '인천광역시, 2026년 1인 가구 생계급여 지급기준 820,556원 (기준 중위소득 32%)', url: 'https://www.incheon.go.kr/welfare/WE010101' },
+  ramen: { label: 'SBS Biz, 신라면 봉지 1개 1천 원', url: 'https://biz.sbs.co.kr/amp/article/20000284952' },
+  ramen2: { label: '뉴시스, 농심 2026년 8월 가격 인상에서 신라면 등 봉지라면은 제외', url: 'https://www.newsis.com/view/NISX20260724_0003721857' },
+  mvno: { label: '글래스월렛, 2026년 알뜰폰 데이터 100GB 요금제 월 1만 7천~2만 1천 원 (가운데 값 1만 9천 원)', url: 'https://glasswallet.com/blog/budget-phone-plan-comparison-guide' },
+  bike: { label: '서울시, 공공자전거 따릉이 365일 정기권(1시간) 30,000원', url: 'https://news.seoul.go.kr/traffic/?p=33719' },
+  haircut: { label: '한국경제, 한국소비자원 참가격 서울 성인 여성 커트 평균 23,692원 (2025년 8월)', url: 'https://www.hankyung.com/article/2025092321417' },
   minliving27: { label: '뉴시스, 2027년 기준 중위소득과 급여별 선정기준 (중앙생활보장위원회 의결)', url: 'https://www.newsis.com/view/NISX20260728_0003726406' },
 }
 
@@ -60,6 +65,57 @@ export const STYLE_TEXT = {
   min: '최소 생활비로만 살면',
 }
 
+// 더 아껴 보기: 항목마다 가장 아끼는 방법. set 은 그 항목을 이 금액으로(원래보다 크면 원래대로), minus 는 그만큼 빼기.
+// 병원·약, 생활용품, 교육은 아끼지 않는다.
+export const RAMEN = 1000 // 신라면 봉지 1개
+export const RAMEN_MONTH = Math.round(RAMEN * 3 * DAYS_PER_MONTH) // 하루 세 봉지
+export const MVNO = 19000
+export const BIKE_MONTH = 2500 // 따릉이 1년권 30,000원 ÷ 12
+export const HAIRCUT = 23692
+
+export const SAVES = [
+  { id: 'h', label: '집', opts: [{ id: 'home', label: '본가 살이', note: '월세 0원', set: { housing: 0 } }] },
+  {
+    id: 'f',
+    label: '식비',
+    opts: [
+      { id: 'cook', label: '집밥만', note: '외식·배달 0원', set: { dining: 0 } },
+      { id: 'ramen', label: '라면만', note: '하루 세 봉지', set: { dining: 0, grocery: RAMEN_MONTH } },
+    ],
+  },
+  { id: 'p', label: '휴대폰', opts: [{ id: 'mvno', label: '알뜰폰', note: '쓰던 폰 그대로', set: { telecom: MVNO } }] },
+  { id: 't', label: '교통', opts: [{ id: 'walk', label: '뚜벅이', note: '따릉이 1년권', set: { transport: BIKE_MONTH } }] },
+  { id: 'b', label: '미용', opts: [{ id: 'grow', label: '머리 기르는 중', note: '커트값 빼기', minus: { etc: HAIRCUT } }] },
+  {
+    id: 'c',
+    label: '취미',
+    opts: [
+      { id: 'one', label: '넷플릭스만', note: '월 13,500원', set: { culture: 13500 } },
+      { id: 'free', label: '산책·도서관', note: '0원', set: { culture: 0 } },
+    ],
+  },
+  { id: 'o', label: '옷', opts: [{ id: 'none', label: '있는 옷으로', note: '0원', set: { clothes: 0 } }] },
+  { id: 'd', label: '술·담배', opts: [{ id: 'quit', label: '끊기', note: '0원', set: { drink: 0 } }] },
+]
+
+// 각 줄에서 가장 많이 아끼는 옵션 (마지막 옵션)
+export const SAVE_ALL = Object.fromEntries(SAVES.map((g) => [g.id, g.opts[g.opts.length - 1].id]))
+
+const optOf = (gid, oid) => SAVES.find((g) => g.id === gid)?.opts.find((o) => o.id === oid)
+
+export function applySaves(items, a = {}) {
+  const out = items.map((c) => ({ ...c, was: c.amount }))
+  for (const [gid, oid] of Object.entries(a)) {
+    const o = optOf(gid, oid)
+    if (!o) continue
+    for (const c of out) {
+      if (o.set && c.id in o.set) c.amount = Math.min(c.amount, o.set[c.id])
+      if (o.minus && c.id in o.minus) c.amount = Math.max(0, c.amount - o.minus[c.id])
+    }
+  }
+  return out
+}
+
 // 생활 방식별 한 달 지출 (비목별)
 export function spendingOf(style) {
   if (style === 'seoul') {
@@ -75,33 +131,51 @@ export function spendingOf(style) {
   return CATEGORIES
 }
 
-export const totalOf = (style) => (style === 'avg' ? AVG_TOTAL : style === 'min' ? MIN_LIVING : spendingOf(style).reduce((a, c) => a + c.amount, 0))
+const baseTotal = (style) => (style === 'avg' ? AVG_TOTAL : style === 'min' ? MIN_LIVING : spendingOf(style).reduce((a, c) => a + c.amount, 0))
+
+// 아끼기를 적용한 비목과 합계. 합계는 통계표 합계에서 줄어든 만큼만 뺀다.
+export function spendOf(style, a) {
+  const items = applySaves(spendingOf(style), a)
+  const cut = items.reduce((sum, c) => sum + (c.was - c.amount), 0)
+  return { items, total: baseTotal(style) - cut }
+}
+
+export const totalOf = (style, a) => spendOf(style, a).total
 
 export const salaryOf = (id) => SALARIES.find((s) => s.id === id) || SALARIES.find((s) => s.id === DEFAULTS.pay)
 
 export function normalize(st) {
+  const a = {}
+  for (const [gid, oid] of Object.entries(st.a || {})) if (optOf(gid, oid)) a[gid] = oid
   return {
     pay: SALARIES.some((x) => x.id === st.pay) ? st.pay : DEFAULTS.pay,
     s: STYLES.some((x) => x.id === st.s) ? st.s : DEFAULTS.s,
+    a,
   }
 }
 
+// 아끼기는 주소에 a=f-ramen.p-mvno 처럼 담는다
+const saveFrom = (v) => Object.fromEntries((v || '').split('.').filter(Boolean).map((x) => x.split('-')))
+const saveTo = (a) => SAVES.filter((g) => a[g.id]).map((g) => `${g.id}-${a[g.id]}`).join('.')
+
 export function fromSearch(search) {
   const p = new URLSearchParams(search || '')
-  return normalize({ pay: p.get('pay'), s: p.get('s') })
+  return normalize({ pay: p.get('pay'), s: p.get('s'), a: saveFrom(p.get('a')) })
 }
 
 export function toSearch(st) {
   const p = new URLSearchParams()
   if (st.pay !== DEFAULTS.pay) p.set('pay', st.pay)
   if (st.s !== DEFAULTS.s) p.set('s', st.s)
+  const a = saveTo(st.a || {})
+  if (a) p.set('a', a)
   const q = p.toString()
   return q ? `?${q}` : ''
 }
 
 // 월급 하나와 생활 방식 하나 → 버티는 날, 남는 돈
-export function lastOf(monthly, style) {
-  const spend = totalOf(style)
+export function lastOf(monthly, style, a) {
+  const spend = totalOf(style, a)
   const daily = spend / DAYS_PER_MONTH
   return { spend, daily, days: Math.floor(monthly / daily), left: monthly - spend }
 }
@@ -110,8 +184,10 @@ export function calculate(state) {
   const st = normalize(state)
   const salary = salaryOf(st.pay)
   const monthly = salary.net / 12
-  const items = spendingOf(st.s).map((c) => ({ ...c, share: c.amount / monthly, daily: c.amount / DAYS_PER_MONTH }))
-  const { spend, daily, days, left } = lastOf(monthly, st.s)
+  const items = spendOf(st.s, st.a).items.map((c) => ({ ...c, share: c.amount / monthly, daily: c.amount / DAYS_PER_MONTH }))
+  const { spend, daily, days, left } = lastOf(monthly, st.s, st.a)
+  const base = lastOf(monthly, st.s)
+  const saveCount = Object.keys(st.a).length
   const groups = GROUPS.map((g) => {
     const amount = items.filter((c) => c.group === g.id).reduce((a, c) => a + c.amount, 0)
     return { ...g, amount, share: amount / monthly }
@@ -126,8 +202,11 @@ export function calculate(state) {
     left,
     items,
     groups,
-    styles: STYLES.map((x) => ({ ...x, ...lastOf(monthly, x.id) })),
-    ladder: SALARIES.map((x) => ({ ...x, monthly: x.net / 12, ...lastOf(x.net / 12, st.s) })),
+    base,
+    saveCount,
+    saved: base.spend - spend,
+    styles: STYLES.map((x) => ({ ...x, ...lastOf(monthly, x.id, st.a) })),
+    ladder: SALARIES.map((x) => ({ ...x, monthly: x.net / 12, ...lastOf(x.net / 12, st.s, st.a) })),
   }
 }
 
@@ -186,6 +265,10 @@ export const FAQ = [
   {
     q: '최소 생활은 무엇을 기준으로 했나요?',
     a: '2026년 1인 가구 생계급여 지급기준 820,556원이에요. 기준 중위소득의 32%로, 나라가 보장하는 최저 생활 수준이에요. 비목별 금액은 1인 가구 평균 비중대로 나눈 값이에요. 2027년 1월부터는 875,533원으로 올라요.',
+  },
+  {
+    q: '더 아껴 보기는 어떻게 계산하나요?',
+    a: '고른 항목만 바꾸고 나머지는 그대로 둬요. 본가 살이는 집 항목 0원, 집밥만은 외식·배달 0원, 라면만은 외식·배달 0원에 장보기를 신라면 봉지(1천 원) 하루 세 개로, 알뜰폰은 월 1만 9천 원, 뚜벅이는 따릉이 1년권(3만 원)을 12달로 나눈 2,500원, 머리 기르는 중은 서울 여성 커트 평균 23,692원을 한 달에 한 번 덜 쓰는 것으로 셌어요. 바꾼 금액이 원래보다 크면 원래 금액을 써요. 병원·약값은 아끼지 않게 그대로 둬요.',
   },
   {
     q: '달력의 날짜는 무엇인가요?',

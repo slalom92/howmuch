@@ -3,7 +3,7 @@ import { FAQ, SOURCES, MIN_LIVING, SEOUL_RENT } from './survive.js'
 
 // ad: 첫 카드(이렇게 계산했어요) 다음에 넣을 광고. 모바일 본문 중간 광고 자리
 export default function SurviveGuide({ ad = null }) {
-  const used = ['netpay', 'nettax', 'oneperson', 'rent', 'minliving', 'minliving27']
+  const used = ['netpay', 'nettax', 'oneperson', 'rent', 'minliving', 'minliving27', 'ramen', 'ramen2', 'mvno', 'bike', 'haircut']
   return (
     <article className="kbo-guide">
       <section className="kbo-card">
@@ -22,7 +22,10 @@ export default function SurviveGuide({ ad = null }) {
             <strong>최소 생활</strong> 2026년 1인 가구 생계급여 지급기준 {MIN_LIVING.toLocaleString('ko-KR')}원이에요.
           </li>
           <li>
-            <strong>버티는 날</strong> 월급 ÷ 하루 생활비(한 달 생활비 ÷ 30.42일). 점 하나가 하루예요.
+            <strong>더 아껴 보기</strong> 고른 항목만 더 싼 값으로 바꿔요. 라면은 신라면 봉지 하루 세 개, 알뜰폰은 월 1만 9천 원, 뚜벅이는 따릉이 1년권, 머리 기르는 중은 서울 여성 커트 평균값을 한 달에 한 번 빼요.
+          </li>
+          <li>
+            <strong>버티는 날</strong> 월급 ÷ 하루 생활비(한 달 생활비 ÷ 30.42일).
           </li>
         </ul>
       </section>

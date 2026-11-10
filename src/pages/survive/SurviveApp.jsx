@@ -9,7 +9,7 @@ import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
 import { FOOTER_MENU, MENU, SURVIVE, JONBER, APT, YOUTUBER } from '../../lib/menu.js'
-import { SALARIES, STYLES, STYLE_TEXT, calculate, fromSearch, toSearch, daysText, won, pct, lastDayFrom, dateText } from './survive.js'
+import { SALARIES, STYLES, STYLE_TEXT, SAVES, SAVE_ALL, calculate, fromSearch, toSearch, daysText, won, pct, lastDayFrom, dateText } from './survive.js'
 import SurviveGuide from './SurviveGuide.jsx'
 
 const SLOTS = {
@@ -29,9 +29,6 @@ const LINKS = [
   { href: JONBER, label: '존버 계산기' },
   { href: APT, label: '연봉 모아 집 사기' },
 ]
-
-const ROW = 30 // 달력 한 줄 = 30일
-const MAX_ROWS = 12
 
 function Choices({ legend, name, options, value, onChange }) {
   return (
@@ -53,30 +50,6 @@ function Choices({ legend, name, options, value, onChange }) {
   )
 }
 
-// 하루 = 점 하나. 한 줄에 30일, 버틴 날은 채우고 모자란 날은 비운다
-function DayGrid({ days }) {
-  const rows = Math.min(MAX_ROWS, Math.max(1, Math.ceil(days / ROW)))
-  const more = days - MAX_ROWS * ROW
-  return (
-    <div className="sv-grid" aria-hidden="true">
-      {Array.from({ length: rows }, (_, i) => {
-        const filled = Math.max(0, Math.min(ROW, days - i * ROW))
-        return (
-          <div className="sv-grid__row" key={i}>
-            <span className="sv-grid__label">{i === 0 ? '이번 달' : `${i + 1}달째`}</span>
-            <span className="sv-grid__dots">
-              {Array.from({ length: ROW }, (_, d) => (
-                <i key={d} className={d < filled ? 'on' : d === filled && filled < ROW ? 'end' : ''} />
-              ))}
-            </span>
-          </div>
-        )
-      })}
-      {more > 0 && <p className="sv-grid__more">… 그러고도 {daysText(more)} 더</p>}
-    </div>
-  )
-}
-
 // 버티는 날 카드
 function LastCard({ r, today }) {
   const short = r.days < 30
@@ -85,6 +58,7 @@ function LastCard({ r, today }) {
     <section className="sv-last" aria-labelledby="sv-last-title">
       <p className="sv-last__kicker" id="sv-last-title">
         연봉 {r.salary.label} 원, 한 달 실수령 {won(r.monthly)}. {STYLE_TEXT[r.state.s]}
+        {r.saveCount > 0 && <span className="sv-last__tag">아끼기 {r.saveCount}개</span>}
       </p>
       <p className="sv-last__main">
         월급 한 번으로{' '}
@@ -108,7 +82,6 @@ function LastCard({ r, today }) {
           </>
         )}
       </p>
-      <DayGrid days={r.days} />
       <dl className="sv-last__grid">
         <div>
           <dt>한 달 생활비</dt>
@@ -132,6 +105,62 @@ function LastCard({ r, today }) {
 }
 
 const PAY_LABEL = (d) => `${d.getMonth() + 1}월 ${d.getDate()}일`
+
+// 더 아껴 보기: 항목마다 아끼는 방법 고르기
+function SavePanel({ r, onChange }) {
+  const a = r.state.a
+  const all = SAVES.every((g) => a[g.id] === SAVE_ALL[g.id])
+  const pick = (gid, oid) => {
+    const next = { ...a }
+    if (oid) next[gid] = oid
+    else delete next[gid]
+    onChange(next)
+  }
+  const more = r.days - r.base.days
+  return (
+    <section className="kbo-card sv-save" aria-labelledby="sv-save-title">
+      <h2 className="kbo-card__title" id="sv-save-title">
+        더 아껴 보기
+      </h2>
+      <p className="sv-save__sum" aria-live="polite">
+        {r.saveCount > 0 ? (
+          <>
+            한 달 <b>{won(r.saved)}</b> 덜 쓰고, 월급 한 번으로 <b>{daysText(r.days)}</b> 버텨요 <span className="sv-save__plus">+{daysText(more)}</span>
+          </>
+        ) : (
+          <>항목마다 아끼는 방법을 골라 보세요. 병원·약값은 아끼지 않게 그대로 둬요.</>
+        )}
+      </p>
+      <div className="sv-save__rows">
+        {SAVES.map((g) => (
+          <fieldset key={g.id} className="sv-save__row">
+            <legend className="sv-save__label">{g.label}</legend>
+            <div className="sv-save__opts">
+              {[{ id: '', label: '그대로' }, ...g.opts].map((o) => {
+                const on = (a[g.id] || '') === o.id
+                return (
+                  <label key={o.id || 'keep'} className={`sv-chip${on ? ' is-on' : ''}`}>
+                    <input type="radio" className="sr-only" name={`save-${g.id}`} value={o.id} checked={on} onChange={() => pick(g.id, o.id)} />
+                    {o.label}
+                    {o.note && <small>{o.note}</small>}
+                  </label>
+                )
+              })}
+            </div>
+          </fieldset>
+        ))}
+      </div>
+      <div className="sv-save__btns">
+        <button type="button" className="sv-btn sv-btn--seal" onClick={() => onChange({ ...SAVE_ALL })} disabled={all}>
+          전부 최대로 아끼기
+        </button>
+        <button type="button" className="sv-btn" onClick={() => onChange({})} disabled={r.saveCount === 0}>
+          처음대로
+        </button>
+      </div>
+    </section>
+  )
+}
 
 // 월급 봉투 쪼개기: 집 / 먹고 마시기 / 그 밖의 생활 / 남는 돈
 function Envelope({ r }) {
@@ -168,7 +197,7 @@ function Envelope({ r }) {
       </ul>
 
       <div className="jb-table-wrap">
-        <table className="jb-table sv-table">
+        <table className="jb-table sv-table sv-table--items">
           <caption className="sr-only">항목별 한 달, 하루 생활비와 월급에서 차지하는 비율</caption>
           <thead>
             <tr>
@@ -192,7 +221,15 @@ function Envelope({ r }) {
                   {c.name}
                   {c.hint && <small>{c.hint}</small>}
                 </th>
-                <td className="num">{won(c.amount)}</td>
+                <td className="num">
+                  {c.amount < c.was && (
+                    <s className="sv-was">
+                      {won(c.was)}
+                      <span className="sr-only">에서 줄여</span>
+                    </s>
+                  )}
+                  {won(c.amount)}
+                </td>
                 <td className="num">{won(c.daily)}</td>
                 <td className="num">
                   <strong>{pct(c.share)}</strong>
@@ -279,7 +316,7 @@ export default function SurviveApp({ initialSearch = '' }) {
   const r = useMemo(() => calculate(state), [state])
   const set = (k) => (v) => {
     setState((s) => ({ ...s, [k]: v }))
-    track('survive_pick', { [k]: v })
+    track('survive_pick', { [k]: k === 'a' ? Object.keys(v).join(',') || 'none' : v })
   }
 
   // 달력 날짜는 브라우저에서만 (미리 그린 HTML 에는 넣지 않는다)
@@ -304,7 +341,10 @@ export default function SurviveApp({ initialSearch = '' }) {
     url.search = toSearch(r.state)
     return {
       url: url.toString(),
-      text: `연봉 ${r.salary.label} 원, ${STYLE_TEXT[r.state.s]} 월급 한 번으로 ${daysText(r.days)} 버텨요 | 돈미터`,
+      text:
+        r.saveCount > 0
+          ? `연봉 ${r.salary.label} 원, 아끼고 아끼면 월급 한 번으로 ${daysText(r.days)} 버텨요 (+${daysText(r.days - r.base.days)}) | 돈미터`
+          : `연봉 ${r.salary.label} 원, ${STYLE_TEXT[r.state.s]} 월급 한 번으로 ${daysText(r.days)} 버텨요 | 돈미터`,
     }
   }, [r])
 
@@ -355,6 +395,7 @@ export default function SurviveApp({ initialSearch = '' }) {
           <div ref={resultRef}>
             <LastCard r={r} today={today} />
           </div>
+          <SavePanel r={r} onChange={set('a')} />
           <Styles r={r} onPick={set('s')} />
         </div>
 
