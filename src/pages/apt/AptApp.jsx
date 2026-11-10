@@ -73,6 +73,16 @@ function Choices({ legend, name, options, value, onChange }) {
   )
 }
 
+// 생활비 빼고 모을 때: 월급 버티기 계산기로 돌아가는 주소 (같은 연봉, 생활 방식, 아끼기)
+function surviveLink(s) {
+  const p = new URLSearchParams()
+  if (s.pay !== '4500') p.set('pay', s.pay)
+  if (s.ls !== 'avg') p.set('s', s.ls)
+  if (s.lv) p.set('a', s.lv)
+  const q = p.toString()
+  return `/survive/${q ? `?${q}` : ''}`
+}
+
 // 적금 통장: 1년에 모으는 돈 × 기간 = 모인 돈
 function Passbook({ r }) {
   const { state: s, salary, yearly, budget, fits, pool } = r
@@ -88,12 +98,23 @@ function Passbook({ r }) {
           <dt>1년에 모으는 돈</dt>
           <dd>
             {man(yearly)}
-            <small>{s.b === 'net' ? `연봉 ${salary.label} 원의 실수령액` : `세전 연봉 그대로`}</small>
+            <small>
+              {s.b === 'left' ? (
+                <>
+                  {r.life.text} 남는 돈{r.life.saves > 0 && `, 아끼기 ${r.life.saves}개`} (한 달 {man(Math.max(0, r.life.left))}){' '}
+                  <a href={surviveLink(s)}>생활비 보기</a>
+                </>
+              ) : s.b === 'net' ? (
+                `연봉 ${salary.label} 원의 실수령액`
+              ) : (
+                `세전 연봉 그대로`
+              )}
+            </small>
           </dd>
         </div>
         <div>
           <dt>모으는 기간</dt>
-          <dd>{s.y}년, 한 푼도 안 쓰고</dd>
+          <dd>{s.y}년, {s.b === 'left' ? '생활비 빼고 남는 돈만' : '한 푼도 안 쓰고'}</dd>
         </div>
         <div className="apt-book__total">
           <dt>모인 돈</dt>
@@ -383,7 +404,7 @@ function Window({ r, nearCtl }) {
   const [shown, setShown] = useState(PAGE)
   const [open, setOpen] = useState(null)
   const { sort, setSort, near } = nearCtl
-  const key = `${r.state.pay}-${r.state.y}-${r.state.a}-${r.state.sido}-${r.state.sgg}-${r.state.b}-${sort}`
+  const key = `${r.state.pay}-${r.state.y}-${r.state.a}-${r.state.sido}-${r.state.sgg}-${r.state.b}-${r.state.ls}-${r.state.lv}-${sort}`
   useEffect(() => setShown(PAGE), [key])
   const list = useMemo(
     () =>
@@ -502,7 +523,7 @@ export default function AptApp({ initialSearch = '' }) {
     return {
       url: url.toString(),
       text: r.ready
-        ? `연봉 ${r.salary.label} 원, ${r.state.y}년 모으면 ${r.place} ${r.state.a}㎡ 아파트 ${r.fits.length.toLocaleString('ko-KR')}곳 | 돈미터`
+        ? `연봉 ${r.salary.label} 원, ${r.state.b === 'left' ? '생활비 빼고 ' : ''}${r.state.y}년 모으면 ${r.place} ${r.state.a}㎡ 아파트 ${r.fits.length.toLocaleString('ko-KR')}곳 | 돈미터`
         : `연봉 ${r.salary.label} 원, ${r.state.y}년 모으면 살 수 있는 아파트 | 돈미터`,
     }
   }, [r])

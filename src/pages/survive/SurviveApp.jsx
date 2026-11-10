@@ -9,7 +9,7 @@ import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
 import { FOOTER_MENU, MENU, SURVIVE, JONBER, APT, YOUTUBER } from '../../lib/menu.js'
-import { SALARIES, STYLES, STYLE_TEXT, SAVES, SAVE_ALL, calculate, fromSearch, toSearch, daysText, won, pct, lastDayFrom, dateText } from './survive.js'
+import { SALARIES, STYLES, STYLE_TEXT, SAVES, SAVE_ALL, calculate, fromSearch, toSearch, aptLink, daysText, won, pct, lastDayFrom, dateText } from './survive.js'
 import SurviveGuide from './SurviveGuide.jsx'
 
 const SLOTS = {
@@ -100,6 +100,23 @@ function LastCard({ r, today }) {
           <dd className={r.left < 0 ? 'is-minus' : ''}>{won(r.left * 12)}</dd>
         </div>
       </dl>
+      {r.left > 0 ? (
+        <a className="sv-apt" href={aptLink(r.state)} onClick={() => track('survive_apt', { pay: r.state.pay, s: r.state.s })}>
+          <span className="sv-apt__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path d="M3.6 11.2L12 3.6l8.4 7.6v9.2a1 1 0 0 1-1 1H4.6a1 1 0 0 1-1-1z" />
+              <path d="M9.8 21.4v-7.2h4.4v7.2" />
+            </svg>
+          </span>
+          <span className="sv-apt__text">
+            <strong>남는 돈 모아서 살 수 있는 아파트</strong>
+            <small>한 달 {won(r.left)}씩 모으면 몇 년 걸릴까요?</small>
+          </span>
+          <span className="sv-apt__go" aria-hidden="true">
+            ›
+          </span>
+        </a>
+      ) : null}
     </section>
   )
 }

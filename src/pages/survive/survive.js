@@ -155,8 +155,8 @@ export function normalize(st) {
 }
 
 // 아끼기는 주소에 a=f-ramen.p-mvno 처럼 담는다
-const saveFrom = (v) => Object.fromEntries((v || '').split('.').filter(Boolean).map((x) => x.split('-')))
-const saveTo = (a) => SAVES.filter((g) => a[g.id]).map((g) => `${g.id}-${a[g.id]}`).join('.')
+export const saveFrom = (v) => Object.fromEntries((v || '').split('.').filter(Boolean).map((x) => x.split('-')))
+export const saveTo = (a) => SAVES.filter((g) => a[g.id]).map((g) => `${g.id}-${a[g.id]}`).join('.')
 
 export function fromSearch(search) {
   const p = new URLSearchParams(search || '')
@@ -208,6 +208,17 @@ export function calculate(state) {
     styles: STYLES.map((x) => ({ ...x, ...lastOf(monthly, x.id, st.a) })),
     ladder: SALARIES.map((x) => ({ ...x, monthly: x.net / 12, ...lastOf(x.net / 12, st.s, st.a) })),
   }
+}
+
+// 남는 돈으로 아파트 보기: 연봉 모아 집 사기(/apt/)에 생활 방식과 아끼기를 넘긴다
+export function aptLink(st) {
+  const p = new URLSearchParams()
+  if (st.pay !== DEFAULTS.pay) p.set('pay', st.pay)
+  p.set('b', 'left')
+  if (st.s !== DEFAULTS.s) p.set('ls', st.s)
+  const a = saveTo(st.a || {})
+  if (a) p.set('lv', a)
+  return `/apt/?${p.toString()}`
 }
 
 // 날 수 → "58일", "1달 28일" (한 달 = 30일로 끊어 읽기 쉽게)

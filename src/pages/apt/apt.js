@@ -3,8 +3,10 @@
 //
 // - 사용자는 숫자를 직접 쓰지 않고 연봉·기간·면적·지역(시도, 시군구)을 고른다 (콘텐츠 입력은 대표 값 고르기만).
 // - "한 푼도 안 쓰고 모으면": 1년 모으는 돈 = 실수령 연봉(기본) 또는 세전 연봉. 이자, 집값 변동, 대출, 취득세는 넣지 않는다.
+// - "생활비 빼고"(b=left): 월급 버티기 계산기(/survive/)와 같은 생활비(ls=생활 방식, lv=아끼기)를 빼고 남는 돈만 모은다.
 import DATA from './apt-data.json'
 import { SALARIES, PAY_SOURCES } from '../../lib/salary.js'
+import { STYLES as LIFE_STYLES, STYLE_TEXT, lastOf, normalize as lifeNormalize, saveFrom, saveTo } from '../survive/survive.js'
 
 export { DATA }
 
@@ -28,9 +30,10 @@ export const AREAS = [
 export const BASES = [
   { id: 'net', label: '실수령' },
   { id: 'gross', label: '세전 연봉' },
+  { id: 'left', label: '생활비 빼고', note: '남는 돈만' },
 ]
 
-export const DEFAULTS = { pay: '4500', y: 20, a: '84', sido: '11', sgg: 'all', b: 'net' }
+export const DEFAULTS = { pay: '4500', y: 20, a: '84', sido: '11', sgg: 'all', b: 'net', ls: 'avg', lv: '' }
 
 // 시도 고르기: apt-data.json(목록)에 있는 시도만. 처음에는 서울(11), 없으면 첫 시도
 export const SIDO = DATA.sido || []
@@ -90,17 +93,23 @@ export function normalize(s) {
     sido,
     sgg: sggs.some((g) => g.code === s.sgg) ? s.sgg : 'all',
     b: BASES.some((x) => x.id === s.b) ? s.b : DEFAULTS.b,
+    ls: LIFE_STYLES.some((x) => x.id === s.ls) ? s.ls : DEFAULTS.ls,
+    lv: saveTo(lifeNormalize({ a: saveFrom(s.lv) }).a),
   }
 }
 
 export const fromSearch = (search) => {
   const q = new URLSearchParams(search)
-  return normalize({ pay: q.get('pay'), y: q.get('y'), a: q.get('a'), sido: q.get('sido'), sgg: q.get('sgg') || 'all', b: q.get('b') })
+  return normalize({ pay: q.get('pay'), y: q.get('y'), a: q.get('a'), sido: q.get('sido'), sgg: q.get('sgg') || 'all', b: q.get('b'), ls: q.get('ls'), lv: q.get('lv') })
 }
 
 export const toSearch = (s) => {
   const q = new URLSearchParams()
   for (const k of ['pay', 'y', 'a', 'sido', 'sgg', 'b']) if (String(s[k]) !== String(k === 'sgg' ? 'all' : DEFAULTS[k])) q.set(k, s[k])
+  if (s.b === 'left') {
+    if (s.ls !== DEFAULTS.ls) q.set('ls', s.ls)
+    if (s.lv) q.set('lv', s.lv)
+  }
   return q.toString()
 }
 
@@ -116,6 +125,13 @@ export function placeName(state) {
 export function budgetOf(state) {
   const s = normalize(state)
   const salary = salaryOf(s.pay)
+  if (s.b === 'left') {
+    // 월급 버티기 계산기와 같은 생활비를 빼고 남는 돈 (모자라면 0원)
+    const life = lastOf(salary.net / 12, s.ls, saveFrom(s.lv))
+    const yearly = Math.max(0, life.left * 12)
+    const saves = s.lv ? s.lv.split('.').length : 0
+    return { state: s, salary, yearly, budget: yearly * s.y, life: { ...life, text: STYLE_TEXT[s.ls], saves } }
+  }
   const yearly = s.b === 'net' ? salary.net : salary.gross
   return { state: s, salary, yearly, budget: yearly * s.y }
 }
@@ -125,7 +141,7 @@ export function calculate(state, file) {
   const base = budgetOf(state)
   const { state: s, yearly, budget } = base
   const pool = file && file.code === s.sido ? aptsOf(file).filter((a) => a[s.a] && (s.sgg === 'all' || a.sgg === s.sgg)) : []
-  const yearsFor = (a) => a[s.a].price / yearly
+  const yearsFor = (a) => a[s.a].price / Math.max(1, yearly)
   const fits = pool.filter((a) => a[s.a].price <= budget).sort((x, y) => y[s.a].price - x[s.a].price)
   const cheapest = pool.reduce((m, a) => (!m || a[s.a].price < m[s.a].price ? a : m), null)
   const ladder = [5, 10, 15, 20, 30, 40].map((n) => ({ years: n, count: pool.filter((a) => a[s.a].price <= yearly * n).length }))
