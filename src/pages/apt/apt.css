@@ -349,13 +349,27 @@
   letter-spacing: 0;
 }
 
+/* 모아야 하는 기간: 카드에서 가장 큰 글자 */
 .apt-card__years {
-  margin: 6px 0 0;
-  font-size: 14.5px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px dashed var(--rule);
+  font-size: 14px;
+  color: var(--muted);
 }
 
 .apt-card__years strong {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
   color: var(--seal);
+  white-space: nowrap;
 }
 
 .apt-card__meta {
@@ -436,7 +450,7 @@
   }
 }
 
-/* ---------- 목록 순서 (비싼 순 / 내 주변 먼저) ---------- */
+/* ---------- 목록 순서 (고가 순 / 저가 순 / 내 주변 먼저) ---------- */
 .apt-sort {
   margin: 0 0 14px;
 }

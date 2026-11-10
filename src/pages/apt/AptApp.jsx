@@ -273,13 +273,14 @@ function MapDialog({ apt, r, onClose }) {
   )
 }
 
-// 정렬: 비싼 순 / 내 주변 먼저 (위치는 이 브라우저 안에서만 쓰고 어디에도 보내지 않는다)
+// 정렬: 고가 순 / 저가 순 / 내 주변 먼저 (위치는 이 브라우저 안에서만 쓰고 어디에도 보내지 않는다)
 function SortBar({ sort, setSort, near }) {
   return (
     <div className="apt-sort">
       <div className="apt-sort__opts" role="radiogroup" aria-label="목록 순서">
         {[
-          ['price', '비싼 순'],
+          ['price', '고가 순'],
+          ['low', '저가 순'],
           ['near', '내 주변 먼저'],
         ].map(([id, label]) => (
           <button key={id} type="button" role="radio" aria-checked={sort === id} className={`apt-sort__btn${sort === id ? ' is-on' : ''}`} onClick={() => setSort(id)}>
@@ -317,8 +318,8 @@ function useNear(r, onSido) {
   const busy = useRef(false)
 
   const setSort = async (id) => {
-    if (id === 'price') {
-      setSortRaw('price')
+    if (id === 'price' || id === 'low') {
+      setSortRaw(id)
       setNear((n) => ({ ...n, msg: '' }))
       return
     }
@@ -344,7 +345,7 @@ function useNear(r, onSido) {
         here,
         sido: sd.code,
         centers,
-        msg: `${sd.short} ${where.sgg}에서 가까운 시군구부터, 같은 시군구 안에서는 비싼 순이에요. 위치는 카카오맵에서 지역을 찾는 데만 쓰고 저장하지 않아요.`,
+        msg: `${sd.short} ${where.sgg}에서 가까운 시군구부터, 같은 시군구 안에서는 고가 순이에요. 위치는 카카오맵에서 지역을 찾는 데만 쓰고 저장하지 않아요.`,
       })
       setSortRaw('near')
       track('apt_near', { sido: sd.code })
@@ -356,9 +357,9 @@ function useNear(r, onSido) {
         centers: null,
         msg:
           e.message === 'geo'
-            ? '위치를 확인하지 못해서 비싼 순으로 보여 드려요. 브라우저의 위치 권한을 확인해 주세요.'
+            ? '위치를 확인하지 못해서 고가 순으로 보여 드려요. 브라우저의 위치 권한을 확인해 주세요.'
             : e.message === 'outside'
-              ? '내 위치 근처의 아파트 자료가 없어서 비싼 순으로 보여 드려요.'
+              ? '내 위치 근처의 아파트 자료가 없어서 고가 순으로 보여 드려요.'
               : '지금은 내 주변을 찾지 못했어요. 잠시 뒤 다시 눌러 주세요.',
       })
     } finally {
@@ -366,7 +367,7 @@ function useNear(r, onSido) {
     }
   }
 
-  // 다른 시도를 직접 고르면 비싼 순으로 돌아간다
+  // 다른 시도를 직접 고르면 고가 순으로 돌아간다
   useEffect(() => {
     if (sort === 'near' && near.sido && near.sido !== r.state.sido) {
       setSortRaw('price')
@@ -385,7 +386,12 @@ function Window({ r, nearCtl }) {
   const key = `${r.state.pay}-${r.state.y}-${r.state.a}-${r.state.sido}-${r.state.sgg}-${r.state.b}-${sort}`
   useEffect(() => setShown(PAGE), [key])
   const list = useMemo(
-    () => (sort === 'near' && near.here && near.sido === r.state.sido ? sortNear(r.fits, near.here, near.centers, r.state.a) : r.fits),
+    () =>
+      sort === 'near' && near.here && near.sido === r.state.sido
+        ? sortNear(r.fits, near.here, near.centers, r.state.a)
+        : sort === 'low'
+          ? [...r.fits].reverse() // r.fits 는 고가 순
+          : r.fits,
     [r.fits, sort, near, r.state.sido, r.state.a],
   )
   // 지도를 닫으면 열었던 버튼으로 초점을 돌려준다

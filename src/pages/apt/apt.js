@@ -134,7 +134,7 @@ export function budgetOf(state) {
   return { state: s, salary, yearly, budget: yearly * s.y }
 }
 
-// 고른 조건으로 살 수 있는 단지 (비싼 순) + 요약. file 은 고른 시도 파일 (아직 없으면 null)
+// 고른 조건으로 살 수 있는 단지 (고가 순) + 요약. file 은 고른 시도 파일 (아직 없으면 null)
 export function calculate(state, file) {
   const base = budgetOf(state)
   const { state: s, yearly, budget } = base
@@ -154,7 +154,7 @@ export function km([lat1, lng1], [lat2, lng2]) {
   return 6371 * 2 * Math.asin(Math.sqrt(a))
 }
 
-// 내 위치에서 가까운 시군구부터, 같은 시군구 안에서는 비싼 순. centers: { 시군구코드: [위도, 경도] } (화면에서 그때그때 찾은 값)
+// 내 위치에서 가까운 시군구부터, 같은 시군구 안에서는 고가 순. centers: { 시군구코드: [위도, 경도] } (화면에서 그때그때 찾은 값)
 export function sortNear(list, here, centers, area) {
   const d = {}
   for (const [code, c] of Object.entries(centers)) d[code] = km(here, c)
@@ -181,7 +181,7 @@ export const FAQ = [
   },
   {
     q: '내 주변 먼저는 어떻게 정하나요?',
-    a: '버튼을 누르면 브라우저가 위치 권한을 물어요. 허용하면 카카오맵으로 내가 있는 시도와 시군구를 확인하고, 그 시도의 시군구를 내 위치에서 가까운 순서로 늘어놓아요. 같은 시군구 안에서는 비싼 순이에요. 위치는 지역을 찾는 데만 쓰고 돈미터 서버로 보내거나 저장하지 않아요.',
+    a: '버튼을 누르면 브라우저가 위치 권한을 물어요. 허용하면 카카오맵으로 내가 있는 시도와 시군구를 확인하고, 그 시도의 시군구를 내 위치에서 가까운 순서로 늘어놓아요. 같은 시군구 안에서는 고가 순이에요. 위치는 지역을 찾는 데만 쓰고 돈미터 서버로 보내거나 저장하지 않아요.',
   },
   {
     q: '지도 위치는 정확한가요?',
