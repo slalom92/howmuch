@@ -1,4 +1,4 @@
-// 존버 계산기 아래 안내 (계산 방법, 자주 묻는 질문, 출처)
+// 월급 분당 계산기 아래 안내 (계산 방법, 자주 묻는 질문, 출처)
 import { FAQ, SOURCES, ITEMS, MIN_WAGE, HOURS_PER_MONTH } from './jonber.js'
 
 // ad: 첫 카드(이렇게 계산했어요) 다음에 넣을 광고. 모바일 본문 중간 광고 자리

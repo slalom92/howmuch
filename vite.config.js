@@ -49,8 +49,8 @@ export default defineConfig(({ mode }) => {
     //   /pga/           → pga/index.html (PGA 투어 선수 상금, 화면은 klpga 와 같이 쓴다)
     //   /lpga/          → lpga/index.html (LPGA 투어 선수 상금, 화면은 klpga 와 같이 쓴다)
     //   /apt/           → apt/index.html (연봉 모아 집 사기, 자료는 npm run apt 로 만든다)
-    //   /jonber/        → jonber/index.html (존버 계산기)
-    //   /survive/       → survive/index.html (월급 버티기 계산기)
+    //   /jonber/        → jonber/index.html (월급 분당 계산기)
+    //   /survive/       → survive/index.html (존버 계산기)
     build: {
       rollupOptions: {
         input: {

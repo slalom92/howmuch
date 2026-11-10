@@ -66,7 +66,7 @@ export function HouseIcon() {
   )
 }
 
-// 월급 버티기 계산기: 달력 + 동전
+// 존버 계산기: 달력 + 동전
 export function CalendarIcon() {
   return (
     <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -79,7 +79,7 @@ export function CalendarIcon() {
   )
 }
 
-// 존버 계산기: 시계 + 동전
+// 월급 분당 계산기: 시계 + 동전
 export function ClockIcon() {
   return (
     <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">

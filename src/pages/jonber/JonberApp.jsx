@@ -1,4 +1,4 @@
-// 존버 계산기 (/jonber/): 연봉을 고르면 커피, 점심, 월세, 아이폰을 사려고 몇 시간 일해야 하는지 보여 준다
+// 월급 분당 계산기 (/jonber/): 연봉을 고르면 커피, 점심, 월세, 아이폰을 사려고 몇 시간 일해야 하는지 보여 준다
 import { useEffect, useMemo, useRef, useState } from 'react'
 import AdSlot, { AdRails } from '../../components/AdSlot.jsx'
 import ShareBar from '../../components/ShareBar.jsx'
@@ -26,7 +26,7 @@ const SLOTS = {
 const ITEMS_MENU = MENU.slice(0, 11)
 const LINKS = [
   { href: YOUTUBER, label: '유튜버 수익 계산기' },
-  { href: JONBER, label: '존버 계산기' },
+  { href: JONBER, label: '월급 분당 계산기' },
   { href: APT, label: '연봉 모아 집 사기' },
   { href: KBO, label: '프로야구 선수 연봉' },
 ]
@@ -139,13 +139,13 @@ function Clock({ r }) {
   )
 }
 
-// 하루로는 안 되는 것: 며칠, 몇 달 존버
+// 하루로는 안 되는 것: 며칠, 몇 달 일해야
 function Later({ r }) {
   if (!r.later.length) return null
   return (
     <section className="jb-later" aria-labelledby="jb-later-title">
       <h2 className="jb-later__title" id="jb-later-title">
-        이건 며칠 존버해야 해요
+        이건 며칠 일해야 해요
       </h2>
       <ul className="jb-later__cards">
         {r.later.map((it) => (
@@ -156,7 +156,7 @@ function Later({ r }) {
             </p>
             <p className="jb-card__price">{priceText(it.price)}</p>
             <p className="jb-card__time">
-              <strong>{timeText(it.hours)}</strong> 존버
+              <strong>{timeText(it.hours)}</strong> 일해야
             </p>
             <p className="jb-card__min">최저시급이면 {timeText(it.minHours)}</p>
           </li>
@@ -238,7 +238,7 @@ export default function JonberApp({ initialSearch = '' }) {
     const phone = r.items.find((it) => it.id === 'iphone')
     return {
       url: url.toString(),
-      text: `연봉 ${r.salary.label} 원, 내 1시간은 ${won(r.hourly)} · 아이폰 사려면 ${timeText(phone.hours)} 존버 | 돈미터`,
+      text: `연봉 ${r.salary.label} 원, 내 1시간은 ${won(r.hourly)} · 아이폰 사려면 ${timeText(phone.hours)} 일해야 | 돈미터`,
     }
   }, [r])
 
@@ -275,7 +275,7 @@ export default function JonberApp({ initialSearch = '' }) {
       <main className="main">
         <section className="hero jb-hero">
           <div className="hero__text">
-            <h1 className="hero__title">존버 계산기</h1>
+            <h1 className="hero__title">월급 분당 계산기</h1>
             <p className="hero__lede">연봉만 고르면 커피 한 잔, 점심 한 끼, 월세, 아이폰을 사려고 몇 시간 일해야 하는지 보여 드려요.</p>
           </div>
         </section>

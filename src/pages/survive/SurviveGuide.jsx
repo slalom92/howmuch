@@ -1,4 +1,4 @@
-// 월급 버티기 계산기 아래 안내 (계산 방법, 자주 묻는 질문, 출처)
+// 존버 계산기 아래 안내 (계산 방법, 자주 묻는 질문, 출처)
 import { FAQ, SOURCES, MIN_LIVING, SEOUL_RENT } from './survive.js'
 
 // ad: 첫 카드(이렇게 계산했어요) 다음에 넣을 광고. 모바일 본문 중간 광고 자리
@@ -51,7 +51,7 @@ export default function SurviveGuide({ ad = null }) {
             <a href="/guide/take-home-pay/">연봉 실수령액은 어떻게 정해질까: 2026년 4대보험과 소득세</a>
           </li>
           <li>
-            <a href="/jonber/">존버 계산기: 이거 사려면 몇 시간 일해야 할까</a>
+            <a href="/jonber/">월급 분당 계산기: 이거 사려면 몇 시간 일해야 할까</a>
           </li>
           <li>
             <a href="/apt/">연봉 모아 집 사기: 남는 돈을 모으면 몇 년 걸릴까</a>

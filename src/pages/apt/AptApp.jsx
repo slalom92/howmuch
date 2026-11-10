@@ -73,7 +73,7 @@ function Choices({ legend, name, options, value, onChange }) {
   )
 }
 
-// 생활비 빼고 모을 때: 월급 버티기 계산기로 돌아가는 주소 (같은 연봉, 생활 방식, 아끼기)
+// 생활비 빼고 모을 때: 존버 계산기로 돌아가는 주소 (같은 연봉, 생활 방식, 아끼기)
 function surviveLink(s) {
   const p = new URLSearchParams()
   if (s.pay !== '4500') p.set('pay', s.pay)

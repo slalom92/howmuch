@@ -25,8 +25,8 @@ const PAGES = [
   { name: 'PGA 투어 선수 상금', entry: 'src/pages/pga/entry-server.jsx', html: 'dist/pga/index.html' },
   { name: 'LPGA 투어 선수 상금', entry: 'src/pages/lpga/entry-server.jsx', html: 'dist/lpga/index.html' },
   { name: '연봉 모아 집 사기', entry: 'src/pages/apt/entry-server.jsx', html: 'dist/apt/index.html' },
-  { name: '존버 계산기', entry: 'src/pages/jonber/entry-server.jsx', html: 'dist/jonber/index.html' },
-  { name: '월급 버티기 계산기', entry: 'src/pages/survive/entry-server.jsx', html: 'dist/survive/index.html' },
+  { name: '월급 분당 계산기', entry: 'src/pages/jonber/entry-server.jsx', html: 'dist/jonber/index.html' },
+  { name: '존버 계산기', entry: 'src/pages/survive/entry-server.jsx', html: 'dist/survive/index.html' },
 ]
 
 // Vite 처럼 VITE_ 로 시작하는 환경변수를 import.meta.env 로 넘긴다

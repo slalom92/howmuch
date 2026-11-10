@@ -1,4 +1,4 @@
-// 월급 버티기 계산기 (/survive/): 연봉과 생활 방식을 고르면 월급 한 번으로 며칠 버티는지, 월급이 어디로 가는지 보여 준다
+// 존버 계산기 (/survive/): 연봉과 생활 방식을 고르면 월급 한 번으로 며칠 버티는지, 월급이 어디로 가는지 보여 준다
 import { useEffect, useMemo, useRef, useState } from 'react'
 import AdSlot, { AdRails } from '../../components/AdSlot.jsx'
 import ShareBar from '../../components/ShareBar.jsx'
@@ -25,8 +25,8 @@ const SLOTS = {
 const ITEMS_MENU = MENU.slice(0, 11)
 const LINKS = [
   { href: YOUTUBER, label: '유튜버 수익 계산기' },
-  { href: SURVIVE, label: '월급 버티기 계산기' },
-  { href: JONBER, label: '존버 계산기' },
+  { href: SURVIVE, label: '존버 계산기' },
+  { href: JONBER, label: '월급 분당 계산기' },
   { href: APT, label: '연봉 모아 집 사기' },
 ]
 
@@ -398,7 +398,7 @@ export default function SurviveApp({ initialSearch = '' }) {
       <main className="main">
         <section className="hero sv-hero">
           <div className="hero__text">
-            <h1 className="hero__title">월급 버티기 계산기</h1>
+            <h1 className="hero__title">존버 계산기</h1>
             <p className="hero__lede">연봉과 사는 방식만 고르면, 월급 한 번으로 며칠 버티는지와 월급이 어디로 사라지는지 보여 드려요.</p>
           </div>
         </section>

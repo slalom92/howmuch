@@ -3,7 +3,7 @@
 //
 // - 사용자는 숫자를 직접 쓰지 않고 연봉·기간·면적·지역(시도, 시군구)을 고른다 (콘텐츠 입력은 대표 값 고르기만).
 // - "한 푼도 안 쓰고 모으면": 1년 모으는 돈 = 실수령 연봉(기본) 또는 세전 연봉. 이자, 집값 변동, 대출, 취득세는 넣지 않는다.
-// - "생활비 빼고"(b=left): 월급 버티기 계산기(/survive/)와 같은 생활비(ls=생활 방식, lv=아끼기)를 빼고 남는 돈만 모은다.
+// - "생활비 빼고"(b=left): 존버 계산기(/survive/)와 같은 생활비(ls=생활 방식, lv=아끼기)를 빼고 남는 돈만 모은다.
 import DATA from './apt-data.json'
 import { SALARIES, PAY_SOURCES } from '../../lib/salary.js'
 import { STYLES as LIFE_STYLES, STYLE_TEXT, lastOf, normalize as lifeNormalize, saveFrom, saveTo } from '../survive/survive.js'
@@ -17,7 +17,7 @@ export const SOURCES = {
   worker: { label: '국가데이터처, 2024년 임금근로일자리 소득 (월평균 375만 원)', url: 'https://kostat.go.kr/' },
 }
 
-// 세전 연봉과 2026년 연 실수령액 (존버 계산기와 같이 쓴다: src/lib/salary.js)
+// 세전 연봉과 2026년 연 실수령액 (월급 분당 계산기와 같이 쓴다: src/lib/salary.js)
 export { SALARIES }
 
 export const YEARS = [5, 10, 20, 30]
@@ -126,7 +126,7 @@ export function budgetOf(state) {
   const s = normalize(state)
   const salary = salaryOf(s.pay)
   if (s.b === 'left') {
-    // 월급 버티기 계산기와 같은 생활비를 빼고 남는 돈 (모자라면 0원)
+    // 존버 계산기와 같은 생활비를 빼고 남는 돈 (모자라면 0원)
     const life = lastOf(salary.net / 12, s.ls, saveFrom(s.lv))
     const yearly = Math.max(0, life.left * 12)
     const saves = s.lv ? s.lv.split('.').length : 0
