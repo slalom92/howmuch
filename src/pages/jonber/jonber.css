@@ -1,0 +1,375 @@
+/* 존버 계산기 (/jonber/) — 틀은 styles.css, 고르기(.apt-form 등)는 apt.css, 안내 카드(.kbo-card 등)는 kbo.css 를 쓰고
+   여기서는 jb- 로 시작하는 것만 꾸민다. 색 변수는 public/themes.css */
+
+.jb-result {
+  margin-top: 22px;
+}
+
+/* ---------- 내 시급: 출퇴근 기록 카드처럼 ---------- */
+.jb-pay {
+  position: relative;
+  padding: 20px 22px 18px;
+  border-radius: 12px;
+  background: var(--paper);
+  border-top: 6px solid var(--seal);
+  box-shadow:
+    0 1px 0 var(--rule),
+    0 18px 40px -28px rgba(var(--shadow-rgb), 0.45);
+}
+
+.jb-pay__kicker {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.jb-pay__main {
+  margin: 6px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.jb-pay__main strong {
+  display: block;
+  margin-top: 2px;
+  font-size: clamp(40px, 11vw, 56px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--seal);
+}
+
+.jb-pay__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 18px 0 0;
+  border-top: 1px dashed var(--rule);
+}
+
+.jb-pay__grid > div {
+  padding: 12px 8px 0 0;
+}
+
+.jb-pay__grid > div + div {
+  padding-left: 12px;
+  border-left: 1px dashed var(--rule);
+}
+
+.jb-pay__grid dt {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.jb-pay__grid dd {
+  margin: 2px 0 0;
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  word-break: keep-all;
+}
+
+.jb-pay__note {
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.jb-pay__note strong {
+  color: var(--ink);
+}
+
+@media (max-width: 520px) {
+  .jb-pay__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .jb-pay__grid > div:nth-child(3) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .jb-pay__grid > div:nth-child(n + 3) {
+    margin-top: 12px;
+    border-top: 1px dashed var(--rule);
+  }
+}
+
+/* ---------- 출근 시계 ---------- */
+.jb-clock {
+  margin-top: 22px;
+}
+
+.jb-clock__lede {
+  margin: -4px 0 14px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.jb-clock__list {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 세로 시간 줄 */
+.jb-clock__list::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 54px;
+  width: 2px;
+  background: var(--rule);
+}
+
+.jb-clock__list li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0 22px;
+  padding: 9px 0;
+}
+
+.jb-clock__list li::before {
+  content: '';
+  position: absolute;
+  left: 50px;
+  top: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: 0 0 0 2px var(--seal);
+}
+
+.jb-clock__list time {
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.jb-clock__what {
+  font-size: 15px;
+  word-break: keep-all;
+}
+
+.jb-clock__what small {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.jb-clock__took {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.jb-clock__edge span {
+  grid-column: 2 / 4;
+  font-weight: 700;
+}
+
+.jb-clock__edge::before {
+  background: var(--ink) !important;
+  box-shadow: 0 0 0 2px var(--ink) !important;
+}
+
+.jb-clock__edge strong {
+  color: var(--seal);
+}
+
+.jb-clock__lunch span {
+  grid-column: 2 / 4;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.jb-clock__lunch::before {
+  box-shadow: 0 0 0 2px var(--rule) !important;
+}
+
+/* ---------- 며칠 존버 ---------- */
+.jb-later {
+  margin-top: 22px;
+}
+
+.jb-later__title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+
+.jb-later__cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 560px) {
+  .jb-later__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.jb-card {
+  padding: 14px 16px 14px;
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--ink);
+  border-radius: 4px;
+  background: var(--paper);
+}
+
+.jb-card__name {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  word-break: keep-all;
+}
+
+.jb-card__name small {
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.jb-card__price {
+  margin: 2px 0 0;
+  font-size: 15px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.jb-card__time {
+  margin: 10px 0 0;
+  padding-top: 10px;
+  border-top: 1px dashed var(--rule);
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.jb-card__time strong {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--seal);
+}
+
+.jb-card__min {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.jb-later__note {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- 최저시급과 나란히 ---------- */
+.jb-table-wrap {
+  overflow-x: auto;
+}
+
+.jb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+
+.jb-table th,
+.jb-table td {
+  padding: 9px 6px;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  word-break: keep-all;
+}
+
+.jb-table thead th {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.jb-table tbody th {
+  font-weight: 600;
+}
+
+.jb-table .num {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.jb-table td strong {
+  color: var(--seal);
+}
+
+@media (max-width: 420px) {
+  .jb-table {
+    font-size: 13.5px;
+  }
+
+  .jb-table th,
+  .jb-table td {
+    padding: 8px 4px;
+  }
+
+  /* 좁은 화면: 가격은 "194만 / 7,000원"처럼 두 줄로 */
+  .jb-table td.num:nth-child(2) {
+    white-space: normal;
+    min-width: 4.5em;
+  }
+}
+
+/* ---------- 물건 아이콘 (커피, 치킨, 휴대폰) ---------- */
+.jb-icon {
+  display: inline-block;
+  flex: none;
+  margin-right: 5px;
+  vertical-align: -4px;
+}
+
+.jb-table .jb-icon {
+  margin-right: 4px;
+  vertical-align: -3px;
+}
+
+/* 출근 시계: 아이콘이 있는 줄은 아이콘을 이름 앞에 동그랗게 */
+.jb-clock__what .jb-icon {
+  padding: 3px;
+  box-sizing: content-box;
+  border-radius: 8px;
+  background: var(--seal-tint);
+  margin-right: 6px;
+  vertical-align: -8px;
+}
+
+.jb-card {
+  position: relative;
+}
+
+.jb-card.has-icon {
+  padding-right: 72px;
+}
+
+.jb-card__icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 6px;
+  box-sizing: content-box;
+  border-radius: 12px;
+  background: var(--seal-tint);
+}

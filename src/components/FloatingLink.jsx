@@ -66,6 +66,19 @@ export function HouseIcon() {
   )
 }
 
+// 존버 계산기: 시계 + 동전
+export function ClockIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <path d="M12.5 3.5h7M16 3.5v3" fill="none" strokeWidth="2" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+      <circle cx="15" cy="17.5" r="10.5" strokeWidth="2" style={{ fill: 'var(--seal-tint)', stroke: 'var(--seal)' }} />
+      <path d="M15 11.5v6.5l4 2.5" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ stroke: 'var(--seal)' }} />
+      <circle cx="24.5" cy="24.5" r="4.5" strokeWidth="1.6" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <path d="M24.5 22.3v4.4" fill="none" strokeWidth="1.4" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+    </svg>
+  )
+}
+
 // hidden: 잠시 숨길 때 (예: 축의금 계산기에서 하단 요약 바가 떠 있는 동안)
 export default function FloatingLink({ href, title, sub, badge, icon, hidden = false, event = 'floating_link' }) {
   const [compact, setCompact] = useState(false)

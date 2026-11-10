@@ -4,33 +4,19 @@
 // - 사용자는 숫자를 직접 쓰지 않고 연봉·기간·면적·지역(시도, 시군구)을 고른다 (콘텐츠 입력은 대표 값 고르기만).
 // - "한 푼도 안 쓰고 모으면": 1년 모으는 돈 = 실수령 연봉(기본) 또는 세전 연봉. 이자, 집값 변동, 대출, 취득세는 넣지 않는다.
 import DATA from './apt-data.json'
+import { SALARIES, PAY_SOURCES } from '../../lib/salary.js'
 
 export { DATA }
 
 export const SOURCES = {
   molit: { label: '공공데이터포털, 국토교통부_아파트 매매 실거래가 상세 자료', url: 'https://www.data.go.kr/data/15126468/openapi.do' },
   kakao: { label: '카카오맵 (단지 위치)', url: 'https://map.kakao.com/' },
-  netpay: { label: '잡플래닛, 2026년 연봉 실수령액표 (본인 1명, 비과세 식대 월 20만 원 기준)', url: 'https://www.jobplanet.co.kr/contents/news-7982' },
-  nettax: { label: '국세청, 근로소득 간이세액표 (연봉 1억 초과는 같은 기준으로 돈미터가 계산)', url: 'https://www.hometax.go.kr/' },
+  ...PAY_SOURCES,
   worker: { label: '국가데이터처, 2024년 임금근로일자리 소득 (월평균 375만 원)', url: 'https://kostat.go.kr/' },
 }
 
-// 세전 연봉과 2026년 연 실수령액
-// - 1억 이하: 잡플래닛 2026 연봉 실수령액표
-// - 1억 초과: 표와 같은 기준(본인 1명, 비과세 식대 월 20만 원, 국민연금 4.75%·상한 637만 원, 건강 3.595%, 장기요양 13.14%, 고용 0.9%)에
-//   국세청 근로소득 간이세액표(9,800천원 행 1,442,570원 / 10,000천원 초과 계산식)와 지방소득세 10%를 적용해 돈미터가 계산
-export const SALARIES = [
-  { id: '3000', label: '3,000만', gross: 30000000, net: 26933280 },
-  { id: '4000', label: '4,000만', gross: 40000000, net: 35229400 },
-  { id: '4500', label: '4,500만', note: '직장인 평균', gross: 45000000, net: 39116760 },
-  { id: '6000', label: '6,000만', gross: 60000000, net: 50344920 },
-  { id: '8000', label: '8,000만', gross: 80000000, net: 64650680 },
-  { id: '10000', label: '1억', gross: 100000000, net: 78687400 },
-  { id: '12000', label: '1.2억', gross: 120000000, net: 91485720 },
-  { id: '15000', label: '1.5억', gross: 150000000, net: 108396360 },
-  { id: '18000', label: '1.8억', gross: 180000000, net: 125276520 },
-  { id: '20000', label: '2억', gross: 200000000, net: 136090520 },
-]
+// 세전 연봉과 2026년 연 실수령액 (존버 계산기와 같이 쓴다: src/lib/salary.js)
+export { SALARIES }
 
 export const YEARS = [5, 10, 20, 30]
 
