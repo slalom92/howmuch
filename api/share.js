@@ -67,7 +67,7 @@ export default async function handler(req, res) {
   }
 
   const target = app.toString()
-  const image = `${origin}/og/share-v2.png`
+  const image = `${origin}/og/share-v3.png`
   // 카카오 스크랩 규칙: og:url 은 이 페이지 주소와 같아야 하고, 봇은 자바스크립트를 실행하지 않는다.
   // 그래서 meta refresh 없이 자바스크립트로만 계산기 화면으로 넘긴다.
   const html = `<!doctype html>
