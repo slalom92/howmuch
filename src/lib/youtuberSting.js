@@ -1,5 +1,5 @@
 // 유튜버 수익 계산기의 긁는 한 줄 (도구는 src/lib/sting.js). 수익은 추정치라 문장에도 '추정'을 붙인다
-import { lines, workText, wonText, timesText, yearsText, pctText, hourlyOf } from './sting.js'
+import { lines, workText, wonText, timesText, yearsText, pctText, hourlyOf, bigTime } from './sting.js'
 import { monthlyRevenue } from './calc.js'
 
 export function youtuberStings({ channel, analysis, tier, salary }) {
@@ -19,10 +19,17 @@ export function youtuberStings({ channel, analysis, tier, salary }) {
   )
 }
 
-// 결과 위 배너: "12배" / "큰채널 한 달 vs 내 월급"
+// 결과 위 배너 후보: 처음 들어올 때 하나를 고른다 ("12배" / "큰채널 한 달 vs 내 월급" ...)
 export function youtuberHero({ channel, analysis, tier, salary }) {
   const m = monthlyRevenue(analysis, tier).total
-  if (!m) return { big: null }
+  if (!m) return []
   const x = m / (salary.net / 12)
-  return { big: x >= 1 ? timesText(x) : pctText(x), cap: `${channel.title} 한 달 vs 내 월급` }
+  const uploads = analysis.long.uploadsPerMonth + analysis.short.uploadsPerMonth
+  const perVideo = uploads > 0 ? m / uploads : 0
+  const name = channel.title
+  return [
+    { big: x >= 1 ? timesText(x) : pctText(x), cap: `${name} 한 달 vs 내 월급` },
+    perVideo >= 10000 && { big: bigTime(perVideo / hourlyOf(salary, 'net')), cap: `일해야 ${name} 영상 하나` },
+    m * 12 >= salary.net && { big: yearsText((m * 12) / salary.net), cap: `${name} 1년 수익 모으려면` },
+  ]
 }

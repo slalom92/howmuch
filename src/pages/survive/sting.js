@@ -33,9 +33,16 @@ export function surviveStings(r) {
   )
 }
 
-// 맨 위 배너: 월급이 한 달을 못 버티면 "D-2" / "월급날 전에 통장 0원", 버티면 "5.3년" / "이렇게 살면 1억까지"
+// 맨 위 배너 후보: 처음 들어올 때 하나를 고른다 ("D-2" / "월급날 전에 통장 0원", "5.3년" / "이렇게 살면 1억까지" ...)
 export function surviveHero(r) {
-  if (r.days < 30) return { big: `D-${30 - r.days}`, cap: '월급날 전에 통장 0원' }
-  if (r.left > 0) return { big: yearsText(GOAL / (r.left * 12)), cap: '이렇게 살면 1억까지' }
-  return { big: `${r.days}일`, cap: '월급 한 번으로 존버' }
+  const st = r.state
+  const ramen = st.a.f === 'ramen' ? null : lastOf(r.monthly, st.s, { ...st.a, f: 'ramen' }, st.r)
+  const chicken = Math.floor(r.left / CHICKEN)
+  return [
+    r.days < 30 ? { big: `D-${30 - r.days}`, cap: '월급날 전에 통장 0원' } : { big: `${r.days}일`, cap: '월급 한 번으로 존버' },
+    r.left > 0 ? { big: yearsText(GOAL / (r.left * 12)), cap: '이렇게 살면 1억까지' } : { big: wonText(-r.left), cap: '매달 모자라는 돈' },
+    ramen && ramen.left > 0 && { big: yearsText(GOAL / (ramen.left * 12)), cap: '세 끼 라면만 먹어도 1억까지' },
+    { big: pctText(r.spend / r.monthly), cap: '숨만 쉬어도 나가는 월급' },
+    chicken >= 1 && { big: `${chicken.toLocaleString('ko-KR')}마리`, cap: '한 달 아껴 남는 돈 = 치킨' },
+  ]
 }

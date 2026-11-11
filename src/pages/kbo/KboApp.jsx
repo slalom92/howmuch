@@ -598,7 +598,7 @@ export default function KboApp() {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
-        <StingHero {...kboHero(pr, myPay)} />
+        <StingHero options={kboHero(pr, myPay)} />
         <section className="hero kbo-hero">
           <div className="hero__text">
             <h1 className="hero__title">프로야구 선수, 연봉 얼마 받을까?</h1>

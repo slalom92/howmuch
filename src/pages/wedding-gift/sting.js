@@ -16,7 +16,13 @@ export function giftStings(result, salary) {
   )
 }
 
-// 맨 위 배너: "6.4시간" / "일해야 축의금 10만 원"
+// 맨 위 배너 후보: 처음 들어올 때 하나를 고른다 ("6.4시간" / "일해야 축의금 10만 원" ...)
 export function giftHero(result, salary) {
-  return { big: bigTime(result.amount / hourlyOf(salary, 'net')), cap: `일해야 축의금 ${wonText(result.amount)}` }
+  const amt = result.amount
+  const m = result.meal
+  return [
+    { big: bigTime(amt / hourlyOf(salary, 'net')), cap: `일해야 축의금 ${wonText(amt)}` },
+    m && (m.balance >= 0 ? { big: wonText(m.balance), cap: '식대 빼면 진짜 축하하는 돈' } : { big: wonText(-m.balance), cap: '축하하러 가서 보는 적자' }),
+    { big: pctText((amt * 5) / (salary.net / 12)), cap: '결혼식 5번에 사라지는 월급' },
+  ]
 }

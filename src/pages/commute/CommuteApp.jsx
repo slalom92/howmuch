@@ -664,7 +664,7 @@ export default function CommuteApp({ initialSearch = '' }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
-        <StingHero {...commuteHero({ sum, salary: myPay, ready: result.status === 'done' })} />
+        <StingHero options={commuteHero({ sum, state, salary: myPay, ready: result.status === 'done' })} />
         <section className="hero cm-hero">
           <div className="hero__text">
             <h1 className="hero__title">직주근접 계산기</h1>

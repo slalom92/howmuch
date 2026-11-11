@@ -568,7 +568,7 @@ export default function AptApp({ initialSearch = '' }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
-        <StingHero {...aptHero(r)} />
+        <StingHero options={aptHero(r)} />
         <section className="hero apt-hero">
           <div className="hero__text">
             <h1 className="hero__title">연봉 모아 집 사기</h1>

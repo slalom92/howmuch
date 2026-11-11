@@ -1,5 +1,5 @@
 // 프로야구 선수 연봉의 긁는 한 줄 (도구는 src/lib/sting.js). 선수 연봉이 세전이라 내 연봉도 세전으로 맞춘다
-import { lines, workText, wonText, hourlyOf, josa } from '../../lib/sting.js'
+import { lines, workText, wonText, hourlyOf, josa, bigTime, bigSec } from '../../lib/sting.js'
 
 export function kboStings(pr, salary) {
   const p = pr.player
@@ -18,10 +18,18 @@ export function kboStings(pr, salary) {
   )
 }
 
-// 맨 위 배너: "1.5경기" / "양의지가 내 연봉 버는 시간"
+// 맨 위 배너 후보: 처음 들어올 때 하나를 고른다 ("1.5경기" / "양의지가 내 연봉 버는 시간" ...)
 export function kboHero(pr, salary) {
+  const p = pr.player
+  const h = hourlyOf(salary, 'gross')
   const games = salary.gross / pr.b.game
   const n = (x) => (x < 10 ? x.toFixed(1).replace(/\.0$/, '') : Math.round(x).toLocaleString('ko-KR'))
   const big = games >= 1 ? `${n(games)}경기` : `${n(salary.gross / pr.b.inning)}이닝`
-  return { big, cap: `${josa(pr.player.name, '이', '가')} 내 연봉 버는 시간`, label: `${pr.player.name} 선수가 내 1년 연봉을 버는 데 ${big}` }
+  const rec = pr.rec?.items.find((x) => x.won)
+  return [
+    { big, cap: `${josa(p.name, '이', '가')} 내 연봉 버는 시간`, label: `${p.name} 선수가 내 1년 연봉을 버는 데 ${big}` },
+    rec && { big: bigTime(rec.won / h), cap: `일해야 ${p.name} ${rec.label.replace(/에$/, '')}` },
+    { big: bigTime(pr.b.game / h), cap: `일해야 ${p.name} 1경기` },
+    pr.b.second > 0 && { big: bigSec(h / pr.b.second), cap: `${josa(p.name, '이', '가')} 내 시급 버는 시간` },
+  ]
 }

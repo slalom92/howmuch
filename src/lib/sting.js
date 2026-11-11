@@ -119,9 +119,31 @@ export function bigTime(hours) {
   return yearsText(months / 12)
 }
 
+// 짧은 시간도 초까지: "38초", "4분", 그 위로는 bigTime
+export const bigSec = (sec) => (sec < 60 ? `${Math.max(1, Math.round(sec))}초` : bigTime(sec / 3600))
+
 // 받침에 맞는 조사: josa('한유섬', '이', '가') → '한유섬이', josa('양의지', '이', '가') → '양의지가'
 export function josa(word, withFinal, without) {
+  const last = word.at(-1)
+  if (/[0-9]/.test(last)) return word + ('013678'.includes(last) ? withFinal : without) // 영·일·삼·육·칠·팔은 받침이 있다
   const c = word.charCodeAt(word.length - 1)
   if (c < 0xac00 || c > 0xd7a3) return word + without
   return word + ((c - 0xac00) % 28 ? withFinal : without)
+}
+
+// 페이지에 처음 들어올 때 한 번 굴리는 주사위. 미리 그린 HTML(서버)에서는 굴리지 않는다
+export const IS_SERVER = typeof window === 'undefined'
+const SEED = IS_SERVER ? 0 : Math.random()
+
+// 후보 목록에서 하나 고르기 (빈 후보는 뺀다). 같은 페이지 안에서는 다시 그려도 같은 자리를 고른다.
+// salt 를 바꾸면 다른 주사위처럼 따로 고른다 (예: 문구 종류와 아파트 단지를 따로 고를 때)
+export function pick(list, salt = 0) {
+  const arr = list.filter(Boolean)
+  if (!arr.length) return null
+  let x = SEED
+  if (salt) {
+    const s = Math.sin((SEED + 1) * 12.9898 + salt * 78.233) * 43758.5453
+    x = s - Math.floor(s)
+  }
+  return arr[Math.min(arr.length - 1, Math.floor(x * arr.length))]
 }

@@ -408,7 +408,7 @@ export default function SurviveApp({ initialSearch = '' }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
-        <StingHero {...surviveHero(r)} />
+        <StingHero options={surviveHero(r)} />
         <section className="hero sv-hero">
           <div className="hero__text">
             <h1 className="hero__title">존버 계산기</h1>

@@ -1,5 +1,5 @@
 // 연봉 모아 집 사기의 긁는 한 줄 (도구는 src/lib/sting.js)
-import { lines, yearsText, pctText, sinceText } from '../../lib/sting.js'
+import { lines, yearsText, pctText, sinceText, pick } from '../../lib/sting.js'
 
 export function aptStings(r) {
   if (!r.ready || !r.pool.length) return []
@@ -27,12 +27,24 @@ export function aptStings(r) {
   )
 }
 
-// 맨 위 배너: "285년" / "내 월급으로 한남더힐" (고른 지역에서 가장 비싼 단지)
+// 맨 위 배너 후보: 처음 들어올 때 하나를 고른다.
+// 비싼 단지는 늘 1등만 나오면 식상하니, 고른 지역에서 비싼 순 20곳 중 한 곳을 따로 굴려 고른다
 export function aptHero(r) {
   const what = r.state.b === 'left' ? '남는 돈으로' : '내 월급으로'
-  if (!r.ready || !r.pool.length) return { big: '?년', cap: `${what} 내 집` }
+  if (!r.ready || !r.pool.length) return [{ big: '?년', cap: `${what} 내 집` }]
   const a = r.state.a
-  if (r.yearly <= 0) return { big: '∞년', cap: `${what} ${r.place} 아파트` }
-  const top = r.pool.reduce((m, x) => (x[a].price > m[a].price ? x : m), r.pool[0])
-  return { big: yearsText(top[a].price / r.yearly), cap: `${what} ${top.name.replace(/\s*\([^)]*\)$/, '')}` }
+  if (r.yearly <= 0) return [{ big: '∞년', cap: `${what} ${r.place} 아파트` }]
+  const Y = (apt) => apt[a].price / r.yearly
+  const nameOf = (apt) => apt.name.replace(/\s*\([^)]*\)$/, '')
+  const sorted = [...r.pool].sort((x, y) => y[a].price - x[a].price)
+  const pricey = pick(sorted.slice(0, 20), 1)
+  const low = sorted.at(-1)
+  const mid = sorted[Math.floor(sorted.length / 2)]
+  const within30 = r.pool.filter((x) => Y(x) <= 30).length / r.pool.length
+  return [
+    { big: yearsText(Y(pricey)), cap: `${what} ${nameOf(pricey)}` },
+    { big: yearsText(Y(low)), cap: `${r.place} 제일 싼 ${nameOf(low)}도` },
+    { big: yearsText(Y(mid)), cap: `${r.place} 딱 중간 아파트까지` },
+    { big: within30 > 0 && within30 < 0.01 ? '1% 미만' : pctText(within30), cap: `30년 모아 살 수 있는 ${r.place} 아파트` },
+  ]
 }

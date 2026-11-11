@@ -1,12 +1,18 @@
+import { pick, IS_SERVER } from '../lib/sting.js'
+
 // 맨 위 큰 배너: 유튜브 썸네일처럼 큰 숫자 하나 + 알약 모양 한 줄 (예: "285년" / "내 월급으로 한남더힐")
-// big, cap 은 페이지 폴더의 sting.js 가 계산 결과로 만든다. 숫자가 바뀌면 한 번 튀어 오른다.
-export default function StingHero({ big, cap, label }) {
-  if (!big) return null
+// options 는 페이지 폴더의 sting.js 가 계산 결과로 만든 후보 [{ big, cap, label }] 이다.
+// 처음 들어올 때 그중 하나를 무작위로 고르고, 숫자가 바뀌면 한 번 튀어 오른다.
+// 미리 그린 HTML 에서는 자리만 잡아 두고 감춘다 (화면이 뜨면 고른 문구로 바뀌며 깜빡이지 않게)
+export default function StingHero({ options }) {
+  const o = pick(options || [])
+  if (!o || !o.big) return null
+  const { big, cap, label } = o
   const long = cap.length > 13
   // 큰 숫자가 길면 한 줄에 들어가도록 줄인다
   const size = big.length > 7 ? ' is-xs' : big.length > 5 ? ' is-sm' : ''
   return (
-    <div className="sting-hero" role="img" aria-label={label || `${big}, ${cap}`}>
+    <div className={`sting-hero${IS_SERVER ? ' is-pending' : ''}`} role="img" aria-label={label || `${big}, ${cap}`}>
       <svg className="sting-hero__rays" viewBox="0 0 400 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
         {Array.from({ length: 18 }, (_, i) => {
           const a = (i / 18) * Math.PI * 2

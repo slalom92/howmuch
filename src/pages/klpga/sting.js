@@ -1,5 +1,5 @@
 // 골프 선수 상금의 긁는 한 줄 (KLPGA·KPGA·PGA·LPGA 같이 쓴다, 도구는 src/lib/sting.js). 상금이 세전이라 내 연봉도 세전
-import { lines, workText, wonText, timesText, pctText, hourlyOf, bigTime } from '../../lib/sting.js'
+import { lines, workText, wonText, timesText, pctText, hourlyOf, bigTime, bigSec, josa } from '../../lib/sting.js'
 
 export function golfStings(pr, salary) {
   const p = pr.player
@@ -20,10 +20,17 @@ export function golfStings(pr, salary) {
   )
 }
 
-// 맨 위 배너: "5일" / "일해야 김민솔 1타" (출전 대회 수를 모르면 "36배" / "김민솔 상금 vs 내 연봉")
+// 맨 위 배너 후보: 처음 들어올 때 하나를 고른다 ("5일" / "일해야 김민솔 1타", "36배" / "김민솔 상금 vs 내 연봉" ...)
 export function golfHero(pr, salary) {
   const p = pr.player
-  if (pr.perStroke) return { big: bigTime(pr.perStroke / hourlyOf(salary, 'gross')), cap: `일해야 ${p.name} 1타` }
+  const h = hourlyOf(salary, 'gross')
+  const month = salary.gross / 12
   const x = p.prize / salary.gross
-  return { big: x >= 1 ? timesText(x) : pctText(x), cap: `${p.name} 상금 vs 내 연봉` }
+  return [
+    pr.perStroke && { big: bigTime(pr.perStroke / h), cap: `일해야 ${p.name} 1타` },
+    { big: x >= 1 ? timesText(x) : pctText(x), cap: `${p.name} 상금 vs 내 연봉` },
+    pr.perEvent && { big: pr.perEvent >= month ? timesText(pr.perEvent / month) : pctText(pr.perEvent / month), cap: `${p.name} 대회 하나 vs 내 월급` },
+    pr.perEvent && { big: bigTime(pr.perEvent / h), cap: `일해야 ${p.name} 대회 하나` },
+    pr.b.second > 0 && { big: bigSec(h / pr.b.second), cap: `${josa(p.name, '이', '가')} 내 시급 버는 시간` },
+  ]
 }

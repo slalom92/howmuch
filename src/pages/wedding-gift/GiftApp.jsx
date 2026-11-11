@@ -251,7 +251,7 @@ export default function GiftApp() {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
-        <StingHero {...giftHero(result, myPay)} />
+        <StingHero options={giftHero(result, myPay)} />
         <section className="hero gift-hero">
           <div className="hero__text">
             <h1 className="hero__title">축의금, 얼마 내야 할까?</h1>

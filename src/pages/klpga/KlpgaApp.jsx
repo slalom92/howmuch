@@ -548,7 +548,7 @@ export default function GolfApp({ T }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
-        <StingHero {...golfHero(pr, myPay)} />
+        <StingHero options={golfHero(pr, myPay)} />
         <section className="hero kbo-hero">
           <TourTabs T={T} />
           <div className="hero__text">

@@ -22,8 +22,19 @@ export function jonberStings(r) {
   )
 }
 
-// 맨 위 배너: "88분" / "일해야 치킨 한 마리"
+// 맨 위 배너 후보: "88분" / "일해야 치킨 한 마리" 같은 것 중 하나를 처음 들어올 때 고른다
 export function jonberHero(r) {
-  const ch = r.items.find((x) => x.id === 'chicken')
-  return { big: bigTime(ch.hours), cap: '일해야 치킨 한 마리' }
+  const it = Object.fromEntries(r.items.map((x) => [x.id, x]))
+  const bat = PLAYERS.find((p) => p.stats && p.stats.h > 0)
+  const t = (id, cap) => it[id] && { big: bigTime(it[id].hours), cap }
+  return [
+    t('chicken', '일해야 치킨 한 마리'),
+    t('iphone', '일해야 아이폰 18 프로'),
+    t('americano', '일해야 아메리카노 한 잔'),
+    t('airpods', '일해야 에어팟 프로 3'),
+    t('buffet', '일해야 호텔 뷔페 한 끼'),
+    t('lotteworld', '일해야 롯데월드 하루'),
+    it.rent && { big: `${Math.max(1, Math.round(it.rent.hours / 8))}일`, cap: '매달 월세 내려고 출근' },
+    bat && { big: bigTime((bat.pay * 10000) / bat.stats.h / r.hourly), cap: `일해야 ${bat.name} 안타 하나` },
+  ]
 }

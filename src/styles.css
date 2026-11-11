@@ -2946,6 +2946,10 @@ input {
   isolation: isolate;
 }
 
+.sting-hero.is-pending {
+  visibility: hidden;
+}
+
 .sting-hero__rays {
   position: absolute;
   inset: -6px -12px;

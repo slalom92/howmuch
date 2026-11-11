@@ -21,8 +21,16 @@ export function commuteStings({ sum, state, station, salary, routeSec }) {
   )
 }
 
-// 맨 위 배너: "6일" / "매달 집주인 위해 출근" (자료를 찾기 전에는 "?일")
-export function commuteHero({ sum, salary, ready }) {
-  if (!ready || !sum.count) return { big: '?일', cap: '매달 집주인 위해 출근' }
-  return { big: bigTime(sum.cost / hourlyOf(salary, 'net')), cap: '매달 집주인 위해 출근' }
+// 맨 위 배너 후보: 처음 들어올 때 하나를 고른다 (자료를 찾기 전에는 "?일" / "매달 집주인 위해 출근")
+export function commuteHero({ sum, state, salary, ready }) {
+  if (!ready || !sum.count) return [{ big: '?일', cap: '매달 집주인 위해 출근' }]
+  const h = hourlyOf(salary, 'net')
+  const diff = sum.near ? sum.near.inner - sum.near.outer : 0
+  return [
+    { big: bigTime(sum.cost / h), cap: '매달 집주인 위해 출근' },
+    diff > 0 && { big: wonText(diff * 12), cap: '역 500m 안 1년 웃돈' },
+    state.k === 'jeonse'
+      ? { big: yearsText((sum.price * 10000) / salary.net), cap: '월급 다 모아야 전세금' }
+      : sum.deposit > 0 && { big: bigTime((sum.deposit * 10000) / h), cap: '일해야 보증금' },
+  ]
 }

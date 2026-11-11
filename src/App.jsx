@@ -210,7 +210,7 @@ export default function App() {
 
         {status === 'done' && channel && analysis && (
           <div id="result" className="result" tabIndex={-1}>
-            <StingHero {...youtuberHero({ channel, analysis, tier, salary: myPay })} />
+            <StingHero options={youtuberHero({ channel, analysis, tier, salary: myPay })} />
             <PayStub
               channel={channel}
               analysis={analysis}

@@ -279,7 +279,7 @@ export default function JonberApp({ initialSearch = '' }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
-        <StingHero {...jonberHero(r)} />
+        <StingHero options={jonberHero(r)} />
         <section className="hero jb-hero">
           <div className="hero__text">
             <h1 className="hero__title">월급 분당 계산기</h1>
