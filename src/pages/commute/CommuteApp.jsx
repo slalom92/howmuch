@@ -80,7 +80,7 @@ function Choices({ legend, name, options, value, onChange }) {
 }
 
 // ---------- 역 고르기: 지역 → 노선 → 역 ----------
-function StationPicker({ data, station, onPick }) {
+function StationPicker({ data, station, onPick, onLine }) {
   const [region, setRegion] = useState(station?.region || 'capital')
   const [line, setLine] = useState(station?.lines[0] || '')
   // 다른 곳(지도, 주소)에서 역이 바뀌면 지역과 노선을 따라간다
@@ -90,9 +90,11 @@ function StationPicker({ data, station, onPick }) {
     setLine((l) => (station.lines.includes(l) ? l : station.lines[0]))
   }, [station])
 
+  useEffect(() => onLine?.(line), [line, onLine])
+
   if (!data) return null
   const lines = linesOf(data, region)
-  const onLine = stationsOn(data, region, line)
+  const here = stationsOn(data, region, line)
   const pickRegion = (id) => {
     setRegion(id)
     const first = linesOf(data, id)[0]
@@ -124,10 +126,10 @@ function StationPicker({ data, station, onPick }) {
       </fieldset>
       <fieldset className="apt-q">
         <legend className="apt-q__legend">
-          회사 근처 역 <small>{onLine.length}곳</small>
+          회사 근처 역 <small>{here.length}곳</small>
         </legend>
         <div className="cm-stations">
-          {onLine.map((s) => (
+          {here.map((s) => (
             <label key={s.id} className={`cm-stn-opt${s.id === station?.id ? ' is-on' : ''}`}>
               <input type="radio" className="sr-only" name="st" value={s.id} checked={s.id === station?.id} onChange={() => onPick(s.id)} />
               {s.name}
@@ -310,7 +312,15 @@ function Summary({ sum, state, station, data, result }) {
           )}
         </>
       ) : (
-        <p className="cm-sum__main cm-sum__main--empty">{busy ? '역 주변 계약을 찾고 있어요…' : `이 조건의 계약을 찾지 못했어요. 거리를 넓히거나 다른 집을 골라 보세요.`}</p>
+        <p className="cm-sum__main cm-sum__main--empty">
+          {busy
+            ? '역 주변 계약을 찾고 있어요…'
+            : result.status === 'error'
+              ? '지도에서 집 위치를 찾지 못했어요. 잠시 뒤 새로 고침해 주세요.'
+              : result.status === 'nomap'
+                ? '지도를 쓸 수 없어 역까지 거리를 잴 수 없어요.'
+                : '이 조건의 계약을 찾지 못했어요. 거리를 넓히거나 다른 집을 골라 보세요.'}
+        </p>
       )}
     </section>
   )
@@ -486,7 +496,9 @@ export default function CommuteApp({ initialSearch = '' }) {
       .catch(() => setDataError(true))
   }, [])
   const station = useMemo(() => stationOf(data, state.st), [data, state.st])
-  const lineStations = useMemo(() => (station && data ? stationsOn(data, station.region, station.lines[0]) : []), [data, station])
+  const [line, setLine] = useState('')
+  const curLine = station && station.lines.includes(line) ? line : station?.lines[0] || ''
+  const lineStations = useMemo(() => (station && data ? stationsOn(data, station.region, curLine) : []), [data, station, curLine])
   const [shown, setShown] = useState(PAGE)
   const [selected, setSelected] = useState('')
   const [route, setRoute] = useState({})
@@ -628,7 +640,7 @@ export default function CommuteApp({ initialSearch = '' }) {
           <Choices legend="집" name="t" options={TYPES} value={state.t} onChange={set('t')} />
           <Choices legend="역에서 거리" name="d" options={DISTS} value={state.d} onChange={set('d')} />
           {data ? (
-            <StationPicker data={data} station={station} onPick={pickStation} />
+            <StationPicker data={data} station={station} onPick={pickStation} onLine={setLine} />
           ) : (
             <p className="cm-note" role="status">
               {dataError ? '역 자료를 불러오지 못했어요. 잠시 뒤 새로 고침해 주세요.' : '역 목록을 불러오고 있어요…'}
@@ -653,8 +665,6 @@ export default function CommuteApp({ initialSearch = '' }) {
               <Summary sum={sum} state={state} station={station} data={data} result={result} />
             </div>
 
-            {status === 'error' && <p className="cm-note">계약 자료를 불러오지 못했어요. 잠시 뒤 새로 고침해 주세요.</p>}
-            {status === 'nomap' && <p className="cm-note">지도 기능을 쓸 수 없어 역까지 거리를 계산하지 못했어요.</p>}
 
             {list.length > 0 && (
               <>

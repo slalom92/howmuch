@@ -28,6 +28,7 @@
 }
 
 .cm-lines .apt-opt {
+  position: relative; /* 숨긴 라디오(.sr-only)가 옆으로 밀리는 상자 밖으로 새어 나가 가로 스크롤이 생기지 않게 */
   flex: 0 0 auto;
   white-space: nowrap;
 }
@@ -46,6 +47,7 @@
 }
 
 .cm-stn-opt {
+  position: relative;
   display: inline-flex;
   align-items: center;
   min-height: 34px;

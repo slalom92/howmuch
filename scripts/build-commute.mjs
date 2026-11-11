@@ -49,6 +49,7 @@ const arg = (name, def) => {
 }
 const MONTHS = Number(arg('months', 6))
 const DEBUG = process.argv.includes('--debug')
+const STATIONS_ONLY = process.argv.includes('--stations-only') // 전월세는 받지 않고 역 목록(stations.json)만 다시 만든다
 const ONLY = arg('sido', '')
   .split(',')
   .map((s) => s.trim())
@@ -171,10 +172,43 @@ function readStations() {
       .trim()
       .replace(/역$/, '')
     if (!name) continue
-    out.push({ id: String(r[c.id] || '').trim(), name, line: String(r[c.line] || '').trim(), lat, lng, addr: String(r[c.addr] || '').trim() })
+    out.push({ id: String(r[c.id] || '').trim(), name, line: lineName(String(r[c.line] || '')), lat, lng, addr: String(r[c.addr] || '').trim() })
   }
   if (!out.length) throw new Error('역 파일에서 역을 하나도 읽지 못했습니다.')
   return out
+}
+
+// 노선 이름: 원자료는 운영 구간 이름(경부선, 안산과천선 …)이나 긴 이름(서울 도시철도 9호선)으로 적혀 있어 사람들이 부르는 이름으로 묶는다
+const LINE_ALIAS = {
+  경부선: '1호선',
+  경원선: '1호선',
+  경인선: '1호선',
+  장항선: '1호선',
+  일산선: '3호선',
+  안산과천선: '4호선',
+  진접선: '4호선',
+  분당선: '수인분당선',
+  수인선: '수인분당선',
+  인천국제공항선: '공항철도',
+  김포도시철도: '김포골드라인',
+  의정부: '의정부경전철',
+  에버라인: '용인에버라인',
+  자기부상철도: '인천자기부상철도',
+}
+export function lineName(raw) {
+  const t = raw.replace(/\s+/g, ' ').trim()
+  if (LINE_ALIAS[t]) return LINE_ALIAS[t]
+  const s = t
+    .replace(/^(수도권|서울)\s*/, '')
+    .replace(/(경량)?도시철도|광역철도|지하철/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  return LINE_ALIAS[s] || s || t
+}
+// 숫자 노선(1호선 …)을 앞에, 지역 노선(부산 1호선 …)은 지역끼리, 나머지는 가나다순
+export function lineSort(a, b) {
+  const n = (x) => (/\d+호선$/.test(x) ? 0 : 1) // 1호선 … 9호선, 부산 1호선 … 먼저
+  return n(a) - n(b) || a.localeCompare(b, 'ko', { numeric: true })
 }
 
 const RAD = Math.PI / 180
@@ -281,11 +315,12 @@ function buildStations(raw, sgg) {
     const m = merged.find((x) => x.name === r.name && meters(x, r) < MERGE_M)
     if (m) {
       if (r.line && !m.lines.includes(r.line)) m.lines.push(r.line)
+      if (r.line && !(r.line in m.order)) m.order[r.line] = r.id
       if (!m.addr && r.addr) m.addr = r.addr
       if (r.id && (!m.id || r.id < m.id)) m.id = r.id
       continue
     }
-    merged.push({ id: r.id, name: r.name, lines: r.line ? [r.line] : [], lat: r.lat, lng: r.lng, addr: r.addr })
+    merged.push({ id: r.id, no: r.id, name: r.name, lines: r.line ? [r.line] : [], order: r.line ? { [r.line]: r.id } : {}, lat: r.lat, lng: r.lng, addr: r.addr })
   }
   for (const s of merged) s.cands = s.addr ? sggOfAddress(s.addr, sgg) : []
   // 시도 없이 "중구 …"처럼 적혀 후보가 여러 시도에 걸치면, 시도가 하나로 정해진 가장 가까운 역의 시도로 좁힌다
@@ -317,10 +352,15 @@ function buildStations(raw, sgg) {
     s.near = [...set].filter(Boolean)
     s.region = REGIONS.find((g) => g.sido.includes(s.sgg.slice(0, 2)))?.id || ''
   }
-  // 같은 이름 역이 여러 개면 id 가 같아지지 않도록 (역번호가 비어 있을 때)
+  // 주소에 쓰는 id: 역 이름 (st=강남). 이름이 같은 역이 또 있으면 노선을 붙인다 (st=양평-5호선)
   const used = new Set()
-  for (const s of merged) {
-    let id = s.id || s.name
+  const byName = (a, b) => [...a.lines].sort(lineSort)[0]?.localeCompare([...b.lines].sort(lineSort)[0] || '', 'ko', { numeric: true }) || 0
+  const baseOf = (s) => s.name.replace(/\(.*\)$/, '').trim() || s.name
+  // 같은 이름이면 수도권 역, 숫자 노선 역이 이름만 쓴다
+  const rank = (s) => (s.region === 'capital' ? 0 : 1)
+  for (const s of [...merged].sort((a, b) => baseOf(a).localeCompare(baseOf(b), 'ko') || rank(a) - rank(b) || byName(a, b))) {
+    const base = baseOf(s)
+    let id = used.has(base) ? `${base}-${[...s.lines].sort(lineSort)[0] || s.region}` : base
     while (used.has(id)) id += '_'
     used.add(id)
     s.id = id
@@ -421,9 +461,10 @@ async function main() {
 
   fs.mkdirSync(OUT_DIR, { recursive: true })
   const sggInfo = new Map(sgg.map((s) => [s.code, s]))
+  if (STATIONS_ONLY) console.log('[commute] --stations-only: 전월세는 받지 않고 이미 만든 파일을 그대로 쓴다')
   let deals = 0
   const counts = {}
-  for (const [i, code] of targets.entries()) {
+  for (const [i, code] of (STATIONS_ONLY ? [] : targets).entries()) {
     const homes = new Map()
     for (const kind of Object.keys(KINDS)) {
       for (const ym of months) {
@@ -450,7 +491,7 @@ async function main() {
   }
   process.stdout.write('\n')
 
-  const lines = [...new Set(stations.flatMap((s) => s.lines))].sort((a, b) => a.localeCompare(b, 'ko', { numeric: true }))
+  const lines = [...new Set(stations.flatMap((s) => s.lines))].sort(lineSort)
   const usedSgg = [...new Set(stations.flatMap((s) => s.near))].sort()
   const index = {
     updated: new Date().toISOString().slice(0, 10),
@@ -458,20 +499,28 @@ async function main() {
     to: `${months.at(-1).slice(0, 4)}-${months.at(-1).slice(4)}`,
     regions: REGIONS.map(({ id, label }) => ({ id, label })).filter((g) => stations.some((s) => s.region === g.id)),
     lines,
-    sgg: usedSgg.map((c) => ({ code: c, full: sggInfo.get(c)?.full || '', have: targets.includes(c) })),
+    sgg: usedSgg.map((c) => ({ code: c, full: sggInfo.get(c)?.full || '', have: STATIONS_ONLY ? fs.existsSync(path.join(OUT_DIR, `${c}.json`)) : targets.includes(c) })),
     // [id, 이름, 노선 번호들, 위도, 경도, 지역, 주변 시군구 번호들]
     stations: stations
-      .sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }))
+      .sort((a, b) => String(a.no).localeCompare(String(b.no), 'en', { numeric: true }))
       .map((s) => [
         s.id,
         s.name,
-        s.lines.map((l) => lines.indexOf(l)),
+        [...s.lines].sort(lineSort).map((l) => lines.indexOf(l)),
         Math.round(s.lat * 1e6) / 1e6,
         Math.round(s.lng * 1e6) / 1e6,
         s.region,
         s.near.map((c) => usedSgg.indexOf(c)),
       ]),
   }
+  // 노선마다 역 번호들 (그 노선의 역번호 순 = 대체로 달리는 순서)
+  index.lineStations = lines.map((l) =>
+    stations
+      .map((s, i) => [s.order[l], i])
+      .filter(([id]) => id !== undefined)
+      .sort((a, b) => String(a[0]).localeCompare(String(b[0]), 'en', { numeric: true }))
+      .map(([, i]) => i),
+  )
   fs.writeFileSync(path.join(OUT_DIR, 'stations.json'), JSON.stringify(index) + '\n')
   console.log(`[commute] 전월세 API 호출 ${calls}번, 계약 ${deals.toLocaleString()}건, 집 ${Object.entries(counts).map(([k, n]) => `${KINDS[k].label} ${n.toLocaleString()}`).join(', ')}`)
   console.log(`[commute] → ${path.relative(ROOT, OUT_DIR)}/stations.json, <시군구코드>.json ${targets.length}개`)

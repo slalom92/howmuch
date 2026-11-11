@@ -92,8 +92,18 @@ export function stationOf(data, id) {
   return data.stations.find((s) => s.id === id) || data.stations.find((s) => s.name === DEFAULT_STATION) || data.stations[0] || null
 }
 
-export const linesOf = (data, region) => (data ? [...new Set(data.stations.filter((s) => s.region === region).flatMap((s) => s.lines))] : [])
-export const stationsOn = (data, region, line) => (data ? data.stations.filter((s) => s.region === region && s.lines.includes(line)) : [])
+// 노선은 stations.json 의 순서(1호선, 2호선 … 다음 이름순), 역은 그 노선을 달리는 순서
+export function linesOf(data, region) {
+  if (!data) return []
+  const have = new Set(data.stations.filter((s) => s.region === region).flatMap((s) => s.lines))
+  return data.lines.filter((l) => have.has(l))
+}
+export function stationsOn(data, region, line) {
+  if (!data) return []
+  const order = data.lineStations?.[data.lines.indexOf(line)]
+  const list = order ? order.map((i) => data.stations[i]) : data.stations.filter((s) => s.lines.includes(line))
+  return list.filter((s) => s && s.region === region)
+}
 
 // ---------- 계약 ----------
 // 시군구 파일: { code, full, name, homes: [[종류, 이름, 동, 지번, 준공, [[면적, 보증금(만원), 월세(만원), 'YYYYMMDD', 갱신, 층], …]]] }
@@ -113,6 +123,14 @@ export function readHomes(file) {
 
 const KIND_LABEL = { apt: '아파트', villa: '빌라', offi: '오피스텔', house: '단독·다가구' }
 
+// 카드 제목: 건물 이름이 없으면 원자료에 "(1163-4)"처럼 번지가 들어 있어 "개포동 1163-4 빌라"로 바꾼다
+function titleOf(h) {
+  const name = String(h.name || '').trim()
+  const bare = !name || /^\(.*\)$/.test(name) || name === h.jibun
+  if (!bare) return name
+  return [h.dong, h.jibun, KIND_LABEL[h.kind]].filter(Boolean).join(' ')
+}
+
 // 고른 조건에 맞는 계약만 남긴 집. 맞는 계약이 없으면 null
 export function fitHome(home, state) {
   const room = state.t === 'room'
@@ -127,7 +145,7 @@ export function fitHome(home, state) {
     deals,
     rep,
     kindLabel: KIND_LABEL[home.kind] || '',
-    title: home.name || `${home.dong} ${KIND_LABEL[home.kind] || ''}`.trim(),
+    title: titleOf(home),
     approx: home.kind === 'house' || !home.jibun, // 지번이 없으면 동 중심에 찍는다
     low: Math.min(...prices),
     high: Math.max(...prices),
