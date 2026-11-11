@@ -327,9 +327,16 @@
   margin-top: 0;
 }
 
-/* apt 카드처럼 카드 전체로 넓히지 않는다 (링크가 함께 있어서) */
-.cm-card__go::after {
+/* 집 사기 카드(.apt-card__map::after)처럼 누르는 영역을 카드 전체로 넓히지 않는다 (링크가 함께 있어서).
+   CSS 파일이 합쳐지는 순서와 상관없이 이기도록 한 단계 더 구체적으로 쓴다 */
+.cm-card .cm-card__go::after {
   content: none;
+  display: none;
+}
+
+/* 혹시 위 규칙이 밀려도 카드 밖으로 퍼지지 않게 */
+.cm-card {
+  position: relative;
 }
 
 .cm-card__go:focus-visible {
