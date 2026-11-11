@@ -23,6 +23,10 @@ import FloatingSwitch from './components/FloatingSwitch.jsx'
 import { FOOTER_MENU, YOUTUBER } from './lib/menu.js'
 import { FOOTER_NOTE } from './lib/disclaimer.js'
 import SocialLinks from './components/Social.jsx'
+import Sting from './components/Sting.jsx'
+import { useMyPay } from './lib/sting.js'
+import { youtuberStings, youtuberHero } from './lib/youtuberSting.js'
+import StingHero from './components/StingHero.jsx'
 
 const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 돈미터'
 
@@ -70,6 +74,7 @@ export default function App() {
   }, [])
 
   const analysis = useMemo(() => (channel ? analyze(channel.videos) : null), [channel])
+  const [myPay, setMyPay] = useMyPay()
   const busy = status === 'searching' || status === 'loading'
 
   const pick = useCallback(async (summary, source = 'search') => {
@@ -204,6 +209,7 @@ export default function App() {
 
         {status === 'done' && channel && analysis && (
           <div id="result" className="result" tabIndex={-1}>
+            <StingHero {...youtuberHero({ channel, analysis, tier, salary: myPay })} />
             <PayStub
               channel={channel}
               analysis={analysis}
@@ -212,6 +218,7 @@ export default function App() {
               tier={tier}
               setTier={setTier}
             />
+            <Sting key={channel.id} page="youtuber" lines={youtuberStings({ channel, analysis, tier, salary: myPay })} pay={{ salary: myPay, onChange: setMyPay, basis: 'net' }} />
             <CompareChart channel={channel} analysis={analysis} period={period} tier={tier} />
             <CompanyCompare channel={channel} analysis={analysis} tier={tier} company={company} setCompany={setCompany} />
             <GoalPlan key={channel.id} channel={channel} analysis={analysis} tier={tier} />

@@ -8,6 +8,10 @@ import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
+import Sting from '../../components/Sting.jsx'
+import { rememberPay } from '../../lib/sting.js'
+import { jonberStings, jonberHero } from './sting.js'
+import StingHero from '../../components/StingHero.jsx'
 import { FOOTER_MENU, MENU, JONBER, APT, YOUTUBER, KBO } from '../../lib/menu.js'
 import { SALARIES, BASES, MIN_WAGE, calculate, fromSearch, toSearch, timeText, clockAt, won, wonSmall, priceText } from './jonber.js'
 import JonberGuide from './JonberGuide.jsx'
@@ -216,6 +220,7 @@ export default function JonberApp({ initialSearch = '' }) {
   const r = useMemo(() => calculate(state), [state])
   const set = (k) => (v) => {
     setState((s) => ({ ...s, [k]: v }))
+    if (k === 'pay') rememberPay(v)
     track('jonber_pick', { [k]: v })
   }
 
@@ -273,6 +278,7 @@ export default function JonberApp({ initialSearch = '' }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
+        <StingHero {...jonberHero(r)} />
         <section className="hero jb-hero">
           <div className="hero__text">
             <h1 className="hero__title">월급 분당 계산기</h1>
@@ -289,6 +295,7 @@ export default function JonberApp({ initialSearch = '' }) {
           <div ref={resultRef}>
             <PayCard r={r} />
           </div>
+          <Sting page="jonber" lines={jonberStings(r)} basis={`연봉 ${r.salary.label} 원 ${r.state.b === 'gross' ? '세전' : '실수령'} 기준`} />
           <Clock r={r} />
           <Later r={r} />
         </div>

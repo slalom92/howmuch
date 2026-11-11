@@ -7,6 +7,10 @@ import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
+import Sting from '../../components/Sting.jsx'
+import { useMyPay } from '../../lib/sting.js'
+import { commuteStings, commuteHero } from './sting.js'
+import StingHero from '../../components/StingHero.jsx'
 import { FOOTER_MENU, MENU, COMMUTE, SURVIVE, APT, YOUTUBER } from '../../lib/menu.js'
 import { hasMap, loadKakao } from '../apt/kakaoMap.js'
 import {
@@ -633,6 +637,10 @@ export default function CommuteApp({ initialSearch = '' }) {
   }, [station])
 
   const pickedHome = selected ? result.list.find((h) => h.key === selected) : null
+  const [myPay, setMyPay] = useMyPay()
+  // 고른 집에서 역까지 가장 빠른 길 (초)
+  const routeSec = [route.walk?.data, route.transit?.data].filter((x) => x && !x.none && x.time).map((x) => x.time).sort((a, b) => a - b)[0] || 0
+  const busyList = result.status === 'loading' || result.status === 'locating'
   const status = dataError ? 'error' : result.status
   const visible = list.slice(0, shown)
 
@@ -655,6 +663,7 @@ export default function CommuteApp({ initialSearch = '' }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
+        <StingHero {...commuteHero({ sum, salary: myPay, ready: result.status === 'done' })} />
         <section className="hero cm-hero">
           <div className="hero__text">
             <h1 className="hero__title">직주근접 계산기</h1>
@@ -692,6 +701,14 @@ export default function CommuteApp({ initialSearch = '' }) {
             <div aria-live="polite" ref={sumRef}>
               <Summary sum={sum} state={state} station={station} data={data} result={result} />
             </div>
+            {!busyList && sum.count > 0 && (
+              <Sting
+                key={`${station.id}-${state.k}-${state.t}-${state.d}`}
+                page="commute"
+                lines={commuteStings({ sum, state, station, salary: myPay, routeSec })}
+                pay={{ salary: myPay, onChange: setMyPay, basis: 'net' }}
+              />
+            )}
 
 
             {list.length > 0 && (

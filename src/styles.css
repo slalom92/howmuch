@@ -2761,3 +2761,279 @@ input {
     transform: none;
   }
 }
+
+/* ---------- 긁는 한 줄 (src/components/Sting.jsx) ---------- */
+.sting {
+  position: relative;
+  margin: 16px 0 0;
+  padding: 16px 18px 14px 60px;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.sting__claw {
+  position: absolute;
+  left: 14px;
+  top: 16px;
+  width: 34px;
+  height: 34px;
+  fill: none;
+  stroke: var(--seal);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+}
+
+.sting__line {
+  margin: 0;
+  font-size: clamp(18px, 4.6vw, 21px);
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+
+.sting__line strong {
+  color: var(--seal);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 -0.38em 0 var(--seal-tint);
+}
+
+.sting__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.sting__pay {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sting__pay select {
+  min-height: 32px;
+  padding: 0 6px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+}
+
+.sting__acts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sting__btn {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sting__btn small {
+  margin-left: 2px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.sting__btn--share {
+  background: var(--seal);
+  border-color: var(--seal);
+  color: var(--on-seal);
+}
+
+.sting__btn:focus-visible,
+.sting__pay select:focus-visible {
+  outline: 3px solid var(--seal);
+  outline-offset: 2px;
+}
+
+.sting__msg {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+/* 다른 문장으로 넘길 때 발톱이 한 번 긁고 지나간다 */
+.sting.is-scratch .sting__claw {
+  animation: sting-claw 0.45s ease-out;
+}
+
+.sting.is-scratch .sting__line {
+  animation: sting-in 0.3s ease-out;
+}
+
+@keyframes sting-claw {
+  0% {
+    transform: translate(-6px, 6px) rotate(-8deg);
+    opacity: 0.3;
+  }
+  60% {
+    transform: translate(3px, -3px) rotate(4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes sting-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sting.is-scratch .sting__claw,
+  .sting.is-scratch .sting__line {
+    animation: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .sting {
+    padding: 14px 14px 12px 50px;
+  }
+
+  .sting__claw {
+    left: 10px;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* ---------- 맨 위 큰 배너 (src/components/StingHero.jsx): 썸네일처럼 테마와 상관없이 같은 색 ---------- */
+.sting-hero {
+  --sh-ink: #141a2e;
+  --sh-yellow: #ffd21f;
+  --sh-pink: #f0185f;
+  --sh-ray: #40d3f2;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 4px 0 18px;
+  padding: 6px 8px 4px;
+  text-align: center;
+  isolation: isolate;
+}
+
+.sting-hero__rays {
+  position: absolute;
+  inset: -6px -12px;
+  width: calc(100% + 24px);
+  height: calc(100% + 12px);
+  z-index: -1;
+  stroke: var(--sh-ray);
+  stroke-width: 5;
+  stroke-linecap: round;
+  opacity: 0.9;
+}
+
+.sting-hero__big {
+  margin: 0;
+  font-size: clamp(76px, 25vw, 136px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--sh-yellow);
+  -webkit-text-stroke: 0.09em var(--sh-ink);
+  paint-order: stroke fill;
+  text-shadow: 0 0.06em 0 var(--sh-ink);
+  white-space: nowrap;
+  animation: sting-pop 0.42s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+.sting-hero__big.is-sm {
+  font-size: clamp(62px, 19vw, 116px);
+}
+
+.sting-hero__big.is-xs {
+  font-size: clamp(48px, 14.5vw, 96px);
+}
+
+.sting-hero__cap {
+  position: relative;
+  margin: -0.12em 0 0;
+  padding: 0.12em 0.9em 0.16em;
+  border: 3px solid var(--sh-ink);
+  border-radius: 999px;
+  background: var(--sh-pink);
+  box-shadow:
+    inset 0 -0.18em 0 rgba(0, 0, 0, 0.18),
+    0 4px 0 var(--sh-ink);
+  color: #fff;
+  font-size: clamp(22px, 7.4vw, 38px);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+  max-width: 100%;
+  transform: rotate(-1deg);
+}
+
+.sting-hero__cap.is-long {
+  font-size: clamp(18px, 5.6vw, 30px);
+}
+
+.sting-hero__spark {
+  position: absolute;
+  z-index: -1; /* 글자와 겹치면 글자가 위로 */
+  width: clamp(30px, 9vw, 46px);
+  height: clamp(30px, 9vw, 46px);
+  fill: var(--sh-yellow);
+  stroke: var(--sh-ink);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.sting-hero__spark--l {
+  left: -4px;
+  bottom: 2%;
+}
+
+.sting-hero__spark--r {
+  right: -4px;
+  top: 8%;
+}
+
+@keyframes sting-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sting-hero__big {
+    animation: none;
+  }
+}

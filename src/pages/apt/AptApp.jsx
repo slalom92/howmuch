@@ -7,6 +7,10 @@ import { useGrowOnView, CountUp } from '../../components/Motion.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
+import Sting from '../../components/Sting.jsx'
+import { rememberPay } from '../../lib/sting.js'
+import { aptStings, aptHero } from './sting.js'
+import StingHero from '../../components/StingHero.jsx'
 import { FOOTER_MENU, MENU, APT, YOUTUBER, KBO, KLPGA } from '../../lib/menu.js'
 import { SALARIES, YEARS, AREAS, BASES, SOURCES, SIDO, sidoOf, loadSido, calculate, fromSearch, toSearch, sortNear } from './apt.js'
 import { hasMap, loadKakao, locate, regionOf, sggCenters } from './kakaoMap.js'
@@ -499,6 +503,7 @@ export default function AptApp({ initialSearch = '' }) {
   const r = useMemo(() => calculate(state, file), [state, file])
   const set = (k) => (v) => {
     setState((s) => ({ ...s, [k]: v }))
+    if (k === 'pay') rememberPay(v)
     track('apt_pick', { [k]: v })
   }
   const onSido = (code) => setState((s) => ({ ...s, sido: code, sgg: 'all' }))
@@ -562,6 +567,7 @@ export default function AptApp({ initialSearch = '' }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
+        <StingHero {...aptHero(r)} />
         <section className="hero apt-hero">
           <div className="hero__text">
             <h1 className="hero__title">연봉 모아 집 사기</h1>
@@ -614,6 +620,7 @@ export default function AptApp({ initialSearch = '' }) {
             <div ref={resultRef} aria-live="polite">
               <Passbook r={r} />
             </div>
+            <Sting page="apt" lines={aptStings(r)} basis={`연봉 ${r.salary.label} 원 ${r.state.b === 'gross' ? '세전' : r.state.b === 'left' ? '생활비 빼고' : '실수령'} 기준`} />
             {loadError && (
               <p className="apt-empty" role="alert">
                 {r.place} 자료를 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.

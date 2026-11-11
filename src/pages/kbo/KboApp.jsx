@@ -6,6 +6,10 @@ import { useGrowOnView, CountUp } from '../../components/Motion.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
+import Sting from '../../components/Sting.jsx'
+import { useMyPay } from '../../lib/sting.js'
+import { kboStings, kboHero } from './sting.js'
+import StingHero from '../../components/StingHero.jsx'
 import { FOOTER_MENU, MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA } from '../../lib/menu.js'
 import { SEASON, GAMES, INNINGS, LEAGUE, TEAMS, TEAM_BY_ID, PLAYERS, SOURCES, WORKER_YEAR, PITCHES_PER_INNING, PITCH_SOURCE, STATS_SOURCE, breakdown, profile, findExact, suggest } from './kbo.js'
 import KboGuide from './KboGuide.jsx'
@@ -522,6 +526,7 @@ export default function KboApp() {
   const [startName] = useState(() => (typeof window === 'undefined' ? DEFAULT_NAME : pickRandom()))
   const [name, setName] = useState(() => readName() || startName)
   const pr = useMemo(() => profile(findExact(name) || PLAYERS[0]), [name])
+  const [myPay, setMyPay] = useMyPay()
   const resultRef = useRef(null)
   const baseTitle = useRef('')
   // 결과 전광판을 지나 아래로 내려간 뒤에만 다른 계산기 바로가기를 띄운다 (전광판을 가리지 않게)
@@ -592,6 +597,7 @@ export default function KboApp() {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
+        <StingHero {...kboHero(pr, myPay)} />
         <section className="hero kbo-hero">
           <div className="hero__text">
             <h1 className="hero__title">프로야구 선수, 연봉 얼마 받을까?</h1>
@@ -612,6 +618,7 @@ export default function KboApp() {
         <div className="kbo-result" ref={resultRef} aria-live="polite">
           <Scoreboard pr={pr} />
           <Headline pr={pr} />
+          <Sting key={pr.player.name} page="kbo" lines={kboStings(pr, myPay)} pay={{ salary: myPay, onChange: setMyPay, basis: 'gross' }} />
           <Records pr={pr} />
           {pr.player.note && <p className="kbo-note">{pr.player.note}</p>}
           <Sources ids={pr.player.src} />

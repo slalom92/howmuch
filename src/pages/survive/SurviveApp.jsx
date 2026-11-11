@@ -8,6 +8,10 @@ import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
+import Sting from '../../components/Sting.jsx'
+import { rememberPay } from '../../lib/sting.js'
+import { surviveStings, surviveHero } from './sting.js'
+import StingHero from '../../components/StingHero.jsx'
 import { FOOTER_MENU, MENU, SURVIVE, JONBER, APT, YOUTUBER } from '../../lib/menu.js'
 import { SALARIES, STYLE_TEXT, SAVES, SAVE_ALL, calculate, fromSearch, toSearch, aptLink, daysText, won, pct, lastDayFrom, dateText } from './survive.js'
 import SurviveGuide from './SurviveGuide.jsx'
@@ -339,6 +343,7 @@ export default function SurviveApp({ initialSearch = '' }) {
   const r = useMemo(() => calculate(state), [state])
   const set = (k) => (v) => {
     setState((s) => ({ ...s, [k]: v }))
+    if (k === 'pay') rememberPay(v)
     track('survive_pick', { [k]: k === 'a' ? Object.keys(v).join(',') || 'none' : v })
   }
 
@@ -402,6 +407,7 @@ export default function SurviveApp({ initialSearch = '' }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
+        <StingHero {...surviveHero(r)} />
         <section className="hero sv-hero">
           <div className="hero__text">
             <h1 className="hero__title">존버 계산기</h1>
@@ -418,6 +424,7 @@ export default function SurviveApp({ initialSearch = '' }) {
           <div ref={resultRef}>
             <LastCard r={r} today={today} />
           </div>
+          <Sting page="survive" lines={surviveStings(r)} basis={`연봉 ${r.salary.label} 원 실수령 기준`} />
           <SavePanel r={r} onChange={set('a')} />
           <Styles r={r} onPick={set('s')} />
         </div>

@@ -6,6 +6,10 @@ import { useGrowOnView, CountUp } from '../../components/Motion.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
+import Sting from '../../components/Sting.jsx'
+import { useMyPay } from '../../lib/sting.js'
+import { golfStings, golfHero } from './sting.js'
+import StingHero from '../../components/StingHero.jsx'
 import { FOOTER_MENU, MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA, KPGA, PGA, LPGA } from '../../lib/menu.js'
 import { WORKER_YEAR } from './golf.js'
 import KlpgaGuide from './KlpgaGuide.jsx'
@@ -474,6 +478,7 @@ export default function GolfApp({ T }) {
   const [startName] = useState(() => (typeof window === 'undefined' ? defaultName : T.PLAYERS[Math.floor(Math.random() * T.PLAYERS.length)]?.name || defaultName))
   const [name, setName] = useState(() => readName(T) || startName)
   const pr = useMemo(() => T.profile(T.findExact(name) || T.PLAYERS[0]), [T, name])
+  const [myPay, setMyPay] = useMyPay()
   const resultRef = useRef(null)
   const baseTitle = useRef('')
   // 결과 스코어카드를 지나 아래로 내려간 뒤에만 다른 계산기 바로가기를 띄운다
@@ -542,6 +547,7 @@ export default function GolfApp({ T }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
+        <StingHero {...golfHero(pr, myPay)} />
         <section className="hero kbo-hero">
           <TourTabs T={T} />
           <div className="hero__text">
@@ -563,6 +569,7 @@ export default function GolfApp({ T }) {
         <div className="kbo-result" ref={resultRef} aria-live="polite">
           <Scorecard pr={pr} />
           <Headline pr={pr} />
+          <Sting key={pr.player.name} page={T.id || 'golf'} lines={golfStings(pr, myPay)} pay={{ salary: myPay, onChange: setMyPay, basis: 'gross' }} />
           <GolfFacts pr={pr} />
           {pr.player.note && <p className="kbo-note">{pr.player.note}</p>}
           <Sources T={T} ids={pr.player.src} />

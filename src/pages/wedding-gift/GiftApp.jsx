@@ -4,6 +4,10 @@ import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { won } from '../../lib/format.js'
 import { track } from '../../lib/analytics.js'
+import Sting from '../../components/Sting.jsx'
+import { useMyPay } from '../../lib/sting.js'
+import { giftStings, giftHero } from './sting.js'
+import StingHero from '../../components/StingHero.jsx'
 import { FOOTER_MENU, MENU, YOUTUBER, KBO, KLPGA } from '../../lib/menu.js'
 import { RELATIONS, REGIONS, VENUES, PARTY, RECEIVED, DEFAULTS, calculate, fromSearch, toSearch, normalize } from './gift.js'
 import GiftGuide from './GiftGuide.jsx'
@@ -168,6 +172,7 @@ export default function GiftApp() {
   // 서버에서 미리 그릴 때는 기본값, 브라우저에서는 주소의 값으로 시작한다
   const [s, setS] = useState(() => (typeof window === 'undefined' ? DEFAULTS : fromSearch(window.location.search)))
   const result = useMemo(() => calculate(s), [s])
+  const [myPay, setMyPay] = useMyPay()
   const set = (k) => (v) => setS((prev) => ({ ...prev, [k]: v }))
 
   // 고른 값을 주소에 남겨 새로고침·공유해도 같은 결과가 보이게 한다
@@ -245,6 +250,7 @@ export default function GiftApp() {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
+        <StingHero {...giftHero(result, myPay)} />
         <section className="hero gift-hero">
           <div className="hero__text">
             <h1 className="hero__title">축의금, 얼마 내야 할까?</h1>
@@ -284,6 +290,7 @@ export default function GiftApp() {
         <div className="gift-result" aria-live="polite" ref={resultRef}>
           <Envelope result={result} />
           <MealMeter result={result} />
+          <Sting page="gift" lines={giftStings(result, myPay)} pay={{ salary: myPay, onChange: setMyPay, basis: 'net' }} />
           <p className="gift-avg">
             작년 축의금 이체 평균은 <strong>11만 7천 원</strong>이에요. 이 금액은 평균의{' '}
             <strong>{result.vsAvg >= 0.95 && result.vsAvg <= 1.05 ? '비슷한 수준' : `${Math.round(result.vsAvg * 100)}%`}</strong>
