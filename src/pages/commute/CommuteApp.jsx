@@ -326,8 +326,34 @@ function Summary({ sum, state, station, data, result }) {
   )
 }
 
+// ---------- 지도 아래: 고른 집과 출퇴근 길 ----------
+function PickedBar({ home, state, station, route, onClose }) {
+  const d = home.rep
+  return (
+    <section className="cm-picked" aria-label={`${home.title} 출퇴근 길`}>
+      <div className="cm-picked__head">
+        <div>
+          <p className="apt-card__where">
+            {home.sggName} {home.dong} · {home.kindLabel} · {station.name}역까지 직선 {distText(home.dist)}
+          </p>
+          <p className="cm-picked__name">
+            {home.title}{' '}
+            <strong>{state.k === 'jeonse' ? `전세 ${man(d.deposit)}` : `월세 ${man(d.monthly)} · 보증금 ${man(d.deposit)}`}</strong>
+          </p>
+        </div>
+        <button type="button" className="apt-map__close" onClick={onClose} aria-label="출퇴근 길 닫기">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M3.5 3.5l9 9M12.5 3.5l-9 9" />
+          </svg>
+        </button>
+      </div>
+      <RouteBox route={route} station={station} cardKey={home.key} />
+    </section>
+  )
+}
+
 // ---------- 출퇴근 길 ----------
-function RouteBox({ route, station }) {
+function RouteBox({ route, station, cardKey }) {
   const walk = route.walk || {}
   const transit = route.transit || {}
   const w = walk.data
@@ -386,8 +412,8 @@ function RouteBox({ route, station }) {
         </p>
       )}
       <p className="cm-route__foot">
-        <a href="#cm-map" className="cm-route__tomap">
-          지도에서 길 보기
+        <a href={`#cm-${cardKey}`} className="cm-route__tomap">
+          이 집 카드 보기
         </a>
         {link && (
           <a href={link} target="_blank" rel="noopener noreferrer">
@@ -400,7 +426,7 @@ function RouteBox({ route, station }) {
 }
 
 // ---------- 집 카드 ----------
-function HomeCard({ h, state, station, selected, onSelect, route }) {
+function HomeCard({ h, state, station, selected, onSelect }) {
   const d = h.rep
   const jeonse = state.k === 'jeonse'
   const others = h.deals.length - 1
@@ -441,14 +467,13 @@ function HomeCard({ h, state, station, selected, onSelect, route }) {
         )}
       </p>
       <div className="cm-card__acts">
-        <button type="button" className="apt-card__map cm-card__go" aria-expanded={selected} onClick={() => onSelect(selected ? '' : h.key)}>
-          {selected ? '출퇴근 길 닫기' : '출퇴근 길 보기'}
+        <button type="button" className="apt-card__map cm-card__go" aria-pressed={selected} onClick={() => onSelect(h.key)}>
+          {selected ? '지도에 길 표시 중' : '출퇴근 길 보기'}
         </button>
         <a className="cm-card__survive" href={surviveLink(d)} onClick={() => track('commute_survive', { type: state.t, kind: state.k })}>
           이 집에서 월급 며칠 버틸까
         </a>
       </div>
-      {selected && <RouteBox route={route} station={station} />}
     </li>
   )
 }
@@ -554,10 +579,11 @@ export default function CommuteApp({ initialSearch = '' }) {
   const pickHome = useCallback((key, fromMap) => {
     setSelected(key)
     if (key) track('commute_route', { from: fromMap ? 'map' : 'card' })
-    if (key && fromMap) {
-      // 지도에서 고르면 그 카드가 보이도록 (목록 뒤쪽이면 더 보여 준다)
-      setShown((n) => Math.max(n, PAGE * 50))
-      setTimeout(() => document.getElementById(`cm-${key}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60)
+    if (key && fromMap) setShown((n) => Math.max(n, PAGE * 50)) // 목록 뒤쪽 집이면 카드도 보이게
+    if (key && !fromMap) {
+      // 카드에서 누르면 길이 그려지는 지도로 올라간다 (움직임 줄이기 설정이면 바로)
+      const smooth = !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+      setTimeout(() => document.getElementById('cm-map')?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' }), 40)
     }
   }, [])
   useEffect(() => {
@@ -606,6 +632,7 @@ export default function CommuteApp({ initialSearch = '' }) {
     return () => io.disconnect()
   }, [station])
 
+  const pickedHome = selected ? result.list.find((h) => h.key === selected) : null
   const status = dataError ? 'error' : result.status
   const visible = list.slice(0, shown)
 
@@ -661,6 +688,7 @@ export default function CommuteApp({ initialSearch = '' }) {
               onPickStation={pickStation}
               onPickHome={pickHome}
             />
+            {pickedHome && <PickedBar home={pickedHome} state={state} station={station} route={route} onClose={() => setSelected('')} />}
             <div aria-live="polite" ref={sumRef}>
               <Summary sum={sum} state={state} station={station} data={data} result={result} />
             </div>
@@ -684,7 +712,7 @@ export default function CommuteApp({ initialSearch = '' }) {
                 </div>
                 <ul className="apt-cards cm-cards">
                   {visible.map((h) => (
-                    <HomeCard key={h.key} h={h} state={state} station={station} selected={h.key === selected} onSelect={(k) => pickHome(k, false)} route={route} />
+                    <HomeCard key={h.key} h={h} state={state} station={station} selected={h.key === selected} onSelect={(k) => pickHome(k, false)} />
                   ))}
                 </ul>
                 {list.length > shown && (

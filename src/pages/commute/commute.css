@@ -344,7 +344,7 @@
   outline-offset: 2px;
 }
 
-.cm-card__go[aria-expanded='true'] {
+.cm-card__go[aria-pressed='true'] {
   background: var(--ink);
   border-color: var(--ink);
   color: var(--on-ink);
@@ -355,6 +355,45 @@
   font-weight: 700;
   color: var(--seal);
   text-underline-offset: 3px;
+}
+
+/* ---------- 지도 아래: 고른 집 ---------- */
+.cm-picked {
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--ink);
+  border-top: 4px solid var(--seal);
+  border-radius: 10px;
+  background: var(--paper);
+}
+
+.cm-picked__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cm-picked__name {
+  margin: 2px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  word-break: keep-all;
+}
+
+.cm-picked__name strong {
+  color: var(--seal);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cm-picked .apt-map__close {
+  flex: 0 0 auto;
+}
+
+.cm-picked .cm-route,
+.cm-picked .cm-route__msg {
+  margin-top: 10px;
 }
 
 /* ---------- 출퇴근 길 ---------- */
