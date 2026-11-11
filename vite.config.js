@@ -51,6 +51,7 @@ export default defineConfig(({ mode }) => {
     //   /apt/           → apt/index.html (연봉 모아 집 사기, 자료는 npm run apt 로 만든다)
     //   /jonber/        → jonber/index.html (월급 분당 계산기)
     //   /survive/       → survive/index.html (존버 계산기)
+    //   /commute/       → commute/index.html (직주근접 계산기, 자료는 npm run commute 로 만든다)
     build: {
       rollupOptions: {
         input: {
@@ -65,6 +66,7 @@ export default defineConfig(({ mode }) => {
           apt: fileURLToPath(new URL('./apt/index.html', import.meta.url)),
           jonber: fileURLToPath(new URL('./jonber/index.html', import.meta.url)),
           survive: fileURLToPath(new URL('./survive/index.html', import.meta.url)),
+          commute: fileURLToPath(new URL('./commute/index.html', import.meta.url)),
         },
       },
     },

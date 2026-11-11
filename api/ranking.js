@@ -25,6 +25,7 @@ export const APPS = [
   { id: 'apt', match: (p) => p === '/apt/' },
   { id: 'jonber', match: (p) => p === '/jonber/' },
   { id: 'survive', match: (p) => p === '/survive/' },
+  { id: 'commute', match: (p) => p === '/commute/' },
 ]
 
 // 오류 이유는 응답에도 보여 준다 (키 값은 절대 담지 않는다)
@@ -33,13 +34,16 @@ class Reason extends Error {}
 function serviceAccount() {
   let raw = (process.env.GA4_SA_KEY || '').trim()
   if (!raw) return null
-  // 따옴표로 한 번 더 감싸 넣은 경우
+  // .env 한 줄을 통째로 붙여 넣은 경우, 따옴표로 한 번 더 감싸 넣은 경우
+  raw = raw.replace(/^GA4_SA_KEY\s*=\s*/, '')
   if (/^['"`]/.test(raw) && raw.at(-1) === raw[0]) raw = raw.slice(1, -1).trim()
   let key
   try {
     key = JSON.parse(raw.startsWith('{') ? raw : Buffer.from(raw, 'base64').toString('utf8'))
   } catch {
-    throw new Reason('GA4_SA_KEY 를 JSON 으로 읽지 못했어요. 내려받은 JSON 파일 내용을 { 부터 } 까지 그대로 넣어 주세요')
+    // 키 내용은 빼고 모양만 알려 준다
+    const shape = `길이 ${raw.length}자, { 로 시작 ${raw.startsWith('{') ? 'O' : 'X'}, } 로 끝남 ${raw.endsWith('}') ? 'O' : 'X'}`
+    throw new Reason(`GA4_SA_KEY 를 JSON 으로 읽지 못했어요 (${shape}). JSON 파일 내용을 { 부터 } 까지 그대로 넣거나 base64 로 바꿔 넣어 주세요`)
   }
   if (!key.client_email || !key.private_key) throw new Reason('GA4_SA_KEY 에 client_email, private_key 가 없어요. 서비스 계정 키 JSON 이 맞는지 확인해 주세요')
   // 줄바꿈이 \\n 글자로 들어간 경우

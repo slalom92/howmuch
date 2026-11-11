@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 색 테마: 화면이 그려지기 전에 정해야 색이 번쩍이지 않는다 -->
+    <script src="/theme.js"></script>
+    <link rel="stylesheet" href="/themes.css" />
+    <title>직주근접 계산기 – 회사 근처 역 전세·월세 시세와 출퇴근 시간 | 돈미터</title>
+    <meta name="description" content="회사 근처 지하철역을 고르면 역에서 500m·1km·2km 안에서 최근 계약된 원룸·빌라·오피스텔·아파트 전세와 월세를 국토교통부 실거래가로 보여 주고, 집에서 역까지 걷는 시간과 대중교통 시간, 한 달 출퇴근 시간까지 계산해 드려요." />
+    <meta name="keywords" content="직주근접 계산기, 직주근접, 역세권 월세, 역세권 원룸, 회사 근처 자취, 지하철역 근처 월세, 전월세 실거래가, 원룸 월세 시세, 오피스텔 월세, 빌라 전세, 출퇴근 시간, 통근 시간 계산" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://donmeter.com/commute/" />
+    <meta name="theme-color" content="#e7ebf0" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="돈미터" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:url" content="https://donmeter.com/commute/" />
+    <meta property="og:title" content="직주근접 계산기, 회사 역 근처 월세는 얼마? | 돈미터" />
+    <meta property="og:description" content="역만 고르면 그 역 주변 전월세 실거래 계약과 집에서 역까지 출퇴근 시간을 지도로 보여 드려요." />
+    <meta property="og:image" content="https://donmeter.com/og/commute-v1.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="800" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="직주근접 계산기, 회사 역 근처 월세는 얼마? | 돈미터" />
+    <meta name="twitter:description" content="역만 고르면 그 역 주변 전월세 실거래 계약과 집에서 역까지 출퇴근 시간을 지도로 보여 드려요." />
+    <meta name="twitter:image" content="https://donmeter.com/og/commute-v1.png" />
+    <!-- 카카오맵 지도·주소 검색 (키는 VITE_KAKAO_MAP_KEY, 등록한 도메인에서만 동작) -->
+    <link rel="preconnect" href="https://dapi.kakao.com" />
+    <!-- FAQ 문구는 src/pages/commute/commute.js 의 FAQ 와 같게 유지한다 -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://donmeter.com/commute/#app",
+      "name": "직주근접 계산기 – 돈미터",
+      "url": "https://donmeter.com/commute/",
+      "description": "전국 도시철도역을 고르면 역 주변의 최근 전월세 실거래 계약(아파트, 빌라, 오피스텔, 원룸)과 집에서 역까지 도보·대중교통 출퇴근 시간을 보여 주는 무료 서비스입니다.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ko-KR",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "isPartOf": {
+        "@id": "https://donmeter.com/#website"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "카드에 나오는 집은 지금 나와 있는 매물인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "아니에요. 국토교통부에 신고된 전월세 실거래 계약이에요. 이미 계약이 끝난 집이라 지금 들어갈 수 있는지는 알 수 없고, 그 동네에서 비슷한 집이 얼마에 계약되는지 보는 참고 자료예요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "원룸은 어떻게 골랐나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "국토교통부 자료에는 원룸 구분이 없어서, 연립·다세대(빌라), 오피스텔, 단독·다가구 계약 가운데 면적이 33㎡(약 10평) 이하인 계약을 원룸으로 봤어요. 단독·다가구는 번지가 공개되지 않아 지도에 동 중심으로 찍혀요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "한 달 집값은 어떻게 계산하나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "월세에 보증금 이자를 더했어요. 보증금은 전세대출로 빌렸다고 치고 2026년 9월 예금은행 전세자금대출 금리 연 4.57%로 한 달 이자를 셌어요. 전세는 보증금 이자만, 월세는 월세와 보증금 이자를 합친 금액이에요. 관리비와 공과금은 들어 있지 않아요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "역까지 거리와 출퇴근 시간은 어떻게 구하나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "카드의 거리는 집과 역 사이의 직선 거리예요. 카드를 누르면 카카오맵 경로 조회로 걸어서 가는 길과 대중교통 길을 받아 지도에 그리고, 편도 시간에 2를 곱하고 한 달 출근일 21.7일(주 5일 × 52주 ÷ 12)을 곱해 한 달 출퇴근 시간을 보여 드려요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "집 위치는 정확한가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "신고된 동과 번지를 카카오맵에서 그때그때 찾아 찍어요. 번지가 없거나 찾지 못한 집은 동 중심에 찍고 카드에 표시해 둬요. 위치 결과는 저장하지 않아요."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="/ga.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539"
+     crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/pages/commute/main.jsx"></script>
+  </body>
+</html>

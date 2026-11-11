@@ -22,6 +22,7 @@ export const SOURCES = {
   mvno: { label: '글래스월렛, 2026년 알뜰폰 데이터 100GB 요금제 월 1만 7천~2만 1천 원 (가운데 값 1만 9천 원)', url: 'https://glasswallet.com/blog/budget-phone-plan-comparison-guide' },
   bike: { label: '서울시, 공공자전거 따릉이 365일 정기권(1시간) 30,000원', url: 'https://news.seoul.go.kr/traffic/?p=33719' },
   haircut: { label: '한국경제, 한국소비자원 참가격 서울 성인 여성 커트 평균 23,692원 (2025년 8월)', url: 'https://www.hankyung.com/article/2025092321417' },
+  jeonserate: { label: '한국은행, 2026년 9월 예금은행 전세자금대출 금리 연 4.57% (신규취급액 기준, 파이낸셜뉴스 보도)', url: 'https://www.fnnews.com/news/202610291202476646' },
   minliving27: { label: '뉴시스, 2027년 기준 중위소득과 급여별 선정기준 (중앙생활보장위원회 의결)', url: 'https://www.newsis.com/view/NISX20260728_0003726406' },
 }
 
@@ -59,7 +60,15 @@ export const STYLES = [
   { id: 'min', label: '최소 생활', note: '월 82만' },
 ]
 
+// 직주근접 계산기(/commute/)에서 고른 집: 주소에 r=월 주거비(원)가 있을 때만 생긴다
+export const PICK_MAX = 20000000
+export function stylesFor(r) {
+  if (!r) return STYLES
+  return [...STYLES, { id: 'pick', label: '고른 집', note: `월 ${Math.round(r / 10000).toLocaleString('ko-KR')}만` }]
+}
+
 export const STYLE_TEXT = {
+  pick: '고른 집에 살면',
   avg: '1인 가구 평균처럼 쓰면',
   seoul: '서울 원룸에 월세로 살면',
   min: '최소 생활비로만 살면',
@@ -116,8 +125,13 @@ export function applySaves(items, a = {}) {
   return out
 }
 
-// 생활 방식별 한 달 지출 (비목별)
-export function spendingOf(style) {
+// 생활 방식별 한 달 지출 (비목별). r 은 고른 집의 월 주거비
+export function spendingOf(style, r) {
+  if (style === 'pick' && r) {
+    return CATEGORIES.map((c) =>
+      c.id === 'housing' ? { ...c, name: '고른 집', stat: '월세 + 보증금 대출 이자', hint: '관리비·공과금 빼고', amount: r } : c,
+    )
+  }
   if (style === 'seoul') {
     return CATEGORIES.map((c) =>
       c.id === 'housing' ? { ...c, name: '월세', stat: '서울 원룸 평균 월세', hint: '관리비·공과금 빼고', amount: SEOUL_RENT } : c,
@@ -131,26 +145,34 @@ export function spendingOf(style) {
   return CATEGORIES
 }
 
-const baseTotal = (style) => (style === 'avg' ? AVG_TOTAL : style === 'min' ? MIN_LIVING : spendingOf(style).reduce((a, c) => a + c.amount, 0))
+const baseTotal = (style, r) => (style === 'avg' ? AVG_TOTAL : style === 'min' ? MIN_LIVING : spendingOf(style, r).reduce((a, c) => a + c.amount, 0))
 
 // 아끼기를 적용한 비목과 합계. 합계는 통계표 합계에서 줄어든 만큼만 뺀다.
-export function spendOf(style, a) {
-  const items = applySaves(spendingOf(style), a)
+export function spendOf(style, a, r) {
+  const items = applySaves(spendingOf(style, r), a)
   const cut = items.reduce((sum, c) => sum + (c.was - c.amount), 0)
-  return { items, total: baseTotal(style) - cut }
+  return { items, total: baseTotal(style, r) - cut }
 }
 
-export const totalOf = (style, a) => spendOf(style, a).total
+export const totalOf = (style, a, r) => spendOf(style, a, r).total
+
+// 월 주거비 r: 1천 원 단위, 0 이하이거나 너무 크면 버린다
+export const pickRent = (v) => {
+  const n = Math.round(Number(v) / 1000) * 1000
+  return n > 0 && n <= PICK_MAX ? n : 0
+}
 
 export const salaryOf = (id) => SALARIES.find((s) => s.id === id) || SALARIES.find((s) => s.id === DEFAULTS.pay)
 
 export function normalize(st) {
   const a = {}
   for (const [gid, oid] of Object.entries(st.a || {})) if (optOf(gid, oid)) a[gid] = oid
+  const r = pickRent(st.r)
   return {
     pay: SALARIES.some((x) => x.id === st.pay) ? st.pay : DEFAULTS.pay,
-    s: STYLES.some((x) => x.id === st.s) ? st.s : DEFAULTS.s,
+    s: stylesFor(r).some((x) => x.id === st.s) ? st.s : DEFAULTS.s,
     a,
+    r,
   }
 }
 
@@ -160,7 +182,7 @@ export const saveTo = (a) => SAVES.filter((g) => a[g.id]).map((g) => `${g.id}-${
 
 export function fromSearch(search) {
   const p = new URLSearchParams(search || '')
-  return normalize({ pay: p.get('pay'), s: p.get('s'), a: saveFrom(p.get('a')) })
+  return normalize({ pay: p.get('pay'), s: p.get('s'), a: saveFrom(p.get('a')), r: p.get('r') })
 }
 
 export function toSearch(st) {
@@ -169,13 +191,14 @@ export function toSearch(st) {
   if (st.s !== DEFAULTS.s) p.set('s', st.s)
   const a = saveTo(st.a || {})
   if (a) p.set('a', a)
+  if (st.r) p.set('r', st.r)
   const q = p.toString()
   return q ? `?${q}` : ''
 }
 
 // 월급 하나와 생활 방식 하나 → 버티는 날, 남는 돈
-export function lastOf(monthly, style, a) {
-  const spend = totalOf(style, a)
+export function lastOf(monthly, style, a, r) {
+  const spend = totalOf(style, a, r)
   const daily = spend / DAYS_PER_MONTH
   return { spend, daily, days: Math.floor(monthly / daily), left: monthly - spend }
 }
@@ -184,9 +207,9 @@ export function calculate(state) {
   const st = normalize(state)
   const salary = salaryOf(st.pay)
   const monthly = salary.net / 12
-  const items = spendOf(st.s, st.a).items.map((c) => ({ ...c, share: c.amount / monthly, daily: c.amount / DAYS_PER_MONTH }))
-  const { spend, daily, days, left } = lastOf(monthly, st.s, st.a)
-  const base = lastOf(monthly, st.s)
+  const items = spendOf(st.s, st.a, st.r).items.map((c) => ({ ...c, share: c.amount / monthly, daily: c.amount / DAYS_PER_MONTH }))
+  const { spend, daily, days, left } = lastOf(monthly, st.s, st.a, st.r)
+  const base = lastOf(monthly, st.s, {}, st.r)
   const saveCount = Object.keys(st.a).length
   const groups = GROUPS.map((g) => {
     const amount = items.filter((c) => c.group === g.id).reduce((a, c) => a + c.amount, 0)
@@ -205,8 +228,9 @@ export function calculate(state) {
     base,
     saveCount,
     saved: base.spend - spend,
-    styles: STYLES.map((x) => ({ ...x, ...lastOf(monthly, x.id, st.a) })),
-    ladder: SALARIES.map((x) => ({ ...x, monthly: x.net / 12, ...lastOf(x.net / 12, st.s, st.a) })),
+    styleList: stylesFor(st.r),
+    styles: stylesFor(st.r).map((x) => ({ ...x, ...lastOf(monthly, x.id, st.a, st.r) })),
+    ladder: SALARIES.map((x) => ({ ...x, monthly: x.net / 12, ...lastOf(x.net / 12, st.s, st.a, st.r) })),
   }
 }
 
@@ -216,6 +240,7 @@ export function aptLink(st) {
   if (st.pay !== DEFAULTS.pay) p.set('pay', st.pay)
   p.set('b', 'left')
   if (st.s !== DEFAULTS.s) p.set('ls', st.s)
+  if (st.s === 'pick') p.set('lr', st.r)
   const a = saveTo(st.a || {})
   if (a) p.set('lv', a)
   return `/apt/?${p.toString()}`

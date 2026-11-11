@@ -79,6 +79,19 @@ export function CalendarIcon() {
   )
 }
 
+// 직주근접 계산기: 지하철 앞모습
+export function SubwayIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <rect x="7" y="3.5" width="18" height="21" rx="4.5" strokeWidth="2" style={{ fill: 'var(--seal-tint)', stroke: 'var(--seal)' }} />
+      <rect x="10.5" y="7.5" width="11" height="6" rx="1.5" strokeWidth="1.8" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <circle cx="11.8" cy="19" r="1.6" style={{ fill: 'var(--seal)' }} />
+      <circle cx="20.2" cy="19" r="1.6" style={{ fill: 'var(--seal)' }} />
+      <path d="M11.5 24.5l-3.5 4.5M20.5 24.5l3.5 4.5M10 27h12" fill="none" strokeWidth="2" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+    </svg>
+  )
+}
+
 // 월급 분당 계산기: 시계 + 동전
 export function ClockIcon() {
   return (

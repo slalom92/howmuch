@@ -256,7 +256,7 @@ export default function CompanyCompare({ channel, analysis, tier, company, setCo
 
   useEffect(() => {
     if (result && company) {
-      track('compare_company', { company_name: company.name, placement: result.place.text, source: company.manual ? 'manual' : 'dart' })
+      track('compare_company', { company_name: company.name, placement: result.place.text, via: company.manual ? 'manual' : 'dart' })
     }
     // 회사가 바뀔 때만 기록
     // eslint-disable-next-line react-hooks/exhaustive-deps

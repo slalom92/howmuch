@@ -6,7 +6,7 @@
 // - "생활비 빼고"(b=left): 존버 계산기(/survive/)와 같은 생활비(ls=생활 방식, lv=아끼기)를 빼고 남는 돈만 모은다.
 import DATA from './apt-data.json'
 import { SALARIES, PAY_SOURCES } from '../../lib/salary.js'
-import { STYLES as LIFE_STYLES, STYLE_TEXT, lastOf, normalize as lifeNormalize, saveFrom, saveTo } from '../survive/survive.js'
+import { STYLE_TEXT, lastOf, normalize as lifeNormalize, saveFrom, saveTo, stylesFor, pickRent } from '../survive/survive.js'
 
 export { DATA }
 
@@ -93,14 +93,15 @@ export function normalize(s) {
     sido,
     sgg: sggs.some((g) => g.code === s.sgg) ? s.sgg : 'all',
     b: BASES.some((x) => x.id === s.b) ? s.b : DEFAULTS.b,
-    ls: LIFE_STYLES.some((x) => x.id === s.ls) ? s.ls : DEFAULTS.ls,
+    ls: stylesFor(pickRent(s.lr)).some((x) => x.id === s.ls) ? s.ls : DEFAULTS.ls,
+    lr: s.ls === 'pick' ? pickRent(s.lr) : 0,
     lv: saveTo(lifeNormalize({ a: saveFrom(s.lv) }).a),
   }
 }
 
 export const fromSearch = (search) => {
   const q = new URLSearchParams(search)
-  return normalize({ pay: q.get('pay'), y: q.get('y'), a: q.get('a'), sido: q.get('sido'), sgg: q.get('sgg') || 'all', b: q.get('b'), ls: q.get('ls'), lv: q.get('lv') })
+  return normalize({ pay: q.get('pay'), y: q.get('y'), a: q.get('a'), sido: q.get('sido'), sgg: q.get('sgg') || 'all', b: q.get('b'), ls: q.get('ls'), lr: q.get('lr'), lv: q.get('lv') })
 }
 
 export const toSearch = (s) => {
@@ -108,6 +109,7 @@ export const toSearch = (s) => {
   for (const k of ['pay', 'y', 'a', 'sido', 'sgg', 'b']) if (String(s[k]) !== String(k === 'sgg' ? 'all' : DEFAULTS[k])) q.set(k, s[k])
   if (s.b === 'left') {
     if (s.ls !== DEFAULTS.ls) q.set('ls', s.ls)
+    if (s.ls === 'pick' && s.lr) q.set('lr', s.lr)
     if (s.lv) q.set('lv', s.lv)
   }
   return q.toString()
@@ -127,7 +129,7 @@ export function budgetOf(state) {
   const salary = salaryOf(s.pay)
   if (s.b === 'left') {
     // 존버 계산기와 같은 생활비를 빼고 남는 돈 (모자라면 0원)
-    const life = lastOf(salary.net / 12, s.ls, saveFrom(s.lv))
+    const life = lastOf(salary.net / 12, s.ls, saveFrom(s.lv), s.lr)
     const yearly = Math.max(0, life.left * 12)
     const saves = s.lv ? s.lv.split('.').length : 0
     return { state: s, salary, yearly, budget: yearly * s.y, life: { ...life, text: STYLE_TEXT[s.ls], saves } }

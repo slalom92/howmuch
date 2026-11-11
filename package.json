@@ -8,6 +8,7 @@
     "build": "vite build && node scripts/prerender-home.mjs",
     "sitemap": "node scripts/build-sitemap.mjs",
     "apt": "node scripts/build-apt.mjs",
+    "commute": "node scripts/build-commute.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

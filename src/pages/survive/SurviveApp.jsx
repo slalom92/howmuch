@@ -9,7 +9,7 @@ import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
 import { FOOTER_MENU, MENU, SURVIVE, JONBER, APT, YOUTUBER } from '../../lib/menu.js'
-import { SALARIES, STYLES, STYLE_TEXT, SAVES, SAVE_ALL, calculate, fromSearch, toSearch, aptLink, daysText, won, pct, lastDayFrom, dateText } from './survive.js'
+import { SALARIES, STYLE_TEXT, SAVES, SAVE_ALL, calculate, fromSearch, toSearch, aptLink, daysText, won, pct, lastDayFrom, dateText } from './survive.js'
 import SurviveGuide from './SurviveGuide.jsx'
 
 const SLOTS = {
@@ -22,7 +22,7 @@ const SLOTS = {
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
 
-const ITEMS_MENU = MENU.slice(0, 11)
+const ITEMS_MENU = MENU.slice(0, 12)
 const LINKS = [
   { href: YOUTUBER, label: '유튜버 수익 계산기' },
   { href: SURVIVE, label: '존버 계산기' },
@@ -257,6 +257,12 @@ function Envelope({ r }) {
         </table>
       </div>
       {r.state.s === 'min' && <p className="sv-env__note">최소 생활비는 합계만 정해져 있어서, 항목별 금액은 1인 가구 평균 비중대로 나눴어요.</p>}
+      {r.state.s === 'pick' && (
+        <p className="sv-env__note">
+          고른 집은 직주근접 계산기에서 고른 집의 월세에 보증금을 전세대출 금리(연 4.57%)로 빌렸을 때의 이자를 더한 금액이에요. 관리비와 공과금은 빠져 있어요.{' '}
+          <a href="/commute/">다른 집 고르기</a>
+        </p>
+      )}
     </section>
   )
 }
@@ -405,7 +411,7 @@ export default function SurviveApp({ initialSearch = '' }) {
 
         <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 생활 방식 고르기">
           <Choices legend="연봉 (세전, 계산은 실수령으로)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
-          <Choices legend="사는 방식" name="s" options={STYLES} value={state.s} onChange={set('s')} />
+          <Choices legend="사는 방식" name="s" options={r.styleList} value={r.state.s} onChange={set('s')} />
         </form>
 
         <div className="sv-result" aria-live="polite">

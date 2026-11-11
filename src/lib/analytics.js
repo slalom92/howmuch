@@ -20,6 +20,7 @@ export function trackChannelView(channel, source) {
     channel_id: channel.id,
     channel_title: channel.title,
     subscribers: channel.subscribers,
-    source, // 'search' 검색해서 봄 | 'link' 공유 링크로 들어옴
+    // 'source' 는 GA가 유입 경로로 써 버려서 이름을 바꿔 보낸다
+    via: source, // 'search' 검색해서 봄 | 'link' 공유 링크로 들어옴 | 'page' 채널 페이지
   })
 }

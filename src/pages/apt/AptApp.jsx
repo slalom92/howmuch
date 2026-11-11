@@ -23,7 +23,7 @@ const SLOTS = {
   anchor: import.meta.env.VITE_AD_SLOT_ANCHOR,
 }
 
-const APT_ITEMS = MENU.slice(0, 11)
+const APT_ITEMS = MENU.slice(0, 12)
 const APT_MENU = [
   { href: YOUTUBER, label: '유튜버 수익 계산기' },
   { href: APT, label: '연봉 모아 집 사기' },
@@ -79,6 +79,7 @@ function surviveLink(s) {
   if (s.pay !== '4500') p.set('pay', s.pay)
   if (s.ls !== 'avg') p.set('s', s.ls)
   if (s.lv) p.set('a', s.lv)
+  if (s.ls === 'pick' && s.lr) p.set('r', s.lr)
   const q = p.toString()
   return `/survive/${q ? `?${q}` : ''}`
 }
@@ -404,7 +405,7 @@ function Window({ r, nearCtl }) {
   const [shown, setShown] = useState(PAGE)
   const [open, setOpen] = useState(null)
   const { sort, setSort, near } = nearCtl
-  const key = `${r.state.pay}-${r.state.y}-${r.state.a}-${r.state.sido}-${r.state.sgg}-${r.state.b}-${r.state.ls}-${r.state.lv}-${sort}`
+  const key = `${r.state.pay}-${r.state.y}-${r.state.a}-${r.state.sido}-${r.state.sgg}-${r.state.b}-${r.state.ls}-${r.state.lr}-${r.state.lv}-${sort}`
   useEffect(() => setShown(PAGE), [key])
   const list = useMemo(
     () =>
