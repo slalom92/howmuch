@@ -56,7 +56,10 @@ export const MENU_MORE = [
   { href: '/faq/', label: '자주 묻는 질문' },
 ]
 
-// 유튜버 수익 계산기 쪽 넓은 화면에서 줄지어 보이는 링크
+// 넓은 화면에서 "메뉴" 왼쪽에 보이는 링크 하나
+export const FAQ_LINK = { href: '/faq/', label: '자주 묻는 질문' }
+
+// (예전) 유튜버 수익 계산기 쪽 넓은 화면에서 줄지어 보이던 링크
 export const YOUTUBER_LINKS = MENU.slice(12)
 
 // 바닥글: 골프 4개 투어는 한 줄로 묶는다 ({ children } 이 있는 항목, src/components/FooterLinks.jsx)
