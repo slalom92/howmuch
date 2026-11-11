@@ -8,10 +8,11 @@ import Sting from '../../components/Sting.jsx'
 import { useMyPay } from '../../lib/sting.js'
 import { giftStings, giftHero } from './sting.js'
 import StingHero from '../../components/StingHero.jsx'
-import { FOOTER_MENU, MENU, YOUTUBER, KBO, KLPGA } from '../../lib/menu.js'
+import { MENU, YOUTUBER, KBO, KLPGA } from '../../lib/menu.js'
 import { RELATIONS, REGIONS, VENUES, PARTY, RECEIVED, DEFAULTS, calculate, fromSearch, toSearch, normalize } from './gift.js'
 import GiftGuide from './GiftGuide.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
+import FooterLinks from '../../components/FooterLinks.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 
@@ -307,11 +308,7 @@ export default function GiftApp() {
 
       <footer className="footer">
         <ul className="footer__links">
-          {FOOTER_MENU.map((m) => (
-            <li key={m.href}>
-              <a href={m.href}>{m.label}</a>
-            </li>
-          ))}
+          <FooterLinks />
         </ul>
         <SocialLinks />
         <p>축의금 금액은 공개된 설문과 통계를 바탕으로 돈미터가 정리한 참고용 기준이에요. 정답은 없으니 서로의 사정에 맞게 정하세요.</p>

@@ -5,6 +5,7 @@ import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { CountUp } from '../../components/Motion.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
+import FooterLinks from '../../components/FooterLinks.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
@@ -12,7 +13,7 @@ import Sting from '../../components/Sting.jsx'
 import { rememberPay } from '../../lib/sting.js'
 import { jonberStings, jonberHero } from './sting.js'
 import StingHero from '../../components/StingHero.jsx'
-import { FOOTER_MENU, MENU, JONBER, APT, YOUTUBER, KBO } from '../../lib/menu.js'
+import { MENU, JONBER, APT, YOUTUBER, KBO } from '../../lib/menu.js'
 import { SALARIES, BASES, MIN_WAGE, calculate, fromSearch, toSearch, timeText, clockAt, won, wonSmall, priceText } from './jonber.js'
 import JonberGuide from './JonberGuide.jsx'
 import ItemIcon from './ItemIcon.jsx'
@@ -311,11 +312,7 @@ export default function JonberApp({ initialSearch = '' }) {
 
       <footer className="footer">
         <ul className="footer__links">
-          {FOOTER_MENU.map((m) => (
-            <li key={m.href}>
-              <a href={m.href}>{m.label}</a>
-            </li>
-          ))}
+          <FooterLinks />
         </ul>
         <SocialLinks />
         <p>물건 가격은 회사 발표 판매가와 공공 조사 평균을 돈미터가 옮겨 정리한 참고 자료예요. 매장과 시기에 따라 실제 가격은 다를 수 있어요.</p>

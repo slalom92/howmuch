@@ -4,13 +4,14 @@ import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { useGrowOnView, CountUp } from '../../components/Motion.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
+import FooterLinks from '../../components/FooterLinks.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
 import { useMyPay } from '../../lib/sting.js'
 import { golfStings, golfHero } from './sting.js'
 import StingHero from '../../components/StingHero.jsx'
-import { FOOTER_MENU, MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA, KPGA, PGA, LPGA } from '../../lib/menu.js'
+import { MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA, KPGA, PGA, LPGA } from '../../lib/menu.js'
 import { WORKER_YEAR } from './golf.js'
 import KlpgaGuide from './KlpgaGuide.jsx'
 import KlpgaImageShare from './KlpgaImageShare.jsx'
@@ -590,11 +591,7 @@ export default function GolfApp({ T }) {
 
       <footer className="footer">
         <ul className="footer__links">
-          {FOOTER_MENU.map((m) => (
-            <li key={m.href}>
-              <a href={m.href}>{m.label}</a>
-            </li>
-          ))}
+          <FooterLinks />
         </ul>
         <SocialLinks />
         <p>{T.text.footer}</p>

@@ -850,6 +850,11 @@ input {
   color: var(--ink);
 }
 
+/* 바닥글 골프: "골프 선수 상금 KLPGA · KPGA · PGA · LPGA" 한 줄 */
+.foot-golf {
+  color: var(--muted);
+}
+
 /* 공식 SNS 바로가기 (푸터) */
 .social { display: flex; gap: 8px; margin: 4px 0 12px; }
 .social__btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--rule); border-radius: 50%; color: var(--muted); transition: color 0.15s, border-color 0.15s; }

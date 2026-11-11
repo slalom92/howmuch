@@ -256,6 +256,11 @@ a:hover {
   color: var(--muted);
 }
 
+/* 바닥글 골프: "골프 선수 상금 KLPGA · KPGA · PGA · LPGA" 한 줄 */
+.foot-golf {
+  color: var(--muted);
+}
+
 .site-foot p {
   margin: 2px 0;
 }

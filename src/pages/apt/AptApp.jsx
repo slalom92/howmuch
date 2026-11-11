@@ -5,13 +5,14 @@ import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { useGrowOnView, CountUp } from '../../components/Motion.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
+import FooterLinks from '../../components/FooterLinks.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
 import { rememberPay } from '../../lib/sting.js'
 import { aptStings, aptHero } from './sting.js'
 import StingHero from '../../components/StingHero.jsx'
-import { FOOTER_MENU, MENU, APT, YOUTUBER, KBO, KLPGA } from '../../lib/menu.js'
+import { MENU, APT, YOUTUBER, KBO, KLPGA } from '../../lib/menu.js'
 import { SALARIES, YEARS, AREAS, BASES, SOURCES, SIDO, sidoOf, loadSido, calculate, fromSearch, toSearch, sortNear } from './apt.js'
 import { hasMap, loadKakao, locate, regionOf, sggCenters } from './kakaoMap.js'
 import AptGuide from './AptGuide.jsx'
@@ -640,11 +641,7 @@ export default function AptApp({ initialSearch = '' }) {
 
       <footer className="footer">
         <ul className="footer__links">
-          {FOOTER_MENU.map((m) => (
-            <li key={m.href}>
-              <a href={m.href}>{m.label}</a>
-            </li>
-          ))}
+          <FooterLinks />
         </ul>
         <SocialLinks />
         <p>

@@ -19,8 +19,9 @@ import { channelPath, channelSlug, slugFromPath, isChannelId, revenueTitle } fro
 import PopularChannels from './components/PopularChannels.jsx'
 import HomeGuide from './components/HomeGuide.jsx'
 import SiteMenu from './components/SiteMenu.jsx'
+import FooterLinks from './components/FooterLinks.jsx'
 import FloatingSwitch from './components/FloatingSwitch.jsx'
-import { FOOTER_MENU, YOUTUBER } from './lib/menu.js'
+import { YOUTUBER } from './lib/menu.js'
 import { FOOTER_NOTE } from './lib/disclaimer.js'
 import SocialLinks from './components/Social.jsx'
 import Sting from './components/Sting.jsx'
@@ -280,11 +281,7 @@ export default function App() {
 
       <footer className="footer">
         <ul className="footer__links">
-          {FOOTER_MENU.map((m) => (
-            <li key={m.href}>
-              <a href={m.href}>{m.label}</a>
-            </li>
-          ))}
+          <FooterLinks />
         </ul>
         <SocialLinks />
         <p>{FOOTER_NOTE}</p>

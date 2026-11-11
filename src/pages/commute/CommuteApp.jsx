@@ -4,6 +4,7 @@ import AdSlot, { AdRails } from '../../components/AdSlot.jsx'
 import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
+import FooterLinks from '../../components/FooterLinks.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
@@ -11,7 +12,7 @@ import Sting from '../../components/Sting.jsx'
 import { useMyPay } from '../../lib/sting.js'
 import { commuteStings, commuteHero } from './sting.js'
 import StingHero from '../../components/StingHero.jsx'
-import { FOOTER_MENU, MENU, COMMUTE, SURVIVE, APT, YOUTUBER } from '../../lib/menu.js'
+import { MENU, COMMUTE, SURVIVE, APT, YOUTUBER } from '../../lib/menu.js'
 import { hasMap, loadKakao } from '../apt/kakaoMap.js'
 import {
   DATA,
@@ -751,11 +752,7 @@ export default function CommuteApp({ initialSearch = '' }) {
 
       <footer className="footer">
         <ul className="footer__links">
-          {FOOTER_MENU.map((m) => (
-            <li key={m.href}>
-              <a href={m.href}>{m.label}</a>
-            </li>
-          ))}
+          <FooterLinks />
         </ul>
         <SocialLinks />
         <p>전월세 계약은 국토교통부 실거래가 공개 자료, 역은 국가철도공단 표준데이터, 위치와 경로는 카카오맵에서 그때그때 받아 보여 드려요. 매물 정보가 아니에요.</p>

@@ -32,11 +32,37 @@ export const MENU = [
   { href: '/faq/', label: '자주 묻는 질문' },
 ]
 
+// "메뉴"를 눌렀을 때 보이는 묶음 (모든 화면 너비에서 같다). 골프 4개 투어는 한 줄로 묶는다
+// 정적 페이지(index.html, public/**/index.html)의 메뉴는 scripts/sync-menu.mjs 가 이 목록으로 다시 쓴다
+export const MENU_CALCS = [
+  { href: YOUTUBER, label: '유튜버 수익' },
+  { href: WEDDING_GIFT, label: '축의금' },
+  { href: KBO, label: '프로야구 연봉' },
+  { href: JONBER, label: '월급 분당' },
+  { href: SURVIVE, label: '존버' },
+  { href: COMMUTE, label: '직주근접' },
+  { href: APT, label: '연봉 모아 집 사기' },
+]
+export const MENU_GOLF = [
+  { href: KLPGA, label: 'KLPGA', title: '여자골프 선수 상금' },
+  { href: KPGA, label: 'KPGA', title: '남자골프 선수 상금' },
+  { href: PGA, label: 'PGA', title: 'PGA 선수 상금' },
+  { href: LPGA, label: 'LPGA', title: 'LPGA 선수 상금' },
+]
+export const MENU_MORE = [
+  { href: '/channel/', label: '유튜버별 수익' },
+  { href: '/guide/', label: '돈 가이드' },
+  { href: '/how/', label: '계산 방법' },
+  { href: '/faq/', label: '자주 묻는 질문' },
+]
+
 // 유튜버 수익 계산기 쪽 넓은 화면에서 줄지어 보이는 링크
 export const YOUTUBER_LINKS = MENU.slice(12)
 
+// 바닥글: 골프 4개 투어는 한 줄로 묶는다 ({ children } 이 있는 항목, src/components/FooterLinks.jsx)
+const GOLF_HREFS = MENU_GOLF.map((g) => g.href)
 export const FOOTER_MENU = [
-  ...MENU.slice(1),
+  ...MENU.slice(1).flatMap((m) => (m.href === KLPGA ? [{ href: KLPGA, label: '골프 선수 상금', children: MENU_GOLF }] : GOLF_HREFS.includes(m.href) ? [] : [m])),
   { href: '/about/', label: '사이트 소개' },
   { href: '/privacy/', label: '개인정보처리방침' },
   { href: '/terms/', label: '이용약관' },

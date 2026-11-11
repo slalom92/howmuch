@@ -5,6 +5,7 @@ import ShareBar from '../../components/ShareBar.jsx'
 import { BrandMark } from '../../components/Art.jsx'
 import { CountUp } from '../../components/Motion.jsx'
 import SiteMenu from '../../components/SiteMenu.jsx'
+import FooterLinks from '../../components/FooterLinks.jsx'
 import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
@@ -12,7 +13,7 @@ import Sting from '../../components/Sting.jsx'
 import { rememberPay } from '../../lib/sting.js'
 import { surviveStings, surviveHero } from './sting.js'
 import StingHero from '../../components/StingHero.jsx'
-import { FOOTER_MENU, MENU, SURVIVE, JONBER, APT, YOUTUBER } from '../../lib/menu.js'
+import { MENU, SURVIVE, JONBER, APT, YOUTUBER } from '../../lib/menu.js'
 import { SALARIES, STYLE_TEXT, SAVES, SAVE_ALL, calculate, fromSearch, toSearch, aptLink, daysText, won, pct, lastDayFrom, dateText } from './survive.js'
 import SurviveGuide from './SurviveGuide.jsx'
 
@@ -442,11 +443,7 @@ export default function SurviveApp({ initialSearch = '' }) {
 
       <footer className="footer">
         <ul className="footer__links">
-          {FOOTER_MENU.map((m) => (
-            <li key={m.href}>
-              <a href={m.href}>{m.label}</a>
-            </li>
-          ))}
+          <FooterLinks />
         </ul>
         <SocialLinks />
         <p>생활비는 국가데이터처 1인 가구 통계와 공공 기준을 돈미터가 옮겨 정리한 참고 자료예요. 사는 곳과 습관에 따라 실제 생활비는 다를 수 있어요.</p>
