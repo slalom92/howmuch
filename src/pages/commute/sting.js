@@ -1,6 +1,7 @@
 // 직주근접 계산기의 긁는 한 줄 (도구는 src/lib/sting.js)
 import { lines, workText, wonText, yearsText, hourlyOf, bigTime } from '../../lib/sting.js'
 import { man, monthMinutes, hourText } from './commute.js'
+import { carStings } from '../../lib/carSting.js'
 
 // sum: 결과 요약, routeSec: 고른 집에서 역까지 가장 빠른 길(초, 없으면 0)
 export function commuteStings({ sum, state, station, salary, routeSec }) {
@@ -18,6 +19,7 @@ export function commuteStings({ sum, state, station, salary, routeSec }) {
       ? `전세 **${man(sum.price)} 원**, 월급을 한 푼도 안 쓰고 **${yearsText((sum.price * 10000) / salary.net)}** 모아야 해요`
       : `보증금 **${man(sum.deposit)} 원**만 모으는 데도 월급 **${workText((sum.deposit * 10000) / h)}** 치예요`,
     monthMin > 0 && `${station.name}역까지 한 달 출퇴근 **${hourText(monthMin)}**. 1년이면 **${((monthMin * 12) / 60 / 24).toFixed(1)}일**을 꼬박 길에서 보내요`,
+    ...carStings(salary, 5),
   )
 }
 

@@ -11,6 +11,7 @@ export const APT = '/apt/'
 export const JONBER = '/jonber/'
 export const SURVIVE = '/survive/'
 export const COMMUTE = '/commute/'
+export const CAR = '/car/'
 
 // 좁은 화면에서 "메뉴"를 누르면 보이는 전체 목록
 export const MENU = [
@@ -26,6 +27,7 @@ export const MENU = [
   { href: JONBER, label: '월급 분당 계산기' },
   { href: SURVIVE, label: '존버 계산기' },
   { href: COMMUTE, label: '직주근접 계산기' },
+  { href: CAR, label: '자차 계산기' },
   { href: '/channel/', label: '유튜버별 수익' },
   { href: '/guide/', label: '돈 가이드' },
   { href: '/how/', label: '계산 방법' },
@@ -41,6 +43,7 @@ export const MENU_CALCS = [
   { href: JONBER, label: '월급 분당' },
   { href: SURVIVE, label: '존버' },
   { href: COMMUTE, label: '직주근접' },
+  { href: CAR, label: '자차' },
   { href: APT, label: '연봉 모아 집 사기' },
 ]
 export const MENU_GOLF = [
@@ -60,7 +63,7 @@ export const MENU_MORE = [
 export const FAQ_LINK = { href: '/faq/', label: '자주 묻는 질문' }
 
 // (예전) 유튜버 수익 계산기 쪽 넓은 화면에서 줄지어 보이던 링크
-export const YOUTUBER_LINKS = MENU.slice(12)
+export const YOUTUBER_LINKS = MENU.slice(13)
 
 // 바닥글: 골프 4개 투어는 한 줄로 묶는다 ({ children } 이 있는 항목, src/components/FooterLinks.jsx)
 const GOLF_HREFS = MENU_GOLF.map((g) => g.href)

@@ -52,6 +52,7 @@ export default defineConfig(({ mode }) => {
     //   /jonber/        → jonber/index.html (월급 분당 계산기)
     //   /survive/       → survive/index.html (존버 계산기)
     //   /commute/       → commute/index.html (직주근접 계산기, 자료는 npm run commute 로 만든다)
+    //   /car/           → car/index.html (자차 계산기)
     build: {
       rollupOptions: {
         input: {
@@ -67,6 +68,7 @@ export default defineConfig(({ mode }) => {
           jonber: fileURLToPath(new URL('./jonber/index.html', import.meta.url)),
           survive: fileURLToPath(new URL('./survive/index.html', import.meta.url)),
           commute: fileURLToPath(new URL('./commute/index.html', import.meta.url)),
+          car: fileURLToPath(new URL('./car/index.html', import.meta.url)),
         },
       },
     },

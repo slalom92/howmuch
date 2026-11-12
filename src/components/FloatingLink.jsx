@@ -92,6 +92,18 @@ export function SubwayIcon() {
   )
 }
 
+// 자차 계산기: 옆에서 본 자동차
+export function CarIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <path d="M3.5 21.5v-4.2c0-1 .6-1.8 1.6-2.1l3.4-1 3-4.6c.5-.7 1.2-1.1 2-1.1h6.2c.8 0 1.5.3 2 .9l3.8 4.6 2.4.6c1 .3 1.6 1.1 1.6 2.1v4.8c0 .8-.7 1.5-1.5 1.5H5c-.8 0-1.5-.7-1.5-1.5z" strokeWidth="2" strokeLinejoin="round" style={{ fill: 'var(--seal-tint)', stroke: 'var(--seal)' }} />
+      <path d="M12.5 10.8l-2.6 3.8h5.8v-3.8zM18.3 10.8v3.8h5.4l-3.1-3.8z" strokeWidth="1.5" strokeLinejoin="round" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <circle cx="9.5" cy="23" r="3" strokeWidth="2" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <circle cx="22.5" cy="23" r="3" strokeWidth="2" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+    </svg>
+  )
+}
+
 // 월급 분당 계산기: 시계 + 동전
 export function ClockIcon() {
   return (

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 색 테마: 화면이 그려지기 전에 정해야 색이 번쩍이지 않는다 -->
+    <script src="/theme.js"></script>
+    <link rel="stylesheet" href="/themes.css" />
+    <title>자차 계산기 – 내 연봉에 맞는 차일까? 연봉별 탈 수 있는 차와 3년 감가 | 돈미터</title>
+    <meta name="description" content="연봉과 차를 고르면 차값이 연봉의 몇 %인지, 연봉 절반 기준으로 내 연봉에 맞는 차인지, 2023년식을 3년 타면 얼마가 사라지는지와 지금 연봉으로 탈 수 있는 새 차·중고차를 보여 주는 무료 계산기예요." />
+    <meta name="keywords" content="자차 계산기, 연봉 차 추천, 연봉별 자동차, 연봉 대비 차값, 차값 연봉 절반, 내 연봉에 맞는 차, 중고차 시세, 자동차 감가, 그랜저 연봉, 제네시스 연봉" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://donmeter.com/car/" />
+    <meta name="theme-color" content="#e7ebf0" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="돈미터" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:url" content="https://donmeter.com/car/" />
+    <meta property="og:title" content="자차 계산기, 지금 타는 차 내 연봉에 맞아? | 돈미터" />
+    <meta property="og:description" content="연봉만 고르면 탈 수 있는 차, 그 차 타려면 필요한 연봉, 3년 타면 증발하는 돈까지 알려 드려요." />
+    <meta property="og:image" content="https://donmeter.com/og/car-v1.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="800" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="자차 계산기, 지금 타는 차 내 연봉에 맞아? | 돈미터" />
+    <meta name="twitter:description" content="연봉만 고르면 탈 수 있는 차, 그 차 타려면 필요한 연봉, 3년 타면 증발하는 돈까지 알려 드려요." />
+    <meta name="twitter:image" content="https://donmeter.com/og/car-v1.png" />
+    <!-- FAQ 문구는 src/pages/car/car.js 의 FAQ 와 같게 유지한다 -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://donmeter.com/car/#app",
+      "name": "자차 계산기 – 돈미터",
+      "url": "https://donmeter.com/car/",
+      "description": "연봉과 2023년식 인기 차종을 고르면 차값이 세전 연봉의 몇 %인지, 연봉 절반 기준으로 맞는 차인지, 신차 가격과 지금 중고 시세의 차이(감가)를 몇 시간 일해야 버는지로 보여 주는 무료 서비스입니다.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ko-KR",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "isPartOf": {
+        "@id": "https://donmeter.com/#website"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "내 연봉에 맞는 차는 어떻게 정했나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "재무 가이드에서 흔히 권하는 \"차값은 세전 연봉의 50% 이내\" 기준을 썼어요. 연봉 4,500만 원이면 2,250만 원까지예요. 할부 이자, 보험료, 기름값 같은 유지비는 빠져 있어서 실제로는 이보다 넉넉하게 잡는 게 좋아요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "차값은 언제 가격인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "2023년식 차를 비교하므로 2023년 당시(또는 그 연식 출시 때) 제조사가 발표한 기본 트림 가격을 썼어요. 옵션, 할인, 취등록세는 빠져 있어요. 가격을 찾지 못한 차는 지어내지 않고, 지금 중고 시세로만 판정해요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "중고 시세는 어디서 가져왔나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "엔카가 매달 공개하는 시세 보도자료(2026년 10월, 2023년식, 주행거리 6만km, 무사고 기준)의 숫자를 그대로 옮겼어요. 엔카 사이트를 따로 긁어 오지는 않았고, 실제 매물 가격은 옵션과 상태에 따라 달라요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "3년 타면 사라진 돈은 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "2023년 신차 가격에서 지금 중고 시세를 뺀 값이에요. 이 돈을 실수령 시급으로 나눠 몇 시간, 몇 달 일해야 버는 돈인지 보여 드려요. 세금과 유지비는 빠져 있어 실제로 쓴 돈은 더 많아요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "입력한 정보는 저장되나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "숫자를 입력하지 않고 연봉과 차를 고르기만 해요. 고른 값은 주소창과 이 브라우저에만 남고, 돈미터 서버에는 저장하지 않아요."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="/ga.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539"
+     crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/pages/car/main.jsx"></script>
+  </body>
+</html>
