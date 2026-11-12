@@ -101,7 +101,7 @@ function Verdict({ r }) {
           <>, 한도까지 {manText(Math.round((r.budget - r.judge) / 10000))} 남아요</>
         ) : (
           <>
-            . 맞추려면 연봉 <strong>{wonText(r.needPay)}</strong>
+            . 맞추려면 연봉 <strong>{wonText(r.needPay)}</strong>은 돼야 해요. 지금 월급은 한 푼도 안 쓰고 모아도 <strong>{workText(r.judge / r.hourly)}</strong> 걸려요
           </>
         )}
       </p>
