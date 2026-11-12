@@ -3030,6 +3030,106 @@ input {
   top: 8%;
 }
 
+/* 배너가 화면 위로 사라지면 맨 위에 붙는 납작한 카드 (모바일 세로, PC) */
+.sting-bar {
+  --sh-ink: #141a2e;
+  --sh-yellow: #ffd21f;
+  --sh-pink: #f0185f;
+  position: fixed;
+  top: calc(8px + env(safe-area-inset-top));
+  left: 50%;
+  z-index: 44; /* 떠 있는 버튼(45), 하단 광고(50) 아래 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: min(720px, calc(100vw - 24px));
+  padding: 7px 14px 8px;
+  border: 2px solid var(--sh-ink);
+  border-radius: 14px;
+  background: #fff7d1;
+  box-shadow: 0 4px 0 var(--sh-ink);
+  transform: translate(-50%, calc(-100% - 20px));
+  visibility: hidden;
+  transition:
+    transform 0.22s ease,
+    visibility 0s linear 0.22s;
+  pointer-events: none;
+}
+
+.sting-bar.is-on {
+  transform: translate(-50%, 0);
+  visibility: visible;
+  transition:
+    transform 0.22s ease,
+    visibility 0s;
+}
+
+.sting-bar__big {
+  flex: none;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--sh-yellow);
+  -webkit-text-stroke: 0.12em var(--sh-ink);
+  paint-order: stroke fill;
+  text-shadow: 0 0.06em 0 var(--sh-ink);
+  white-space: nowrap;
+  animation: sting-pop 0.42s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+.sting-bar__cap {
+  min-width: 0;
+  overflow: hidden;
+  padding: 2px 12px 3px;
+  border: 2px solid var(--sh-ink);
+  border-radius: 999px;
+  background: var(--sh-pink);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transform: rotate(-1deg);
+}
+
+@media (max-width: 420px) {
+  .sting-bar {
+    gap: 8px;
+    padding: 6px 10px 7px;
+  }
+
+  .sting-bar__big {
+    font-size: 24px;
+  }
+
+  .sting-bar__cap {
+    padding: 2px 9px 3px;
+    font-size: 13px;
+  }
+}
+
+/* 모바일 가로 화면: 세로 공간이 좁아 붙이지 않는다 */
+@media (orientation: landscape) and (max-height: 540px) {
+  .sting-bar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sting-bar,
+  .sting-bar.is-on {
+    transition: none;
+  }
+
+  .sting-bar__big {
+    animation: none;
+  }
+}
+
 @keyframes sting-pop {
   0% {
     transform: scale(0.6);

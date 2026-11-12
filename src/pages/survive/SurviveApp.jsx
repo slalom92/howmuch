@@ -14,7 +14,7 @@ import { rememberPay } from '../../lib/sting.js'
 import { surviveStings, surviveHero } from './sting.js'
 import StingHero from '../../components/StingHero.jsx'
 import { MENU, SURVIVE, JONBER, APT, YOUTUBER } from '../../lib/menu.js'
-import { SALARIES, STYLE_TEXT, SAVES, SAVE_ALL, calculate, fromSearch, toSearch, aptLink, daysText, won, pct, lastDayFrom, dateText } from './survive.js'
+import { SALARIES, STYLE_TEXT, SAVES, SAVE_ALL, calculate, fromSearch, toSearch, aptLink, daysText, won, pct, lastDayFrom, dateText, carLink } from './survive.js'
 import SurviveGuide from './SurviveGuide.jsx'
 
 const SLOTS = {
@@ -106,6 +106,7 @@ function LastCard({ r, today }) {
         </div>
       </dl>
       {r.left > 0 ? (
+        <>
         <a className="sv-apt" href={aptLink(r.state)} onClick={() => track('survive_apt', { pay: r.state.pay, s: r.state.s })}>
           <span className="sv-apt__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="22" height="22">
@@ -121,10 +122,29 @@ function LastCard({ r, today }) {
             ›
           </span>
         </a>
+        <a className="sv-apt" href={carLink(r.state)} onClick={() => track('survive_car', { pay: r.state.pay, s: r.state.s })}>
+          <span className="sv-apt__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path d="M3.5 16.5v-3.2l2.1-4.6a1.6 1.6 0 0 1 1.5-1h9.8a1.6 1.6 0 0 1 1.5 1l2.1 4.6v3.2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z" />
+              <path d="M4 13.2h16" />
+              <circle cx="7.6" cy="17.6" r="1.7" />
+              <circle cx="16.4" cy="17.6" r="1.7" />
+            </svg>
+          </span>
+          <span className="sv-apt__text">
+            <strong>남는 돈 모아서 살 수 있는 차</strong>
+            <small>한 달 {won(r.left)}씩 모으면 어떤 차를 탈까요?</small>
+          </span>
+          <span className="sv-apt__go" aria-hidden="true">
+            ›
+          </span>
+        </a>
+        </>
       ) : null}
     </section>
   )
 }
+
 
 const PAY_LABEL = (d) => `${d.getMonth() + 1}월 ${d.getDate()}일`
 

@@ -560,3 +560,8 @@
   line-height: 1;
   color: var(--seal);
 }
+
+/* 남는 돈으로 차 보기 (자차 계산기로): 아파트 버튼 바로 아래 */
+.sv-apt + .sv-apt {
+  margin-top: 8px;
+}
