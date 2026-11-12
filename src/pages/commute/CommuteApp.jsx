@@ -306,7 +306,7 @@ function Summary({ sum, state, station, data, result }) {
           </p>
           {sum.near && (
             <p className="cm-sum__near">
-              역 500m 안은 그 밖보다 한 달 집값이{' '}
+              역 {sum.near.label} 안은 그 밖보다 한 달 집값이{' '}
               <strong>
                 {won(Math.abs(sum.near.inner - sum.near.outer))} {sum.near.inner >= sum.near.outer ? '더 비싸요' : '더 싸요'}
               </strong>{' '}

@@ -165,7 +165,11 @@ export function median(list) {
   return a.length % 2 ? a[m] : Math.round((a[m - 1] + a[m]) / 2)
 }
 
-// 결과 요약: 대표 계약들의 중간값, 역 500m 안과 밖 비교 (양쪽 모두 3곳 이상일 때)
+// 역 가까운 쪽과 먼 쪽을 나누는 거리: 고른 거리의 절반 (500m → 250m, 1km → 500m, 2km → 1km)
+export const splitOf = (d) => Number(d) / 2
+const splitText = (m) => (m >= 1000 ? `${(m / 1000).toFixed(1).replace(/\.0$/, '')}km` : `${m}m`)
+
+// 결과 요약: 대표 계약들의 중간값, 역에서 고른 거리의 절반 안과 밖 비교 (양쪽 모두 3곳 이상일 때)
 export function summarize(list, state) {
   const price = (h) => (state.k === 'jeonse' ? h.rep.deposit : h.rep.monthly)
   const cost = (h) => monthlyCost(h.rep)
@@ -175,11 +179,10 @@ export function summarize(list, state) {
     deposit: median(list.map((h) => h.rep.deposit)),
     cost: median(list.map(cost)),
   }
-  if (Number(state.d) > 500) {
-    const inner = list.filter((h) => h.dist <= 500)
-    const outer = list.filter((h) => h.dist > 500)
-    if (inner.length >= 3 && outer.length >= 3) out.near = { inner: median(inner.map(cost)), outer: median(outer.map(cost)), n: [inner.length, outer.length] }
-  }
+  const split = splitOf(state.d)
+  const inner = list.filter((h) => h.dist <= split)
+  const outer = list.filter((h) => h.dist > split)
+  if (inner.length >= 3 && outer.length >= 3) out.near = { inner: median(inner.map(cost)), outer: median(outer.map(cost)), n: [inner.length, outer.length], split, label: splitText(split) }
   return out
 }
 

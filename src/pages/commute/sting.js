@@ -14,7 +14,7 @@ export function commuteStings({ sum, state, station, salary, routeSec }) {
     workDays >= 1
       ? `${station.name}역 근처 한 달 집값 **${wonText(sum.cost)}**. 매달 **${Math.round(workDays)}일**은 집주인을 위해 출근해요`
       : `${station.name}역 근처 한 달 집값 **${wonText(sum.cost)}**. 매달 **${workText(sum.cost / h)}**은 집주인을 위해 일해요`,
-    diff > 0 && `역 500m 안이면 한 달 **${wonText(diff)}** 더, 1년이면 **${wonText(diff * 12)}**. 아침잠 몇 분의 값이에요`,
+    diff > 0 && `역 ${sum.near.label} 안이면 한 달 **${wonText(diff)}** 더, 1년이면 **${wonText(diff * 12)}**. 아침잠 몇 분의 값이에요`,
     state.k === 'jeonse'
       ? `전세 **${man(sum.price)} 원**, 월급을 한 푼도 안 쓰고 **${yearsText((sum.price * 10000) / salary.net)}** 모아야 해요`
       : `보증금 **${man(sum.deposit)} 원**만 모으는 데도 월급 **${workText((sum.deposit * 10000) / h)}** 치예요`,
@@ -30,7 +30,7 @@ export function commuteHero({ sum, state, salary, ready }) {
   const diff = sum.near ? sum.near.inner - sum.near.outer : 0
   return [
     { big: bigTime(sum.cost / h), cap: '매달 집주인 위해 출근' },
-    diff > 0 && { big: wonText(diff * 12), cap: '역 500m 안 1년 웃돈' },
+    diff > 0 && { big: wonText(diff * 12), cap: `역 ${sum.near.label} 안 1년 웃돈` },
     state.k === 'jeonse'
       ? { big: yearsText((sum.price * 10000) / salary.net), cap: '월급 다 모아야 전세금' }
       : sum.deposit > 0 && { big: bigTime((sum.deposit * 10000) / h), cap: '일해야 보증금' },
