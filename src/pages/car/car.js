@@ -24,6 +24,18 @@ export const SOURCES = {
   ratio: { label: '겟차, 연봉별 자동차 추천 2026 (차량 가격은 연봉의 50% 이내 권장)', url: 'https://web.getcha.kr/blog/salary-based-car-recommendations-family-size-2026' },
 }
 
+// 1년 실수령이 net 원이 되는 세전 연봉: 연봉 실수령액표(SALARIES) 사이를 직선으로 잇고,
+// 표 밖은 가장 가까운 칸의 실수령 비율로 늘린다 ("한 푼도 안 쓰고 1년에 이 차 사는 연봉")
+export function grossForNet(net) {
+  const t = SALARIES
+  if (net <= t[0].net) return (net / t[0].net) * t[0].gross
+  for (let i = 1; i < t.length; i++) {
+    if (net <= t[i].net) return t[i - 1].gross + ((net - t[i - 1].net) / (t[i].net - t[i - 1].net)) * (t[i].gross - t[i - 1].gross)
+  }
+  const last = t[t.length - 1]
+  return (net / last.net) * last.gross
+}
+
 export const salaryOf = (id) => SALARIES.find((s) => s.id === id) || SALARIES.find((s) => s.id === DEFAULTS.pay)
 export const carOf = (id) => CARS.find((c) => c.id === id) || CARS.find((c) => c.id === DEFAULTS.car)
 
@@ -80,6 +92,7 @@ export function calculate(state) {
     ratio: judge / salary.gross, // 차값 = 연봉의 몇 %
     ok,
     needPay: judge / CAR_RATIO, // 연봉 절반이 되려면 필요한 연봉
+    allInPay: grossForNet(judge), // 한 푼도 안 쓰고 1년 실수령으로 이 차를 사는 연봉
     gap: judge / CAR_RATIO - salary.gross, // 그만큼 더 벌어야 (음수면 여유)
     lost, // 3년 남짓 타면 사라진 돈
     keep: dep ? dep.keep : null,

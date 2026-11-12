@@ -21,6 +21,9 @@ export default function CarGuide({ ad = null }) {
           <li>
             <strong>몇 시간, 몇 달 일해야</strong> 실수령 연봉 ÷ 12 ÷ 209시간을 시급으로 썼어요. 하루는 8시간이에요.
           </li>
+          <li>
+            <strong>한 푼도 안 쓰고 1년에 사는 연봉</strong> 1년 실수령액이 차값과 같아지는 세전 연봉이에요. 연봉 실수령액표의 두 연봉 사이를 비례로 나눠 구했어요.
+          </li>
         </ul>
       </section>
 

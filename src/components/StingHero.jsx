@@ -23,7 +23,7 @@ export default function StingHero({ options }) {
   const { big, cap, label } = o
   const long = cap.length > 13
   // 큰 숫자가 길면 한 줄에 들어가도록 줄인다
-  const size = big.length > 7 ? ' is-xs' : big.length > 5 ? ' is-sm' : ''
+  const size = big.length > 10 ? ' is-xxs' : big.length > 7 ? ' is-xs' : big.length > 5 ? ' is-sm' : ''
   return (
     <>
     <div ref={ref} className={`sting-hero${IS_SERVER ? ' is-pending' : ''}`} role="img" aria-label={label || `${big}, ${cap}`}>

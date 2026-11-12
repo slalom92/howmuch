@@ -27,7 +27,9 @@ export function carPageHero(r) {
   return [
     r.ok
       ? { big: pctText(r.ratio), cap: `${name} = 내 연봉의` }
-      : { big: wonText(r.needPay), cap: `${name} 타려면 필요한 연봉` },
+      : r.allInPay > r.salary.gross
+        ? { big: wonText(r.allInPay), cap: `한 푼도 안 쓰고 1년에 ${name}${r.judgeBy === 'used' ? ' 중고' : ''} 사는 연봉` }
+        : { big: wonText(r.needPay), cap: `${name} 타려면 필요한 연봉` }, // 1년이면 지금 연봉으로도 모이는 차는 연봉 절반 기준으로
     r.lost
       ? { big: wonText(r.lost), cap: `3년 타면 증발한 ${name} 값` }
       : { big: wonText(r.used), cap: `지금 ${name} 중고 시세` },
