@@ -1,6 +1,6 @@
 // 자차 계산기의 긁는 한 줄 (도구는 src/lib/sting.js)
 import { lines, workText, wonText, pctText, josa, bigTime, timesText } from '../../lib/sting.js'
-import { carStings, carHero } from '../../lib/carSting.js'
+import { carStings } from '../../lib/carSting.js'
 import { carName } from './car.js'
 
 export function carPageStings(r) {
@@ -21,14 +21,21 @@ export function carPageStings(r) {
 
 // 맨 위 배너 후보
 export function carPageHero(r) {
+  // 후보는 늘 네 개, 모두 지금 고른 차 이야기다 (차를 바꾸면 같은 자리 문구가 그 차 숫자로 바뀐다)
   const name = r.car.model
+  const months = (v) => `${v.toFixed(1).replace(/\.0$/, '')}달`
   return [
     r.ok
       ? { big: pctText(r.ratio), cap: `${name} = 내 연봉의` }
       : { big: wonText(r.needPay), cap: `${name} 타려면 필요한 연봉` },
-    r.lost && { big: wonText(r.lost), cap: `3년 타면 증발한 ${name} 값` },
-    r.lost && { big: `${r.lostMonths.toFixed(1).replace(/\.0$/, '')}달`, cap: '월급이 차 가치로 녹았어요' },
-    r.priceHours && { big: bigTime(r.priceHours), cap: `일해야 ${name} 새 차` },
-    carHero(r.salary, 6),
+    r.lost
+      ? { big: wonText(r.lost), cap: `3년 타면 증발한 ${name} 값` }
+      : { big: wonText(r.used), cap: `지금 ${name} 중고 시세` },
+    r.lost
+      ? { big: months(r.lostMonths), cap: `${name} 3년에 녹은 월급` }
+      : { big: months(r.used / r.month), cap: `월급 모아 ${name} 중고` },
+    r.priceHours
+      ? { big: bigTime(r.priceHours), cap: `일해야 ${name} 새 차` }
+      : { big: bigTime(r.usedHours), cap: `일해야 ${name} 중고` },
   ]
 }
