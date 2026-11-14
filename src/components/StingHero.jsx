@@ -5,7 +5,7 @@ import { pick, IS_SERVER } from '../lib/sting.js'
 // options 는 페이지 폴더의 sting.js 가 계산 결과로 만든 후보 [{ big, cap, label }] 이다.
 // 처음 들어올 때 그중 하나를 무작위로 고르고, 숫자가 바뀌면 한 번 튀어 오른다.
 // 미리 그린 HTML 에서는 자리만 잡아 두고 감춘다 (화면이 뜨면 고른 문구로 바뀌며 깜빡이지 않게)
-// 스크롤해서 배너가 화면 위로 사라지면 같은 배너를 원래 크기 그대로 맨 위에 붙여 둔다 (.sting-dock).
+// 스크롤해서 배너가 화면 위로 사라지면 같은 배너를 절반 높이로 맨 위에 붙여 둔다 (.sting-dock).
 // 원래 배너는 제자리에 두므로 본문이 튀지 않는다. 모바일 가로 화면(높이가 낮을 때)에서는 CSS 로 숨긴다.
 export default function StingHero({ options }) {
   const o = pick(options || [])
