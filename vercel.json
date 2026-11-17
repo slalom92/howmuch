@@ -4,5 +4,9 @@
   "rewrites": [
     { "source": "/s/", "destination": "/api/share/" },
     { "source": "/channel/:slug/", "destination": "/api/page/?slug=:slug" }
+  ],
+  "redirects": [
+    { "source": "/stock/", "destination": "/", "permanent": true },
+    { "source": "/guide/averaging-down/", "destination": "/guide/", "permanent": true }
   ]
 }
