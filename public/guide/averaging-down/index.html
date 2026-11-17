@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/theme.js"></script>
+    <title>물타기의 수학: 왜 20% 빠지면 25% 올라야 본전일까 | 돈미터</title>
+    <meta name="description" content="주가가 떨어진 비율과 본전까지 올라야 하는 비율이 다른 이유, 물타기로 평균 단가를 어디까지 낮출 수 있는지, 손실을 줄이는 데 드는 돈과 위험, 세금·수수료까지 메우는 본전 가격을 예시로 계산했습니다." />
+    <link rel="canonical" href="https://donmeter.com/guide/averaging-down/" />
+    <meta property="og:title" content="물타기의 수학: 왜 20% 빠지면 25% 올라야 본전일까" />
+    <meta property="og:description" content="주가가 떨어진 비율과 본전까지 올라야 하는 비율이 다른 이유, 물타기로 평균 단가를 어디까지 낮출 수 있는지, 손실을 줄이는 데 드는 돈과 위험, 세금·수수료까지 메우는 본전 가격을 예시로 계산했습니다." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://donmeter.com/guide/averaging-down/" />
+    <meta property="og:site_name" content="돈미터" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://donmeter.com/og/stock-v1.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="800" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="keywords" content="물타기, 물타기 계산, 주식 물타기 원리, 평균 단가 낮추기, 평단 낮추기, 본전 계산, 손실률 회복률, 20% 하락 25% 상승, 추가 매수, 분할 매수, 증권거래세 2026" />
+    <meta name="twitter:title" content="물타기의 수학: 왜 20% 빠지면 25% 올라야 본전일까" />
+    <meta name="twitter:description" content="주가가 떨어진 비율과 본전까지 올라야 하는 비율이 다른 이유, 물타기로 평균 단가를 어디까지 낮출 수 있는지, 손실을 줄이는 데 드는 돈과 위험, 세금·수수료까지 메우는 본전 가격을 예시로 계산했습니다." />
+    <meta name="twitter:image" content="https://donmeter.com/og/stock-v1.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "물타기의 수학: 왜 20% 빠지면 25% 올라야 본전일까",
+      "description": "주가가 떨어진 비율과 본전까지 올라야 하는 비율이 다른 이유, 물타기로 평균 단가를 어디까지 낮출 수 있는지, 손실을 줄이는 데 드는 돈과 위험, 세금·수수료까지 메우는 본전 가격을 예시로 계산했습니다.",
+      "inLanguage": "ko-KR",
+      "datePublished": "2026-11-17",
+      "dateModified": "2026-11-17",
+      "image": "https://donmeter.com/og/stock-v1.png",
+      "mainEntityOfPage": "https://donmeter.com/guide/averaging-down/",
+      "author": {
+        "@type": "Organization",
+        "name": "돈미터",
+        "url": "https://donmeter.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "돈미터",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://donmeter.com/favicon-192.png"
+        }
+      }
+    }
+    </script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/themes.css" />
+    <link rel="stylesheet" href="/content.css" />
+    <script src="/ga.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <header class="site-head">
+      <a class="brand" href="/"><svg class="brand-mark" width="22" height="22" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="1" y="1" width="62" height="62" rx="13" fill="#111827" stroke="#fff" stroke-opacity=".18" stroke-width="2"/><g fill="none" stroke-width="8"><path d="M12 42 A20 20 0 0 1 21.6 24.9" stroke="#22C55E"/><path d="M23.4 23.9 A20 20 0 0 1 40.6 23.9" stroke="#FACC15"/><path d="M42.4 24.9 A20 20 0 0 1 52 42" stroke="#EF4444"/></g><line x1="32" y1="42" x2="47" y2="33.5" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="42" r="5.5" fill="#fff"/></svg>돈미터</a>
+      <nav class="site-nav" aria-label="주요 메뉴"><a class="navlink" href="/faq/">자주 묻는 질문</a><details class="site-menu"><summary class="site-menu__btn" aria-label="메뉴 열기"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 4h11M2.5 8h11M2.5 12h11"/></svg>메뉴</summary><div class="site-menu__list"><a class="site-menu__home" href="/">돈미터 홈</a><p class="site-menu__head">계산기</p><ul class="site-menu__grid"><li><a href="/youtuber/">유튜버 수익</a></li><li><a href="/wedding-gift/">축의금</a></li><li><a href="/kbo/">프로야구 연봉</a></li><li><a href="/jonber/">월급 분당</a></li><li><a href="/survive/">존버</a></li><li><a href="/commute/">직주근접</a></li><li><a href="/car/">자차</a></li><li><a href="/stock/">주식 물타기</a></li><li><a href="/apt/">연봉 모아 집 사기</a></li></ul><div class="site-menu__golf"><span>골프 상금</span><a href="/klpga/" title="여자골프 선수 상금" aria-label="여자골프 선수 상금">KLPGA</a><a href="/kpga/" title="남자골프 선수 상금" aria-label="남자골프 선수 상금">KPGA</a><a href="/pga/" title="PGA 선수 상금" aria-label="PGA 선수 상금">PGA</a><a href="/lpga/" title="LPGA 선수 상금" aria-label="LPGA 선수 상금">LPGA</a></div><p class="site-menu__head">더 보기</p><ul class="site-menu__more"><li><a href="/channel/">유튜버별 수익</a></li><li><a href="/guide/">돈 가이드</a></li><li><a href="/how/">계산 방법</a></li><li><a href="/faq/">자주 묻는 질문</a></li></ul></div></details><button type="button" class="theme-pick__toggle" data-theme-toggle aria-expanded="false" aria-controls="theme-menu" aria-label="명세서 색 바꾸기"><span class="theme-pick__dot" aria-hidden="true"></span>테마</button></nav>
+    </header>
+    <main class="doc">
+      <h1>물타기의 수학: 왜 20% 빠지면 25% 올라야 본전일까</h1>
+      <p class="meta">2026년 11월 17일 작성</p>
+      <p class="lede">주가가 떨어졌을 때 더 사서 평균 단가를 낮추는 것을 흔히 물타기라고 합니다. 물타기를 할지 말지는 각자 판단할 일이지만, 그 전에 알아 둘 숫자가 있습니다. 떨어진 만큼 오른다고 본전이 되지 않는 이유, 물타기로 평균 단가를 어디까지 낮출 수 있는지, 그 대가로 무엇이 커지는지를 예시로 계산했습니다.</p>
+
+      <h2>떨어진 만큼 올라서는 본전이 아니다</h2>
+      <p>10,000원짜리 주식이 20% 빠지면 8,000원입니다. 여기서 다시 10,000원이 되려면 2,000원이 올라야 하는데, 이번에는 기준이 8,000원이라 2,000 ÷ 8,000 = 25%가 올라야 합니다. 떨어질 때와 오를 때 나누는 기준이 달라서 생기는 차이이고, 많이 빠질수록 차이가 빠르게 커집니다.</p>
+      <table>
+        <thead><tr><th scope="col">떨어진 비율</th><th scope="col" class="num">본전까지 올라야 하는 비율</th></tr></thead>
+        <tbody>
+          <tr><td>−10%</td><td class="num">+11.1%</td></tr>
+          <tr><td>−20%</td><td class="num">+25%</td></tr>
+          <tr><td>−30%</td><td class="num">+42.9%</td></tr>
+          <tr><td>−40%</td><td class="num">+66.7%</td></tr>
+          <tr><td>−50%</td><td class="num">+100%</td></tr>
+          <tr><td>−70%</td><td class="num">+233.3%</td></tr>
+          <tr><td>−90%</td><td class="num">+900%</td></tr>
+        </tbody>
+      </table>
+      <p class="formula">본전까지 올라야 하는 비율 = 평균 단가 ÷ 지금 가격 − 1</p>
+
+      <h2>물타기는 평균 단가를 지금 가격 아래로 못 내린다</h2>
+      <p>평균 단가 70,000원에 100주를 샀는데 지금 61,000원이라고 해 보겠습니다. 손실은 −12.9%(−90만 원)이고, 본전까지 주가가 14.8% 올라야 합니다. 지금 가격으로 더 사면 평균 단가는 61,000원 쪽으로 끌려 내려오지만, 아무리 많이 사도 61,000원 아래로는 내려가지 않습니다. 그래서 물타기로 손실을 줄일 수는 있어도 본전(0%)을 만들 수는 없습니다.</p>
+      <p>목표로 하는 손실률마다 지금 가격에 더 사야 하는 주식 수는 이렇습니다.</p>
+      <table>
+        <thead><tr><th scope="col">손실을 이만큼까지</th><th scope="col" class="num">더 살 주식</th><th scope="col" class="num">더 넣을 돈</th><th scope="col" class="num">새 평균 단가</th></tr></thead>
+        <tbody>
+          <tr><td>−10%</td><td class="num">33주</td><td class="num">201만 원</td><td class="num">67,767원</td></tr>
+          <tr><td>−5%</td><td class="num">181주</td><td class="num">1,104만 원</td><td class="num">64,203원</td></tr>
+          <tr><td>−3%</td><td class="num">378주</td><td class="num">2,306만 원</td><td class="num">62,883원</td></tr>
+          <tr><td>−1%</td><td class="num">1,361주</td><td class="num">8,302만 원</td><td class="num">61,616원</td></tr>
+          <tr><td>−0.5%</td><td class="num">2,837주</td><td class="num">1억 7,306만 원</td><td class="num">61,306원</td></tr>
+        </tbody>
+      </table>
+      <p>−10%까지는 201만 원이면 되지만, −5%에는 1,104만 원, −1%에는 8,302만 원이 듭니다. 처음 산 돈(700만 원)의 열 배가 넘습니다. 본전에 가까워질수록 필요한 돈이 끝없이 커지는 것이 물타기의 구조입니다. 연봉 4,500만 원 직장인의 실수령 월급이 약 326만 원이니, −5%까지만 줄여도 월급 3.4달 치가 들어갑니다.</p>
+      <p class="formula">새 평균 단가 = 지금 가격 ÷ (1 + 목표 손실률) · 더 살 주식 = 보유 주식 × (평균 단가 − 새 평균 단가) ÷ (새 평균 단가 − 지금 가격)</p>
+
+      <h2>본전까지 올라야 하는 비율은 줄지만, 걸린 돈은 커진다</h2>
+      <p>물타기 뒤에 본전까지 올라야 하는 비율은 목표 손실률로만 정해집니다. −5%로 맞췄다면 +5.3%, −3%면 +3.1%만 오르면 됩니다. 처음의 +14.8%보다 훨씬 가까워 보입니다.</p>
+      <p>대신 같은 종목에 묶인 돈이 커집니다. 위 예시에서 −5%까지 물을 타면 보유 주식이 100주에서 281주로, 들어간 돈이 700만 원에서 1,804만 원으로 늘어납니다. 여기서 주가가 10% 더 떨어져 54,900원이 되면 손실은 어떻게 될까요?</p>
+      <table>
+        <thead><tr><th scope="col">주가가 54,900원이 되면</th><th scope="col" class="num">보유</th><th scope="col" class="num">들어간 돈</th><th scope="col" class="num">손실</th></tr></thead>
+        <tbody>
+          <tr><td>물타기 안 함</td><td class="num">100주</td><td class="num">700만 원</td><td class="num">−151만 원</td></tr>
+          <tr><td>−5%까지 물타기</td><td class="num">281주</td><td class="num">1,804만 원</td><td class="num">−261만 원</td></tr>
+        </tbody>
+      </table>
+      <p>오르면 더 빨리 본전에 닿지만, 더 떨어지면 잃는 금액도 더 큽니다. 물타기는 손실률을 낮추는 대신 그 종목에 거는 돈을 키우는 선택입니다.</p>
+
+      <h2>세금과 수수료까지 메우는 본전</h2>
+      <p>주식을 팔 때는 매도 금액에 증권거래세가 붙습니다. 2026년부터 코스피는 증권거래세 0.05%에 농어촌특별세 0.15%를 더해 0.20%, 코스닥은 0.20%입니다. 여기에 사고팔 때 증권사 수수료가 붙습니다(증권사마다 다르고, 돈미터 계산기는 0.015%로 어림합니다).</p>
+      <p>그래서 평균 단가 70,000원짜리 주식은 70,000원에 팔면 본전이 아니라 조금 손해입니다. 세금과 수수료까지 메우려면 약 70,162원에 팔아야 합니다. 대주주가 아닌 개인은 국내 상장주식 매매차익에 양도소득세가 없어서, 이 정도가 실제로 빠지는 돈입니다.</p>
+      <p class="formula">세금·수수료까지 메우는 본전 가격 = 평균 단가 × (1 + 수수료) ÷ (1 − 수수료 − 거래세)</p>
+
+      <h2>숫자 말고 따져 볼 것</h2>
+      <p>계산으로 알 수 있는 것은 얼마를 더 넣으면 평균 단가가 어디까지 내려가는지뿐입니다. 그 주식이 앞으로 오를지는 계산이 알려 주지 않습니다. 그래서 흔히 다음을 먼저 따져 보라고 합니다.</p>
+      <ul>
+        <li>지금 이 가격에 처음 산다고 해도 이 종목을 살지</li>
+        <li>더 넣을 돈이 당장 쓸 일이 없는 돈인지 (생활비, 대출 상환, 비상금이 아닌지)</li>
+        <li>물을 탄 뒤 이 종목이 내 전체 자산에서 차지하는 비중이 얼마나 되는지</li>
+        <li>더 떨어졌을 때 또 물을 탈 돈이 있는지, 없다면 어디서 멈출지</li>
+      </ul>
+      <p>이 글은 계산 원리를 설명하는 글이고, 특정 종목을 사거나 팔라는 권유가 아닙니다.</p>
+
+      <h2>내 숫자로 계산해 보기</h2>
+      <p>돈미터의 <a href="/stock/">주식 물타기 계산기</a>에 매수 내역과 지금 가격을 넣으면 평균 단가와 손익, 손실을 −1%·−3%·−5%·−10%까지 줄이려면 몇 주를 더 사야 하는지, 지금 팔면 세금과 수수료를 떼고 얼마가 남는지 바로 계산합니다. 입력은 내 브라우저에만 저장되고 서버로 보내지 않습니다.</p>
+      <p><a class="cta" href="/stock/">내 주식으로 물타기 계산하기</a></p>
+
+      <div class="sources">
+        <h2>참고 자료</h2>
+        <ul>
+          <li><a href="https://www.segye.com/newsView/20260105516769" rel="noopener">세계일보: 2026년 증권거래세 탄력세율 (코스피 0.20%, 코스닥 0.20%)</a></li>
+          <li><a href="https://studygov.kr/blog/0337-2026-stock-transaction-tax/" rel="noopener">studygov: 2026년 증권거래세 코스피 0.05% + 농특세 0.15%, 코스닥 0.20%</a></li>
+          <li><a href="https://wikidocs.net/blog/@Insight_Lab/26225/" rel="noopener">위키독스: 2026년 주식 세금 정리 (소액주주 양도세 없음)</a></li>
+          <li><a href="/guide/take-home-pay/">돈미터: 연봉 실수령액은 어떻게 정해질까 (실수령 월급 기준)</a></li>
+        </ul>
+      </div>
+    </main>
+    <footer class="site-foot">
+      <ul class="foot-links"><li><a href="/youtuber/">유튜버 수익 계산기</a></li><li><a href="/wedding-gift/">축의금 계산기</a></li><li><a href="/kbo/">프로야구 선수 연봉</a></li><li class="foot-golf">골프 선수 상금 <a href="/klpga/" title="여자골프 선수 상금">KLPGA</a> · <a href="/kpga/" title="남자골프 선수 상금">KPGA</a> · <a href="/pga/" title="PGA 선수 상금">PGA</a> · <a href="/lpga/" title="LPGA 선수 상금">LPGA</a></li><li><a href="/apt/">연봉 모아 집 사기</a></li><li><a href="/jonber/">월급 분당 계산기</a></li><li><a href="/survive/">존버 계산기</a></li><li><a href="/commute/">직주근접 계산기</a></li><li><a href="/car/">자차 계산기</a></li><li><a href="/stock/">주식 물타기 계산기</a></li><li><a href="/channel/">유튜버별 수익</a></li><li><a href="/guide/">돈 가이드</a></li><li><a href="/how/">계산 방법</a></li><li><a href="/faq/">자주 묻는 질문</a></li><li><a href="/about/">사이트 소개</a></li><li><a href="/privacy/">개인정보처리방침</a></li><li><a href="/terms/">이용약관</a></li><li><a href="/contact/">문의</a></li></ul>
+      <div class="social"><a class="social__btn" href="https://www.instagram.com/donmeter.official" target="_blank" rel="noopener" aria-label="돈미터 인스타그램 (새 창)" title="돈미터 인스타그램"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle class="dot" cx="17.3" cy="6.7" r="1.1"/></svg></a></div>
+      <p>수익, 직급, 필요한 영상 수 같은 숫자는 YouTube API 공개 데이터를 바탕으로 돈미터가 따로 계산한 제3자 추정치이며, Google 또는 YouTube가 발표하거나 승인한 수치가 아닙니다. 실제 정산 금액과 다릅니다.</p>
+      <p>돈미터는 YouTube API 서비스를 사용하며, YouTube 또는 Google과 제휴하거나 승인받은 서비스가 아닙니다.</p>
+    </footer>
+  </body>
+</html>
