@@ -104,6 +104,16 @@ export function CarIcon() {
   )
 }
 
+// 주식 물타기 계산기: 물방울 속 주가 그래프
+export function StockIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <path d="M16 3.5c-4.6 6.3-9 11.3-9 16.2a9 9 0 0 0 18 0c0-4.9-4.4-9.9-9-16.2z" strokeWidth="2" strokeLinejoin="round" style={{ fill: 'var(--seal-tint)', stroke: 'var(--seal)' }} />
+      <path d="M10.5 19.2l3.4 3 3.1-4.4 4.6 3.6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ fill: 'none', stroke: 'var(--seal)' }} />
+    </svg>
+  )
+}
+
 // 월급 분당 계산기: 시계 + 동전
 export function ClockIcon() {
   return (
