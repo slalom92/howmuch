@@ -37,6 +37,8 @@ export const SOURCES = {
   lotte: { label: '엑스포츠뉴스, 롯데 2026 연봉 계약 발표 보도', url: 'https://www.xportsnews.com/article/2103416' },
   fa_list: { label: 'OSEN, 두산 박찬호·이영하·조수행 FA 계약 조건 보도', url: 'https://osen.co.kr/article/G1112718059' },
   fa_sim: { label: 'OSEN, 한화 심우준 FA 계약 보도', url: 'https://osen.co.kr/article/G1112452996' },
+  fa27_yang: { label: '노컷뉴스, 두산 양의지 2027 FA 재계약 발표 보도 (2026.11.17)', url: 'https://www.nocutnews.co.kr/news/6607844' },
+  fa27_oh: { label: '스포티비뉴스, SSG 오태곤 2027 FA 재계약 발표 보도 (2026.11.17)', url: 'https://www.spotvnews.co.kr/news/articleView.html?idxno=1020190' },
   kbo_player: { label: 'KBO 선수 정보, 2026 연봉', url: 'https://www.koreabaseball.com/Player/Search.aspx' },
   minimum: { label: '스포츠조선, KBO 최저 연봉 규정 보도', url: 'https://v.daum.net/v/1v6ZnzkPzQ' },
 }
@@ -72,7 +74,7 @@ export const TEAM_BY_ID = Object.fromEntries(TEAMS.map((t) => [t.id, t]))
 //   타자 { g 경기, ab 타수, h 안타, hr 홈런, rbi 타점, avg 타율 }, 투수 { g, w 승, l 패, sv 세이브, hld 홀드, ip 이닝, so 탈삼진, era 평균자책 }
 // tving: TVING 선수 페이지 번호 (https://www.tving.com/sports/kbo/athlete/번호)
 export const PLAYERS = [
-  { name: '양의지', team: 'doosan', pos: '포수', pay: 420000, prev: 160000, history: { 2023: 30000, 2024: 50000, 2025: 160000, 2026: 420000 }, note: '2026 리그 연봉 1위. 4+2년 최대 152억 원 FA 계약 4년째로, 연봉이 해마다 크게 오르는 구조예요.', stats: { g: 135, ab: 449, h: 112, hr: 23, rbi: 79, avg: '0.249' }, tving: 76232, src: ['yang', 'kbo_top'] },
+  { name: '양의지', team: 'doosan', pos: '포수', pay: 420000, prev: 160000, history: { 2023: 30000, 2024: 50000, 2025: 160000, 2026: 420000 }, note: '2026 리그 연봉 1위. 4+2년 최대 152억 원 FA 계약의 보장 4년 마지막 해였어요. 시즌 뒤 남은 2년 옵션 대신 FA를 다시 신청해, 2026년 11월 두산과 2년 최대 55억 원(계약금 40억, 연봉 총액 10억, 인센티브 5억)에 재계약했어요.', stats: { g: 135, ab: 449, h: 112, hr: 23, rbi: 79, avg: '0.249' }, tving: 76232, src: ['yang', 'kbo_top', 'fa27_yang'] },
   { name: '고영표', team: 'kt', pos: '투수', pay: 260000, note: '2026 리그 연봉 2위, 투수 1위예요.', stats: { g: 29, w: 15, l: 7, sv: 0, hld: 0, ip: '172 2/3', so: 183, era: '3.28' }, tving: 64001, src: ['kbo_x', 'kbo_top'] },
   { name: '최정', team: 'ssg', pos: '내야수', pay: 220000, prev: 170000, note: '2026 리그 연봉 3위예요.', stats: { g: 71, ab: 255, h: 78, hr: 20, rbi: 57, avg: '0.306' }, tving: 75847, src: ['kbo_x', 'kbo_star'] },
   { name: '류현진', team: 'hanwha', pos: '투수', pay: 210000, note: '박세웅과 함께 리그 연봉 공동 4위예요.', stats: { g: 25, w: 9, l: 6, sv: 0, hld: 0, ip: '134 2/3', so: 115, era: '3.88' }, tving: 76715, src: ['kbo_x', 'kbo_top'] },
@@ -141,7 +143,7 @@ export const PLAYERS = [
   { name: '정수빈', team: 'doosan', pos: '외야수', pay: 60000, stats: { g: 142, ab: 467, h: 118, hr: 7, rbi: 52, avg: '0.253' }, tving: 79231, src: ['kbo_player'] },
   { name: '고우석', team: 'lg', pos: '투수', pay: 50000, stats: { g: 16, w: 3, l: 1, sv: 1, hld: 5, ip: '23', so: 28, era: '1.57' }, tving: 67119, src: ['kbo_player'] },
   { name: '김재환', team: 'ssg', pos: '외야수', pay: 50000, stats: { g: 131, ab: 446, h: 97, hr: 24, rbi: 70, avg: '0.217' }, tving: 78224, src: ['kbo_player'] },
-  { name: '오태곤', team: 'ssg', pos: '외야수', pay: 50000, stats: { g: 106, ab: 246, h: 62, hr: 9, rbi: 34, avg: '0.252' }, tving: 60558, src: ['kbo_player'] },
+  { name: '오태곤', team: 'ssg', pos: '외야수', pay: 50000, note: '2023~2026년 4년 18억 원 FA 계약의 마지막 해였어요. 2026년 11월 2027 FA 1호 계약으로 SSG와 3년 총액 11억 원(계약금 2억, 연봉 총액 7억 4천만, 인센티브 1억 6천만)에 재계약했어요.', stats: { g: 106, ab: 246, h: 62, hr: 9, rbi: 34, avg: '0.252' }, tving: 60558, src: ['kbo_player', 'fa27_oh'] },
   { name: '원종현', team: 'kiwoom', pos: '투수', pay: 50000, stats: { g: 53, w: 1, l: 4, sv: 7, hld: 8, ip: '48', so: 35, era: '6.19' }, tving: 76118, src: ['kbo_player'] },
   { name: '한현희', team: 'lotte', pos: '투수', pay: 50000, stats: null, tving: 62363, src: ['kbo_player'] },
 ]
