@@ -15,6 +15,9 @@ import { channelSlug, channelPath, normalizeSlug, isChannelId, mergeChannels, re
 const SIX_HOURS = 6 * 3600
 const DAY = 86400
 const SITE_NAME = '돈미터'
+// 채널 페이지는 같은 틀에 숫자만 바뀌는 자동 생성 페이지라 검색 색인에서 뺀다 (애드센스 '가치 없는 콘텐츠' 대응).
+// 채널마다 직접 쓴 분석을 붙이게 되면 다시 'index, follow, max-image-preview:large' 로 바꾼다.
+const CHANNEL_ROBOTS = 'noindex, follow'
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 // <script> 안에 넣는 JSON 은 </script> 로 끊기지 않게 < 를 이스케이프
@@ -264,7 +267,7 @@ export default async function handler(req, res) {
     ],
   }
 
-  const html = applyHead(template, { title, desc, url, robots: 'index, follow, max-image-preview:large', jsonLd })
+  const html = applyHead(template, { title, desc, url, robots: CHANNEL_ROBOTS, jsonLd })
   const inner = shell(channelBody(ch, a, canonicalSlug, trending))
   return send(res, 200, injectRoot(html, inner, { id: ch.id, slug: canonicalSlug }), `public, s-maxage=${SIX_HOURS}, stale-while-revalidate=${DAY}`)
 }

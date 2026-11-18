@@ -4,6 +4,7 @@
 //   1) 계산기 페이지 (아래 PAGES)
 //   2) public/ 아래 정적 페이지 (…/index.html 이 있는 폴더 전부, noindex 페이지는 뺀다)
 //   3) 채널 페이지: src/lib/popular.js 의 "많이 찾는 유튜버" 목록 (/channel/<slug>/)
+//      지금은 api/page.js 에서 noindex 라 넣지 않는다 (INCLUDE_CHANNELS)
 //
 // lastmod(마지막 수정일)는 그 페이지를 만드는 파일들이 git 에 마지막으로 커밋된 날이다.
 // 아직 커밋하지 않은 변경이 있으면 파일 수정 시각을 쓴다. 새 계산기를 만들면 PAGES 에 한 줄 더한다.
@@ -89,7 +90,8 @@ const channelDate = lastmod(CHANNEL_FILES)
 
 const pages = [...PAGES, ...staticPages().sort((a, b) => a.url.localeCompare(b.url))]
 const entries = pages.map((p) => ({ url: p.url, mod: lastmod(p.files) }))
-for (const c of POPULAR) entries.push({ url: `/channel/${c.slug}/`, mod: channelDate })
+const INCLUDE_CHANNELS = false // api/page.js 의 CHANNEL_ROBOTS 와 맞춘다
+if (INCLUDE_CHANNELS) for (const c of POPULAR) entries.push({ url: `/channel/${c.slug}/`, mod: channelDate })
 
 const seen = new Set()
 const lines = entries

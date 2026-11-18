@@ -9,7 +9,8 @@ import { useEffect, useRef, useState } from 'react'
 // - 하단 고정 광고(anchor)와 결과 아래 광고(inline)는 화면 크기와 상관없이 그대로.
 // - 고정 크기 위치는 고정 크기 광고 단위로 넣는다.
 //   반응형(auto)으로 넣으면 모바일에서 300px 넘게 커져 본문을 가린다.
-// - 광고가 채워지지 않으면(unfilled) 영역 전체를 숨긴다.
+// - 광고가 채워지기 전(pending)에는 높이 0으로 접어 두고("광고" 글자·빈 상자가 보이지 않게), 채워지면 펼친다.
+//   채워지지 않으면(unfilled) 영역 전체를 없앤다.
 // - 하단 고정 광고의 실제 높이만큼 본문 아래 여백(--anchor-h)을 잡아 내용을 가리지 않게 한다.
 //
 // 정책 메모: 광고 클릭을 유도하는 문구나, 버튼·입력창 바로 옆 배치는 애드센스 정책 위반이 될 수 있다.
@@ -95,14 +96,29 @@ function AdSlotInner({ slot, variant, side, label = '광고' }) {
         /* 광고 차단기 등 */
       }
     }
+    // 처리가 끝났는데(data-adsbygoogle-status="done") 채움 여부 표시가 없고 광고 iframe도 없으면 빈 자리로 본다.
+    // 승인 전이거나 광고가 없을 때 빈 상자나 "광고" 글자만 남지 않게 하려는 것.
+    let timer = 0
     const read = () => {
       const s = ins.getAttribute('data-ad-status')
-      if (s === 'filled' || s === 'unfilled') setState(s)
+      if (s === 'filled' || s === 'unfilled') {
+        clearTimeout(timer)
+        setState(s)
+        return
+      }
+      if (ins.getAttribute('data-adsbygoogle-status') === 'done' && !timer) {
+        timer = setTimeout(() => {
+          if (!ins.getAttribute('data-ad-status') && !ins.querySelector('iframe')) setState('unfilled')
+        }, 3000)
+      }
     }
     read()
     const mo = new MutationObserver(read)
-    mo.observe(ins, { attributes: true, attributeFilter: ['data-ad-status'] })
-    return () => mo.disconnect()
+    mo.observe(ins, { attributes: true, attributeFilter: ['data-ad-status', 'data-adsbygoogle-status'] })
+    return () => {
+      mo.disconnect()
+      clearTimeout(timer)
+    }
   }, [live, unitKey])
 
   const hidden = live && state === 'unfilled'
