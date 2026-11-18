@@ -48,6 +48,9 @@ export default function CarGuide({ ad = null }) {
             <a href="/guide/car-cost/">차 한 대 3년 타면 얼마 들까: 취득세, 자동차세, 보험료, 감가</a>
           </li>
           <li>
+            <a href="/guide/car-by-salary/">연봉별로 맞는 차: 3,000만 원부터 2억 원까지 36대로 따져 보기</a>
+          </li>
+          <li>
             <a href="/guide/take-home-pay/">연봉 실수령액은 어떻게 정해질까: 2026년 4대보험과 소득세</a>
           </li>
           <li>

@@ -99,6 +99,9 @@ export default function KboGuide() {
             <a href="/guide/kbo-salary/">프로야구 선수 연봉은 어떻게 정해질까: 최저연봉, 경쟁균형세, FA</a>
           </li>
           <li>
+            <a href="/guide/kbo-cost-per-record/">2026 프로야구, 안타 하나에 얼마 받았을까: 연봉으로 본 기록 하나의 값</a>
+          </li>
+          <li>
             <a href="/guide/take-home-pay/">연봉 실수령액은 어떻게 정해질까: 2026년 4대보험과 소득세</a>
           </li>
         </ul>

@@ -48,6 +48,9 @@ export default function SurviveGuide({ ad = null }) {
         <h2 className="kbo-card__title">더 읽어 보기</h2>
         <ul>
           <li>
+            <a href="/guide/survive-by-salary/">연봉별로 월급 한 번에 며칠 버틸까: 생활 방식 3가지로 본 표</a>
+          </li>
+          <li>
             <a href="/guide/take-home-pay/">연봉 실수령액은 어떻게 정해질까: 2026년 4대보험과 소득세</a>
           </li>
           <li>
