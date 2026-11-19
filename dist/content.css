@@ -435,3 +435,140 @@ a:hover {
     font-size: 14px;
   }
 }
+
+/* ---------- 많이 찾는 순위 (/ranking/) ---------- */
+.rank-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 24px 0 12px;
+}
+
+.rank-tabs [role='tab'] {
+  padding: 8px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.rank-tabs [role='tab'][aria-selected='true'] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+}
+
+.rank-tabs [role='tab']:focus-visible {
+  outline: 3px solid var(--seal);
+  outline-offset: 2px;
+}
+
+.rank-board {
+  min-height: 120px;
+}
+
+.doc .rank-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.doc .rank-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.rank-no {
+  flex: none;
+  width: 28px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.rank-list li:nth-child(-n + 3) .rank-no {
+  color: var(--seal);
+}
+
+.doc .rank-name {
+  flex: 1;
+  min-width: 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.rank-name strong {
+  display: block;
+  font-size: 16px;
+}
+
+.rank-name span {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc .rank-name:hover strong {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rank-side {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rank-users {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.rank-move {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.rank-move.is-up {
+  color: #d6352b;
+}
+
+.rank-move.is-down {
+  color: #2563c9;
+}
+
+.rank-move.is-new {
+  color: var(--seal);
+  font-weight: 600;
+}
+
+.rank-empty {
+  padding: 28px 16px;
+  border: 1px dashed var(--bar);
+  border-radius: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.rank-updated {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: right;
+}

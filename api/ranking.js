@@ -1,4 +1,5 @@
-// GET /api/ranking/
+// GET /api/ranking/          홈 화면 계산기 순서와 HOT 뱃지
+// GET /api/ranking/?board=1  많이 찾는 순위 페이지(/ranking/)의 계산기별 순위 (api/_lib/boards.js)
 // 홈 화면 계산기 아이콘 순서와 HOT 뱃지를 GA4 조회수로 정한다.
 //
 // - 구글 애널리틱스 Data API 로 최근 7일, 한국 접속의 페이지별 조회수(screenPageViews)를 받아 계산기별로 더한다.
@@ -9,7 +10,8 @@
 //     GA4_PROPERTY_ID  GA4 속성 ID (숫자). 없으면 아래 기본값
 // - 키가 없거나 조회가 실패하면 503 을 돌려주고, 홈 화면은 HTML 에 적힌 기본 순서를 그대로 쓴다.
 import crypto from 'node:crypto'
-import { send } from './_lib/youtube.js'
+import { send, query } from './_lib/youtube.js'
+import { boards } from './_lib/boards.js'
 
 const HOUR = 3600
 const DAYS = 7
@@ -84,17 +86,12 @@ async function accessToken(key) {
   return cached.token
 }
 
-async function pageViews(token, property) {
+// GA4 Data API runReport 한 번. 실패하면 이유를 담아 throw
+async function runReport(token, property, body) {
   const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${property}:runReport`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      dateRanges: [{ startDate: `${DAYS}daysAgo`, endDate: 'today' }],
-      dimensions: [{ name: 'pagePath' }],
-      metrics: [{ name: 'screenPageViews' }],
-      dimensionFilter: { filter: { fieldName: 'country', stringFilter: { value: 'South Korea' } } },
-      limit: 10000,
-    }),
+    body: JSON.stringify(body),
   })
   const j = await r.json()
   if (!r.ok) {
@@ -104,10 +101,21 @@ async function pageViews(token, property) {
       : r.status === 403
         ? '서비스 계정 이메일을 GA4 속성에 뷰어로 추가했는지, GA4_PROPERTY_ID 가 속성 ID 인지 확인해 주세요'
         : r.status === 400 || r.status === 404
-          ? 'GA4_PROPERTY_ID 가 숫자로 된 속성 ID 인지 확인해 주세요'
+          ? 'GA4_PROPERTY_ID 가 숫자로 된 속성 ID 인지, 요청한 측정기준이 등록돼 있는지 확인해 주세요'
           : '잠시 뒤 다시 확인해 주세요'
     throw new Reason(`GA4 조회 실패 (${r.status}, 속성 ${property}). ${hint}. 구글 메시지: ${msg.slice(0, 200)}`)
   }
+  return j
+}
+
+async function pageViews(token, property) {
+  const j = await runReport(token, property, {
+    dateRanges: [{ startDate: `${DAYS}daysAgo`, endDate: 'today' }],
+    dimensions: [{ name: 'pagePath' }],
+    metrics: [{ name: 'screenPageViews' }],
+    dimensionFilter: { filter: { fieldName: 'country', stringFilter: { value: 'South Korea' } } },
+    limit: 10000,
+  })
   return (j.rows || []).map((row) => ({ path: row.dimensionValues[0].value, views: Number(row.metricValues[0].value) || 0 }))
 }
 
@@ -131,7 +139,16 @@ export default async function handler(req, res) {
     const key = serviceAccount()
     if (!key) return send(res, 503, { error: 'GA4_SA_KEY 가 없어요' })
     const property = (process.env.GA4_PROPERTY_ID || DEFAULT_PROPERTY).trim().replace(/^properties\//, '')
-    const rows = await pageViews(await accessToken(key), property)
+    const token = await accessToken(key)
+    // /api/ranking/?board=1 : 많이 찾는 순위 페이지(/ranking/)용 계산기별 순위
+    if (query(req).get('board')) {
+      // 역 이름 파일을 받을 주소: 돈미터와 Vercel 미리보기 주소만 믿고, 그 밖의 Host 헤더는 무시한다
+      const host = String(req.headers['x-forwarded-host'] || req.headers.host || '')
+      const origin = /(^|\.)donmeter\.com$|\.vercel\.app$/.test(host) ? `https://${host}` : 'https://donmeter.com'
+      const data = await boards((body) => runReport(token, property, body), origin)
+      return send(res, 200, { days: 7, updatedAt: new Date().toISOString(), ...data }, HOUR)
+    }
+    const rows = await pageViews(token, property)
     return send(res, 200, { days: DAYS, updatedAt: new Date().toISOString(), ...rank(rows) }, HOUR)
   } catch (e) {
     console.error('[ranking]', e.message)

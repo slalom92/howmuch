@@ -53,6 +53,7 @@ export const MENU_GOLF = [
   { href: LPGA, label: 'LPGA', title: 'LPGA 선수 상금' },
 ]
 export const MENU_MORE = [
+  { href: '/ranking/', label: '많이 찾는 순위' },
   { href: '/channel/', label: '유튜버별 수익' },
   { href: '/guide/', label: '돈 가이드' },
   { href: '/how/', label: '계산 방법' },
