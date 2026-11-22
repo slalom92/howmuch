@@ -572,3 +572,29 @@ a:hover {
   color: var(--muted);
   text-align: right;
 }
+
+/* ---------- 이번 주 돈 뉴스 목록 (/news/) ---------- */
+.doc .news-list {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.doc .news-list li {
+  margin: 0;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.doc .news-list a {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.doc .news-list p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
