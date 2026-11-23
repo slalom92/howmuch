@@ -34,17 +34,20 @@ export const MENU = [
   { href: '/faq/', label: '자주 묻는 질문' },
 ]
 
-// "메뉴"를 눌렀을 때 보이는 묶음 (모든 화면 너비에서 같다). 골프 4개 투어는 한 줄로 묶는다
-// 정적 페이지(index.html, public/**/index.html)의 메뉴는 scripts/sync-menu.mjs 가 이 목록으로 다시 쓴다
-export const MENU_CALCS = [
+// "메뉴"를 눌렀을 때 보이는 묶음 (모든 화면 너비에서 같다)
+//   내 돈으로 재기(이름 + 한 줄 설명) / 남의 돈 엿보기(골프 4개 투어는 한 줄) / 읽을거리 / 맨 아래 도움말
+// 계산기 화면은 src/components/SiteMenu.jsx, 정적 페이지(index.html, public/**/index.html)는 scripts/sync-menu.mjs 가 이 목록으로 그린다
+export const MENU_MINE = [
+  { href: JONBER, label: '월급 분당 계산기', desc: '내 시급으로 커피·치킨은 몇 분' },
+  { href: SURVIVE, label: '존버 계산기', desc: '월급 한 번으로 며칠 버틸까' },
+  { href: CAR, label: '자차 계산기', desc: '내 연봉에 맞는 차와 3년 감가' },
+  { href: APT, label: '연봉 모아 집 사기', desc: '몇 년 모으면 이 아파트' },
+  { href: COMMUTE, label: '직주근접 계산기', desc: '역 근처 월세와 출퇴근 시간' },
+  { href: WEDDING_GIFT, label: '축의금 계산기', desc: '관계별로 얼마 낼까' },
+]
+export const MENU_OTHERS = [
   { href: YOUTUBER, label: '유튜버 수익' },
-  { href: WEDDING_GIFT, label: '축의금' },
   { href: KBO, label: '프로야구 연봉' },
-  { href: JONBER, label: '월급 분당' },
-  { href: SURVIVE, label: '존버' },
-  { href: COMMUTE, label: '직주근접' },
-  { href: CAR, label: '자차' },
-  { href: APT, label: '연봉 모아 집 사기' },
 ]
 export const MENU_GOLF = [
   { href: KLPGA, label: 'KLPGA', title: '여자골프 선수 상금' },
@@ -52,17 +55,20 @@ export const MENU_GOLF = [
   { href: PGA, label: 'PGA', title: 'PGA 선수 상금' },
   { href: LPGA, label: 'LPGA', title: 'LPGA 선수 상금' },
 ]
-export const MENU_MORE = [
+export const MENU_READ = [
   { href: '/news/', label: '오늘의 돈 뉴스' },
+  { href: '/guide/', label: '돈 가이드' },
   { href: '/ranking/', label: '많이 찾는 순위' },
   { href: '/channel/', label: '유튜버별 수익' },
-  { href: '/guide/', label: '돈 가이드' },
+]
+export const MENU_HELP = [
   { href: '/how/', label: '계산 방법' },
   { href: '/faq/', label: '자주 묻는 질문' },
+  { href: '/about/', label: '사이트 소개' },
 ]
 
-// 넓은 화면에서 "메뉴" 왼쪽에 보이는 링크 하나
-export const FAQ_LINK = { href: '/faq/', label: '자주 묻는 질문' }
+// 넓은 화면에서 "메뉴" 왼쪽에 보이는 링크 하나 (가장 자주 바뀌는 글)
+export const HEADER_LINK = { href: '/news/', label: '오늘의 돈 뉴스' }
 
 // (예전) 유튜버 수익 계산기 쪽 넓은 화면에서 줄지어 보이던 링크
 export const YOUTUBER_LINKS = MENU.slice(13)
