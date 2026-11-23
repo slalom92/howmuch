@@ -3,23 +3,28 @@
 // - PGA투어 누리집 기록은 이용약관상 뉴스 보도·개인 비상업 용도로만 쓸 수 있어 옮기지 않았다.
 //   언론이 보도한 공식 상금(official money)만 옮기고, 선수마다 출처를 단다.
 // - 페덱스컵 보너스(셰플러 2,300만 달러 등)는 공식 상금이 아니라서 넣지 않았다.
-// - 시즌은 11월 22일 RSM 클래식까지 이어진다(가을 시리즈). 지금 금액은 페덱스컵 플레이오프가 끝난 8월 30일 기준이고,
-//   반올림한 금액(rounded)은 9월 22일 기준 보도다. 시즌이 끝나면 최종 금액으로 고친다.
+// - 시즌은 11월 23일(월) RSM 클래식으로 끝났다(가을 시리즈 8개, 토요일 비로 하루 순연). 상위 5명은 시즌 종료 뒤 ESPN 상금 순위,
+//   반올림한 금액(rounded)은 마지막 대회 직전(11월 17일) 보도다. 김주형은 8월 30일 플레이오프 종료 기준 보도라 가을 시리즈 상금이 빠져 있을 수 있다.
 // - 달러는 ./fx.js 의 환율 하나로 고정해 원으로 바꾼다 (LPGA 도 같은 환율을 쓴다).
 import { PGA, KLPGA } from '../../lib/menu.js'
 import { makeTour } from '../klpga/golf.js'
 import { USD_KRW, FX_DATE } from './fx.js'
 
 const SEASON = 2026
-// 1월 15일(소니 오픈 1라운드) ~ 8월 30일(투어 챔피언십 마지막 날): 정규 대회 34개와 플레이오프 3개
-const TOUR_DAYS = 228
-const EVENTS_HELD = 37
+// 1월 15일(소니 오픈 1라운드) ~ 11월 23일(RSM 클래식 마지막 날): 정규 대회 34개, 플레이오프 3개, 가을 시리즈 8개
+const TOUR_DAYS = 313
+const EVENTS_HELD = 45
 
 const won = (usd) => Math.round(usd * USD_KRW)
 
 const SOURCES = {
   gm: { label: 'Golf Monthly, 2026 투어별 상금 1위 비교 (셰플러 공식 상금·출전 대회·우승 수)', url: 'https://www.golfmonthly.com/news/pga-tour-lpga-tour-dp-world-tour-liv-golf-money-leaders-2026' },
   gw: { label: 'Golfweek(USA TODAY), 2026 PGA 투어 상금 상위 25명 (9월 22일 기준)', url: 'https://sports.yahoo.com/articles/jacob-bridgeman-jumps-top-10-162953380.html' },
+  gw1117: { label: 'Golfweek(USA TODAY), 2026 PGA 투어 상금 상위 25명 (11월 17일, RSM 클래식 직전 기준)', url: 'https://sports.yahoo.com/articles/pga-tour-season-money-leaders-164947286.html' },
+  espn: { label: 'ESPN, 2026 PGA 투어 상금 순위 (시즌 종료 뒤)', url: 'https://www.espn.com/golf/stats' },
+  rsm: { label: 'The Golf News Net, 2026 RSM 클래식 최종 결과와 상금 (시즌 마지막 대회, 2026.11.23)', url: 'https://thegolfnewsnet.com/golfnewsnetteam/2026/11/23/2026-the-rsm-classic-final-results-prize-money-payout-pga-tour-leaderboard-and-how-much-each-golfer-won-145672/' },
+  biltmore: { label: 'Golf Magic, 2026 빌트모어 챔피언십 최종 결과와 상금 (브리지먼 우승 90만 달러)', url: 'https://www.golfmagic.com/tour/pga-tour/biltmore-championship-final-scores-and-prize-money-payouts-bridgeman-lands-second-win' },
+  fall: { label: 'CBS Sports, 2026 페덱스컵 가을 시리즈 8개 대회 일정 발표', url: 'https://www.cbssports.com/golf/news/pga-tour-fedex-cup-fall-schedule-2026' },
   nine: { label: 'USA TODAY, 2026 PGA 투어 상금 순위 (1천만 달러 넘은 선수 9명)', url: 'https://www.galvnews.com/news_reuters/nation/who-made-the-most-money-on-the-pga-tour-in-2026-updated-top-50-earnings/article_c594b0da-d1f3-5abf-bb9e-a9bc7464a56c.html' },
   tc: { label: 'Golf Channel, 2026 투어 챔피언십 상금 (우승 1,000만 달러)', url: 'https://www.golfchannel.com/pga-tour/news/2026-tour-championship-prize-money-full-payout-for-each-golfer-at-east-lake' },
   khan: { label: '스포츠경향, 김시우·김주형 2026 시즌 상금 보도 (2026.8.31)', url: 'https://sports.khan.co.kr/article/202608311111003/' },
@@ -40,13 +45,14 @@ const PLAYERS = [
     note: 'PGA 투어 역사상 처음으로 한 시즌 공식 상금 3,000만 달러를 넘겼어요. 페덱스컵 우승 보너스 2,300만 달러는 공식 상금이 아니라 여기 넣지 않았어요.',
     src: ['gm', 'tc'],
   },
-  { name: '캐머런 영', aliases: ['cameron young', 'young'], team: '미국', usd: 15100000, rounded: true, wins: null, events: null, titles: [], src: ['gw'] },
-  { name: '맷 피츠패트릭', aliases: ['피츠패트릭', 'matt fitzpatrick', 'fitzpatrick'], team: '잉글랜드', usd: 14700000, rounded: true, wins: null, events: null, titles: [], src: ['gw'] },
-  { name: '윈덤 클라크', aliases: ['클라크', 'wyndham clark', 'clark'], team: '미국', usd: 14600000, rounded: true, wins: null, events: null, titles: [], src: ['gw'] },
-  { name: '로리 매킬로이', aliases: ['매킬로이', 'rory mcilroy', 'mcilroy'], team: '북아일랜드', usd: 11600000, rounded: true, wins: null, events: null, titles: [], src: ['gw'] },
-  { name: '빅토르 호블란', aliases: ['호블란', 'viktor hovland', 'hovland'], team: '노르웨이', usd: 11500000, rounded: true, wins: null, events: null, titles: [], src: ['gw'] },
-  { name: '제이컵 브리지먼', aliases: ['브리지먼', 'jacob bridgeman', 'bridgeman'], team: '미국', usd: 10900000, rounded: true, wins: null, events: null, titles: [], src: ['gw'] },
-  { name: '크리스 고터럽', aliases: ['고터럽', 'chris gotterup', 'gotterup'], team: '미국', usd: 10400000, rounded: true, wins: null, events: null, titles: [], src: ['gw'] },
+  { name: '캐머런 영', aliases: ['cameron young', 'young'], team: '미국', usd: 15068482, wins: null, events: null, titles: [], note: '시즌이 끝난 뒤 ESPN 상금 순위의 공식 상금이에요.', src: ['espn', 'gw1117'] },
+  { name: '맷 피츠패트릭', aliases: ['피츠패트릭', 'matt fitzpatrick', 'fitzpatrick'], team: '잉글랜드', usd: 14679817, wins: null, events: null, titles: [], note: '시즌이 끝난 뒤 ESPN 상금 순위의 공식 상금이에요.', src: ['espn', 'gw1117'] },
+  { name: '윈덤 클라크', aliases: ['클라크', 'wyndham clark', 'clark'], team: '미국', usd: 14661436, wins: null, events: null, titles: [], note: '시즌이 끝난 뒤 ESPN 상금 순위의 공식 상금이에요.', src: ['espn', 'gw1117'] },
+  { name: '제이컵 브리지먼', aliases: ['브리지먼', 'jacob bridgeman', 'bridgeman'], team: '미국', usd: 11589508, wins: null, events: null, titles: [], note: '9월 가을 시리즈 첫 대회 빌트모어 챔피언십에서 우승해 90만 달러를 더했어요. 시즌이 끝난 뒤 ESPN 상금 순위의 공식 상금이에요.', src: ['espn', 'gw1117', 'biltmore'] },
+  { name: '로리 매킬로이', aliases: ['매킬로이', 'rory mcilroy', 'mcilroy'], team: '북아일랜드', usd: 11600000, rounded: true, wins: null, events: null, titles: [], src: ['gw1117'] },
+  { name: '빅토르 호블란', aliases: ['호블란', 'viktor hovland', 'hovland'], team: '노르웨이', usd: 11500000, rounded: true, wins: null, events: null, titles: [], src: ['gw1117'] },
+  { name: '라이언 제라드', aliases: ['제라드', 'ryan gerard', 'gerard'], team: '미국', usd: 10500000, rounded: true, wins: null, events: null, titles: [], src: ['gw1117'] },
+  { name: '크리스 고터럽', aliases: ['고터럽', 'chris gotterup', 'gotterup'], team: '미국', usd: 10400000, rounded: true, wins: null, events: null, titles: [], src: ['gw1117'] },
   {
     name: '김시우',
     aliases: ['si woo kim', 'kim si-woo'],
@@ -55,8 +61,8 @@ const PLAYERS = [
     wins: 0,
     events: 24,
     titles: ['한국 선수 최초 1천만 달러'],
-    note: '우승 없이 준우승 3번, 3위 2번을 포함해 24개 대회에서 톱10에 11번 들었어요. 한국 선수가 PGA 투어 한 시즌 상금 1,000만 달러를 넘긴 건 처음이에요.',
-    src: ['khan', 'asiae'],
+    note: '우승 없이 준우승 3번, 3위 2번을 포함해 24개 대회에서 톱10에 11번 들었어요. 한국 선수가 PGA 투어 한 시즌 상금 1,000만 달러를 넘긴 건 처음이에요. 가을 시리즈가 끝난 11월 17일 보도에서도 금액이 같아요.',
+    src: ['khan', 'asiae', 'gw1117'],
   },
   {
     name: '김주형',
@@ -66,13 +72,13 @@ const PLAYERS = [
     wins: 1,
     events: 23,
     titles: [],
-    note: '7월 제네시스 스코티시 오픈에서 33개월 만에 우승했어요. 지난해 상금(149만 6,889달러)의 3.5배가 넘는 금액이에요.',
+    note: '7월 제네시스 스코티시 오픈에서 33개월 만에 우승했어요. 지난해 상금(149만 6,889달러)의 3.5배가 넘는 금액이에요. 8월 30일 플레이오프 종료 기준 보도라, 가을 시리즈에서 번 상금은 빠져 있을 수 있어요.',
     src: ['khan', 'viva'],
   },
 ].map((p) => ({
   ...p,
   prize: won(p.usd),
-  note: p.note || '9월 22일 기준 언론 보도에 10만 달러 단위로만 나온 금액이라 원화도 어림값이에요.',
+  note: p.note || '시즌 마지막 대회(RSM 클래식) 직전인 11월 17일 보도에 10만 달러 단위로만 나온 금액이라 원화도 어림값이에요.',
 }))
 
 // 질문과 답은 pga/index.html 의 FAQ 구조화 데이터와 같게 유지한다.
@@ -87,7 +93,7 @@ const FAQ = [
   },
   {
     q: '시즌이 끝난 금액인가요?',
-    a: `PGA 투어 ${SEASON}시즌은 11월 22일 RSM 클래식까지 가을 시리즈가 이어져요. 지금 금액은 페덱스컵 플레이오프가 끝난 8월 30일 기준이고, 일부 선수는 9월 22일 기준 보도예요. 시즌이 끝나면 최종 금액으로 고칠게요.`,
+    a: `네. PGA 투어 ${SEASON}시즌은 11월 23일 RSM 클래식으로 끝났어요. 상위 5명은 시즌이 끝난 뒤 공식 상금이고, 10만 달러 단위로 표시한 선수는 마지막 대회 직전인 11월 17일 보도예요. 김주형은 8월 30일 플레이오프 종료 기준이라 가을 시리즈 상금이 빠져 있을 수 있어요.`,
   },
   {
     q: '상금은 어디서 가져왔나요?',
@@ -95,7 +101,7 @@ const FAQ = [
   },
   {
     q: '찾는 선수가 없어요.',
-    a: '지금은 시즌 상금 1,000만 달러를 넘긴 선수와 한국 선수 중 상금이 보도된 선수만 넣었어요. 시즌 결산 보도가 나오면 더 넣을게요.',
+    a: '지금은 시즌 상금 1,000만 달러를 넘긴 선수와 한국 선수 중 상금이 보도된 선수만 넣었어요. 더 많은 선수의 최종 상금이 보도되면 더 넣을게요.',
   },
 ]
 
@@ -120,20 +126,20 @@ export default makeTour({
     title: 'PGA 투어 선수, 상금 얼마 벌었을까?',
     lede: `선수 이름만 넣으면 ${SEASON} PGA 투어 시즌 공식 상금을 원화로 바꿔 하루, 1초, 대회 하나 단위로 쪼개 직장인 연봉과 비교해 드려요.`,
     example: '김시우',
-    days: '개막전부터 페덱스컵 최종전까지',
+    days: '개막전부터 시즌 마지막 대회(RSM 클래식)까지',
     rankLede: `시즌 상금 1,000만 달러를 넘긴 선수와 한국 선수예요. 1달러 = ${USD_KRW.toLocaleString('ko-KR')}원(${FX_DATE} 종가)으로 바꿨어요. 이름을 누르면 자세히 볼 수 있어요.`,
-    rankNote: '가을 시리즈가 끝나는 11월 22일 뒤 최종 금액으로 고치고, 선수도 더할게요.',
+    rankNote: '시즌은 11월 23일 RSM 클래식으로 끝났어요. 10만 달러 단위로 보이는 선수는 정확한 최종 금액이 보도되면 고칠게요.',
     footer: '상금은 언론이 보도한 PGA 투어 공식 상금을 돈미터가 옮겨 원화로 바꾼 참고 자료예요. 페덱스컵 보너스, 후원 계약금, 광고 수입은 들어 있지 않아요. 돈미터는 PGA 투어나 선수와 관계없는 개인 사이트예요.',
     card: `언론 보도 공식 상금, 1달러 ${USD_KRW.toLocaleString('ko-KR')}원`,
   },
   guide: {
     facts: [
       { dt: '상금 1위', dd: '3,094만 달러', p: `스코티 셰플러. 원화로 약 ${Math.round(won(30937525) / 1e8).toLocaleString('ko-KR')}억 원이에요. PGA 투어 처음으로 한 시즌 3,000만 달러를 넘겼어요.` },
-      { dt: '1,000만 달러 넘은 선수', dd: '9명', p: '페덱스컵 플레이오프가 끝났을 때 기준이에요. 김시우도 이 안에 들었어요.' },
+      { dt: '1,000만 달러 넘은 선수', dd: '10명', p: '시즌 마지막 대회 직전인 11월 17일 보도 기준이에요. 가을 시리즈에서 라이언 제라드가 새로 넘었고, 김시우도 이 안에 들었어요. 약 1,000만 달러로 보도된 콜린 모리카와는 반올림 금액이라 세지 않았어요.' },
       { dt: '한국 선수 최고', dd: '1,027만 달러', p: '김시우. 한국 선수 첫 시즌 1,000만 달러로, 2022-23시즌 김주형의 777만 달러를 넘었어요.' },
       { dt: '최종전 우승 상금', dd: '1,000만 달러', p: '투어 챔피언십(총상금 4,000만 달러). 셰플러가 우승해 페덱스컵 챔피언이 됐어요.' },
     ],
-    daysHow: `시즌 상금 ÷ ${TOUR_DAYS}일. 1월 15일 개막전부터 8월 30일 페덱스컵 최종전까지, 대회가 없는 날도 넣었어요.`,
-    sources: ['gm', 'nine', 'gw', 'khan', 'fx'],
+    daysHow: `시즌 상금 ÷ ${TOUR_DAYS}일. 1월 15일 개막전부터 11월 23일 RSM 클래식까지, 대회가 없는 날도 넣었어요.`,
+    sources: ['gm', 'espn', 'gw1117', 'khan', 'rsm', 'fx'],
   },
 })
