@@ -212,5 +212,23 @@
     }
   })
 
+  // 이메일 링크 (a.mail-link): 주소를 HTML 에 그대로 두지 않아 스팸 수집기가 못 긁게 한다.
+  // data-mu / data-md 에 아이디와 도메인을 거꾸로 적어 두고, 누르면 주소를 조합해 메일 앱을 열고
+  // 메일 앱이 없는 PC 에서도 복사할 수 있게 링크 글자를 주소로 바꿔 보여 준다.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a.mail-link[data-mu][data-md]')
+    if (!a) return
+    e.preventDefault()
+    var rev = function (t) {
+      return String(t || '').split('').reverse().join('')
+    }
+    var addr = rev(a.getAttribute('data-mu')) + '@' + rev(a.getAttribute('data-md'))
+    a.textContent = addr
+    a.setAttribute('href', 'mailto:' + addr)
+    a.removeAttribute('data-mu')
+    a.removeAttribute('data-md')
+    window.location.href = 'mailto:' + addr
+  })
+
   window.__theme = { list: THEMES, choose: choose }
 })()
