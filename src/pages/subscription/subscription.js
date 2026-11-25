@@ -30,6 +30,13 @@ export const SOURCES = {
   gamepass: { label: '디스이즈게임, Xbox 게임 패스 국내 가격 (에센셜·프리미엄·PC·얼티밋)', url: 'https://www.thisisgame.com/articles/404184' },
   nso: { label: '더위키, Nintendo Switch Online 국내 가격', url: 'https://thewiki.kr/w/NSO' },
   nsoPack: { label: '한국닌텐도, Nintendo Switch Online + 추가 팩 요금 플랜 (12개월 39,900원)', url: 'https://nintendo.co.kr/news/article/Q0tKRlVXa25aZkFlY2RCaENKYWZOZz09' },
+  wow: { label: '블리자드 샵, 월드 오브 워크래프트 게임 시간 (365일 176,000원)', url: 'https://kr.shop.battle.net/ko-kr/product/world-of-warcraft-game-time' },
+  wow30: { label: '나무위키, 월드 오브 워크래프트 한국 서비스 요금 (게임 시간 30일 19,800원)', url: 'https://namu.wiki/w/%EC%9B%94%EB%93%9C%20%EC%98%A4%EB%B8%8C%20%EC%9B%8C%ED%81%AC%EB%9E%98%ED%94%84%ED%8A%B8' },
+  ff14: { label: '엑스포츠뉴스, 파이널판타지14 한국 서비스 정액제 (30일 19,800원·90일 47,500원)', url: 'https://www.xportsnews.com/article/621078' },
+  lineage: { label: 'MTN, 리니지 클래식 월정액 2만 9,700원', url: 'https://news.mtn.co.kr/news-detail/2026021522444640621' },
+  genshin: { label: '버프겟, 원신 공월 축복 5,900원 (30일)', url: 'https://buffget.com/ko/news/welkin-moon-enough-for-flins-genshin-70-phase-2-guide' },
+  genshinIos: { label: '비트탑업, 원신 공월 축복 PC·구글 5,900원, iOS 7,500원', url: 'https://news.bittopup.com/news/weonsin-gongweol-cugbog-1.97weon-1wi-sangsi-7bae-ssage-12-000weonseog-cungjeon-kombo-gaideu' },
+  starrail: { label: '앱스토어, 붕괴: 스타레일 인앱 구입 (열차 보급 허가증 ₩5,900)', url: 'https://apps.apple.com/KR/app/id1599719154' },
   chatgpt: { label: '디지털마케터, 챗GPT 요금제 (2026년 10월 21일 한국 결제 설정, 부가세 포함)', url: 'https://www.digitalmarketer.co.kr/class/chatgpt-astra-basics/chatgpt-plans-and-limits' },
   claude: { label: '디언더독스, 클로드 요금제 한국 웹 결제 가격 (달러, 부가세 포함, 원화 환산)', url: 'https://the-underdogs.kr/news/claude-plans-compare' },
   gemini: { label: '아이엔마케팅, Google AI 요금제 한국 가격 (2026년 11월 13일 기준)', url: 'https://inmarketing.kr/goolgenews/google-ai-pricing-plus-pro-ultra-2026/' },
@@ -195,6 +202,32 @@ export const SERVICES = [
       { id: 'y12', label: '1년권', price: 1658, yearly: 19900 },
       { id: 'pack', label: '+ 추가 팩 1년권', price: 3325, yearly: 39900 },
     ],
+  },
+  {
+    id: 'wow', cat: 'game', name: '월드 오브 워크래프트', def: 'd30', src: ['wow30', 'wow'], note: '정액제 게임이에요. 1년권은 1년 값을 12로 나눴어요.',
+    tiers: [
+      { id: 'd30', label: '30일', price: 19800 },
+      { id: 'd365', label: '365일권', price: 14667, yearly: 176000 },
+    ],
+  },
+  {
+    id: 'ff14', cat: 'game', name: '파이널판타지14', def: 'd30', src: ['ff14'], note: '한국 서버 정액제예요. 90일권은 90일 값을 3으로 나눴어요.',
+    tiers: [
+      { id: 'd30', label: '30일', price: 19800 },
+      { id: 'd90', label: '90일권', price: 15833, per: '90일 47,500원 ÷ 3' },
+    ],
+  },
+  {
+    id: 'lineage', cat: 'game', name: '리니지 클래식', def: 'm', src: ['lineage'], note: '2026년 2월 정식 서비스를 시작한 정액제 리니지예요.',
+    tiers: [{ id: 'm', label: '월정액', price: 29700 }],
+  },
+  {
+    id: 'genshin', cat: 'game', name: '원신', def: 'welkin', src: ['genshin', 'genshinIos'], note: '30일짜리 월정액 상품이에요. 자동 갱신이 아니라 매달 다시 사요. 아이폰에서 사면 7,500원이에요.',
+    tiers: [{ id: 'welkin', label: '공월 축복', price: 5900 }],
+  },
+  {
+    id: 'starrail', cat: 'game', name: '붕괴: 스타레일', def: 'pass', src: ['starrail'], note: '30일짜리 월정액 상품이에요. 매달 다시 사요.',
+    tiers: [{ id: 'pass', label: '열차 보급 허가증', price: 5900 }],
   },
   // AI·소프트웨어
   {
@@ -450,7 +483,7 @@ export function calculate(state) {
 export const won = (v) => `${Math.round(v).toLocaleString('ko-KR')}원`
 export const pct = (v) => `${(v * 100).toFixed(v < 0.1 ? 1 : 0)}%`
 
-export const tierPriceText = (t) => (t.yearly ? `월 ${t.price.toLocaleString('ko-KR')}원 (1년 ${t.yearly.toLocaleString('ko-KR')}원)` : `월 ${t.price.toLocaleString('ko-KR')}원`)
+export const tierPriceText = (t) => (t.yearly ? `월 ${t.price.toLocaleString('ko-KR')}원 (1년 ${t.yearly.toLocaleString('ko-KR')}원)` : t.per ? `월 ${t.price.toLocaleString('ko-KR')}원 (${t.per})` : `월 ${t.price.toLocaleString('ko-KR')}원`)
 
 export { USED_AS_OF }
 
@@ -465,7 +498,7 @@ export const FAQ = [
   },
   {
     q: '1년권은 어떻게 계산했나요?',
-    a: 'PS Plus 1년권, 닌텐도 스위치 온라인 1년권과 추가 팩처럼 1년에 한 번 내는 요금제는 1년 값을 12로 나눠 한 달 요금으로 셌어요. 실제로는 1년에 한 번 목돈이 나가요.',
+    a: 'PS Plus 1년권, 닌텐도 스위치 온라인 1년권과 추가 팩, 월드 오브 워크래프트 365일권처럼 1년에 한 번 내는 요금제는 1년 값을 12로 나눠 한 달 요금으로 셌어요. 파이널판타지14 90일권은 3으로 나눴어요. 실제로는 한 번에 목돈이 나가요.',
   },
   {
     q: '월급의 몇 %는 어떻게 구했나요?',

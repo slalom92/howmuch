@@ -51,7 +51,7 @@ input {
 
 /* ---------- 상단 ---------- */
 .masthead {
-  max-width: 760px;
+  max-width: var(--page-w, 760px);
   margin: 0 auto;
   padding: 18px 20px 10px;
   display: flex;
@@ -108,7 +108,7 @@ input {
 
 /* ---------- 광고 ---------- */
 .ad {
-  max-width: 760px;
+  max-width: var(--page-w, 760px);
   margin: 8px auto;
   padding: 0 20px;
   text-align: center;
@@ -169,7 +169,7 @@ input {
   margin: 40px auto;
 }
 
-/* PC 좌우 세로 배너: 본문(760px) 바깥에 고정.
+/* PC 좌우 세로 배너: 본문(--page-w, 760~960px) 바깥에 고정.
    하단 고정 광고와 오른쪽 아래 바로가기 버튼(약 76px)을 뺀 높이의 가운데, 너무 낮은 화면에서는 위에서 16px */
 .ad--rail {
   position: fixed;
@@ -182,11 +182,11 @@ input {
 }
 
 .ad--left {
-  left: calc(50% - 380px - 24px - 160px);
+  left: calc(50% - var(--page-w, 760px) / 2 - 24px - 160px);
 }
 
 .ad--right {
-  right: calc(50% - 380px - 24px - 160px);
+  right: calc(50% - var(--page-w, 760px) / 2 - 24px - 160px);
 }
 
 @media print {
@@ -223,7 +223,7 @@ input {
 
 /* ---------- 본문 ---------- */
 .main {
-  max-width: 760px;
+  max-width: var(--page-w, 760px);
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -834,7 +834,7 @@ input {
 }
 
 .footer {
-  max-width: 760px;
+  max-width: var(--page-w, 760px);
   margin: 48px auto 0;
   padding: 0 20px 24px;
   font-size: 13px;
@@ -1616,7 +1616,7 @@ input {
 
 /* ---------- 채널 페이지 서버 렌더링 (자바스크립트 실행 전에만 잠깐 보임) ---------- */
 .ssr {
-  max-width: 760px;
+  max-width: var(--page-w, 760px);
   margin: 0 auto;
   padding: 16px 20px 40px;
 }
@@ -3055,7 +3055,7 @@ input {
   left: 50%;
   z-index: 44; /* 떠 있는 버튼(45), 하단 광고(50) 아래 */
   /* 본문 폭만큼만: PC 좌우 세로 광고를 덮지 않게 */
-  width: min(760px, 100vw);
+  width: min(var(--page-w, 760px), 100vw);
   overflow: hidden;
   padding: calc(6px + env(safe-area-inset-top)) 16px 2px;
   border-radius: 0 0 16px 16px;

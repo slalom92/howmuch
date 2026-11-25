@@ -155,7 +155,7 @@ function Bill({ r }) {
               {i.name}
               <small>
                 {i.tier.label}
-                {i.tier.yearly ? ` · 1년 ${i.tier.yearly.toLocaleString('ko-KR')}원 ÷ 12` : ''}
+                {i.tier.yearly ? ` · 1년 ${i.tier.yearly.toLocaleString('ko-KR')}원 ÷ 12` : i.tier.per ? ` · ${i.tier.per}` : ''}
               </small>
             </span>
             <span className="sub-bill__amt">{won(i.price)}</span>

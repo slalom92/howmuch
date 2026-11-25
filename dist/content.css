@@ -35,7 +35,7 @@ a:hover {
 
 .site-head,
 .site-foot {
-  max-width: 760px;
+  max-width: var(--page-w, 760px);
   margin: 0 auto;
   padding: 18px 20px;
 }
@@ -74,7 +74,7 @@ a:hover {
 }
 
 .doc {
-  max-width: 760px;
+  max-width: var(--page-w, 760px);
   margin: 8px auto 0;
   padding: 40px 48px 48px;
   background: var(--paper);

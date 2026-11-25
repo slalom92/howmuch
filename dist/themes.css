@@ -415,3 +415,16 @@
     max-height: calc(100vh - 76px);
   }
 }
+
+/* 본문 폭: 모바일·좁은 PC는 760px, 넓은 PC는 최대 960px.
+   PC 좌우 세로 광고(160px + 간격 24px씩)가 본문과 겹치지 않도록 화면 폭에서 400px을 뺀 만큼까지만 넓힌다.
+   (src/components/AdSlot.jsx 의 WIDE_QUERY: 1300px 이상에서 광고가 뜰 때 본문 900px + 광고 384px = 1284px) */
+:root {
+  --page-w: 760px;
+}
+
+@media (min-width: 1000px) {
+  :root {
+    --page-w: min(960px, max(760px, 100vw - 400px));
+  }
+}

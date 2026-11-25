@@ -96,3 +96,9 @@ a { color: inherit; }
 .social__btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .social__btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; }
 .social__btn .dot { fill: currentColor; stroke: none; }
+
+/* 넓은 PC: 다른 페이지와 같은 본문 폭(--page-w, 최대 960px)으로 넓히고 아이콘은 한 줄에 여섯 개 */
+@media (min-width: 1000px) {
+  .wrap { max-width: var(--page-w, 640px); }
+  .apps ul { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
