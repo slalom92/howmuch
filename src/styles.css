@@ -181,6 +181,18 @@ input {
   border: 0;
 }
 
+/* 가로 배너(결과 아래 등)는 본문 폭을 꽉 채운다. PC 2단 화면(grid)에서는 margin: auto 때문에
+   내용 폭으로 줄어들어 배너가 좁게 잡히므로 폭을 직접 100%로 준다 */
+.ad--cp:not(.ad--rail):not(.ad--mid) {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.ad--cp:not(.ad--rail):not(.ad--mid) .ad__frame {
+  width: 100%;
+}
+
 .ad--cp.ad--rail .ad__label {
   text-align: center;
 }
