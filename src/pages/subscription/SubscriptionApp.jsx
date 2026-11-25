@@ -232,7 +232,7 @@ function Cars({ r }) {
         구독 끊고 모으면 몇 년 만에 이 차
       </h2>
       <p className="sub-cars__lede">
-        한 달 {won(r.monthly)}을 한 푼도 안 쓰고 모을 때 2023년식 중고차를 사기까지 걸리는 시간이에요.
+        한 달 {won(r.monthly)}을 한 푼도 안 쓰고 모을 때 중고차를 사기까지 걸리는 시간이에요.
         {r.tenCar ? (
           <>
             {' '}
@@ -243,10 +243,12 @@ function Cars({ r }) {
       <ul className="sub-cars__list">
         {r.cars.map((c) => (
           <li key={c.id}>
-            <a href={carLink(r.state, c.id)} onClick={() => track('subscription_car', { car: c.id })}>
+            <a href={carLink(r.state, c.own ? null : c.id)} onClick={() => track('subscription_car', { car: c.id })}>
               <span className="sub-cars__name">
                 {c.name}
-                <small>{wonText(c.price)}</small>
+                <small>
+                  {c.year}년식 {wonText(c.price)}
+                </small>
               </span>
               <span className="sub-cars__bar" aria-hidden="true">
                 <i style={{ width: `${Math.max(2, (Math.log1p(c.years) / Math.log1p(max)) * 100)}%` }} />
@@ -256,7 +258,7 @@ function Cars({ r }) {
           </li>
         ))}
       </ul>
-      <p className="sub-cars__note">시세는 엔카 2026년 10월 보도(2023년식, 6만 km, 무사고) 기준이에요. 이자는 넣지 않았어요. 차 이름을 누르면 자차 계산기로 이어져요.</p>
+      <p className="sub-cars__note">모닝은 2021년식 평균 등록가격(2026년 10월 보도), 나머지는 엔카 2026년 10월 보도(2023년식, 6만 km, 무사고) 시세예요. 이자는 넣지 않았어요. 차 이름을 누르면 자차 계산기로 이어져요.</p>
     </section>
   )
 }

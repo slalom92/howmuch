@@ -3,7 +3,7 @@ import { FAQ, SOURCES, SERVICES, CATEGORIES, AS_OF, tierPriceText } from './subs
 
 // ad: 첫 카드(이렇게 계산했어요) 다음에 넣을 광고. 모바일 본문 중간 광고 자리
 export default function SubscriptionGuide({ ad = null }) {
-  const used = [...new Set([...SERVICES.flatMap((s) => s.src), 'chicken', 'ramen', 'encar', 'netpay', 'nettax'])]
+  const used = [...new Set([...SERVICES.flatMap((s) => s.src), 'chicken', 'ramen', 'morning', 'encar', 'netpay', 'nettax'])]
   return (
     <article className="kbo-guide">
       <section className="kbo-card">
@@ -22,7 +22,7 @@ export default function SubscriptionGuide({ ad = null }) {
             <strong>치킨·라면</strong> 1년 구독료 ÷ 23,000원(BBQ 황금올리브), ÷ 1,000원(신라면 봉지).
           </li>
           <li>
-            <strong>몇 년 모으면 이 차</strong> 2023년식 중고 시세 ÷ 1년 구독료. 이자는 넣지 않았어요.
+            <strong>몇 년 모으면 이 차</strong> 중고 시세(5년 된 모닝부터 2023년식 카이엔 쿠페까지) ÷ 1년 구독료. 이자는 넣지 않았어요.
           </li>
         </ul>
       </section>

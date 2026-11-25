@@ -67,6 +67,7 @@ export const SOURCES = {
   chicken: { label: 'MTN, BBQ 황금올리브치킨 후라이드 23,000원', url: 'https://news.mtn.co.kr/news-detail/2024052111194813151' },
   ramen: { label: 'SBS Biz, 신라면 봉지 1개 1천 원', url: 'https://biz.sbs.co.kr/amp/article/20000284952' },
   encar: CAR_SRC.encar,
+  morning: { label: '뉴스와, 기아 모닝 2021년식 중고 평균 등록가격 1,099만 원 (2026년 10월)', url: 'https://www.news-wa.com/article/automobiles/2026/10/29/20261029500018' },
 }
 
 export const CATEGORIES = [
@@ -429,15 +430,20 @@ export function toSearch(st) {
 // 차: 2023년식 중고 시세(만 원) — 자차 계산기와 같은 표
 const WON = 10000
 const carName = (c) => (c.model.includes(c.maker) ? c.model.replace(/^더 뉴 /, '') : `${c.maker} ${c.model}`)
-export const CAR_LADDER = ['ray', 'casper', 'avante', 'k5', 'grandeur', 'g80', 'bmw5', 'gv80', 'cayenne-coupe']
-  .map((id) => CARS.find((c) => c.id === id))
-  .filter(Boolean)
-  .map((c) => ({ id: c.id, name: carName(c), price: c.used * WON }))
-  .sort((a, b) => a.price - b.price)
+// 5년 된(2021년식) 기아 모닝: 자차 계산기 목록에 없는 차라 따로 둔다 (own: 자차 계산기로 넘기지 않음)
+export const MORNING = { id: 'morning', name: '5년 된 기아 모닝', price: 1099 * WON, own: true, year: 2021 }
+
+export const CAR_LADDER = [
+  MORNING,
+  ...['ray', 'casper', 'avante', 'k5', 'grandeur', 'g80', 'bmw5', 'gv80', 'cayenne-coupe']
+    .map((id) => CARS.find((c) => c.id === id))
+    .filter(Boolean)
+    .map((c) => ({ id: c.id, name: carName(c), price: c.used * WON, year: 2023 })),
+].sort((a, b) => a.price - b.price)
 
 // 모은 돈으로 살 수 있는 가장 비싼 차 (2023년식 중고). 레이도 못 사면 null
 export function carFor(total) {
-  const list = CARS.map((c) => ({ id: c.id, name: carName(c), price: c.used * WON })).filter((c) => c.price <= total)
+  const list = [MORNING, ...CARS.map((c) => ({ id: c.id, name: carName(c), price: c.used * WON }))].filter((c) => c.price <= total)
   if (!list.length) return null
   return list.reduce((a, b) => (b.price > a.price ? b : a))
 }
@@ -510,7 +516,7 @@ export const FAQ = [
   },
   {
     q: '몇 년 모으면 살 수 있는 차는 무슨 값인가요?',
-    a: '자차 계산기와 같은 엔카 2026년 10월 중고차 시세(2023년식, 주행 6만 km, 무사고)예요. 한 달 구독료를 한 푼도 쓰지 않고 그대로 모은다고 치고, 이자는 넣지 않았어요.',
+    a: '5년 된 기아 모닝은 2021년식 모닝의 중고 평균 등록가격 1,099만 원(2026년 10월 보도)이에요. 나머지 차는 자차 계산기와 같은 엔카 2026년 10월 중고차 시세(2023년식, 주행 6만 km, 무사고)예요. 한 달 구독료를 한 푼도 쓰지 않고 그대로 모은다고 치고, 이자는 넣지 않았어요.',
   },
   {
     q: '클로드는 왜 원화 값이 딱 떨어지지 않나요?',
