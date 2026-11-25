@@ -5,7 +5,7 @@
 //     channel_id (view_channel) / player (kbo_view, golf_view) / tour (golf_view) / car (car_pick) / st (commute_station)
 // - 사람이 입력한 글자는 그대로 내보내지 않는다. 돈미터 목록에 있는 선수·차·역, YouTube에 있는 구독자 1만 명 이상 채널만 남긴다.
 // - 같은 사람이 여러 번 눌러도 한 번으로 세도록 사용자 수(totalUsers)로 순위를 매기고, MIN_USERS 명 미만은 빼서 보여 준다.
-// - 이번 주(최근 7일)와 지난주(그 전 7일)를 한 번에 받아 순위 변동을 낸다.
+// - 전체 기간(SINCE 부터 오늘까지)과 1주 전 시점(SINCE 부터 7일 전까지)을 한 번에 받아, 1주 전보다 순위가 어떻게 바뀌었는지 낸다.
 import { PLAYERS as KBO_LIST, TEAMS as KBO_TEAMS } from '../../src/pages/kbo/kbo.js'
 import klpga from '../../src/pages/klpga/klpga.js'
 import kpga from '../../src/pages/kpga/kpga.js'
@@ -18,9 +18,11 @@ import { channelsBy } from './youtube.js'
 export const MIN_USERS = 5
 const TOP = 10
 const MIN_SUBS = 10000
+// 전체 기간의 시작일. 돈미터 GA4 수집을 시작하기 전 날짜면 된다 (그 전에는 데이터가 없어 결과가 같다)
+export const SINCE = '2020-01-01'
 const RANGES = [
-  { startDate: '6daysAgo', endDate: 'today', name: 'now' },
-  { startDate: '13daysAgo', endDate: '7daysAgo', name: 'prev' },
+  { startDate: SINCE, endDate: 'today', name: 'now' },
+  { startDate: SINCE, endDate: '7daysAgo', name: 'prev' },
 ]
 
 const KBO_PLAYERS = new Map(KBO_LIST.map((p) => [p.name, p]))
@@ -43,7 +45,7 @@ function tally(rows, keyOf) {
   return [...map.values()]
 }
 
-// 이번 주 후보(문턱 이상, 넉넉히 TOP×2) + 지난주 순위 (지난주는 문턱 없이 전체 순위)
+// 지금 후보(문턱 이상, 넉넉히 TOP×2) + 1주 전 시점 순위 (1주 전은 문턱 없이 전체 순위)
 function order(items) {
   const prevRank = new Map(
     items

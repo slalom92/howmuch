@@ -11,7 +11,7 @@
 // - 키가 없거나 조회가 실패하면 503 을 돌려주고, 홈 화면은 HTML 에 적힌 기본 순서를 그대로 쓴다.
 import crypto from 'node:crypto'
 import { send, query } from './_lib/youtube.js'
-import { boards } from './_lib/boards.js'
+import { boards, SINCE } from './_lib/boards.js'
 
 const HOUR = 3600
 const DAYS = 7
@@ -147,7 +147,8 @@ export default async function handler(req, res) {
       const host = String(req.headers['x-forwarded-host'] || req.headers.host || '')
       const origin = /(^|\.)donmeter\.com$|\.vercel\.app$/.test(host) ? `https://${host}` : 'https://donmeter.com'
       const data = await boards((body) => runReport(token, property, body), origin)
-      return send(res, 200, { days: 7, updatedAt: new Date().toISOString(), ...data }, HOUR)
+      // 순위 페이지는 전체 기간 (홈 화면 아이콘 순서는 아래처럼 최근 DAYS일)
+      return send(res, 200, { period: 'all', since: SINCE, updatedAt: new Date().toISOString(), ...data }, HOUR)
     }
     const rows = await pageViews(token, property)
     return send(res, 200, { days: DAYS, updatedAt: new Date().toISOString(), ...rank(rows) }, HOUR)
