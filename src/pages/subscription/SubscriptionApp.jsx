@@ -10,6 +10,8 @@ import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
+import ResultNote from '../../components/ResultNote.jsx'
+import HeroArt from '../../components/HeroArt.jsx'
 import StingHero from '../../components/StingHero.jsx'
 import { rememberPay, workText, bigTime, yearsText, wonText } from '../../lib/sting.js'
 import { MENU, SUBSCRIPTION, SURVIVE, JONBER, CAR } from '../../lib/menu.js'
@@ -363,28 +365,32 @@ export default function SubscriptionApp({ initialSearch = '' }) {
 
       <AdRails slot={SLOTS.rail} />
 
-      <main className="main">
-        <StingHero options={subscriptionHero(r)} />
+      <main className="main main--split">
         <section className="hero sub-hero">
           <div className="hero__text">
+            <p className="hero__kicker">매달 빠져나가는 돈 점검</p>
             <h1 className="hero__title">월 구독료 계산기</h1>
             <p className="hero__lede">넷플릭스, 배민클럽, 게임 패스, 챗GPT, iCloud, 테슬라 FSD까지. 쓰는 구독과 요금제를 고르면 매달 얼마가 빠져나가는지, 월급의 몇 %인지 보여 드려요.</p>
           </div>
+          <HeroArt kind="subscription" />
         </section>
+        <StingHero options={subscriptionHero(r)} />
 
-        <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="구독과 요금제, 연봉 고르기">
+        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="구독과 요금제, 연봉 고르기">
+          <h2 className="panel__title">조건 고르기</h2>
           <Picker picks={r.state.s} onToggle={toggle} />
           <Tiers picks={r.state.s} onTier={setTier} onToggle={toggle} />
           <Choices legend="연봉 (세전, 계산은 실수령으로)" name="pay" options={SALARIES} value={r.state.pay} onChange={setPay} />
         </form>
 
-        <div className="sub-result" aria-live="polite">
+        <div className="sub-result split-out" aria-live="polite">
           <div ref={resultRef}>
             <Bill r={r} />
           </div>
           <Sting page="subscription" lines={subscriptionStings(r)} basis={`연봉 ${r.salary.label} 원 실수령 기준`} />
           <Swap r={r} />
         </div>
+        <ResultNote>각 서비스가 공개한 한 달 요금(부가세 포함)을 더했어요. 할인, 통신사 결합, 연간 결제 여부에 따라 실제로 나가는 돈은 달라질 수 있어요.</ResultNote>
 
         {share && <ShareBar url={share.url} text={share.text} sub="링크를 받은 사람도 같은 구독 목록을 보고, 자기 구독으로 바꿔 볼 수 있어요." />}
 

@@ -12,6 +12,8 @@ import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
 import { rememberPay } from '../../lib/sting.js'
 import { jonberStings, jonberHero } from './sting.js'
+import ResultNote from '../../components/ResultNote.jsx'
+import HeroArt from '../../components/HeroArt.jsx'
 import StingHero from '../../components/StingHero.jsx'
 import { MENU, JONBER, APT, YOUTUBER, KBO } from '../../lib/menu.js'
 import { SALARIES, BASES, MIN_WAGE, calculate, fromSearch, toSearch, timeText, clockAt, won, wonSmall, priceText } from './jonber.js'
@@ -278,21 +280,24 @@ export default function JonberApp({ initialSearch = '' }) {
       {/* PC: 본문 좌우 세로 배너 / 모바일: 이 자리 대신 본문 중간 광고(mid) */}
       <AdRails slot={SLOTS.rail} />
 
-      <main className="main">
-        <StingHero options={jonberHero(r)} />
+      <main className="main main--split">
         <section className="hero jb-hero">
           <div className="hero__text">
+            <p className="hero__kicker">내 월급, 1분에 얼마일까</p>
             <h1 className="hero__title">월급 분당 계산기</h1>
             <p className="hero__lede">연봉만 고르면 커피 한 잔, 점심 한 끼, 월세, 아이폰을 사려고 몇 시간 일해야 하는지 보여 드려요.</p>
           </div>
+          <HeroArt kind="jonber" />
         </section>
+        <StingHero options={jonberHero(r)} />
 
-        <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="연봉 고르기">
+        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="연봉 고르기">
+          <h2 className="panel__title">조건 고르기</h2>
           <Choices legend="연봉 (세전)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
           <Choices legend="시급 기준" name="b" options={BASES} value={state.b} onChange={set('b')} />
         </form>
 
-        <div className="jb-result" aria-live="polite">
+        <div className="jb-result split-out" aria-live="polite">
           <div ref={resultRef}>
             <PayCard r={r} />
           </div>
@@ -300,6 +305,7 @@ export default function JonberApp({ initialSearch = '' }) {
           <Clock r={r} />
           <Later r={r} />
         </div>
+        <ResultNote>고른 연봉의 실수령액을 한 달 근무 시간으로 나눠 계산했어요. 수당, 성과급, 공제 항목에 따라 실제 시급은 달라질 수 있어요.</ResultNote>
 
         {share && <ShareBar url={share.url} text={share.text} sub="링크를 받은 사람도 같은 연봉의 결과를 보고, 자기 연봉으로 바꿔 볼 수 있어요." />}
 

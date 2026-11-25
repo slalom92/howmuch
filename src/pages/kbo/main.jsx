@@ -4,6 +4,8 @@ import KboApp from './KboApp.jsx'
 import { loadAdSenseScript } from '../../components/AdSlot.jsx'
 import '../../styles.css'
 import './kbo.css'
+import '../../design.css'
+import '../../design.js'
 
 loadAdSenseScript()
 

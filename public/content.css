@@ -1,7 +1,7 @@
 /* 소개·정책·가이드 같은 정적 페이지 공통 스타일 (계산기와 같은 색·글꼴) */
 /* 색 변수는 /themes.css 에서 테마별로 정한다 */
 :root {
-  --font: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  --font: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 }
 
 * {
@@ -621,4 +621,32 @@ a:hover {
   display: block;
   max-width: 100%;
   border: 0;
+}
+
+/* ---------- 2026-11 디자인 개편: 흰 카드 + 코랄 강조 (계산기 페이지 src/design.css 와 같은 모양) ---------- */
+.doc {
+  border-radius: 20px;
+  box-shadow: 0 1px 2px rgba(var(--shadow-rgb), 0.05), 0 14px 34px -22px rgba(var(--shadow-rgb), 0.45);
+}
+
+.doc::before {
+  content: none;
+}
+
+.doc h1 {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.doc .formula {
+  border-left-color: var(--seal);
+  border-radius: 0 10px 10px 0;
+}
+
+@media (max-width: 640px) {
+  .doc {
+    margin-left: 12px;
+    margin-right: 12px;
+    border-radius: 18px;
+  }
 }

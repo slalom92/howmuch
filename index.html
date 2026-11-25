@@ -78,9 +78,8 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" crossorigin />
     <script src="/ga.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539"
      crossorigin="anonymous"></script>
@@ -100,8 +99,12 @@
 
       <main>
         <section class="hero">
-          <p class="kicker">돈 얘기를 재미로 재는 곳</p>
-          <h1>오늘은 뭘<br />계산해 볼까요?</h1>
+          <div class="hero__text">
+            <p class="kicker">돈 얘기를 재미로 재는 곳</p>
+            <h1>오늘은 뭘<br />계산해 볼까요?</h1>
+            <p class="lede">연봉, 월세, 구독료, 축의금처럼 매일 마주치는 돈을 칩 몇 개만 골라 바로 계산해 보세요.</p>
+          </div>
+          <img class="hero__art" src="/art/home.svg" alt="" width="360" height="230" />
         </section>
         <div data-partners="note"></div>
         <div data-partners="rails"></div>
@@ -239,7 +242,8 @@
           })()
         </script>
 
-        <ul class="quick" aria-label="바로 해 보기">
+        <h2 class="sec-title" id="quick-title">많이 찾는 계산 주제</h2>
+        <ul class="quick" aria-labelledby="quick-title">
           <li>
             <a href="/subscription/" id="quick-subscription">
               <span><strong>넷플릭스·유튜브·쿠팡 와우, 1년이면 얼마?</strong><span>쓰는 구독을 고르면 매달 빠져나가는 돈과 월급의 몇 %인지 보기</span></span>
@@ -301,6 +305,23 @@
             </a>
           </li>
         </ul>
+
+        <div class="promise">
+          <section class="promise__card">
+            <span class="promise__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h7l4 4v13H7z" /><path d="M14 3.5v4h4M10 12h5M10 15.5h5" /></svg></span>
+            <div>
+              <h2>계산은 공개 자료로 해요</h2>
+              <p>국토교통부 실거래가, 통계청 자료, 공식 요금표와 보도를 바탕으로 계산하고, 페이지마다 기준일과 출처를 적어 둬요.</p>
+            </div>
+          </section>
+          <section class="promise__card">
+            <span class="promise__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5" /><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5M12 14.5v2.5" /></svg></span>
+            <div>
+              <h2>가입 없이 바로 써요</h2>
+              <p>로그인이나 이름, 연락처 같은 개인정보를 받지 않아요. 연봉도 칩으로 고르는 대표값이라 내 정확한 금액을 적을 필요가 없어요.</p>
+            </div>
+          </section>
+        </div>
 
         <div data-partners="ad"></div>
 

@@ -8,6 +8,8 @@ import '../apt/apt.css'
 import '../jonber/jonber.css'
 import '../survive/survive.css'
 import './subscription.css'
+import '../../design.css'
+import '../../design.js'
 
 loadAdSenseScript()
 

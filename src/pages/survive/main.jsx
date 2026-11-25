@@ -7,6 +7,8 @@ import '../kbo/kbo.css'
 import '../apt/apt.css'
 import '../jonber/jonber.css'
 import './survive.css'
+import '../../design.css'
+import '../../design.js'
 
 loadAdSenseScript()
 

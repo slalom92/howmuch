@@ -11,6 +11,8 @@ import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
 import { useMyPay } from '../../lib/sting.js'
 import { commuteStings, commuteHero } from './sting.js'
+import ResultNote from '../../components/ResultNote.jsx'
+import HeroArt from '../../components/HeroArt.jsx'
 import StingHero from '../../components/StingHero.jsx'
 import { MENU, COMMUTE, SURVIVE, APT, YOUTUBER } from '../../lib/menu.js'
 import { hasMap, loadKakao } from '../apt/kakaoMap.js'
@@ -663,16 +665,19 @@ export default function CommuteApp({ initialSearch = '' }) {
 
       <AdRails slot={SLOTS.rail} />
 
-      <main className="main">
-        <StingHero options={commuteHero({ sum, state, salary: myPay, ready: result.status === 'done' })} />
+      <main className="main main--split">
         <section className="hero cm-hero">
           <div className="hero__text">
+            <p className="hero__kicker">회사 근처 집, 얼마면 될까</p>
             <h1 className="hero__title">직주근접 계산기</h1>
             <p className="hero__lede">회사 근처 역을 고르면, 역 주변에서 최근 계약된 전세·월세와 집에서 역까지 출퇴근 시간을 보여 드려요.</p>
           </div>
+          <HeroArt kind="commute" />
         </section>
+        <StingHero options={commuteHero({ sum, state, salary: myPay, ready: result.status === 'done' })} />
 
-        <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="집 조건과 역 고르기">
+        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="집 조건과 역 고르기">
+          <h2 className="panel__title">조건 고르기</h2>
           <Choices legend="계약" name="k" options={KINDS} value={state.k} onChange={set('k')} />
           <Choices legend="집" name="t" options={TYPES} value={state.t} onChange={set('t')} />
           <Choices legend="역에서 거리" name="d" options={DISTS} value={state.d} onChange={set('d')} />
@@ -686,7 +691,7 @@ export default function CommuteApp({ initialSearch = '' }) {
         </form>
 
         {station && (
-          <div className="cm-result">
+          <div className="cm-result split-out">
             <CommuteMap
               station={station}
               lineStations={lineStations}
@@ -742,6 +747,7 @@ export default function CommuteApp({ initialSearch = '' }) {
             )}
           </div>
         )}
+        {station && <ResultNote>전세·월세는 역 주변 최근 실거래 신고를, 출퇴근 시간은 대표 경로를 기준으로 어림했어요. 실제 매물 가격과 이동 시간은 다를 수 있어요.</ResultNote>}
 
         {share && <ShareBar url={share.url} text={share.text} sub="링크를 받은 사람도 같은 역과 조건으로 볼 수 있어요." />}
 

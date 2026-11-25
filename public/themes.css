@@ -1,17 +1,38 @@
 /* 색 테마 (계산기, 채널 페이지, 정적 페이지가 함께 쓴다)
  *
  * <html data-theme="…"> 값에 따라 색 변수가 바뀐다. 테마는 /theme.js 가 정한다.
- *   - 처음 방문: 방문할 때마다 무작위
+ *   - 처음 방문: 코랄(기본)
  *   - 이용자가 고르면: 그 색을 기억 (이 브라우저에만 저장)
  *
  * 변수
  *   desk 바탕 / paper 명세서 종이 / paper-tint 옅은 칸 / ink 글자·선 / muted 보조 글자
- *   rule 구분선 / bar 막대·점선 / seal 도장·강조 / seal-tint 옅은 강조
+ *   rule 구분선 / bar 막대·점선 / seal 도장·강조 / seal-ink 작은 글자에 쓰는 진한 강조 / seal-tint 옅은 강조
  *   on-ink, on-seal: ink·seal 색 위에 올리는 글자색
  *   *-rgb: 투명도를 줄 때 쓰는 같은 색의 RGB 값
  */
 
+/* 코랄 계산기 (기본) — 연회색 바탕, 흰 카드, 남색 글자, 코랄 강조 */
 :root,
+[data-theme='coral'] {
+  --desk: #eef2f7;
+  --paper: #ffffff;
+  --paper-tint: #f6f8fb;
+  --ink: #1b2537;
+  --muted: #646f82;
+  --rule: #e0e6ee;
+  --bar: #b4bfcf;
+  --seal: #f0623f;
+  --seal-ink: #d4472a;
+  --seal-tint: #ffeee9;
+  --on-ink: #ffffff;
+  --on-seal: #ffffff;
+  --paper-rgb: 255, 255, 255;
+  --seal-rgb: 240, 98, 63;
+  --shadow-rgb: 40, 52, 78;
+  color-scheme: light;
+}
+
+/* 남색 명세서 */
 [data-theme='navy'] {
   --desk: #e7ebf0;
   --paper: #ffffff;
@@ -157,7 +178,7 @@
   background: var(--paper);
   color: var(--ink);
   box-shadow: 0 18px 40px -16px rgba(var(--shadow-rgb), 0.45);
-  font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  font-family: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 }
 .theme-menu[hidden] {
   display: none;
@@ -426,5 +447,12 @@
 @media (min-width: 1000px) {
   :root {
     --page-w: min(960px, max(760px, 100vw - 400px));
+  }
+}
+
+/* 1000~1299px: 좌우 세로 광고가 나오지 않는 폭이라 본문을 더 넓게 (PC 2단 화면이 좁아지지 않게) */
+@media (min-width: 1000px) and (max-width: 1299px) {
+  :root {
+    --page-w: min(960px, 100vw - 96px);
   }
 }

@@ -7,6 +7,8 @@ import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
 import { useMyPay } from '../../lib/sting.js'
 import { giftStings, giftHero } from './sting.js'
+import ResultNote from '../../components/ResultNote.jsx'
+import HeroArt from '../../components/HeroArt.jsx'
 import StingHero from '../../components/StingHero.jsx'
 import { MENU, YOUTUBER, KBO, KLPGA } from '../../lib/menu.js'
 import { RELATIONS, REGIONS, VENUES, PARTY, RECEIVED, DEFAULTS, calculate, fromSearch, toSearch, normalize } from './gift.js'
@@ -250,16 +252,19 @@ export default function GiftApp() {
       {/* PC: 본문 좌우 세로 배너 / 모바일: 이 자리 대신 본문 중간 광고(mid) */}
       <AdRails slot={SLOTS.rail} />
 
-      <main className="main">
-        <StingHero options={giftHero(result, myPay)} />
+      <main className="main main--split">
         <section className="hero gift-hero">
           <div className="hero__text">
+            <p className="hero__kicker">경조사비, 얼마가 적당할까</p>
             <h1 className="hero__title">축의금, 얼마 내야 할까?</h1>
             <p className="hero__lede">관계와 예식장만 고르면 요즘 시세로 적정 축의금과 신랑·신부의 식대 손익까지 계산해 드려요.</p>
           </div>
+          <HeroArt kind="gift" />
         </section>
+        <StingHero options={giftHero(result, myPay)} />
 
-        <form className="gift-form" onSubmit={(e) => e.preventDefault()} aria-label="축의금 조건">
+        <form className="gift-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="축의금 조건">
+          <h2 className="panel__title">조건 고르기</h2>
           <Choices legend="어떤 사이인가요?" name="rel" options={RELATIONS} value={s.rel} onChange={set('rel')} />
           <Choices
             legend="결혼식에 가나요?"
@@ -288,7 +293,7 @@ export default function GiftApp() {
           />
         </form>
 
-        <div className="gift-result" aria-live="polite" ref={resultRef}>
+        <div className="gift-result split-out" aria-live="polite" ref={resultRef}>
           <Envelope result={result} />
           <MealMeter result={result} />
           <Sting page="gift" lines={giftStings(result, myPay)} pay={{ salary: myPay, onChange: setMyPay, basis: 'net' }} />
@@ -298,6 +303,7 @@ export default function GiftApp() {
             {result.vsAvg > 1.05 ? '로 평균보다 넉넉해요.' : result.vsAvg < 0.95 ? '로 평균보다 가벼워요.' : '이에요.'}
           </p>
         </div>
+        <ResultNote>설문과 보도로 알려진 요즘 시세를 바탕으로 한 참고값이에요. 관계와 지역, 집안 분위기에 따라 적당한 금액은 달라질 수 있어요.</ResultNote>
 
         {share && <ShareBar url={share.url} text={share.text} sub="링크를 받은 사람도 같은 조건의 결과를 보고, 자기 상황으로 바꿔 계산해 볼 수 있어요." />}
 

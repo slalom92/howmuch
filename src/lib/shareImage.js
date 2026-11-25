@@ -12,7 +12,7 @@ import { roleOf, hash, ymd, employeeNo, companyLabel, waGwa } from './badge.js'
 export const CARD_W = 1080
 export const CARD_H = 1350
 const SITE = 'donmeter.com'
-const FONT = '"IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif'
+const FONT = '"Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif'
 const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace'
 const PERIOD_TITLE = { day: '하루 예상 수익', week: '한 주 예상 수익', month: '한 달 예상 수익', year: '1년 예상 수익' }
 
@@ -42,7 +42,7 @@ async function loadFonts(texts) {
   const sample = [...new Set(texts.join('') + '0123456789,.·~원만억')].join('')
   try {
     await Promise.race([
-      Promise.all([400, 500, 600, 700].map((w) => document.fonts.load(`${w} 40px "IBM Plex Sans KR"`, sample))),
+      Promise.all([400, 500, 600, 700].map((w) => document.fonts.load(`${w} 40px "Pretendard Variable"`, sample))),
       new Promise((r) => setTimeout(r, 3000)),
     ])
   } catch {

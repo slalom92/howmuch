@@ -7,7 +7,7 @@ import AdSlot, { AdRails } from './components/AdSlot.jsx'
 import CompanyCompare from './components/CompanyCompare.jsx'
 import GoalPlan from './components/GoalPlan.jsx'
 import ShareBar from './components/ShareBar.jsx'
-import { BrandMark, PayEnvelope } from './components/Art.jsx'
+import { BrandMark } from './components/Art.jsx'
 import { searchChannels, loadChannel, DEMO_MODE } from './lib/youtube.js'
 import { DEMO_CHANNELS } from './lib/demo.js'
 import { analyze, monthlyRevenue, RPM, SHORTS_MAX_SEC } from './lib/calc.js'
@@ -27,6 +27,7 @@ import SocialLinks from './components/Social.jsx'
 import Sting from './components/Sting.jsx'
 import { useMyPay } from './lib/sting.js'
 import { youtuberStings, youtuberHero } from './lib/youtuberSting.js'
+import HeroArt from './components/HeroArt.jsx'
 import StingHero from './components/StingHero.jsx'
 
 const HOME_TITLE = '유튜브 수익 계산기 – 유튜버 한 달 수익 추정 | 돈미터'
@@ -194,10 +195,11 @@ export default function App() {
       <main className="main">
         <section className="hero">
           <div className="hero__text">
+            <p className="hero__kicker">채널 이름으로 재 보는 광고 수익</p>
             <h1 className="hero__title">이 유튜버, 한 달에 얼마 벌까?</h1>
             <p className="hero__lede">채널 이름만 넣으면 한 달 광고 수익을 추정해 드려요.</p>
           </div>
-          <PayEnvelope className="hero__art" />
+          <HeroArt kind="youtuber" />
           <SearchBar onSearch={search} busy={busy} examples={DEMO_MODE ? DEMO_CHANNELS.map((c) => c.title) : []} />
         </section>
 

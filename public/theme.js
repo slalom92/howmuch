@@ -1,12 +1,13 @@
 /* 색 테마 정하기 + 고르기 (모든 페이지 <head> 에서 가장 먼저 읽는다)
  *
  * - 이용자가 고른 테마가 있으면 그 테마 (localStorage 'theme')
- * - 없으면 방문할 때마다 무작위. 같은 방문(탭) 안에서는 페이지를 옮겨도 같은 색 (sessionStorage)
+ * - 없으면 기본 테마(코랄)
  * - 화면이 그려지기 전에 <html data-theme> 를 정해 기본 색이 번쩍이지 않게 한다.
  * - [data-theme-toggle] 버튼을 누르면 고르기 메뉴가 열린다. 메뉴는 이 파일이 직접 만든다.
  */
 (function () {
   var THEMES = [
+    { id: 'coral', name: '코랄 계산기', sw: ['#1b2537', '#f0623f', '#eef2f7'], bar: '#eef2f7' },
     { id: 'navy', name: '남색 명세서', sw: ['#1a2238', '#c2362b', '#e7ebf0'], bar: '#e7ebf0' },
     { id: 'cheque', name: '초록 수표', sw: ['#15302a', '#1a714a', '#e3ebe5'], bar: '#e3ebe5' },
     { id: 'voucher', name: '보라 상품권', sw: ['#261c40', '#7b3fc0', '#ebe7f2'], bar: '#ebe7f2' },
@@ -48,11 +49,9 @@
   }
 
   var picked = find(read('local', KEY)) ? read('local', KEY) : null
-  var visit = read('session', VISIT_KEY)
-  if (!find(visit)) {
-    visit = THEMES[Math.floor(Math.random() * THEMES.length)].id
-    write('session', VISIT_KEY, visit)
-  }
+  // 고른 적이 없으면 기본(코랄). 예전에 쓰던 방문별 무작위 값은 지운다.
+  var visit = THEMES[0].id
+  write('session', VISIT_KEY, null)
 
   function apply(id) {
     var t = find(id) || THEMES[0]

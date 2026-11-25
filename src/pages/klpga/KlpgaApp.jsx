@@ -10,6 +10,7 @@ import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
 import { useMyPay } from '../../lib/sting.js'
 import { golfStings, golfHero } from './sting.js'
+import HeroArt from '../../components/HeroArt.jsx'
 import StingHero from '../../components/StingHero.jsx'
 import { MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA, KPGA, PGA, LPGA } from '../../lib/menu.js'
 import { WORKER_YEAR } from './golf.js'
@@ -548,13 +549,14 @@ export default function GolfApp({ T }) {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
-        <StingHero options={golfHero(pr, myPay)} />
         <section className="hero kbo-hero">
           <TourTabs T={T} />
           <div className="hero__text">
+            <p className="hero__kicker">프로골프 상금을 내 월급으로 재 보기</p>
             <h1 className="hero__title">{T.text.title}</h1>
             <p className="hero__lede">{T.text.lede}</p>
           </div>
+          <HeroArt kind="golf" />
           <PlayerSearch T={T} onPick={choose} />
           <ul className="kbo-picks" aria-label="상금 상위 선수">
             {T.PLAYERS.map((p) => (
@@ -566,6 +568,7 @@ export default function GolfApp({ T }) {
             ))}
           </ul>
         </section>
+        <StingHero options={golfHero(pr, myPay)} />
 
         <div className="kbo-result" ref={resultRef} aria-live="polite">
           <Scorecard pr={pr} />

@@ -117,7 +117,7 @@ export async function drawScoreboard(pr) {
   const sy = py + ph + 96
   fitText(ctx, headline, px + 8, sy, pw - 16, { size: 42, min: 30, weight: 700, color: c.ink })
   if (changeText) {
-    ctx.font = '700 28px "IBM Plex Sans KR", sans-serif'
+    ctx.font = '700 28px "Pretendard Variable", Pretendard, sans-serif'
     const tw = Math.min(pw, ctx.measureText(changeText).width + 52)
     fillRound(ctx, px + 8, sy + 30, tw, 56, 28, change > 0 ? c.sealTint : c.tint)
     fitText(ctx, changeText, px + 32, sy + 69, tw - 48, { size: 28, min: 20, weight: 700, color: change > 0 ? c.seal : c.muted })

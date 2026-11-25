@@ -6,6 +6,8 @@ import '../../styles.css'
 import '../kbo/kbo.css'
 import '../apt/apt.css'
 import './jonber.css'
+import '../../design.css'
+import '../../design.js'
 
 loadAdSenseScript()
 

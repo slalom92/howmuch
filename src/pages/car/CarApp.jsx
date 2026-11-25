@@ -10,6 +10,8 @@ import FloatingSwitch from '../../components/FloatingSwitch.jsx'
 import SocialLinks from '../../components/Social.jsx'
 import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
+import ResultNote from '../../components/ResultNote.jsx'
+import HeroArt from '../../components/HeroArt.jsx'
 import StingHero from '../../components/StingHero.jsx'
 import { rememberPay, readPay, wonText, workText, pctText } from '../../lib/sting.js'
 import { CAR } from '../../lib/menu.js'
@@ -291,21 +293,24 @@ export default function CarApp({ initialSearch = '' }) {
 
       <AdRails slot={SLOTS.rail} />
 
-      <main className="main">
-        <StingHero options={carPageHero(r)} />
+      <main className="main main--split">
         <section className="hero cr-hero">
           <div className="hero__text">
+            <p className="hero__kicker">내 연봉에 맞는 차 찾기</p>
             <h1 className="hero__title">자차 계산기</h1>
             <p className="hero__lede">연봉과 차를 고르면 내 연봉에 맞는 차인지, 3년 타면 얼마가 사라지는지, 지금 연봉으로 탈 수 있는 차는 뭔지 보여 드려요.</p>
           </div>
+          <HeroArt kind="car" />
         </section>
+        <StingHero options={carPageHero(r)} />
 
-        <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 차 고르기">
+        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 차 고르기">
+          <h2 className="panel__title">조건 고르기</h2>
           <Choices legend="연봉 (세전)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
           <CarPicker value={state.car} onChange={set('car')} />
         </form>
 
-        <div className="cr-result" id="cr-result" aria-live="polite">
+        <div className="cr-result split-out" id="cr-result" aria-live="polite">
           <div ref={resultRef}>
             <Verdict r={r} />
           </div>
@@ -313,6 +318,7 @@ export default function CarApp({ initialSearch = '' }) {
           <Loss r={r} />
           <Fits r={r} onPick={pick} />
         </div>
+        <ResultNote>차값은 공개된 가격표와 보도를 바탕으로 한 대표값이고, 감가는 중고 시세 보도를 기준으로 어림했어요. 실제 구입가와 유지비는 옵션, 할인, 보험에 따라 달라져요.</ResultNote>
 
         {share && <ShareBar url={share.url} text={share.text} sub="링크를 받은 사람도 같은 연봉과 차의 결과를 보고, 자기 연봉으로 바꿔 볼 수 있어요." />}
 

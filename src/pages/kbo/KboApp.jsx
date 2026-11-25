@@ -10,6 +10,7 @@ import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
 import { useMyPay } from '../../lib/sting.js'
 import { kboStings, kboHero } from './sting.js'
+import HeroArt from '../../components/HeroArt.jsx'
 import StingHero from '../../components/StingHero.jsx'
 import { MENU, YOUTUBER, WEDDING_GIFT, KBO, KLPGA } from '../../lib/menu.js'
 import { SEASON, GAMES, INNINGS, LEAGUE, TEAMS, TEAM_BY_ID, PLAYERS, SOURCES, WORKER_YEAR, PITCHES_PER_INNING, PITCH_SOURCE, STATS_SOURCE, breakdown, profile, findExact, suggest } from './kbo.js'
@@ -598,12 +599,13 @@ export default function KboApp() {
       <AdRails slot={SLOTS.rail} />
 
       <main className="main">
-        <StingHero options={kboHero(pr, myPay)} />
         <section className="hero kbo-hero">
           <div className="hero__text">
+            <p className="hero__kicker">프로야구 연봉을 내 월급으로 재 보기</p>
             <h1 className="hero__title">프로야구 선수, 연봉 얼마 받을까?</h1>
             <p className="hero__lede">선수 이름만 넣으면 {SEASON} 연봉을 한 경기, 1초, 안타 하나, 공 하나 단위로 쪼개 직장인 연봉과 비교해 드려요.</p>
           </div>
+          <HeroArt kind="kbo" />
           <PlayerSearch onPick={choose} />
           <ul className="kbo-picks" aria-label="많이 찾는 선수">
             {PICKS.map((n) => (
@@ -615,6 +617,7 @@ export default function KboApp() {
             ))}
           </ul>
         </section>
+        <StingHero options={kboHero(pr, myPay)} />
 
         <div className="kbo-result" ref={resultRef} aria-live="polite">
           <Scoreboard pr={pr} />

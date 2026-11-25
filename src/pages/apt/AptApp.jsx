@@ -11,6 +11,8 @@ import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
 import { rememberPay } from '../../lib/sting.js'
 import { aptStings, aptHero } from './sting.js'
+import ResultNote from '../../components/ResultNote.jsx'
+import HeroArt from '../../components/HeroArt.jsx'
 import StingHero from '../../components/StingHero.jsx'
 import { MENU, APT, YOUTUBER, KBO, KLPGA } from '../../lib/menu.js'
 import { SALARIES, YEARS, AREAS, BASES, SOURCES, SIDO, sidoOf, loadSido, calculate, fromSearch, toSearch, sortNear } from './apt.js'
@@ -567,18 +569,21 @@ export default function AptApp({ initialSearch = '' }) {
       {/* PC: 본문 좌우 세로 배너 / 모바일: 이 자리 대신 본문 중간 광고(mid) */}
       <AdRails slot={SLOTS.rail} />
 
-      <main className="main">
-        <StingHero options={aptHero(r)} />
+      <main className="main main--split">
         <section className="hero apt-hero">
           <div className="hero__text">
+            <p className="hero__kicker">내 집 마련, 몇 년이면 될까</p>
             <h1 className="hero__title">연봉 모아 집 사기</h1>
             <p className="hero__lede">
               연봉과 모으는 기간만 고르면, 한 푼도 안 쓰고 모았을 때 살 수 있는 아파트를 국토교통부 실거래가로 전국에서 찾아 드려요.
             </p>
           </div>
+          <HeroArt kind="apt" />
         </section>
+        <StingHero options={aptHero(r)} />
 
-        <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 모으는 조건">
+        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 모으는 조건">
+          <h2 className="panel__title">조건 고르기</h2>
           <Choices legend="연봉 (세전)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
           <Choices legend="몇 년 모을까요?" name="y" options={YEARS.map((y) => ({ id: y, label: `${y}년` }))} value={state.y} onChange={(v) => set('y')(Number(v))} />
           <Choices legend="아파트 크기 (전용면적)" name="a" options={AREAS} value={state.a} onChange={set('a')} />
@@ -617,7 +622,7 @@ export default function AptApp({ initialSearch = '' }) {
             아파트 실거래 자료를 아직 만들지 않았어요. <code>npm run apt</code> 로 자료를 만든 뒤 다시 빌드해 주세요.
           </p>
         ) : (
-          <div className="apt-result">
+          <div className="apt-result split-out">
             <div ref={resultRef} aria-live="polite">
               <Passbook r={r} />
             </div>
@@ -631,6 +636,7 @@ export default function AptApp({ initialSearch = '' }) {
             <Window r={r} nearCtl={nearCtl} />
           </div>
         )}
+        {!empty && <ResultNote>국토교통부 실거래가와 고른 연봉을 바탕으로, 한 푼도 쓰지 않고 모았다고 가정해 계산했어요. 대출, 이자, 세금은 넣지 않았어요. 기준과 출처는 아래 안내에 있어요.</ResultNote>}
 
         {share && !empty && <ShareBar url={share.url} text={share.text} sub="링크를 받은 사람도 같은 조건의 결과를 보고, 자기 연봉으로 바꿔 볼 수 있어요." />}
 

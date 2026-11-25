@@ -6,6 +6,8 @@ import { loadAdSenseScript } from '../../components/AdSlot.jsx'
 import '../../styles.css'
 import '../kbo/kbo.css'
 import './klpga.css'
+import '../../design.css'
+import '../../design.js'
 
 loadAdSenseScript()
 

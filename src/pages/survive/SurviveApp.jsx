@@ -12,6 +12,8 @@ import { track } from '../../lib/analytics.js'
 import Sting from '../../components/Sting.jsx'
 import { rememberPay } from '../../lib/sting.js'
 import { surviveStings, surviveHero } from './sting.js'
+import ResultNote from '../../components/ResultNote.jsx'
+import HeroArt from '../../components/HeroArt.jsx'
 import StingHero from '../../components/StingHero.jsx'
 import { MENU, SURVIVE, JONBER, APT, YOUTUBER } from '../../lib/menu.js'
 import { SALARIES, STYLE_TEXT, SAVES, SAVE_ALL, calculate, fromSearch, toSearch, aptLink, daysText, won, pct, lastDayFrom, dateText, carLink } from './survive.js'
@@ -427,21 +429,24 @@ export default function SurviveApp({ initialSearch = '' }) {
       {/* PC: 본문 좌우 세로 배너 / 모바일: 이 자리 대신 본문 중간 광고(mid) */}
       <AdRails slot={SLOTS.rail} />
 
-      <main className="main">
-        <StingHero options={surviveHero(r)} />
+      <main className="main main--split">
         <section className="hero sv-hero">
           <div className="hero__text">
+            <p className="hero__kicker">월급날부터 다음 월급날까지</p>
             <h1 className="hero__title">존버 계산기</h1>
             <p className="hero__lede">연봉과 사는 방식만 고르면, 월급 한 번으로 며칠 버티는지와 월급이 어디로 사라지는지 보여 드려요.</p>
           </div>
+          <HeroArt kind="survive" />
         </section>
+        <StingHero options={surviveHero(r)} />
 
-        <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 생활 방식 고르기">
+        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 생활 방식 고르기">
+          <h2 className="panel__title">조건 고르기</h2>
           <Choices legend="연봉 (세전, 계산은 실수령으로)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
           <Choices legend="사는 방식" name="s" options={r.styleList} value={r.state.s} onChange={set('s')} />
         </form>
 
-        <div className="sv-result" aria-live="polite">
+        <div className="sv-result split-out" aria-live="polite">
           <div ref={resultRef}>
             <LastCard r={r} today={today} />
           </div>
@@ -449,6 +454,7 @@ export default function SurviveApp({ initialSearch = '' }) {
           <SavePanel r={r} onChange={set('a')} />
           <Styles r={r} onPick={set('s')} />
         </div>
+        <ResultNote>통계청 가계 지출과 공개 시세를 바탕으로 한 대표값으로 계산했어요. 사는 곳과 씀씀이에 따라 실제로 버티는 날은 달라져요.</ResultNote>
 
         {share && <ShareBar url={share.url} text={share.text} sub="링크를 받은 사람도 같은 결과를 보고, 자기 연봉으로 바꿔 볼 수 있어요." />}
 
