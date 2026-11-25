@@ -136,7 +136,7 @@ function Bill({ r }) {
         <h2 className="sub-bill__title" id="sub-bill-title">
           정기결제 명세서
         </h2>
-        <p className="sub-bill__none">고른 구독이 없어요. 구독이 하나도 없다면 축하해요, 매달 0원이에요.</p>
+        <p className="sub-bill__none">고른 구독이 없어요. 정말 하나도 없다면 축하해요, 매달 자동이체 0원이에요. 하나라도 있다면 위에서 골라 보세요.</p>
       </section>
     )
   }
@@ -366,7 +366,7 @@ export default function SubscriptionApp({ initialSearch = '' }) {
         <section className="hero sub-hero">
           <div className="hero__text">
             <h1 className="hero__title">월 구독료 계산기</h1>
-            <p className="hero__lede">넷플릭스, 유튜브, 게임 패스, 챗GPT, 테슬라 FSD까지. 쓰는 구독과 요금제를 고르면 매달 얼마가 빠져나가는지, 월급의 몇 %인지 보여 드려요.</p>
+            <p className="hero__lede">넷플릭스, 배민클럽, 게임 패스, 챗GPT, iCloud, 테슬라 FSD까지. 쓰는 구독과 요금제를 고르면 매달 얼마가 빠져나가는지, 월급의 몇 %인지 보여 드려요.</p>
           </div>
         </section>
 

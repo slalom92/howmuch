@@ -466,6 +466,18 @@
   background: color-mix(in srgb, var(--bar) 50%, var(--paper));
 }
 
+.sub-split__seg--book {
+  background: color-mix(in srgb, var(--seal) 30%, var(--paper));
+}
+
+.sub-split__seg--cloud {
+  background: color-mix(in srgb, var(--ink) 30%, var(--paper));
+}
+
+.sub-split__seg--food {
+  background: color-mix(in srgb, var(--seal) 75%, var(--ink));
+}
+
 .sub-split__legend {
   margin: 0;
   padding: 0;

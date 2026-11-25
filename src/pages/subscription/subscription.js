@@ -43,6 +43,20 @@ export const SOURCES = {
   kia: { label: '기아, Kia Connect 요금제 안내 (기본 9,900원·1년 약정 5,500원, 부가세 포함)', url: 'https://connect.kia.com/kr/03_payment/basics.html' },
   coupang: { label: 'KPI뉴스, 쿠팡 와우 멤버십 7,890원·네이버플러스 멤버십 4,900원', url: 'https://www.kpinews.kr/newsView/1065597975049992' },
   naver: { label: 'CEO스코어데일리, 네이버플러스 멤버십 월 4,900원에 넷플릭스 광고형 포함', url: 'https://www.ceoscoredaily.com/page/view/2025070713511787536' },
+  watcha: { label: '글래스월렛, 왓챠 베이직 7,900원·프리미엄 12,900원 (2026년 7월 왓챠 고객센터 기준)', url: 'https://glasswallet.com/blog/watcha-pricing-guide' },
+  laftel: { label: '피클플러스, 라프텔 웹 결제 베이직 9,900원·프리미엄 14,900원 (2026년 9월 라프텔 공식 페이지 기준)', url: 'https://pickle.plus/blog/laftel-sharing-premium-pickleplus' },
+  millie: { label: 'LG유플러스 유독, 밀리의 서재 1개월 구독권 월 11,900원', url: 'https://www.lguplus.com/pogg/product/밀리의서재-1개월-new' },
+  ridi: { label: '피클플러스, 리디셀렉트 정상 구독가 월 4,900원 (2026년 10월)', url: 'https://pickle.plus/blog/ridiselect-subscription-discount' },
+  icloud: { label: '애플, iCloud+ 한국 요금 (50GB·200GB·2TB)', url: 'https://www.apple.com/kr/icloud/' },
+  icloudBig: { label: '위키독스, iCloud+ 한국 공식 가격표 (6TB 44,000원·12TB 88,000원)', url: 'https://wikidocs.net/blog/@devicepick/36247/' },
+  googleOne: { label: '위키독스, Google One 한국 요금 (2026년 11월 8일 공식 페이지 기준, 100GB 월 2,400원)', url: 'https://wikidocs.net/blog/@devicepick/36253/' },
+  talkCloud: { label: '뉴시스, 카카오 톡클라우드 요금 (30GB 2,100원·50GB 3,100원·200GB 5,100원·2TB 12,000원)', url: 'https://www.newsis.com/view/NISX20250714_0003251077' },
+  kakao: { label: '카카오, 카카오멤버십 월 4,900원 출시 (이모티콘 플러스 3,900원 상당 포함)', url: 'https://www.kakaocorp.com/page/detail/12153' },
+  baemin: { label: 'SBS Biz, 배민클럽 에디션 2 출시 (구독료 월 3,990원)', url: 'https://biz.sbs.co.kr/amp/article/20000337807' },
+  yogiyo: { label: '머니투데이, 요기패스X 구독료 월 2,900원', url: 'https://www.mt.co.kr/tech/2025/12/27/2025122610135070666' },
+  grocery: { label: 'ZDNet Korea, 쓱세븐클럽 2,900원·클럽 오아시스 2,000원·컬리멤버스 1,900원', url: 'https://zdnet.co.kr/view/?no=20260623161913' },
+  ssgTving: { label: '비즈워치, 쓱세븐클럽에 1,000원을 더하면 티빙까지 (결합 요금제)', url: 'https://news.bizwatch.co.kr/article/consumer/2026/04/29/0034' },
+  gmarket: { label: '바이라인네트워크, G마켓 꼭 멤버십 월 2,900원', url: 'https://byline.network/2026/04/23_1029887/' },
   chicken: { label: 'MTN, BBQ 황금올리브치킨 후라이드 23,000원', url: 'https://news.mtn.co.kr/news-detail/2024052111194813151' },
   ramen: { label: 'SBS Biz, 신라면 봉지 1개 1천 원', url: 'https://biz.sbs.co.kr/amp/article/20000284952' },
   encar: CAR_SRC.encar,
@@ -51,10 +65,13 @@ export const SOURCES = {
 export const CATEGORIES = [
   { id: 'ott', label: '영상' },
   { id: 'music', label: '음악' },
+  { id: 'book', label: '책' },
   { id: 'game', label: '게임' },
   { id: 'ai', label: 'AI·소프트웨어' },
-  { id: 'car', label: '자동차' },
+  { id: 'cloud', label: '저장공간·카톡' },
+  { id: 'food', label: '배달·장보기' },
   { id: 'shop', label: '쇼핑 멤버십' },
+  { id: 'car', label: '자동차' },
 ]
 
 // tiers: [{ id, label, price(월, 원), yearly?(1년 값), note? }] / def: 처음 고를 때 켜지는 요금제
@@ -101,6 +118,20 @@ export const SERVICES = [
       { id: 'pre', label: '프리미엄', price: 16500 },
     ],
   },
+  {
+    id: 'watcha', cat: 'ott', name: '왓챠', def: 'basic', src: ['watcha'],
+    tiers: [
+      { id: 'basic', label: '베이직', price: 7900 },
+      { id: 'pre', label: '프리미엄', price: 12900, note: '4대·4K' },
+    ],
+  },
+  {
+    id: 'laftel', cat: 'ott', name: '라프텔', def: 'basic', src: ['laftel'], note: '웹 결제 기준이에요. 앱에서 결제하면 더 비싸요.',
+    tiers: [
+      { id: 'basic', label: '베이직', price: 9900 },
+      { id: 'pre', label: '프리미엄', price: 14900, note: '4명' },
+    ],
+  },
   // 음악
   {
     id: 'ytmusic', cat: 'music', name: '유튜브 뮤직', def: 'pre', src: ['youtube'], note: '유튜브 프리미엄에 이미 들어 있어요. 따로 쓸 때만 고르세요.',
@@ -127,6 +158,15 @@ export const SERVICES = [
       { id: 'ind', label: '개인', price: 8900 },
       { id: 'fam', label: '가족', price: 13500, note: '최대 6명' },
     ],
+  },
+  // 책
+  {
+    id: 'millie', cat: 'book', name: '밀리의 서재', def: 'm1', src: ['millie'],
+    tiers: [{ id: 'm1', label: '전자책 월 구독', price: 11900 }],
+  },
+  {
+    id: 'ridi', cat: 'book', name: '리디셀렉트', def: 'sel', src: ['ridi'],
+    tiers: [{ id: 'sel', label: '셀렉트', price: 4900 }],
   },
   // 게임
   {
@@ -178,7 +218,8 @@ export const SERVICES = [
   {
     id: 'gemini', cat: 'ai', name: '구글 AI (제미나이)', def: 'pro', src: ['gemini'],
     tiers: [
-      { id: 'plus', label: 'AI 플러스', price: 7500 },
+      { id: 'plus', label: 'AI 플러스', price: 7500, note: '400GB' },
+      { id: 'plus2', label: 'AI 플러스 2TB', price: 11900 },
       { id: 'pro', label: 'AI 프로', price: 29000 },
       { id: 'ultra', label: 'AI 울트라', price: 119000 },
       { id: 'ultra20', label: 'AI 울트라 20배', price: 300000 },
@@ -200,6 +241,58 @@ export const SERVICES = [
       { id: 'ps', label: '포토샵', price: 34900 },
       { id: 'all', label: '모든 앱', price: 78100 },
     ],
+  },
+  // 저장공간·카톡
+  {
+    id: 'icloud', cat: 'cloud', name: 'iCloud+', def: 'g200', src: ['icloud', 'icloudBig'],
+    tiers: [
+      { id: 'g50', label: '50GB', price: 1100 },
+      { id: 'g200', label: '200GB', price: 4400 },
+      { id: 't2', label: '2TB', price: 14000 },
+      { id: 't6', label: '6TB', price: 44000 },
+      { id: 't12', label: '12TB', price: 88000 },
+    ],
+  },
+  {
+    id: 'googleone', cat: 'cloud', name: '구글 원', def: 'g100', src: ['googleOne'], note: '2TB부터는 구글 AI 요금제에 묶여 있어요. AI·소프트웨어의 구글 AI에서 골라 주세요.',
+    tiers: [{ id: 'g100', label: 'Basic 100GB', price: 2400 }],
+  },
+  {
+    id: 'talkcloud', cat: 'cloud', name: '카카오 톡클라우드', def: 'g50', src: ['talkCloud'], note: '예전 톡서랍 플러스예요. 2025년 8월 전에 가입했다면 예전 요금을 그대로 내요.',
+    tiers: [
+      { id: 'g30', label: '30GB', price: 2100 },
+      { id: 'g50', label: '50GB', price: 3100 },
+      { id: 'g200', label: '200GB', price: 5100 },
+      { id: 't2', label: '2TB', price: 12000 },
+    ],
+  },
+  {
+    id: 'emoticon', cat: 'cloud', name: '이모티콘 플러스', def: 'ep', src: ['kakao'],
+    tiers: [{ id: 'ep', label: '이모티콘 무제한', price: 3900 }],
+  },
+  // 배달·장보기
+  {
+    id: 'baemin', cat: 'food', name: '배민클럽', def: 'club', src: ['baemin'], note: '배달팁 무료와 B마트 10% 할인이 들어 있어요.',
+    tiers: [{ id: 'club', label: '배민클럽', price: 3990 }],
+  },
+  {
+    id: 'yogiyo', cat: 'food', name: '요기패스X', def: 'x', src: ['yogiyo'], note: '네이버플러스 멤버십이 있으면 무료로 쓸 수 있어요.',
+    tiers: [{ id: 'x', label: '요기패스X', price: 2900 }],
+  },
+  {
+    id: 'ssg', cat: 'food', name: '쓱세븐클럽', def: 'base', src: ['grocery', 'ssgTving'],
+    tiers: [
+      { id: 'base', label: '기본', price: 2900 },
+      { id: 'tving', label: '+ 티빙', price: 3900 },
+    ],
+  },
+  {
+    id: 'kurly', cat: 'food', name: '컬리멤버스', def: 'km', src: ['grocery'],
+    tiers: [{ id: 'km', label: '컬리멤버스', price: 1900 }],
+  },
+  {
+    id: 'oasis', cat: 'food', name: '클럽 오아시스', def: 'co', src: ['grocery'], note: '7개월째부터는 구독료를 포인트로 돌려줘요.',
+    tiers: [{ id: 'co', label: '클럽 오아시스', price: 2000 }],
   },
   // 자동차
   {
@@ -235,6 +328,14 @@ export const SERVICES = [
   {
     id: 'naver', cat: 'shop', name: '네이버플러스', def: 'np', src: ['naver', 'coupang'], note: '넷플릭스 광고형을 혜택으로 고를 수 있어요.',
     tiers: [{ id: 'np', label: '멤버십', price: 4900 }],
+  },
+  {
+    id: 'gmarket', cat: 'shop', name: 'G마켓 꼭 멤버십', def: 'ggok', src: ['gmarket'], note: '적립액이 회비보다 적으면 차액을 캐시로 돌려줘요.',
+    tiers: [{ id: 'ggok', label: '꼭 멤버십', price: 2900 }],
+  },
+  {
+    id: 'kakaomem', cat: 'shop', name: '카카오멤버십', def: 'km', src: ['kakao'], note: '이모티콘 플러스나 톡클라우드 중 하나가 들어 있어요.',
+    tiers: [{ id: 'km', label: '카카오멤버십', price: 4900 }],
   },
 ]
 

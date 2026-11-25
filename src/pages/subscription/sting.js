@@ -3,8 +3,33 @@ import { lines, wonText, yearsText, pctText, bigTime } from '../../lib/sting.js'
 
 const n = (v) => Math.floor(v).toLocaleString('ko-KR')
 
+// 아무것도 고르지 않았을 때: 구독 0개를 놀리는 한 줄
+const NETFLIX_YEAR = 13500 * 12 // 넷플릭스 스탠다드 1년
+const YT_YEAR = 14900 * 12 // 유튜브 프리미엄 1년
+
+function emptyStings(r) {
+  return lines(
+    `구독 **0개**. 지상파 방송만 보는구나? 리모컨이 제일 알뜰한 구독이에요`,
+    `음악 안 좋아해? 유튜브 프리미엄도 없으면 광고를 **1년에 ${wonText(YT_YEAR)}어치** 참고 보는 중이에요`,
+    `영화 안 좋아해? 드라마도 안 봐? 넷플릭스 스탠다드 1년 **${wonText(NETFLIX_YEAR)}**을 통째로 아꼈어요`,
+    `배달앱 멤버십도 없다니, 배달팁은 그때그때 내는 쪽이군요`,
+    `챗GPT도 없이 일한다고요? 손으로 다 하는 **진짜 장인**이에요`,
+    `매달 자동이체 **0원**, 월급 ${wonText(r.pay)}이 고스란히 남아요. 심심하면 돈미터라도 구독할래요? 여긴 **평생 0원**이에요`,
+  )
+}
+
+// 고른 건 있는데 비어 있는 분류가 있으면 하나만 콕 집는다
+function missingLine(r) {
+  const has = (cat) => r.items.some((i) => i.cat === cat)
+  const ytPremium = r.items.some((i) => i.id === 'youtube' && i.tier.id === 'pre')
+  if (!has('ott')) return '영상 구독은 하나도 없네요. **지상파 방송만 보는구나?**'
+  if (!has('music') && !ytPremium) return '음악 구독은 **0원**. 음악 안 좋아해?'
+  if (!has('ai')) return 'AI 구독은 없네요. 아직 **챗GPT 없이** 일하는 중이군요'
+  return null
+}
+
 export function subscriptionStings(r) {
-  if (!r.count) return []
+  if (!r.count) return emptyStings(r)
   const top = r.top
   const car = r.tenCar
   const casper = r.cars.find((c) => c.id === 'casper')
@@ -19,12 +44,21 @@ export function subscriptionStings(r) {
       : casper && `이 구독료로 캐스퍼 중고차를 사려면 **${yearsText(casper.years)}** 모아야 해요`,
     top && r.count > 1 && `제일 비싼 건 **${top.name}** ${top.tier.label}, 혼자서 구독료의 **${pctText(top.price / r.monthly)}**를 먹어요`,
     `하루로 치면 **${wonText(r.daily)}**. 안 보는 날에도 꼬박꼬박 나가요`,
+    missingLine(r),
   )
 }
 
 // 맨 위 배너 후보: 처음 들어올 때 하나를 고른다
 export function subscriptionHero(r) {
-  if (!r.count) return []
+  if (!r.count)
+    return [
+      { big: '0원', cap: '지상파 방송만 보는구나?' },
+      { big: '0원', cap: '음악 안 좋아해?' },
+      { big: '0원', cap: '영화 안 좋아해?' },
+      { big: '0원', cap: '드라마 안 좋아해?' },
+      { big: '구독 0개', cap: '돈미터라도 구독할래?' },
+      { big: wonText(NETFLIX_YEAR), cap: '넷플릭스 1년 아낀 돈' },
+    ]
   const casper = r.cars.find((c) => c.id === 'casper')
   return [
     { big: wonText(r.yearly), cap: '1년 동안 자동이체로 나가는 돈' },
