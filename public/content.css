@@ -598,3 +598,27 @@ a:hover {
   font-size: 14px;
   color: var(--muted);
 }
+
+/* 쿠팡 파트너스 (partners.js 가 배너 id가 있을 때만 넣는다) */
+.doc .partners-note {
+  margin: -8px 0 24px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.doc .partners-ad {
+  margin: 32px 0;
+}
+
+.doc .partners-ad__label {
+  margin: 0 0 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.doc .partners-ad iframe {
+  display: block;
+  max-width: 100%;
+  border: 0;
+}

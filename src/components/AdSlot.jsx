@@ -14,6 +14,11 @@ import { useEffect, useRef, useState } from 'react'
 // - 하단 고정 광고의 실제 높이만큼 본문 아래 여백(--anchor-h)을 잡아 내용을 가리지 않게 한다.
 //
 // 정책 메모: 광고 클릭을 유도하는 문구나, 버튼·입력창 바로 옆 배치는 애드센스 정책 위반이 될 수 있다.
+//
+// 쿠팡 파트너스: public/partners.js 에 배너 id가 있으면(window.__partners) 애드센스 대신 쿠팡 다이나믹 배너를 넣는다.
+// - 좌우 배너(rail), 본문 중간(mid), 결과 아래(inline)만. 하단 고정 광고(anchor)는 쿠팡일 때 넣지 않는다.
+// - 헤더 바로 아래(AdRails 자리)에 대가성 문구를 한 줄 둔다 (공정위 지침: 게시물 첫 부분).
+// - 배너마다 "광고 · 쿠팡 파트너스" 표시를 붙인다.
 
 const RAW_CLIENT = (import.meta.env.VITE_ADSENSE_CLIENT || '').trim()
 // 'ca-pub-' 없이 숫자만 넣어도 동작하도록 보정
@@ -46,6 +51,11 @@ function useMedia(query) {
 
 const useIsDesktop = () => useMedia(DESKTOP_QUERY)
 
+// 쿠팡 파트너스 설정 (public/partners.js). 없으면 null
+function partners() {
+  return (typeof window !== 'undefined' && window.__partners) || null
+}
+
 // 서버에서 미리 그릴 때(홈 화면 HTML 미리 채우기)는 광고 자리를 만들지 않는다
 export default function AdSlot(props) {
   if (typeof window === 'undefined') return null
@@ -57,16 +67,66 @@ function AdGate(props) {
   const wide = useMedia(WIDE_QUERY)
   if (props.variant === 'rail' && !wide) return null
   if (props.variant === 'mid' && wide) return null
+  const cp = partners()
+  if (cp) {
+    if (props.variant === 'anchor' || props.variant === 'top') return null
+    return <PartnersSlot cp={cp} {...props} />
+  }
   return <AdSlotInner {...props} />
 }
 
 // PC 좌우 세로 배너 한 쌍. 페이지마다 한 번, 헤더 아래에 둔다.
+// 쿠팡 파트너스일 때는 이 자리(헤더 바로 아래)에 대가성 문구도 함께 둔다.
 export function AdRails({ slot }) {
+  const cp = typeof window === 'undefined' ? null : partners()
   return (
     <>
+      {cp && <p className="partners-note">{cp.note}</p>}
       <AdSlot variant="rail" side="left" slot={slot} />
       <AdSlot variant="rail" side="right" slot={slot} />
     </>
+  )
+}
+
+// 쿠팡 다이나믹 배너. 좌우 배너는 160×600, 본문 중간은 300×250, 결과 아래는 자리 폭에 맞춘 가로형.
+function PartnersSlot({ cp, variant, side }) {
+  const boxRef = useRef(null)
+  const [width, setWidth] = useState(0)
+  const flexible = variant !== 'rail' && variant !== 'mid'
+
+  useEffect(() => {
+    if (!flexible || !boxRef.current) return
+    const el = boxRef.current
+    const apply = () => setWidth(Math.floor(el.clientWidth / 10) * 10)
+    apply()
+    const ro = new ResizeObserver(apply)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [flexible])
+
+  let size = null
+  if (variant === 'rail') size = [160, 600]
+  else if (variant === 'mid') size = [300, 250]
+  else if (width) size = cp.wideSize(width)
+
+  return (
+    <aside ref={boxRef} className={`ad ad--${variant} ad--cp${side ? ` ad--${side}` : ''}`} data-state="partners" aria-label="광고">
+      <span className="ad__label">광고 · 쿠팡 파트너스</span>
+      {size && (
+        <iframe
+          key={size.join('x')}
+          className="ad__frame"
+          src={cp.src(size[0], size[1])}
+          width={size[0]}
+          height={size[1]}
+          title="쿠팡 추천 상품"
+          frameBorder="0"
+          scrolling="no"
+          referrerPolicy="unsafe-url"
+          loading={variant === 'rail' ? undefined : 'lazy'}
+        />
+      )}
+    </aside>
   )
 }
 

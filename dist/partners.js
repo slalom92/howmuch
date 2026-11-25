@@ -1,0 +1,97 @@
+/* 쿠팡 파트너스 (모든 페이지 <head> 에서 theme.js 다음에 읽는다)
+ *
+ * 설정은 이 파일 맨 위 두 줄이 전부다.
+ * - TRACKING: 쿠팡 파트너스 추적 코드 (AF…)
+ * - BANNER_ID: 파트너스 대시보드 > 링크 생성 > 다이나믹 배너 에서 만든 배너의 id (숫자)
+ *   비워 두면 쿠팡 배너와 대가성 문구가 어디에도 나오지 않는다 (지금까지와 같음).
+ *
+ * 하는 일
+ * 1) window.__partners 에 설정을 담아 둔다. 계산기 페이지(React)의 광고 자리(AdSlot)는 이 값이 있으면
+ *    애드센스 대신 쿠팡 다이나믹 배너를 넣는다.
+ * 2) 글 페이지(가이드·뉴스 등 <main class="doc">)에는 직접 넣는다.
+ *    - 본문 첫머리(요약 문단 바로 아래)에 대가성 문구
+ *    - 본문 중간(두 번째 소제목 앞)과 본문 끝에 배너 한 개씩
+ *
+ * 정책 메모 (쿠팡 파트너스 / 공정위 추천·보증 심사지침)
+ * - 대가성 문구는 게시물 제목 또는 첫 부분에, 배너 가까이에 둔다.
+ * - 커버형(본문을 덮는) 배너는 2026-06-08부터 금지. 여기 배너는 모두 본문 흐름 안에 자리를 차지한다.
+ * - "클릭해 주세요" 같은 클릭 유도 문구를 쓰지 않는다.
+ */
+(function () {
+  var TRACKING = 'AF1572500'
+  var BANNER_ID = '1058960'
+
+  var NOTE = '이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.'
+  // 배너를 넣지 않는 페이지 (정책·연락처 안내)
+  var SKIP = /^\/(privacy|terms|contact)\//
+
+  var id = String(BANNER_ID).replace(/\D/g, '')
+  if (!id || !/^AF\d+$/.test(TRACKING)) {
+    window.__partners = null
+    return
+  }
+
+  function src(w, h) {
+    return (
+      'https://ads-partners.coupang.com/widgets.html?id=' + id +
+      '&template=carousel&trackingCode=' + TRACKING +
+      '&subId=&width=' + w + '&height=' + h + '&tsource='
+    )
+  }
+
+  // 가로 배너 크기: 자리 폭에 맞추되 너무 넓지 않게. 좁은 화면은 높이를 낮춘다.
+  function wideSize(width) {
+    var w = Math.max(280, Math.min(960, Math.floor(width / 10) * 10))
+    return [w, w < 600 ? 120 : 140]
+  }
+
+  window.__partners = { id: id, tracking: TRACKING, note: NOTE, src: src, wideSize: wideSize }
+
+  function frame(w, h, lazy) {
+    var f = document.createElement('iframe')
+    f.src = src(w, h)
+    f.width = String(w)
+    f.height = String(h)
+    f.title = '쿠팡 추천 상품'
+    f.setAttribute('frameborder', '0')
+    f.setAttribute('scrolling', 'no')
+    f.setAttribute('referrerpolicy', 'unsafe-url')
+    if (lazy) f.setAttribute('loading', 'lazy')
+    return f
+  }
+
+  function banner(doc, lazy) {
+    var box = document.createElement('aside')
+    box.className = 'partners-ad'
+    box.setAttribute('aria-label', '광고')
+    var label = document.createElement('p')
+    label.className = 'partners-ad__label'
+    label.textContent = '광고 · 쿠팡 파트너스'
+    box.appendChild(label)
+    var cs = getComputedStyle(doc)
+    var inner = doc.clientWidth - parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0)
+    var size = wideSize(inner || 640)
+    box.appendChild(frame(size[0], size[1], lazy))
+    return box
+  }
+
+  function mount() {
+    if (SKIP.test(location.pathname)) return
+    var doc = document.querySelector('main.doc')
+    if (!doc || doc.querySelector('.partners-note')) return
+
+    var note = document.createElement('p')
+    note.className = 'partners-note'
+    note.textContent = NOTE
+    var anchor = doc.querySelector('.lede') || doc.querySelector('.meta') || doc.querySelector('h1')
+    if (anchor) anchor.insertAdjacentElement('afterend', note)
+    else doc.insertBefore(note, doc.firstChild)
+
+    var h2s = doc.querySelectorAll(':scope > h2')
+    if (h2s.length >= 3) h2s[1].insertAdjacentElement('beforebegin', banner(doc, true))
+    doc.appendChild(banner(doc, true))
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount)
+  else mount()
+})()

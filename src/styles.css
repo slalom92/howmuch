@@ -164,6 +164,27 @@ input {
   overflow: hidden;
 }
 
+/* 쿠팡 파트너스 (public/partners.js 에 배너 id가 있을 때) */
+.partners-note {
+  max-width: var(--page-w, 760px);
+  margin: 6px auto 0;
+  padding: 0 20px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.ad--cp .ad__frame {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  border: 0;
+}
+
+.ad--cp.ad--rail .ad__label {
+  text-align: center;
+}
+
 /* 본문 중간 (좌우 배너가 없는 화면) */
 .ad--mid {
   margin: 40px auto;
