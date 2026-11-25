@@ -376,12 +376,14 @@ export default function SubscriptionApp({ initialSearch = '' }) {
         </section>
         <StingHero options={subscriptionHero(r)} />
 
-        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="구독과 요금제, 연봉 고르기">
-          <h2 className="panel__title">조건 고르기</h2>
-          <Picker picks={r.state.s} onToggle={toggle} />
-          <Tiers picks={r.state.s} onTier={setTier} onToggle={toggle} />
-          <Choices legend="연봉 (세전, 계산은 실수령으로)" name="pay" options={SALARIES} value={r.state.pay} onChange={setPay} />
-        </form>
+        <div className="split-in">
+          <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="구독과 요금제, 연봉 고르기">
+            <h2 className="panel__title">조건 고르기</h2>
+            <Picker picks={r.state.s} onToggle={toggle} />
+            <Tiers picks={r.state.s} onTier={setTier} onToggle={toggle} />
+            <Choices legend="연봉 (세전, 계산은 실수령으로)" name="pay" options={SALARIES} value={r.state.pay} onChange={setPay} />
+          </form>
+        </div>
 
         <div className="sub-result split-out" aria-live="polite">
           <div ref={resultRef}>

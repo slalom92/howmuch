@@ -582,40 +582,42 @@ export default function AptApp({ initialSearch = '' }) {
         </section>
         <StingHero options={aptHero(r)} />
 
-        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 모으는 조건">
-          <h2 className="panel__title">조건 고르기</h2>
-          <Choices legend="연봉 (세전)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
-          <Choices legend="몇 년 모을까요?" name="y" options={YEARS.map((y) => ({ id: y, label: `${y}년` }))} value={state.y} onChange={(v) => set('y')(Number(v))} />
-          <Choices legend="아파트 크기 (전용면적)" name="a" options={AREAS} value={state.a} onChange={set('a')} />
-          <Choices legend="1년에 모으는 돈" name="b" options={BASES} value={state.b} onChange={set('b')} />
-          <div className="apt-form__row">
-            <div className="apt-q">
-              <label className="apt-q__legend" htmlFor="apt-sido">
-                시도
-              </label>
-              <select id="apt-sido" className="apt-select" value={r.state.sido} onChange={(e) => onSido(e.target.value)} disabled={empty}>
-                {SIDO.map((g) => (
-                  <option key={g.code} value={g.code}>
-                    {g.name}
-                  </option>
-                ))}
-              </select>
+        <div className="split-in">
+          <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 모으는 조건">
+            <h2 className="panel__title">조건 고르기</h2>
+            <Choices legend="연봉 (세전)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
+            <Choices legend="몇 년 모을까요?" name="y" options={YEARS.map((y) => ({ id: y, label: `${y}년` }))} value={state.y} onChange={(v) => set('y')(Number(v))} />
+            <Choices legend="아파트 크기 (전용면적)" name="a" options={AREAS} value={state.a} onChange={set('a')} />
+            <Choices legend="1년에 모으는 돈" name="b" options={BASES} value={state.b} onChange={set('b')} />
+            <div className="apt-form__row">
+              <div className="apt-q">
+                <label className="apt-q__legend" htmlFor="apt-sido">
+                  시도
+                </label>
+                <select id="apt-sido" className="apt-select" value={r.state.sido} onChange={(e) => onSido(e.target.value)} disabled={empty}>
+                  {SIDO.map((g) => (
+                    <option key={g.code} value={g.code}>
+                      {g.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="apt-q">
+                <label className="apt-q__legend" htmlFor="apt-sgg">
+                  시군구
+                </label>
+                <select id="apt-sgg" className="apt-select" value={r.state.sgg} onChange={(e) => set('sgg')(e.target.value)} disabled={empty}>
+                  <option value="all">{sido ? `${sido.short} 전체` : '전체'}</option>
+                  {(sido?.sgg || []).map((g) => (
+                    <option key={g.code} value={g.code}>
+                      {g.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <div className="apt-q">
-              <label className="apt-q__legend" htmlFor="apt-sgg">
-                시군구
-              </label>
-              <select id="apt-sgg" className="apt-select" value={r.state.sgg} onChange={(e) => set('sgg')(e.target.value)} disabled={empty}>
-                <option value="all">{sido ? `${sido.short} 전체` : '전체'}</option>
-                {(sido?.sgg || []).map((g) => (
-                  <option key={g.code} value={g.code}>
-                    {g.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
 
         {empty ? (
           <p className="apt-empty" role="status">

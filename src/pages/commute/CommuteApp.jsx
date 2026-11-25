@@ -676,19 +676,21 @@ export default function CommuteApp({ initialSearch = '' }) {
         </section>
         <StingHero options={commuteHero({ sum, state, salary: myPay, ready: result.status === 'done' })} />
 
-        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="집 조건과 역 고르기">
-          <h2 className="panel__title">조건 고르기</h2>
-          <Choices legend="계약" name="k" options={KINDS} value={state.k} onChange={set('k')} />
-          <Choices legend="집" name="t" options={TYPES} value={state.t} onChange={set('t')} />
-          <Choices legend="역에서 거리" name="d" options={DISTS} value={state.d} onChange={set('d')} />
-          {data ? (
-            <StationPicker data={data} station={station} onPick={pickStation} onLine={setLine} />
-          ) : (
-            <p className="cm-note" role="status">
-              {dataError ? '역 자료를 불러오지 못했어요. 잠시 뒤 새로 고침해 주세요.' : '역 목록을 불러오고 있어요…'}
-            </p>
-          )}
-        </form>
+        <div className="split-in">
+          <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="집 조건과 역 고르기">
+            <h2 className="panel__title">조건 고르기</h2>
+            <Choices legend="계약" name="k" options={KINDS} value={state.k} onChange={set('k')} />
+            <Choices legend="집" name="t" options={TYPES} value={state.t} onChange={set('t')} />
+            <Choices legend="역에서 거리" name="d" options={DISTS} value={state.d} onChange={set('d')} />
+            {data ? (
+              <StationPicker data={data} station={station} onPick={pickStation} onLine={setLine} />
+            ) : (
+              <p className="cm-note" role="status">
+                {dataError ? '역 자료를 불러오지 못했어요. 잠시 뒤 새로 고침해 주세요.' : '역 목록을 불러오고 있어요…'}
+              </p>
+            )}
+          </form>
+        </div>
 
         {station && (
           <div className="cm-result split-out">

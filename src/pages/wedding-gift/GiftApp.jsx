@@ -263,35 +263,37 @@ export default function GiftApp() {
         </section>
         <StingHero options={giftHero(result, myPay)} />
 
-        <form className="gift-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="축의금 조건">
-          <h2 className="panel__title">조건 고르기</h2>
-          <Choices legend="어떤 사이인가요?" name="rel" options={RELATIONS} value={s.rel} onChange={set('rel')} />
-          <Choices
-            legend="결혼식에 가나요?"
-            name="go"
-            options={[
-              { id: '1', label: '직접 참석' },
-              { id: '0', label: '봉투만 보내기' },
-            ]}
-            value={s.go ? '1' : '0'}
-            onChange={(v) => set('go')(v === '1')}
-          />
-          {s.go && (
-            <>
-              <Choices legend="몇 명이 가나요?" name="n" options={PARTY} value={s.n} onChange={(v) => set('n')(Number(v))} hint="나를 포함해 식사하는 사람 수예요." />
-              <Choices legend="예식장은 어디인가요?" name="venue" options={VENUES} value={s.venue} onChange={set('venue')} />
-              <Choices legend="어느 지역인가요?" name="region" options={REGIONS} value={s.region} onChange={set('region')} />
-            </>
-          )}
-          <Choices
-            legend="내 결혼식 때 이 사람에게 받은 축의금"
-            name="got"
-            hint="받은 적이 있다면 그보다 적게 내지 않는 게 기본이에요."
-            options={RECEIVED.map((v) => ({ id: v, label: v ? won(v) : '없음·모름' }))}
-            value={s.got}
-            onChange={(v) => set('got')(Number(v))}
-          />
-        </form>
+        <div className="split-in">
+          <form className="gift-form" onSubmit={(e) => e.preventDefault()} aria-label="축의금 조건">
+            <h2 className="panel__title">조건 고르기</h2>
+            <Choices legend="어떤 사이인가요?" name="rel" options={RELATIONS} value={s.rel} onChange={set('rel')} />
+            <Choices
+              legend="결혼식에 가나요?"
+              name="go"
+              options={[
+                { id: '1', label: '직접 참석' },
+                { id: '0', label: '봉투만 보내기' },
+              ]}
+              value={s.go ? '1' : '0'}
+              onChange={(v) => set('go')(v === '1')}
+            />
+            {s.go && (
+              <>
+                <Choices legend="몇 명이 가나요?" name="n" options={PARTY} value={s.n} onChange={(v) => set('n')(Number(v))} hint="나를 포함해 식사하는 사람 수예요." />
+                <Choices legend="예식장은 어디인가요?" name="venue" options={VENUES} value={s.venue} onChange={set('venue')} />
+                <Choices legend="어느 지역인가요?" name="region" options={REGIONS} value={s.region} onChange={set('region')} />
+              </>
+            )}
+            <Choices
+              legend="내 결혼식 때 이 사람에게 받은 축의금"
+              name="got"
+              hint="받은 적이 있다면 그보다 적게 내지 않는 게 기본이에요."
+              options={RECEIVED.map((v) => ({ id: v, label: v ? won(v) : '없음·모름' }))}
+              value={s.got}
+              onChange={(v) => set('got')(Number(v))}
+            />
+          </form>
+        </div>
 
         <div className="gift-result split-out" aria-live="polite" ref={resultRef}>
           <Envelope result={result} />

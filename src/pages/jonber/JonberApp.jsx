@@ -291,11 +291,13 @@ export default function JonberApp({ initialSearch = '' }) {
         </section>
         <StingHero options={jonberHero(r)} />
 
-        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="연봉 고르기">
-          <h2 className="panel__title">조건 고르기</h2>
-          <Choices legend="연봉 (세전)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
-          <Choices legend="시급 기준" name="b" options={BASES} value={state.b} onChange={set('b')} />
-        </form>
+        <div className="split-in">
+          <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="연봉 고르기">
+            <h2 className="panel__title">조건 고르기</h2>
+            <Choices legend="연봉 (세전)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
+            <Choices legend="시급 기준" name="b" options={BASES} value={state.b} onChange={set('b')} />
+          </form>
+        </div>
 
         <div className="jb-result split-out" aria-live="polite">
           <div ref={resultRef}>

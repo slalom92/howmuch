@@ -440,11 +440,13 @@ export default function SurviveApp({ initialSearch = '' }) {
         </section>
         <StingHero options={surviveHero(r)} />
 
-        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 생활 방식 고르기">
-          <h2 className="panel__title">조건 고르기</h2>
-          <Choices legend="연봉 (세전, 계산은 실수령으로)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
-          <Choices legend="사는 방식" name="s" options={r.styleList} value={r.state.s} onChange={set('s')} />
-        </form>
+        <div className="split-in">
+          <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 생활 방식 고르기">
+            <h2 className="panel__title">조건 고르기</h2>
+            <Choices legend="연봉 (세전, 계산은 실수령으로)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
+            <Choices legend="사는 방식" name="s" options={r.styleList} value={r.state.s} onChange={set('s')} />
+          </form>
+        </div>
 
         <div className="sv-result split-out" aria-live="polite">
           <div ref={resultRef}>

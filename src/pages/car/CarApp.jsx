@@ -304,11 +304,13 @@ export default function CarApp({ initialSearch = '' }) {
         </section>
         <StingHero options={carPageHero(r)} />
 
-        <form className="apt-form split-in" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 차 고르기">
-          <h2 className="panel__title">조건 고르기</h2>
-          <Choices legend="연봉 (세전)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
-          <CarPicker value={state.car} onChange={set('car')} />
-        </form>
+        <div className="split-in">
+          <form className="apt-form" onSubmit={(e) => e.preventDefault()} aria-label="연봉과 차 고르기">
+            <h2 className="panel__title">조건 고르기</h2>
+            <Choices legend="연봉 (세전)" name="pay" options={SALARIES} value={state.pay} onChange={set('pay')} />
+            <CarPicker value={state.car} onChange={set('car')} />
+          </form>
+        </div>
 
         <div className="cr-result split-out" id="cr-result" aria-live="polite">
           <div ref={resultRef}>
