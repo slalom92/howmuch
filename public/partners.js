@@ -8,7 +8,9 @@
  * 하는 일
  * 1) window.__partners 에 설정을 담아 둔다. 계산기 페이지(React)의 광고 자리(AdSlot)는 이 값이 있으면
  *    애드센스 대신 쿠팡 다이나믹 배너를 넣는다.
- * 2) 글 페이지(가이드·뉴스 등 <main class="doc">)에는 직접 넣는다.
+ * 2) 홈 화면처럼 자리를 직접 표시해 둔 페이지는 그 자리에 넣는다.
+ *    <div data-partners="note"></div> → 대가성 문구, <div data-partners="ad"></div> → 가로 배너
+ * 3) 글 페이지(가이드·뉴스 등 <main class="doc">)에는 직접 넣는다.
  *    - 본문 첫머리(요약 문단 바로 아래)에 대가성 문구
  *    - 본문 중간(두 번째 소제목 앞)과 본문 끝에 배너 한 개씩
  *
@@ -68,15 +70,45 @@
     label.className = 'partners-ad__label'
     label.textContent = '광고 · 쿠팡 파트너스'
     box.appendChild(label)
-    var cs = getComputedStyle(doc)
-    var inner = doc.clientWidth - parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0)
-    var size = wideSize(inner || 640)
+    var size = wideSize(innerWidth(doc) || 640)
     box.appendChild(frame(size[0], size[1], lazy))
     return box
   }
 
+  function innerWidth(el) {
+    var cs = getComputedStyle(el)
+    return el.clientWidth - parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0)
+  }
+
+  // 자리 표시(data-partners)가 있는 페이지
+  function mountMarked() {
+    var spots = document.querySelectorAll('[data-partners]')
+    if (!spots.length) return false
+    for (var i = 0; i < spots.length; i++) {
+      var el = spots[i]
+      if (el.childNodes.length) continue
+      if (el.getAttribute('data-partners') === 'note') {
+        el.className = 'partners-note'
+        el.textContent = NOTE
+      } else {
+        var holder = el.parentNode
+        el.className = 'partners-ad'
+        el.setAttribute('role', 'complementary')
+        el.setAttribute('aria-label', '광고')
+        var label = document.createElement('p')
+        label.className = 'partners-ad__label'
+        label.textContent = '광고 · 쿠팡 파트너스'
+        el.appendChild(label)
+        var size = wideSize(innerWidth(holder) || 360)
+        el.appendChild(frame(size[0], size[1], true))
+      }
+    }
+    return true
+  }
+
   function mount() {
     if (SKIP.test(location.pathname)) return
+    if (mountMarked()) return
     var doc = document.querySelector('main.doc')
     if (!doc || doc.querySelector('.partners-note')) return
 

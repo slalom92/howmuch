@@ -102,3 +102,10 @@ a { color: inherit; }
   .wrap { max-width: var(--page-w, 640px); }
   .apps ul { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 }
+
+/* 쿠팡 파트너스 (partners.js 가 채운다. 배너 id가 없으면 빈 자리로 남아 보이지 않는다) */
+[data-partners]:empty { display: none; }
+.partners-note { margin: 12px 0 0; padding: 0 8px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.partners-ad { margin: 30px 0 0; }
+.partners-ad__label { margin: 0 0 4px; font-size: 11px; color: var(--muted); }
+.partners-ad iframe { display: block; max-width: 100%; margin: 0 auto; border: 0; }
