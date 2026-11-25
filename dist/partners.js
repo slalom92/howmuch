@@ -3,6 +3,7 @@
  * 설정은 이 파일 맨 위 두 줄이 전부다.
  * - TRACKING: 쿠팡 파트너스 추적 코드 (AF…)
  * - BANNER_ID: 파트너스 대시보드 > 링크 생성 > 다이나믹 배너 에서 만든 배너의 id (숫자)
+ * - RIGHT_RAIL_ID: PC 오른쪽 세로 배너에만 따로 쓰는 배너 id (비우면 BANNER_ID)
  *   비워 두면 쿠팡 배너와 대가성 문구가 어디에도 나오지 않는다 (지금까지와 같음).
  *
  * 하는 일
@@ -10,6 +11,7 @@
  *    애드센스 대신 쿠팡 다이나믹 배너를 넣는다.
  * 2) 홈 화면처럼 자리를 직접 표시해 둔 페이지는 그 자리에 넣는다.
  *    <div data-partners="note"></div> → 대가성 문구, <div data-partners="ad"></div> → 가로 배너
+ *    <div data-partners="rails"></div> → 넓은 PC 화면 좌우 세로 배너(160×600, 화면에 고정)
  * 3) 글 페이지(가이드·뉴스 등 <main class="doc">)에는 직접 넣는다.
  *    - 본문 첫머리(요약 문단 바로 아래)에 대가성 문구
  *    - 본문 중간(두 번째 소제목 앞)과 본문 끝에 배너 한 개씩
@@ -22,6 +24,7 @@
 (function () {
   var TRACKING = 'AF1572500'
   var BANNER_ID = '1058960'
+  var RIGHT_RAIL_ID = '1058977'
 
   var NOTE = '이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.'
   // 배너를 넣지 않는 페이지 (정책·연락처 안내)
@@ -33,9 +36,12 @@
     return
   }
 
-  function src(w, h) {
+  var rightId = String(RIGHT_RAIL_ID).replace(/\D/g, '') || id
+
+  // spot: 'rail-right' 이면 오른쪽 세로 배너용 id
+  function src(w, h, spot) {
     return (
-      'https://ads-partners.coupang.com/widgets.html?id=' + id +
+      'https://ads-partners.coupang.com/widgets.html?id=' + (spot === 'rail-right' ? rightId : id) +
       '&template=carousel&trackingCode=' + TRACKING +
       '&subId=&width=' + w + '&height=' + h + '&tsource='
     )
@@ -49,9 +55,9 @@
 
   window.__partners = { id: id, tracking: TRACKING, note: NOTE, src: src, wideSize: wideSize }
 
-  function frame(w, h, lazy) {
+  function frame(w, h, lazy, spot) {
     var f = document.createElement('iframe')
-    f.src = src(w, h)
+    f.src = src(w, h, spot)
     f.width = String(w)
     f.height = String(h)
     f.title = '쿠팡 추천 상품'
@@ -80,6 +86,33 @@
     return el.clientWidth - parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0)
   }
 
+  // 좌우 세로 배너: 계산기 페이지(AdSlot.jsx WIDE_QUERY)와 같은 조건의 넓은 화면에서만 만든다
+  var WIDE_QUERY = '(min-width: 1444px) and (min-height: 760px), (min-width: 1300px) and (min-height: 820px)'
+  function rails(el) {
+    var mq = window.matchMedia(WIDE_QUERY)
+    function rail(side) {
+      var box = document.createElement('aside')
+      box.className = 'partners-rail partners-rail--' + side
+      box.setAttribute('aria-label', '광고')
+      var label = document.createElement('p')
+      label.className = 'partners-ad__label'
+      label.textContent = '광고 · 쿠팡 파트너스'
+      box.appendChild(label)
+      box.appendChild(frame(160, 600, false, 'rail-' + side))
+      return box
+    }
+    function apply() {
+      if (mq.matches && !el.childNodes.length) {
+        el.appendChild(rail('left'))
+        el.appendChild(rail('right'))
+      } else if (!mq.matches) {
+        while (el.firstChild) el.removeChild(el.firstChild)
+      }
+    }
+    apply()
+    if (mq.addEventListener) mq.addEventListener('change', apply)
+  }
+
   // 자리 표시(data-partners)가 있는 페이지
   function mountMarked() {
     var spots = document.querySelectorAll('[data-partners]')
@@ -87,7 +120,10 @@
     for (var i = 0; i < spots.length; i++) {
       var el = spots[i]
       if (el.childNodes.length) continue
-      if (el.getAttribute('data-partners') === 'note') {
+      var kind = el.getAttribute('data-partners')
+      if (kind === 'rails') {
+        rails(el)
+      } else if (kind === 'note') {
         el.className = 'partners-note'
         el.textContent = NOTE
       } else {

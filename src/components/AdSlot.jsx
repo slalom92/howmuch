@@ -116,7 +116,7 @@ function PartnersSlot({ cp, variant, side }) {
         <iframe
           key={size.join('x')}
           className="ad__frame"
-          src={cp.src(size[0], size[1])}
+          src={cp.src(size[0], size[1], variant === 'rail' ? `rail-${side}` : variant)}
           width={size[0]}
           height={size[1]}
           title="쿠팡 추천 상품"

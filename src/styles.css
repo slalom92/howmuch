@@ -191,10 +191,10 @@ input {
 }
 
 /* PC 좌우 세로 배너: 본문(--page-w, 760~960px) 바깥에 고정.
-   하단 고정 광고와 오른쪽 아래 바로가기 버튼(약 76px)을 뺀 높이의 가운데, 너무 낮은 화면에서는 위에서 16px */
+   화면 위쪽(20px)에 붙인다. 라벨+배너 620px 이 하단 고정 광고·바로가기 버튼과 겹치지 않는 높이에서만 보인다(WIDE_QUERY) */
 .ad--rail {
   position: fixed;
-  top: max(16px, calc((100vh - var(--anchor-h, 0px) - 76px - 620px) / 2));
+  top: 20px; /* 화면 위쪽에 붙인다 (헤더 높이쯤). 아래 끝(20+620)은 WIDE_QUERY 최소 높이 안 */
   z-index: 40;
   width: 160px;
   max-width: none;
