@@ -29,6 +29,7 @@ export const APPS = [
   { id: 'survive', match: (p) => p === '/survive/' },
   { id: 'commute', match: (p) => p === '/commute/' },
   { id: 'car', match: (p) => p === '/car/' },
+  { id: 'subscription', match: (p) => p === '/subscription/' },
 ]
 
 // 오류 이유는 응답에도 보여 준다 (키 값은 절대 담지 않는다)

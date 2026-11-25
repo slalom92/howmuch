@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 색 테마: 화면이 그려지기 전에 정해야 색이 번쩍이지 않는다 -->
+    <script src="/theme.js"></script>
+    <link rel="stylesheet" href="/themes.css" />
+    <title>월 구독료 계산기 – 넷플릭스·유튜브·챗GPT 구독료 합계, 월급의 몇 % | 돈미터</title>
+    <meta name="description" content="넷플릭스, 유튜브 프리미엄, 티빙, 디즈니+, 멜론, 스포티파이, PS Plus, Xbox 게임 패스, 챗GPT, 클로드, 제미나이, 테슬라 FSD, 블루링크까지 쓰는 구독과 요금제를 고르면 한 달·1년 구독료 합계와 월급의 몇 %인지 보여 주는 무료 계산기예요. 1년 구독료로 치킨 몇 마리, 몇 년 모으면 무슨 차인지도 알려 드려요." />
+    <meta name="keywords" content="월 구독료 계산기, 구독료 계산기, 구독 서비스 비용, 구독료 합계, 넷플릭스 요금제, 유튜브 프리미엄 가격, 유튜브 프리미엄 라이트, 티빙 요금제, 디즈니플러스 요금, 멜론 이용권 가격, 스포티파이 가격, PS Plus 가격, 게임패스 가격, 챗GPT 플러스 가격, 클로드 요금제, 제미나이 요금제, 테슬라 FSD 구독, 블루링크 요금, 쿠팡 와우, 구독 다이어트" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://donmeter.com/subscription/" />
+    <meta name="theme-color" content="#e7ebf0" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="돈미터" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:url" content="https://donmeter.com/subscription/" />
+    <meta property="og:title" content="구독료만 한 달 3만 6천 원, 1년이면 43만 원 | 돈미터 월 구독료 계산기" />
+    <meta property="og:description" content="쓰는 구독과 요금제만 고르면 매달 빠져나가는 돈, 월급의 몇 %, 1년 구독료로 치킨 몇 마리인지 알려 드려요." />
+    <meta property="og:image" content="https://donmeter.com/og/subscription-v1.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="800" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="구독료만 한 달 3만 6천 원, 1년이면 43만 원 | 돈미터 월 구독료 계산기" />
+    <meta name="twitter:description" content="쓰는 구독과 요금제만 고르면 매달 빠져나가는 돈, 월급의 몇 %, 1년 구독료로 치킨 몇 마리인지 알려 드려요." />
+    <meta name="twitter:image" content="https://donmeter.com/og/subscription-v1.png" />
+    <!-- FAQ 문구는 src/pages/subscription/subscription.js 의 FAQ 와 같게 유지한다 -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://donmeter.com/subscription/#app",
+      "name": "월 구독료 계산기 – 돈미터",
+      "url": "https://donmeter.com/subscription/",
+      "description": "넷플릭스·유튜브 프리미엄·티빙·디즈니+ 같은 OTT, 멜론·스포티파이 같은 음악, PS Plus·Xbox 게임 패스, 챗GPT·클로드·제미나이, 테슬라 FSD와 커넥티드카 구독을 고르면 2026년 요금으로 한 달·1년 구독료와 실수령 월급에서 차지하는 비율을 계산해 주는 무료 서비스입니다.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ko-KR",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "isPartOf": {
+        "@id": "https://donmeter.com/#website"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "구독료는 어디서 가져왔나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "서비스마다 공식 요금 페이지나 요금을 보도한 기사에서 2026년 11월 25일 기준 한국 요금을 옮겼어요. 모두 부가세가 포함된 한 달 요금이고, 첫 달 무료나 첫해 할인 같은 이벤트 가격은 뺐어요. 출처는 페이지 맨 아래에 모아 뒀어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "1년권은 어떻게 계산했나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PS Plus 1년권, 닌텐도 스위치 온라인 1년권과 추가 팩처럼 1년에 한 번 내는 요금제는 1년 값을 12로 나눠 한 달 요금으로 셌어요. 실제로는 1년에 한 번 목돈이 나가요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "월급의 몇 %는 어떻게 구했나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "고른 연봉의 2026년 실수령액을 12로 나눈 한 달 월급으로 한 달 구독료를 나눴어요. 일하는 시간은 실수령 월급을 한 달 209시간(주 40시간과 주휴)으로 나눈 시급으로 셌어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "치킨과 라면은 얼마로 쳤나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "치킨은 BBQ 황금올리브치킨 후라이드 23,000원, 라면은 신라면 봉지 1개 1,000원이에요. 1년 구독료를 이 값으로 나눴어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "몇 년 모으면 살 수 있는 차는 무슨 값인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "자차 계산기와 같은 엔카 2026년 10월 중고차 시세(2023년식, 주행 6만 km, 무사고)예요. 한 달 구독료를 한 푼도 쓰지 않고 그대로 모은다고 치고, 이자는 넣지 않았어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "클로드는 왜 원화 값이 딱 떨어지지 않나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "클로드는 웹에서 달러로 결제해요. 한국에서는 부가세 10%가 붙은 22달러(Pro), 110달러(Max), 220달러(Ultra)가 나가는데, 이를 보도에서 쓴 환율로 바꾼 값이라 실제 카드 청구액은 환율과 해외 결제 수수료에 따라 달라요. 아이폰 앱에서 결제하면 더 비싸요."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="/ga.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539"
+     crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/pages/subscription/main.jsx"></script>
+  </body>
+</html>

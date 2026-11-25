@@ -31,6 +31,7 @@ const PAGES = [
   { url: '/survive/', files: ['survive/index.html', 'src/pages/survive'] },
   { url: '/commute/', files: ['commute/index.html', 'src/pages/commute', 'public/data/commute/stations.json'] },
   { url: '/car/', files: ['car/index.html', 'src/pages/car'] },
+  { url: '/subscription/', files: ['subscription/index.html', 'src/pages/subscription', 'src/pages/car/cars.js'] },
 ]
 
 // 채널 페이지는 서버(api/page.js)가 그린다

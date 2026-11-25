@@ -1,0 +1,385 @@
+// 월 구독료 계산기: OTT·음악·게임·AI·자동차·쇼핑 멤버십 중 쓰는 것과 요금제를 고르면
+// 한 달·1년 구독료와 "월급의 몇 %인지, 치킨 몇 마리인지, 몇 년 모으면 무슨 차인지" 를 보여 준다
+//
+// - 사용자는 숫자를 직접 쓰지 않고 서비스와 요금제(대표 값), 연봉(대표 값)만 고른다.
+// - 요금은 부가세 포함 월 요금(원). 1년권만 있거나 1년권이 더 싼 요금제는 1년 값 ÷ 12 (yearly 에 1년 값).
+// - 달러로만 결제하는 서비스(클로드)는 보도된 원화 환산값을 쓰고, 환율에 따라 달라진다고 적는다.
+// - 출처를 찾지 못한 요금은 넣지 않는다. 값이 바뀌면 SERVICES 의 price 와 SOURCES 만 고치면 된다.
+import { SALARIES, PAY_SOURCES } from '../../lib/salary.js'
+import { hourlyOf } from '../../lib/sting.js'
+import { CARS, SRC as CAR_SRC, USED_AS_OF } from '../car/cars.js'
+
+export { SALARIES }
+
+export const AS_OF = '2026년 11월 25일'
+export const DAYS_PER_MONTH = 365 / 12
+export const CHICKEN = 23000 // BBQ 황금올리브 (월급 분당 계산기와 같은 값)
+export const RAMEN = 1000 // 신라면 봉지 1개 (존버 계산기와 같은 값)
+
+export const SOURCES = {
+  ...PAY_SOURCES,
+  ott: { label: '똑구, OTT 구독료 비교 2026 (넷플릭스 고객센터 멤버십 및 요금 기준)', url: 'https://www.ddokgu.com/ott-price/' },
+  tving: { label: '폭스CG, 티빙 요금제 비교 (2026년 10월 20일 티빙 공식 이용권 페이지 기준)', url: 'https://foxcg.com/tving-price-plans/' },
+  wavve: { label: '글래스월렛, 웨이브 요금제 4종 가격 (2026년 4월 웨이브 공식 사이트 기준, 2026년 말까지 동결)', url: 'https://glasswallet.com/blog/wavve-pricing-guide' },
+  disney: { label: '허프포스트코리아, 디즈니플러스 광고형 7천 원 출시와 11월 10일 요금 인상', url: 'https://www.huffingtonpost.kr/article/261680' },
+  youtube: { label: '유튜브 공식 블로그, 유튜브 프리미엄 라이트 한국 출시 (웹·안드로이드 기준 요금)', url: 'https://blog.youtube/intl/ko-kr/news-and-events/yt-premium-lite-kr/' },
+  melon: { label: '데일리안, 멜론 모바일 스트리밍 클럽 7,590원·스트리밍 클럽 8,690원 (2026년 8월)', url: 'https://www.dailian.co.kr/news/view/1673895/' },
+  spotify: { label: '스포티파이 공식 Premium 요금제 페이지 (부가세 포함)', url: 'https://spotify.com/kr-ko/premium/' },
+  apple: { label: '피클플러스, 애플뮤직 요금 (2026년 8월 기준, 미국은 7월 인상)', url: 'https://pickle.plus/blog/apple-music-price-discount' },
+  psplus: { label: '루리웹, PS Plus 한국 요금 인상 (에센셜 12,000원·스페셜 18,000원·디럭스 21,000원)', url: 'https://m.ruliweb.com/ps/board/300001/read/2353857' },
+  gamepass: { label: '디스이즈게임, Xbox 게임 패스 국내 가격 (에센셜·프리미엄·PC·얼티밋)', url: 'https://www.thisisgame.com/articles/404184' },
+  nso: { label: '더위키, Nintendo Switch Online 국내 가격', url: 'https://thewiki.kr/w/NSO' },
+  nsoPack: { label: '한국닌텐도, Nintendo Switch Online + 추가 팩 요금 플랜 (12개월 39,900원)', url: 'https://nintendo.co.kr/news/article/Q0tKRlVXa25aZkFlY2RCaENKYWZOZz09' },
+  chatgpt: { label: '디지털마케터, 챗GPT 요금제 (2026년 10월 21일 한국 결제 설정, 부가세 포함)', url: 'https://www.digitalmarketer.co.kr/class/chatgpt-astra-basics/chatgpt-plans-and-limits' },
+  claude: { label: '디언더독스, 클로드 요금제 한국 웹 결제 가격 (달러, 부가세 포함, 원화 환산)', url: 'https://the-underdogs.kr/news/claude-plans-compare' },
+  gemini: { label: '아이엔마케팅, Google AI 요금제 한국 가격 (2026년 11월 13일 기준)', url: 'https://inmarketing.kr/goolgenews/google-ai-pricing-plus-pro-ultra-2026/' },
+  m365: { label: '마이크로소프트, Microsoft 365 제품 비교 (한국 월간 요금)', url: 'https://www.microsoft.com/ko-kr/microsoft-365/buy/compare-all-microsoft-365-products' },
+  adobe: { label: '어도비, Creative Cloud 플랜 (연간 구독·월별 청구, 부가세 포함)', url: 'https://www.adobe.com/kr/creativecloud/creativity-and-design' },
+  adobeAll: { label: '어도비, Creative Cloud 모든 앱·포토그래피 플랜 정가', url: 'https://www.adobe.com/kr/creativecloud/plans.html' },
+  fsd: { label: '테슬라코리아, 풀 셀프 드라이빙(감독형) 구독 요금', url: 'https://www.tesla.com/ko_KR/support/full-self-driving-subscriptions' },
+  fsdNews: { label: 'ZDNet Korea, 테슬라 FSD 일시불 904만 원에서 월 15만 원 구독제로', url: 'https://zdnet.co.kr/view/?no=20260711140059' },
+  teslaConn: { label: '테슬라코리아, 커넥티비티 (프리미엄 커넥티비티 월 9,900원)', url: 'https://www.tesla.com/ko_KR/support/connectivity' },
+  bluelink: { label: '현대자동차, 블루링크 요금제 (5년 무료 뒤 1년 약정 5,500원·무약정 11,000원)', url: 'https://www.hyundai.com/kr/ko/digital-customer-support/app/myhyundai/bluelink-registration' },
+  kia: { label: '기아, Kia Connect 요금제 안내 (기본 9,900원·1년 약정 5,500원, 부가세 포함)', url: 'https://connect.kia.com/kr/03_payment/basics.html' },
+  coupang: { label: 'KPI뉴스, 쿠팡 와우 멤버십 7,890원·네이버플러스 멤버십 4,900원', url: 'https://www.kpinews.kr/newsView/1065597975049992' },
+  naver: { label: 'CEO스코어데일리, 네이버플러스 멤버십 월 4,900원에 넷플릭스 광고형 포함', url: 'https://www.ceoscoredaily.com/page/view/2025070713511787536' },
+  chicken: { label: 'MTN, BBQ 황금올리브치킨 후라이드 23,000원', url: 'https://news.mtn.co.kr/news-detail/2024052111194813151' },
+  ramen: { label: 'SBS Biz, 신라면 봉지 1개 1천 원', url: 'https://biz.sbs.co.kr/amp/article/20000284952' },
+  encar: CAR_SRC.encar,
+}
+
+export const CATEGORIES = [
+  { id: 'ott', label: '영상' },
+  { id: 'music', label: '음악' },
+  { id: 'game', label: '게임' },
+  { id: 'ai', label: 'AI·소프트웨어' },
+  { id: 'car', label: '자동차' },
+  { id: 'shop', label: '쇼핑 멤버십' },
+]
+
+// tiers: [{ id, label, price(월, 원), yearly?(1년 값), note? }] / def: 처음 고를 때 켜지는 요금제
+export const SERVICES = [
+  // 영상
+  {
+    id: 'netflix', cat: 'ott', name: '넷플릭스', def: 'std', src: ['ott'],
+    tiers: [
+      { id: 'ad', label: '광고형 스탠다드', price: 7000 },
+      { id: 'std', label: '스탠다드', price: 13500 },
+      { id: 'pre', label: '프리미엄', price: 17000 },
+    ],
+  },
+  {
+    id: 'youtube', cat: 'ott', name: '유튜브 프리미엄', def: 'pre', src: ['youtube'], note: '웹·안드로이드 결제 기준이에요. 아이폰 앱에서 결제하면 더 비싸요.',
+    tiers: [
+      { id: 'lite', label: '라이트', price: 8500, note: '음악 빼고' },
+      { id: 'pre', label: '프리미엄', price: 14900, note: '뮤직 포함' },
+    ],
+  },
+  {
+    id: 'tving', cat: 'ott', name: '티빙', def: 'std', src: ['tving'],
+    tiers: [
+      { id: 'ad', label: '광고형 스탠다드', price: 5500 },
+      { id: 'basic', label: '베이직', price: 9500 },
+      { id: 'std', label: '스탠다드', price: 13500 },
+      { id: 'pre', label: '프리미엄', price: 17000 },
+    ],
+  },
+  {
+    id: 'wavve', cat: 'ott', name: '웨이브', def: 'std', src: ['wavve'],
+    tiers: [
+      { id: 'ad', label: '광고형 스탠다드', price: 5500 },
+      { id: 'basic', label: '베이직', price: 7900 },
+      { id: 'std', label: '스탠다드', price: 10900 },
+      { id: 'pre', label: '프리미엄', price: 13900 },
+    ],
+  },
+  {
+    id: 'disney', cat: 'ott', name: '디즈니+', def: 'std', src: ['disney'], note: '2026년 11월 10일 이후 새로 가입할 때 요금이에요. 그 전 가입자는 당분간 예전 요금을 내요.',
+    tiers: [
+      { id: 'ad', label: '광고형 스탠다드', price: 7000 },
+      { id: 'std', label: '스탠다드', price: 11500 },
+      { id: 'pre', label: '프리미엄', price: 16500 },
+    ],
+  },
+  // 음악
+  {
+    id: 'ytmusic', cat: 'music', name: '유튜브 뮤직', def: 'pre', src: ['youtube'], note: '유튜브 프리미엄에 이미 들어 있어요. 따로 쓸 때만 고르세요.',
+    tiers: [{ id: 'pre', label: '뮤직 프리미엄', price: 11990 }],
+  },
+  {
+    id: 'melon', cat: 'music', name: '멜론', def: 'all', src: ['melon'],
+    tiers: [
+      { id: 'mob', label: '모바일 스트리밍 클럽', price: 7590, note: '휴대폰만' },
+      { id: 'all', label: '스트리밍 클럽', price: 8690 },
+    ],
+  },
+  {
+    id: 'spotify', cat: 'music', name: '스포티파이', def: 'ind', src: ['spotify'],
+    tiers: [
+      { id: 'basic', label: '베이직', price: 8690, note: '다운로드 없음' },
+      { id: 'ind', label: '개인', price: 11990 },
+      { id: 'duo', label: '듀오', price: 17985, note: '2명' },
+    ],
+  },
+  {
+    id: 'apple', cat: 'music', name: '애플 뮤직', def: 'ind', src: ['apple'], note: '미국은 2026년 7월에 올랐어요. 한국 요금도 오를 수 있어요.',
+    tiers: [
+      { id: 'ind', label: '개인', price: 8900 },
+      { id: 'fam', label: '가족', price: 13500, note: '최대 6명' },
+    ],
+  },
+  // 게임
+  {
+    id: 'psplus', cat: 'game', name: 'PS Plus', def: 'ess', src: ['psplus'], note: '1년권은 1개월권보다 싸서 1년 값을 12로 나눴어요.',
+    tiers: [
+      { id: 'ess', label: '에센셜', price: 12000 },
+      { id: 'ext', label: '스페셜', price: 18000 },
+      { id: 'dlx', label: '디럭스', price: 21000 },
+      { id: 'ess12', label: '에센셜 1년권', price: 7200, yearly: 86400 },
+      { id: 'dlx12', label: '디럭스 1년권', price: 14250, yearly: 171000 },
+    ],
+  },
+  {
+    id: 'gamepass', cat: 'game', name: 'Xbox 게임 패스', def: 'ult', src: ['gamepass'],
+    tiers: [
+      { id: 'ess', label: '에센셜', price: 10800 },
+      { id: 'pre', label: '프리미엄', price: 14900 },
+      { id: 'pc', label: 'PC 게임 패스', price: 18000 },
+      { id: 'ult', label: '얼티밋', price: 29000 },
+    ],
+  },
+  {
+    id: 'nso', cat: 'game', name: '닌텐도 스위치 온라인', def: 'y12', src: ['nso', 'nsoPack'], note: '1년권은 1년 값을 12로 나눴어요. 추가 팩은 1년권만 있어요.',
+    tiers: [
+      { id: 'm1', label: '1개월권', price: 4900 },
+      { id: 'y12', label: '1년권', price: 1658, yearly: 19900 },
+      { id: 'pack', label: '+ 추가 팩 1년권', price: 3325, yearly: 39900 },
+    ],
+  },
+  // AI·소프트웨어
+  {
+    id: 'chatgpt', cat: 'ai', name: '챗GPT', def: 'plus', src: ['chatgpt'],
+    tiers: [
+      { id: 'go', label: 'Go', price: 13000 },
+      { id: 'plus', label: 'Plus', price: 29000 },
+      { id: 'pro', label: 'Pro', price: 159000 },
+      { id: 'pro20', label: 'Pro 20배', price: 299000 },
+    ],
+  },
+  {
+    id: 'claude', cat: 'ai', name: '클로드', def: 'pro', src: ['claude'], note: '웹에서 달러로 결제해요(부가세 포함 22·110·220달러). 원화는 보도된 환산값이라 환율에 따라 달라져요.',
+    tiers: [
+      { id: 'pro', label: 'Pro', price: 29205 },
+      { id: 'pro12', label: 'Pro 1년 결제', price: 23895, note: '월 18달러꼴' },
+      { id: 'max', label: 'Max', price: 146025 },
+      { id: 'ultra', label: 'Ultra', price: 292050 },
+    ],
+  },
+  {
+    id: 'gemini', cat: 'ai', name: '구글 AI (제미나이)', def: 'pro', src: ['gemini'],
+    tiers: [
+      { id: 'plus', label: 'AI 플러스', price: 7500 },
+      { id: 'pro', label: 'AI 프로', price: 29000 },
+      { id: 'ultra', label: 'AI 울트라', price: 119000 },
+      { id: 'ultra20', label: 'AI 울트라 20배', price: 300000 },
+    ],
+  },
+  {
+    id: 'm365', cat: 'ai', name: '마이크로소프트 365', def: 'per', src: ['m365'],
+    tiers: [
+      { id: 'per', label: 'Personal', price: 12500 },
+      { id: 'fam', label: 'Family', price: 15500 },
+      { id: 'pre', label: 'Premium', price: 29000 },
+    ],
+  },
+  {
+    id: 'adobe', cat: 'ai', name: '어도비', def: 'ps', src: ['adobe', 'adobeAll'], note: '1년 약정에 매달 내는 요금이에요. 첫해 할인은 뺐어요.',
+    tiers: [
+      { id: 'lr', label: '라이트룸', price: 15200 },
+      { id: 'photo', label: '포토그래피', price: 26400 },
+      { id: 'ps', label: '포토샵', price: 34900 },
+      { id: 'all', label: '모든 앱', price: 78100 },
+    ],
+  },
+  // 자동차
+  {
+    id: 'fsd', cat: 'car', name: '테슬라 FSD(감독형)', def: 'basic', src: ['fsd', 'fsdNews'], note: '2026년 8월부터 일시불(904만 3천 원) 대신 월 구독만 팔아요.',
+    tiers: [
+      { id: 'basic', label: '기본 오토파일럿 차', price: 150000 },
+      { id: 'eap', label: '향상된 오토파일럿 차', price: 75000 },
+    ],
+  },
+  {
+    id: 'teslaconn', cat: 'car', name: '테슬라 프리미엄 커넥티비티', def: 'pre', src: ['teslaConn'],
+    tiers: [{ id: 'pre', label: '프리미엄 커넥티비티', price: 9900 }],
+  },
+  {
+    id: 'bluelink', cat: 'car', name: '현대 블루링크', def: 'free', src: ['bluelink'], note: '신차는 처음 5년 무료예요. 무료 기간이 끝난 뒤 요금이에요.',
+    tiers: [
+      { id: 'y1', label: '1년 약정', price: 5500 },
+      { id: 'free', label: '무약정', price: 11000 },
+    ],
+  },
+  {
+    id: 'kia', cat: 'car', name: '기아 커넥트', def: 'base', src: ['kia'], note: '신차는 1~5년 무료예요. 무료 기간이 끝난 뒤 요금이에요.',
+    tiers: [
+      { id: 'y1', label: '1년 약정', price: 5500 },
+      { id: 'base', label: '기본', price: 9900 },
+    ],
+  },
+  // 쇼핑 멤버십
+  {
+    id: 'coupang', cat: 'shop', name: '쿠팡 와우', def: 'wow', src: ['coupang'], note: '쿠팡플레이와 쿠팡이츠 무료배달이 같이 들어 있어요.',
+    tiers: [{ id: 'wow', label: '와우 멤버십', price: 7890 }],
+  },
+  {
+    id: 'naver', cat: 'shop', name: '네이버플러스', def: 'np', src: ['naver', 'coupang'], note: '넷플릭스 광고형을 혜택으로 고를 수 있어요.',
+    tiers: [{ id: 'np', label: '멤버십', price: 4900 }],
+  },
+]
+
+const SERVICE_MAP = Object.fromEntries(SERVICES.map((s) => [s.id, s]))
+export const serviceOf = (id) => SERVICE_MAP[id]
+export const tierOf = (svc, id) => svc.tiers.find((t) => t.id === id) || svc.tiers.find((t) => t.id === svc.def) || svc.tiers[0]
+
+// 처음 들어오면 많이 쓰는 셋을 켜 둔다
+export const DEFAULT_PICKS = { netflix: 'std', youtube: 'pre', coupang: 'wow' }
+export const DEFAULTS = { pay: '4500', s: DEFAULT_PICKS }
+
+export const salaryOf = (id) => SALARIES.find((s) => s.id === id) || SALARIES.find((s) => s.id === DEFAULTS.pay)
+
+// 고른 것만 남기고 요금제가 없으면 기본 요금제로
+export function normalize(st) {
+  const pay = SALARIES.some((s) => s.id === st.pay) ? st.pay : DEFAULTS.pay
+  const s = {}
+  for (const [id, t] of Object.entries(st.s || {})) {
+    const svc = serviceOf(id)
+    if (svc) s[id] = tierOf(svc, t).id
+  }
+  return { pay, s }
+}
+
+// 주소: ?s=netflix.std-youtube.pre&pay=6000 (아무것도 안 고르면 s=none, s 가 없으면 처음 셋)
+export function picksFrom(v) {
+  if (v == null) return { ...DEFAULT_PICKS }
+  if (v === 'none' || v === '') return {}
+  const out = {}
+  for (const part of v.split('-')) {
+    const [id, t] = part.split('.')
+    if (id) out[id] = t || ''
+  }
+  return out
+}
+
+export function picksTo(s) {
+  const keys = SERVICES.map((x) => x.id).filter((id) => s[id])
+  if (!keys.length) return 'none'
+  return keys.map((id) => `${id}.${s[id]}`).join('-')
+}
+
+const samePicks = (a, b) => picksTo(a) === picksTo(b)
+
+export function fromSearch(search) {
+  const p = new URLSearchParams(search || '')
+  return normalize({ pay: p.get('pay'), s: picksFrom(p.get('s')) })
+}
+
+export function toSearch(st) {
+  const p = new URLSearchParams()
+  if (!samePicks(st.s, DEFAULT_PICKS)) p.set('s', picksTo(st.s))
+  if (st.pay !== DEFAULTS.pay) p.set('pay', st.pay)
+  const q = p.toString()
+  return q ? `?${q}` : ''
+}
+
+// 차: 2023년식 중고 시세(만 원) — 자차 계산기와 같은 표
+const WON = 10000
+const carName = (c) => (c.model.includes(c.maker) ? c.model.replace(/^더 뉴 /, '') : `${c.maker} ${c.model}`)
+export const CAR_LADDER = ['ray', 'casper', 'avante', 'k5', 'grandeur', 'g80', 'bmw5', 'gv80', 'cayenne-coupe']
+  .map((id) => CARS.find((c) => c.id === id))
+  .filter(Boolean)
+  .map((c) => ({ id: c.id, name: carName(c), price: c.used * WON }))
+  .sort((a, b) => a.price - b.price)
+
+// 모은 돈으로 살 수 있는 가장 비싼 차 (2023년식 중고). 레이도 못 사면 null
+export function carFor(total) {
+  const list = CARS.map((c) => ({ id: c.id, name: carName(c), price: c.used * WON })).filter((c) => c.price <= total)
+  if (!list.length) return null
+  return list.reduce((a, b) => (b.price > a.price ? b : a))
+}
+
+export function calculate(state) {
+  const st = normalize(state)
+  const salary = salaryOf(st.pay)
+  const pay = salary.net / 12
+  const hourly = hourlyOf(salary, 'net')
+  const items = SERVICES.filter((x) => st.s[x.id]).map((svc) => {
+    const tier = tierOf(svc, st.s[svc.id])
+    return { id: svc.id, cat: svc.cat, name: svc.name, tier, price: tier.price }
+  })
+  const monthly = items.reduce((a, b) => a + b.price, 0)
+  const yearly = monthly * 12
+  const sorted = [...items].sort((a, b) => b.price - a.price)
+  const byCat = CATEGORIES.map((c) => ({ ...c, amount: items.filter((i) => i.cat === c.id).reduce((a, b) => a + b.price, 0) })).filter((c) => c.amount > 0)
+  const ten = yearly * 10
+  return {
+    state: st,
+    salary,
+    pay,
+    hourly,
+    items,
+    sorted,
+    byCat,
+    count: items.length,
+    monthly,
+    yearly,
+    daily: monthly / DAYS_PER_MONTH,
+    share: pay > 0 ? monthly / pay : 0,
+    hours: monthly / hourly, // 한 달 구독료를 벌려고 일하는 시간
+    yearHours: yearly / hourly,
+    chicken: yearly / CHICKEN,
+    ramen: yearly / RAMEN,
+    ten,
+    tenCar: carFor(ten),
+    cars: CAR_LADDER.map((c) => ({ ...c, years: monthly > 0 ? c.price / yearly : null })),
+    top: sorted[0] || null,
+  }
+}
+
+export const won = (v) => `${Math.round(v).toLocaleString('ko-KR')}원`
+export const pct = (v) => `${(v * 100).toFixed(v < 0.1 ? 1 : 0)}%`
+
+export const tierPriceText = (t) => (t.yearly ? `월 ${t.price.toLocaleString('ko-KR')}원 (1년 ${t.yearly.toLocaleString('ko-KR')}원)` : `월 ${t.price.toLocaleString('ko-KR')}원`)
+
+export { USED_AS_OF }
+
+// 다른 계산기로: 같은 연봉으로 연다
+export const carLink = (st, id) => `/car/?pay=${st.pay}${id ? `&car=${id}` : ''}`
+
+// 질문과 답은 subscription/index.html 의 FAQ 구조화 데이터와 같게 유지한다
+export const FAQ = [
+  {
+    q: '구독료는 어디서 가져왔나요?',
+    a: '서비스마다 공식 요금 페이지나 요금을 보도한 기사에서 2026년 11월 25일 기준 한국 요금을 옮겼어요. 모두 부가세가 포함된 한 달 요금이고, 첫 달 무료나 첫해 할인 같은 이벤트 가격은 뺐어요. 출처는 페이지 맨 아래에 모아 뒀어요.',
+  },
+  {
+    q: '1년권은 어떻게 계산했나요?',
+    a: 'PS Plus 1년권, 닌텐도 스위치 온라인 1년권과 추가 팩처럼 1년에 한 번 내는 요금제는 1년 값을 12로 나눠 한 달 요금으로 셌어요. 실제로는 1년에 한 번 목돈이 나가요.',
+  },
+  {
+    q: '월급의 몇 %는 어떻게 구했나요?',
+    a: '고른 연봉의 2026년 실수령액을 12로 나눈 한 달 월급으로 한 달 구독료를 나눴어요. 일하는 시간은 실수령 월급을 한 달 209시간(주 40시간과 주휴)으로 나눈 시급으로 셌어요.',
+  },
+  {
+    q: '치킨과 라면은 얼마로 쳤나요?',
+    a: '치킨은 BBQ 황금올리브치킨 후라이드 23,000원, 라면은 신라면 봉지 1개 1,000원이에요. 1년 구독료를 이 값으로 나눴어요.',
+  },
+  {
+    q: '몇 년 모으면 살 수 있는 차는 무슨 값인가요?',
+    a: '자차 계산기와 같은 엔카 2026년 10월 중고차 시세(2023년식, 주행 6만 km, 무사고)예요. 한 달 구독료를 한 푼도 쓰지 않고 그대로 모은다고 치고, 이자는 넣지 않았어요.',
+  },
+  {
+    q: '클로드는 왜 원화 값이 딱 떨어지지 않나요?',
+    a: '클로드는 웹에서 달러로 결제해요. 한국에서는 부가세 10%가 붙은 22달러(Pro), 110달러(Max), 220달러(Ultra)가 나가는데, 이를 보도에서 쓴 환율로 바꾼 값이라 실제 카드 청구액은 환율과 해외 결제 수수료에 따라 달라요. 아이폰 앱에서 결제하면 더 비싸요.',
+  },
+]

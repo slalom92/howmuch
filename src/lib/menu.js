@@ -12,6 +12,7 @@ export const JONBER = '/jonber/'
 export const SURVIVE = '/survive/'
 export const COMMUTE = '/commute/'
 export const CAR = '/car/'
+export const SUBSCRIPTION = '/subscription/'
 
 // 좁은 화면에서 "메뉴"를 누르면 보이는 전체 목록
 export const MENU = [
@@ -28,6 +29,7 @@ export const MENU = [
   { href: SURVIVE, label: '존버 계산기' },
   { href: COMMUTE, label: '직주근접 계산기' },
   { href: CAR, label: '자차 계산기' },
+  { href: SUBSCRIPTION, label: '월 구독료 계산기' },
   { href: '/channel/', label: '유튜버별 수익' },
   { href: '/guide/', label: '돈 가이드' },
   { href: '/how/', label: '계산 방법' },
@@ -41,6 +43,7 @@ export const MENU_MINE = [
   { href: JONBER, label: '월급 분당 계산기', desc: '내 시급으로 커피·치킨은 몇 분' },
   { href: SURVIVE, label: '존버 계산기', desc: '월급 한 번으로 며칠 버틸까' },
   { href: CAR, label: '자차 계산기', desc: '내 연봉에 맞는 차와 3년 감가' },
+  { href: SUBSCRIPTION, label: '월 구독료 계산기', desc: '구독료는 월급의 몇 %일까' },
   { href: APT, label: '연봉 모아 집 사기', desc: '몇 년 모으면 이 아파트' },
   { href: COMMUTE, label: '직주근접 계산기', desc: '역 근처 월세와 출퇴근 시간' },
   { href: WEDDING_GIFT, label: '축의금 계산기', desc: '관계별로 얼마 낼까' },
@@ -71,7 +74,7 @@ export const MENU_HELP = [
 export const HEADER_LINK = { href: '/news/', label: '오늘의 돈 뉴스' }
 
 // (예전) 유튜버 수익 계산기 쪽 넓은 화면에서 줄지어 보이던 링크
-export const YOUTUBER_LINKS = MENU.slice(13)
+export const YOUTUBER_LINKS = MENU.slice(14)
 
 // 바닥글: 골프 4개 투어는 한 줄로 묶는다 ({ children } 이 있는 항목, src/components/FooterLinks.jsx)
 const GOLF_HREFS = MENU_GOLF.map((g) => g.href)

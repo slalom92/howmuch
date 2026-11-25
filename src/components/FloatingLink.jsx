@@ -162,3 +162,15 @@ export default function FloatingLink({ href, title, sub, badge, icon, hidden = f
     </a>
   )
 }
+
+// 월 구독료 계산기: 카드 + 다시 도는 화살표 (매달 자동이체)
+export function SubscriptionIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <rect x="3" y="7" width="22" height="15" rx="2.5" strokeWidth="2" style={{ fill: 'var(--seal-tint)', stroke: 'var(--seal)' }} />
+      <path d="M3 12h22M7 17.5h6" fill="none" strokeWidth="2" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+      <circle cx="23.5" cy="23.5" r="6" strokeWidth="1.8" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <path d="M20.8 23.2a2.8 2.8 0 0 1 5-1.6M26.2 23.8a2.8 2.8 0 0 1-5 1.6M25.9 19.9v1.8h-1.8M21.1 27.1v-1.8h1.8" fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" style={{ stroke: 'var(--seal)' }} />
+    </svg>
+  )
+}
