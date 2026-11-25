@@ -30,7 +30,7 @@ const SOURCES = {
   khan: { label: '스포츠경향, 김시우·김주형 2026 시즌 상금 보도 (2026.8.31)', url: 'https://sports.khan.co.kr/article/202608311111003/' },
   asiae: { label: '아시아경제, PGA 투어 한국 선수 2026 시즌 성적 보도 (2026.8.31)', url: 'https://view.asiae.co.kr/article/2026083121310160945' },
   viva: { label: '브릿지경제, 2026시즌 PGA 정규 투어 결산 (2026.9.2)', url: 'https://www.viva100.com/article/20260902500221' },
-  fx: { label: '이투데이, 11월 6일 원·달러 환율 마감 1,356.6원', url: 'https://www.etoday.co.kr/news/view/2645178' },
+  fx: { label: '파이낸셜뉴스, 11월 24일 원·달러 환율 1,342.4원 (오후 3시 30분 주간 종가)', url: 'https://www.fnnews.com/news/202611241533500378' },
 }
 
 const PLAYERS = [

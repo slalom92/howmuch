@@ -15,7 +15,7 @@ export const DEFAULTS = { pay: '4500', s: 'avg', a: {} }
 export const SOURCES = {
   ...PAY_SOURCES,
   oneperson: { label: '국가데이터처, 2025 통계로 보는 1인가구 (2024년 1인 가구 월평균 소비지출 비목별)', url: 'https://mods.go.kr/board.es?act=view&bid=10820&list_no=442130&mid=a10301010000' },
-  rent: { label: '머니투데이, 다방여지도 2026년 6월 서울 원룸 평균 월세 (보증금 1,000만 원 기준)', url: 'https://www.mt.co.kr/estate/2026/07/28/2026072808575932587' },
+  rent: { label: '파이낸셜뉴스, 다방여지도 2026년 9월 서울 원룸 평균 월세 71만 원 (보증금 1,000만 원 기준)', url: 'https://www.fnnews.com/news/202610221026238642' },
   minliving: { label: '인천광역시, 2026년 1인 가구 생계급여 지급기준 820,556원 (기준 중위소득 32%)', url: 'https://www.incheon.go.kr/welfare/WE010101' },
   ramen: { label: 'SBS Biz, 신라면 봉지 1개 1천 원', url: 'https://biz.sbs.co.kr/amp/article/20000284952' },
   ramen2: { label: '뉴시스, 농심 2026년 8월 가격 인상에서 신라면 등 봉지라면은 제외', url: 'https://www.newsis.com/view/NISX20260724_0003721857' },
@@ -44,7 +44,7 @@ export const CATEGORIES = [
 ]
 
 export const AVG_TOTAL = 1689000 // 통계표의 합계 (비목을 더하면 반올림 때문에 1,690,000)
-export const SEOUL_RENT = 640000
+export const SEOUL_RENT = 710000
 export const MIN_LIVING = 820556 // 2026년 1인 가구 생계급여 지급기준 = 최저보장수준
 export const MIN_LIVING_2027 = 875533
 
@@ -56,7 +56,7 @@ export const GROUPS = [
 
 export const STYLES = [
   { id: 'avg', label: '1인 가구 평균', note: '월 169만' },
-  { id: 'seoul', label: '서울 원룸 자취', note: '월세 64만' },
+  { id: 'seoul', label: '서울 원룸 자취', note: '월세 71만' },
   { id: 'min', label: '최소 생활', note: '월 82만' },
 ]
 
@@ -296,7 +296,7 @@ export const FAQ = [
   },
   {
     q: '서울 원룸 자취는 무엇이 다른가요?',
-    a: '1인 가구 평균의 집 항목(주거·수도·광열 31만 1천 원) 대신 다방이 국토교통부 실거래가로 낸 2026년 6월 서울 원룸 평균 월세 64만 원(보증금 1,000만 원 기준)을 넣었어요. 관리비와 전기·가스 요금은 들어 있지 않아서 실제로는 조금 더 들 수 있어요.',
+    a: '1인 가구 평균의 집 항목(주거·수도·광열 31만 1천 원) 대신 다방이 국토교통부 실거래가로 낸 2026년 9월 서울 원룸 평균 월세 71만 원(보증금 1,000만 원 기준)을 넣었어요. 관리비와 전기·가스 요금은 들어 있지 않아서 실제로는 조금 더 들 수 있어요.',
   },
   {
     q: '최소 생활은 무엇을 기준으로 했나요?',

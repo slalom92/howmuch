@@ -33,7 +33,7 @@ const SOURCES = {
   kpmg: { label: 'Golf Channel, 2026 KPMG 위민스 PGA 챔피언십 상금 (총상금 1,300만 달러)', url: 'https://www.golfchannel.com/lpga/news/kpmg-pga-womens-championship-2026-full-payout-from-13-million-purse' },
   khan0719: { label: '스포츠경향, 2026 LPGA 투어 전반기 한국 선수 우승 정리 (2026.7.19)', url: 'https://sports.khan.co.kr/article/202607191508003' },
   cme: { label: 'LPGA, CME 그룹 투어 챔피언십 소개 (우승 상금 400만 달러)', url: 'https://www.lpga.com/tournaments/cme-group-tour-championship/overview' },
-  fx: { label: '이투데이, 11월 6일 원·달러 환율 마감 1,356.6원', url: 'https://www.etoday.co.kr/news/view/2645178' },
+  fx: { label: '파이낸셜뉴스, 11월 24일 원·달러 환율 1,342.4원 (오후 3시 30분 주간 종가)', url: 'https://www.fnnews.com/news/202611241533500378' },
 }
 
 const PLAYERS = [
