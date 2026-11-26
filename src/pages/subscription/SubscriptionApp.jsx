@@ -370,7 +370,7 @@ export default function SubscriptionApp({ initialSearch = '' }) {
           <div className="hero__text">
             <p className="hero__kicker">매달 빠져나가는 돈 점검</p>
             <h1 className="hero__title">월 구독료 계산기</h1>
-            <p className="hero__lede">넷플릭스, 배민클럽, 게임 패스, 챗GPT, iCloud, 테슬라 FSD까지. 쓰는 구독과 요금제를 고르면 매달 얼마가 빠져나가는지, 월급의 몇 %인지 보여 드려요.</p>
+            <p className="hero__lede">넷플릭스, 배민클럽, 챗GPT, 테슬라 FSD에 헬스장과 정수기 렌탈까지. 쓰는 구독과 요금제를 고르면 매달 얼마가 빠져나가는지, 월급의 몇 %인지 보여 드려요.</p>
           </div>
           <HeroArt kind="subscription" />
         </section>

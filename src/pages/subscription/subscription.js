@@ -1,4 +1,4 @@
-// 월 구독료 계산기: OTT·음악·게임·AI·자동차·쇼핑 멤버십 중 쓰는 것과 요금제를 고르면
+// 월 구독료 계산기: OTT·음악·게임·AI·자동차·쇼핑 멤버십·운동 회원권·생활 렌탈 중 쓰는 것과 요금제를 고르면
 // 한 달·1년 구독료와 "월급의 몇 %인지, 치킨 몇 마리인지, 몇 년 모으면 무슨 차인지" 를 보여 준다
 //
 // - 사용자는 숫자를 직접 쓰지 않고 서비스와 요금제(대표 값), 연봉(대표 값)만 고른다.
@@ -11,7 +11,7 @@ import { CARS, SRC as CAR_SRC, USED_AS_OF } from '../car/cars.js'
 
 export { SALARIES }
 
-export const AS_OF = '2026년 11월 25일'
+export const AS_OF = '2026년 11월 26일'
 export const DAYS_PER_MONTH = 365 / 12
 export const CHICKEN = 23000 // BBQ 황금올리브 (월급 분당 계산기와 같은 값)
 export const RAMEN = 1000 // 신라면 봉지 1개 (존버 계산기와 같은 값)
@@ -67,6 +67,12 @@ export const SOURCES = {
   chicken: { label: 'MTN, BBQ 황금올리브치킨 후라이드 23,000원', url: 'https://news.mtn.co.kr/news-detail/2024052111194813151' },
   ramen: { label: 'SBS Biz, 신라면 봉지 1개 1천 원', url: 'https://biz.sbs.co.kr/amp/article/20000284952' },
   encar: CAR_SRC.encar,
+  gym: { label: '소비자교육중앙회, 체육시설업 가격표시 모니터링 (2022년 헬스장 952곳 1·3·12개월 평균 이용료)', url: 'https://www.ncce.or.kr/_rb/_view.html?Ncode=b3&number=13117' },
+  golfRange: { label: '효창골프연습장 요금표 (서울 용산, 2026년 8월 26일 시행)', url: 'https://www.hyochanggolfclub.co.kr/' },
+  swim: { label: '서울시 체육시설관리사업소, 잠실수영장 강습·자유수영 이용료 (성인)', url: 'https://stadium.seoul.go.kr/lecture/fee' },
+  water: { label: '폭선, 코웨이 아이콘 정수기 렌탈 요금 (2026년 9월 3일, 할인 기간이 끝난 뒤 월 요금)', url: 'https://foxun.net/aicon-water-purifier-2-rental/' },
+  bidet: { label: '유리지갑, 비데 렌탈 요금 (2026년 8월 19일 코웨이·청호나이스 렌탈몰 기준)', url: 'https://glasswallet.com/blog/bidet-rental-cost-guide/' },
+  mattress: { label: '폭선, 매트리스 렌탈 월 요금 (2026년 8월 31일, 쿠쿠 공식 방문관리 요금 포함)', url: 'https://foxun.net/mattress-rental-cost/' },
   morning: { label: '뉴스와, 기아 모닝 2021년식 중고 평균 등록가격 1,099만 원 (2026년 10월)', url: 'https://www.news-wa.com/article/automobiles/2026/10/29/20261029500018' },
 }
 
@@ -80,6 +86,8 @@ export const CATEGORIES = [
   { id: 'food', label: '배달·장보기' },
   { id: 'shop', label: '쇼핑 멤버십' },
   { id: 'car', label: '자동차' },
+  { id: 'fit', label: '운동' },
+  { id: 'rental', label: '생활 렌탈' },
 ]
 
 // tiers: [{ id, label, price(월, 원), yearly?(1년 값), note? }] / def: 처음 고를 때 켜지는 요금제
@@ -371,6 +379,56 @@ export const SERVICES = [
     id: 'kakaomem', cat: 'shop', name: '카카오멤버십', def: 'km', src: ['kakao'], note: '이모티콘 플러스나 톡클라우드 중 하나가 들어 있어요.',
     tiers: [{ id: 'km', label: '카카오멤버십', price: 4900 }],
   },
+  // 운동: 회원권도 매달(또는 몇 달마다) 빠져나가는 돈이라 같이 센다
+  {
+    id: 'gym', cat: 'fit', name: '헬스장', def: 'm3', src: ['gym'], note: '2022년 전국 헬스장 952곳 가격표의 평균이에요. 동네·브랜드에 따라 2만 원부터 40만 원대까지 차이가 커요.',
+    tiers: [
+      { id: 'm1', label: '1개월씩 등록', price: 95467 },
+      { id: 'm3', label: '3개월 등록', price: 73512, per: '3개월 220,536원 ÷ 3' },
+      { id: 'y1', label: '12개월 등록', price: 48222, yearly: 578662 },
+    ],
+  },
+  {
+    id: 'golfrange', cat: 'fit', name: '골프연습장', def: 'm1', src: ['golfRange'], note: '서울 용산 효창골프연습장 회원 요금이에요. 연습장마다 차이가 커요. 락커는 한 달 2만 원 따로예요.',
+    tiers: [
+      { id: 'm1', label: '1개월 회원', price: 250000, note: '하루 90분' },
+      { id: 'y1', label: '12개월 회원', price: 233333, yearly: 2800000, note: '하루 70분·락커' },
+    ],
+  },
+  {
+    id: 'swim', cat: 'fit', name: '수영장', def: 'w3', src: ['swim'], note: '서울 잠실수영장(공공) 성인 요금이에요. 사설 수영장 강습은 더 비싸요.',
+    tiers: [
+      { id: 'w2', label: '강습 주 2회', price: 40000 },
+      { id: 'w3', label: '강습 주 3회', price: 60000 },
+      { id: 'w5', label: '강습 주 5회', price: 85000, note: '상급·연수반' },
+      { id: 'free', label: '자유수영 월 회원', price: 80000, note: '평일 매일' },
+    ],
+  },
+  // 생활 렌탈: 할인 기간(첫 몇 달 반값 등)이 끝난 뒤 내는 한 달 렌탈료
+  {
+    id: 'water', cat: 'rental', name: '정수기', def: 'icon3', src: ['water'], note: '코웨이 아이콘 정수기 렌탈료예요. 처음 12~18개월 반값 할인은 빼고, 할인이 끝난 뒤 요금을 넣었어요.',
+    tiers: [
+      { id: 'icon2', label: '코웨이 아이콘2', price: 27900 },
+      { id: 'icon3', label: '코웨이 아이콘3', price: 28900 },
+      { id: 'pro', label: '코웨이 아이콘 프로', price: 29900 },
+    ],
+  },
+  {
+    id: 'bidet', cat: 'rental', name: '비데', def: 'style', src: ['bidet'], note: '렌탈몰에 표시된 한 달 렌탈료예요. 할인 행사 값은 뺐어요.',
+    tiers: [
+      { id: 'b400', label: '청호나이스 트윈노즐 B400', price: 12900 },
+      { id: 'style', label: '코웨이 스타일 비데', price: 19900 },
+      { id: 'manner', label: '코웨이 더매너 비데 플러스', price: 31400 },
+    ],
+  },
+  {
+    id: 'mattress', cat: 'rental', name: '매트리스', def: 'tight', src: ['mattress'], note: '퀸·라지킹 크기 렌탈료예요. 쿠쿠는 공식 방문관리 요금, 코웨이는 렌탈몰 시작가예요.',
+    tiers: [
+      { id: 'tight', label: '쿠쿠 타이트탑 퀸', price: 25900, note: '방문관리' },
+      { id: 'euro', label: '쿠쿠 유로탑 퀸', price: 33900, note: '방문관리' },
+      { id: 's8', label: '코웨이 S8+ 라지킹', price: 105900 },
+    ],
+  },
 ]
 
 const SERVICE_MAP = Object.fromEntries(SERVICES.map((s) => [s.id, s]))
@@ -500,7 +558,7 @@ export const carLink = (st, id) => `/car/?pay=${st.pay}${id ? `&car=${id}` : ''}
 export const FAQ = [
   {
     q: '구독료는 어디서 가져왔나요?',
-    a: '서비스마다 공식 요금 페이지나 요금을 보도한 기사에서 2026년 11월 25일 기준 한국 요금을 옮겼어요. 모두 부가세가 포함된 한 달 요금이고, 첫 달 무료나 첫해 할인 같은 이벤트 가격은 뺐어요. 출처는 페이지 맨 아래에 모아 뒀어요.',
+    a: '서비스마다 공식 요금 페이지나 요금을 보도한 기사에서 2026년 11월 26일 기준 한국 요금을 옮겼어요. 모두 부가세가 포함된 한 달 요금이고, 첫 달 무료나 첫해 할인 같은 이벤트 가격은 뺐어요. 출처는 페이지 맨 아래에 모아 뒀어요.',
   },
   {
     q: '1년권은 어떻게 계산했나요?',
@@ -517,6 +575,14 @@ export const FAQ = [
   {
     q: '몇 년 모으면 살 수 있는 차는 무슨 값인가요?',
     a: '5년 된 기아 모닝은 2021년식 모닝의 중고 평균 등록가격 1,099만 원(2026년 10월 보도)이에요. 나머지 차는 자차 계산기와 같은 엔카 2026년 10월 중고차 시세(2023년식, 주행 6만 km, 무사고)예요. 한 달 구독료를 한 푼도 쓰지 않고 그대로 모은다고 치고, 이자는 넣지 않았어요.',
+  },
+  {
+    q: '헬스장·골프연습장·수영장은 어떤 값인가요?',
+    a: '헬스장은 소비자교육중앙회가 2022년 전국 헬스장 952곳의 가격표를 조사한 평균이에요(1개월 95,467원, 3개월 220,536원, 12개월 578,662원). 3개월·12개월 등록은 한 달 값으로 나눴어요. 골프연습장은 서울 용산 효창골프연습장, 수영장은 서울 잠실수영장(공공)의 성인 요금이라 동네와 시설에 따라 차이가 커요.',
+  },
+  {
+    q: '정수기·비데·매트리스 렌탈료는 어떤 값인가요?',
+    a: '렌탈몰에 표시된 한 달 렌탈료예요. 처음 몇 달 반값이나 월 1만 원 같은 행사 값은 빼고, 할인이 끝난 뒤 내는 요금을 넣었어요. 렌탈은 대부분 5~9년 약정이라 중간에 해지하면 위약금이 있고, 약정이 끝나기 전까지는 렌탈 회사 물건이에요.',
   },
   {
     q: '클로드는 왜 원화 값이 딱 떨어지지 않나요?',

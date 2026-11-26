@@ -33,6 +33,9 @@ export function subscriptionStings(r) {
   const top = r.top
   const car = r.tenCar
   const morning = r.cars.find((c) => c.id === 'morning')
+  const catSum = (cat) => r.items.filter((i) => i.cat === cat).reduce((a, b) => a + b.price, 0)
+  const fit = catSum('fit')
+  const rental = catSum('rental')
   return lines(
     `구독료만 한 달 **${wonText(r.monthly)}**. 1년이면 **${wonText(r.yearly)}**이 자동이체로 빠져나가요`,
     `월급의 **${pctText(r.share)}**가 로그인하는 값이에요. 월급날마다 **${bigTime(r.hours)}**은 구독료 벌려고 일해요`,
@@ -44,6 +47,8 @@ export function subscriptionStings(r) {
       : morning && `구독 끊고 모으면 **${yearsText(morning.years)}** 뒤에 5년 된 중고 모닝을 사요`,
     top && r.count > 1 && `제일 비싼 건 **${top.name}** ${top.tier.label}, 혼자서 구독료의 **${pctText(top.price / r.monthly)}**를 먹어요`,
     `하루로 치면 **${wonText(r.daily)}**. 안 보는 날에도 꼬박꼬박 나가요`,
+    fit > 0 && `운동 회원권만 한 달 **${wonText(fit)}**. 이번 달 몇 번 갔는지 세어 보면 한 번 가는 값이 나와요`,
+    rental > 0 && `렌탈료만 한 달 **${wonText(rental)}**. 약정이 끝나기 전까지는 렌탈 회사 물건이에요`,
     missingLine(r),
   )
 }
