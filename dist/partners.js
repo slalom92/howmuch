@@ -15,6 +15,7 @@
  * 3) 글 페이지(가이드·뉴스 등 <main class="doc">)에는 직접 넣는다.
  *    - 본문 첫머리(요약 문단 바로 아래)에 대가성 문구
  *    - 본문 중간(두 번째 소제목 앞)과 본문 끝에 배너 한 개씩
+ *    - <main class="doc" data-rails> 이면 넓은 PC 화면 좌우 세로 배너도 (지금은 순위 페이지)
  *
  * 정책 메모 (쿠팡 파트너스 / 공정위 추천·보증 심사지침)
  * - 대가성 문구는 게시물 제목 또는 첫 부분에, 배너 가까이에 둔다.
@@ -146,7 +147,14 @@
     if (SKIP.test(location.pathname)) return
     if (mountMarked()) return
     var doc = document.querySelector('main.doc')
-    if (!doc || doc.querySelector('.partners-note')) return
+    if (!doc) return
+    if (doc.hasAttribute('data-rails') && !document.querySelector('.partners-rails')) {
+      var host = document.createElement('div')
+      host.className = 'partners-rails'
+      document.body.appendChild(host)
+      rails(host)
+    }
+    if (doc.querySelector('.partners-note')) return
 
     var note = document.createElement('p')
     note.className = 'partners-note'
