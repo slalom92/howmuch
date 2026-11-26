@@ -651,7 +651,7 @@ a:hover {
   }
 }
 
-/* 넓은 PC 화면 좌우 세로 배너 (partners.js, <main class="doc" data-rails> 인 페이지). 홈(hub.css)과 같은 자리 */
+/* 넓은 PC 화면 좌우 세로 배너 (partners.js 가 글 페이지 전체에 넣는다). 홈(hub.css)과 같은 자리 */
 .partners-rail { position: fixed; top: 20px; z-index: 40; width: 160px; }
 .partners-rail .partners-ad__label { margin: 0 0 4px; font-size: 11px; color: var(--muted); text-align: center; }
 .partners-rail--left { left: calc(50% - var(--page-w, 760px) / 2 - 24px - 160px); }
