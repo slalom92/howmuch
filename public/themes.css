@@ -3,6 +3,7 @@
  * <html data-theme="…"> 값에 따라 색 변수가 바뀐다. 테마는 /theme.js 가 정한다.
  *   - 처음 방문: 코랄(기본)
  *   - 이용자가 고르면: 그 색을 기억 (이 브라우저에만 저장)
+ *   - '방문할 때마다 랜덤'을 고르면: 방문(탭)마다 무작위
  *
  * 변수
  *   desk 바탕 / paper 명세서 종이 / paper-tint 옅은 칸 / ink 글자·선 / muted 보조 글자
@@ -42,6 +43,7 @@
   --rule: #cfd6e0;
   --bar: #a7b0c0;
   --seal: #c2362b;
+  --seal-ink: var(--seal);
   --seal-tint: #fbeceb;
   --on-ink: #ffffff;
   --on-seal: #ffffff;
@@ -61,6 +63,7 @@
   --rule: #c5d6cb;
   --bar: #9db4a6;
   --seal: #1a714a;
+  --seal-ink: var(--seal);
   --seal-tint: #e3f2ea;
   --on-ink: #ffffff;
   --on-seal: #ffffff;
@@ -80,6 +83,7 @@
   --rule: #d7cfe3;
   --bar: #b2a8c7;
   --seal: #7b3fc0;
+  --seal-ink: var(--seal);
   --seal-tint: #f2eafb;
   --on-ink: #ffffff;
   --on-seal: #ffffff;
@@ -99,6 +103,7 @@
   --rule: #dccdb5;
   --bar: #c0ac8c;
   --seal: #2d55a8;
+  --seal-ink: var(--seal);
   --seal-tint: #e6edf9;
   --on-ink: #ffffff;
   --on-seal: #ffffff;
@@ -118,6 +123,7 @@
   --rule: #343e54;
   --bar: #5b6680;
   --seal: #ff7a6b;
+  --seal-ink: var(--seal);
   --seal-tint: #3b2329;
   --on-ink: #10141d;
   --on-seal: #10141d;

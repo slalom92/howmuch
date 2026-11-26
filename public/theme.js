@@ -1,7 +1,9 @@
 /* 색 테마 정하기 + 고르기 (모든 페이지 <head> 에서 가장 먼저 읽는다)
  *
  * - 이용자가 고른 테마가 있으면 그 테마 (localStorage 'theme')
- * - 없으면 기본 테마(코랄)
+ * - '방문할 때마다 랜덤'을 고르면 localStorage 'theme' 에 'random' 을 적어 두고, 방문(탭)마다 무작위.
+ *   같은 방문(탭) 안에서는 페이지를 옮겨도 같은 색 (sessionStorage 'theme-visit')
+ * - 아무것도 고른 적이 없으면 기본 테마(코랄)
  * - 화면이 그려지기 전에 <html data-theme> 를 정해 기본 색이 번쩍이지 않게 한다.
  * - [data-theme-toggle] 버튼을 누르면 고르기 메뉴가 열린다. 메뉴는 이 파일이 직접 만든다.
  */
@@ -48,10 +50,29 @@
     return null
   }
 
-  var picked = find(read('local', KEY)) ? read('local', KEY) : null
-  // 고른 적이 없으면 기본(코랄). 예전에 쓰던 방문별 무작위 값은 지운다.
+  var RANDOM = 'random'
+  var saved = read('local', KEY)
+  var picked = find(saved) ? saved : null
+  var randomMode = saved === RANDOM
+
+  // 무작위 테마 하나 (except 와 다른 것)
+  function roll(except) {
+    var pool = []
+    for (var i = 0; i < THEMES.length; i++) if (THEMES[i].id !== except) pool.push(THEMES[i].id)
+    return pool[Math.floor(Math.random() * pool.length)]
+  }
+
+  // 랜덤을 골랐으면 이번 방문(탭)의 색을 정해 두고, 아니면 기본(코랄)
   var visit = THEMES[0].id
-  write('session', VISIT_KEY, null)
+  if (randomMode) {
+    visit = read('session', VISIT_KEY)
+    if (!find(visit)) {
+      visit = roll(null)
+      write('session', VISIT_KEY, visit)
+    }
+  } else {
+    write('session', VISIT_KEY, null)
+  }
 
   function apply(id) {
     var t = find(id) || THEMES[0]
@@ -72,7 +93,8 @@
   var opener = null
 
   function current() {
-    return picked ? picked : 'random'
+    if (picked) return picked
+    return randomMode ? RANDOM : THEMES[0].id
   }
 
   function buildMenu() {
@@ -143,13 +165,19 @@
 
   function choose(id) {
     root.classList.add('theme-fade')
-    if (id === 'random') {
+    if (id === RANDOM) {
+      // 누르자마자 지금과 다른 색으로 바꿔서 랜덤이 켜진 걸 보여 준다
       picked = null
-      write('local', KEY, null)
+      randomMode = true
+      visit = roll(root.getAttribute('data-theme'))
+      write('local', KEY, RANDOM)
+      write('session', VISIT_KEY, visit)
       apply(visit)
     } else {
       picked = id
+      randomMode = false
       write('local', KEY, id)
+      write('session', VISIT_KEY, null)
       apply(id)
     }
     sync()
