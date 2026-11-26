@@ -5,8 +5,8 @@ if (typeof window !== 'undefined' && typeof ResizeObserver !== 'undefined') {
   const mq = window.matchMedia('(min-width: 1100px)')
   const check = () => {
     document.querySelectorAll('.split-in > form').forEach((el) => {
-      // 위 92px(결과 띠) + 아래 여유 24px 안에 다 들어갈 때만
-      el.classList.toggle('is-sticky', mq.matches && el.offsetHeight < window.innerHeight - 116)
+      // 위 136px(맨 위에 붙는 큰 배너 띠) + 아래 여유 24px 안에 다 들어갈 때만
+      el.classList.toggle('is-sticky', mq.matches && el.offsetHeight < window.innerHeight - 160)
     })
   }
   const ro = new ResizeObserver(check)

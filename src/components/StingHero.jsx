@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { pick, IS_SERVER } from '../lib/sting.js'
 
-// 결과 한눈에 보기 카드: 아이콘 + 한 줄 설명 + 큰 숫자 (예: "내 월급으로 한남더힐" / "285년")
+// 맨 위 큰 배너: 유튜브 썸네일처럼 큰 숫자 하나 + 알약 모양 한 줄 (예: "285년" / "내 월급으로 한남더힐")
 // options 는 페이지 폴더의 sting.js 가 계산 결과로 만든 후보 [{ big, cap, label }] 이다.
 // 처음 들어올 때 그중 하나를 무작위로 고르고, 숫자가 바뀌면 한 번 튀어 오른다.
 // 미리 그린 HTML 에서는 자리만 잡아 두고 감춘다 (화면이 뜨면 고른 문구로 바뀌며 깜빡이지 않게)
@@ -26,23 +26,28 @@ export default function StingHero({ options }) {
   const size = big.length > 10 ? ' is-xxs' : big.length > 7 ? ' is-xs' : big.length > 5 ? ' is-sm' : ''
   const face = (
     <>
-      <span className="sting-hero__icon" aria-hidden="true">
-        <svg viewBox="0 0 32 32" focusable="false">
-          <ellipse cx="13" cy="9" rx="8" ry="3.2" />
-          <path d="M5 9v5c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V9" />
-          <path d="M5 14v5c0 1.8 3.6 3.2 8 3.2 1.2 0 2.3-.1 3.3-.3" />
-          <circle cx="22.5" cy="21.5" r="6.5" />
-          <path d="M20 21.5l1.8 1.8 3.2-3.6" />
-        </svg>
-      </span>
-      <span className="sting-hero__body">
-        <span className={`sting-hero__cap${long ? ' is-long' : ''}`} aria-hidden="true">
-          {cap}
-        </span>
-        <span className={`sting-hero__big${size}`} key={big} aria-hidden="true">
-          {big}
-        </span>
-      </span>
+      <svg className="sting-hero__rays" viewBox="0 0 400 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+        {Array.from({ length: 18 }, (_, i) => {
+          const a = (i / 18) * Math.PI * 2
+          const r1 = 96 + (i % 3) * 8
+          const r2 = 150 + (i % 2) * 34
+          const x = (r) => (200 + Math.cos(a) * r * 1.5).toFixed(1)
+          const y = (r) => (96 + Math.sin(a) * r * 0.62).toFixed(1)
+          return <line key={i} x1={x(r1)} y1={y(r1)} x2={x(r2)} y2={y(r2)} />
+        })}
+      </svg>
+      <svg className="sting-hero__spark sting-hero__spark--l" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 1.5c.9 5.6 4.9 9.6 10.5 10.5-5.6.9-9.6 4.9-10.5 10.5C11.1 16.9 7.1 12.9 1.5 12 7.1 11.1 11.1 7.1 12 1.5z" />
+      </svg>
+      <svg className="sting-hero__spark sting-hero__spark--r" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 1.5c.9 5.6 4.9 9.6 10.5 10.5-5.6.9-9.6 4.9-10.5 10.5C11.1 16.9 7.1 12.9 1.5 12 7.1 11.1 11.1 7.1 12 1.5z" />
+      </svg>
+      <p className={`sting-hero__big${size}`} key={big} aria-hidden="true">
+        {big}
+      </p>
+      <p className={`sting-hero__cap${long ? ' is-long' : ''}`} aria-hidden="true">
+        {cap}
+      </p>
     </>
   )
   return (
