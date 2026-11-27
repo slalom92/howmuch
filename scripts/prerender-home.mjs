@@ -30,7 +30,6 @@ const PAGES = [
   { name: '직주근접 계산기', entry: 'src/pages/commute/entry-server.jsx', html: 'dist/commute/index.html' },
   { name: '자차 계산기', entry: 'src/pages/car/entry-server.jsx', html: 'dist/car/index.html' },
   { name: '월 구독료 계산기', entry: 'src/pages/subscription/entry-server.jsx', html: 'dist/subscription/index.html' },
-  { name: '관리비 계산기', entry: 'src/pages/managefee/entry-server.jsx', html: 'dist/manage-fee/index.html' },
 ]
 
 // Vite 처럼 VITE_ 로 시작하는 환경변수를 import.meta.env 로 넘긴다

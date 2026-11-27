@@ -54,7 +54,6 @@ export default defineConfig(({ mode }) => {
     //   /commute/       → commute/index.html (직주근접 계산기, 자료는 npm run commute 로 만든다)
     //   /car/           → car/index.html (자차 계산기)
     //   /subscription/  → subscription/index.html (월 구독료 계산기)
-    //   /manage-fee/    → manage-fee/index.html (관리비 계산기)
     build: {
       rollupOptions: {
         input: {
@@ -72,7 +71,6 @@ export default defineConfig(({ mode }) => {
           commute: fileURLToPath(new URL('./commute/index.html', import.meta.url)),
           car: fileURLToPath(new URL('./car/index.html', import.meta.url)),
           subscription: fileURLToPath(new URL('./subscription/index.html', import.meta.url)),
-          managefee: fileURLToPath(new URL('./manage-fee/index.html', import.meta.url)),
         },
       },
     },
