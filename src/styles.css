@@ -2641,6 +2641,13 @@ input {
 /* 펼친 목록 */
 .float-switch__menu {
   width: min(300px, calc(100vw - 32px));
+  /* 계산기가 늘어 화면이 낮으면 위가 잘리므로, 버튼 위 남는 높이까지만 쓰고 안에서 세로로 스크롤한다
+     (아래 띄움 + 버튼 높이 약 64px + 틈 10px + 위 여백 16px) */
+  max-height: calc(100vh - var(--anchor-h, 0px) - 106px);
+  max-height: calc(100dvh - var(--anchor-h, 0px) - 106px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 10px;
   border: 2px solid var(--seal);
   border-radius: 18px;

@@ -78,6 +78,14 @@ export default function FloatingSwitch({ current, hidden = false }) {
     }
   }, [open])
 
+  // 목록이 화면보다 길어 안에서 스크롤될 때, 열면 "지금 보는 중" 항목이 보이게 맞춘다
+  const menuRef = useRef(null)
+  useEffect(() => {
+    if (!open || !menuRef.current) return
+    const here = menuRef.current.querySelector('.float-switch__item.is-here')
+    if (here) here.scrollIntoView({ block: 'nearest' })
+  }, [open])
+
   // 숨겨질 때는 목록도 닫는다
   useEffect(() => {
     if (hidden) setOpen(false)
@@ -94,7 +102,7 @@ export default function FloatingSwitch({ current, hidden = false }) {
 
   return (
     <div className={cls} ref={rootRef} aria-hidden={hidden || undefined}>
-      <nav id="float-switch-menu" className="float-switch__menu" aria-label="돈미터 계산기" hidden={!open}>
+      <nav id="float-switch-menu" ref={menuRef} className="float-switch__menu" aria-label="돈미터 계산기" hidden={!open}>
         <p className="float-switch__head">돈미터의 다른 계산기</p>
         <ul>
           {APPS.map(({ href, title, sub, Icon, badge }) => {
