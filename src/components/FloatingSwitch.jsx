@@ -152,7 +152,7 @@ export default function FloatingSwitch({ current, hidden = false }) {
         tabIndex={hidden ? -1 : undefined}
         onClick={toggle}
       >
-        <span className="float-switch__icons" aria-hidden="true">
+        <span className="float-switch__icons" aria-hidden="true" style={{ '--n': Math.max(others.length, 2) }}>
           {others.map(({ href, Icon }) => (
             <span key={href} className="float-link__icon">
               <Icon />
