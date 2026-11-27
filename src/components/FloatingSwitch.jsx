@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { track } from '../lib/analytics.js'
-import { YOUTUBER, WEDDING_GIFT, KBO, KLPGA, APT, JONBER, SURVIVE, COMMUTE, CAR, SUBSCRIPTION } from '../lib/menu.js'
-import { CreatorIncomeIcon, GiftEnvelopeIcon, BaseballIcon, GolfIcon, HouseIcon, ClockIcon, CalendarIcon, SubwayIcon, CarIcon, SubscriptionIcon } from './FloatingLink.jsx'
+import { YOUTUBER, WEDDING_GIFT, KBO, KLPGA, APT, JONBER, SURVIVE, COMMUTE, CAR, SUBSCRIPTION, MANAGE_FEE } from '../lib/menu.js'
+import { CreatorIncomeIcon, GiftEnvelopeIcon, BaseballIcon, GolfIcon, HouseIcon, ClockIcon, CalendarIcon, SubwayIcon, CarIcon, SubscriptionIcon, ManageFeeIcon } from './FloatingLink.jsx'
 
-// 열 콘텐츠(유튜버 수익, 축의금, 야구선수 연봉, 골프선수 상금, 연봉 모아 집 사기, 월급 분당 계산기, 존버 계산기, 직주근접 계산기, 자차 계산기, 월 구독료 계산기)를 오가는 떠 있는 버튼 (오른쪽 아래, 하단 고정 광고 위)
+// 열 콘텐츠(유튜버 수익, 축의금, 야구선수 연봉, 골프선수 상금, 연봉 모아 집 사기, 월급 분당 계산기, 존버 계산기, 직주근접 계산기, 자차 계산기, 월 구독료 계산기, 관리비 계산기)를 오가는 떠 있는 버튼 (오른쪽 아래, 하단 고정 광고 위)
 // 누르면 위로 목록이 펼쳐진다. 모양은 FloatingLink(.float-link)를 그대로 쓰고, 목록만 .float-switch__menu 로 더한다.
 // 아래로 스크롤하는 동안은 아이콘만 남기고 접어 본문을 덜 가린다.
 //
@@ -20,6 +20,7 @@ export const APPS = [
   { href: COMMUTE, title: '직주근접 계산기', short: '직주근접', sub: '회사 역 근처 전월세와 출퇴근', Icon: SubwayIcon, badge: 'NEW' },
   { href: CAR, title: '자차 계산기', short: '자차', sub: '내 연봉에 맞는 차일까', Icon: CarIcon, badge: 'NEW' },
   { href: SUBSCRIPTION, title: '월 구독료 계산기', short: '구독료', sub: '구독료는 월급의 몇 %일까', Icon: SubscriptionIcon, badge: 'NEW' },
+  { href: MANAGE_FEE, title: '관리비 계산기', short: '관리비', sub: '우리 집 관리비, 평균보다 비쌀까', Icon: ManageFeeIcon, badge: 'NEW' },
 ]
 
 function Chevron({ open }) {

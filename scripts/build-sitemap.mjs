@@ -32,6 +32,7 @@ const PAGES = [
   { url: '/commute/', files: ['commute/index.html', 'src/pages/commute', 'public/data/commute/stations.json'] },
   { url: '/car/', files: ['car/index.html', 'src/pages/car'] },
   { url: '/subscription/', files: ['subscription/index.html', 'src/pages/subscription', 'src/pages/car/cars.js'] },
+  { url: '/manage-fee/', files: ['manage-fee/index.html', 'src/pages/managefee'] },
 ]
 
 // 채널 페이지는 서버(api/page.js)가 그린다

@@ -174,3 +174,15 @@ export function SubscriptionIcon() {
     </svg>
   )
 }
+
+// 관리비 계산기: 고지서 한 장과 집 지붕
+export function ManageFeeIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <rect x="6" y="4" width="17" height="23" rx="2.5" strokeWidth="2" style={{ fill: 'var(--seal-tint)', stroke: 'var(--seal)' }} />
+      <path d="M10 10h9M10 14.5h9M10 19h5" fill="none" strokeWidth="2" strokeLinecap="round" style={{ stroke: 'var(--seal)' }} />
+      <circle cx="23.5" cy="23.5" r="6" strokeWidth="1.8" style={{ fill: 'var(--paper)', stroke: 'var(--seal)' }} />
+      <path d="M20.6 24l2.9-2.6 2.9 2.6M21.6 23.3v3.1h3.8v-3.1" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ stroke: 'var(--seal)' }} />
+    </svg>
+  )
+}

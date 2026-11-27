@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 색 테마: 화면이 그려지기 전에 정해야 색이 번쩍이지 않는다 -->
+    <script src="/theme.js"></script>
+    <script src="/partners.js"></script>
+    <link rel="stylesheet" href="/themes.css" />
+    <title>관리비 계산기 – 우리 집 아파트 관리비, 평균보다 비쌀까? 지역·평형별 평균 비교 | 돈미터</title>
+    <meta name="description" content="아파트 전용면적과 지역, 이번 달 관리비를 고르면 K-apt 평균 관리비(서울 ㎡당 3,411원, 전국 2,957원)와 비교해 매달 얼마나 더 내는지, 1년·10년 누적 관리비와 연 8%로 굴렸다면 얼마였는지 알려 주는 무료 계산기예요. 오피스텔·원룸 관리비 평균 비교와 겨울 난방비 시즌도 볼 수 있어요." />
+    <meta name="keywords" content="관리비 계산기, 아파트 관리비 평균, 아파트 관리비 비교, 관리비 평균, 서울 아파트 관리비, 84㎡ 관리비, 59㎡ 관리비, 국민평형 관리비, 관리비 ㎡당, K-apt 관리비, 오피스텔 관리비 평균, 원룸 관리비 평균, 겨울 관리비, 난방비, 관리비 폭탄, 관리비 줄이기" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://donmeter.com/manage-fee/" />
+    <meta name="theme-color" content="#eef2f7" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="돈미터" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:url" content="https://donmeter.com/manage-fee/" />
+    <meta property="og:title" content="우리 집 관리비, 평균보다 비쌀까? | 돈미터 관리비 계산기" />
+    <meta property="og:description" content="전용면적·지역·이번 달 관리비만 고르면 평균과 비교하고 10년 누적 관리비를 계산해 드려요." />
+    <meta property="og:image" content="https://donmeter.com/og/manage-fee-v1.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="800" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="우리 집 관리비, 평균보다 비쌀까? | 돈미터 관리비 계산기" />
+    <meta name="twitter:description" content="전용면적·지역·이번 달 관리비만 고르면 평균과 비교하고 10년 누적 관리비를 계산해 드려요." />
+    <meta name="twitter:image" content="https://donmeter.com/og/manage-fee-v1.png" />
+    <!-- FAQ 문구는 src/pages/managefee/managefee.js 의 FAQ 와 같게 유지한다 -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://donmeter.com/manage-fee/#app",
+      "name": "관리비 계산기 – 돈미터",
+      "url": "https://donmeter.com/manage-fee/",
+      "description": "아파트·오피스텔·원룸의 이번 달 관리비를 고르면 K-apt 지역별 평균 관리비(전용면적 1㎡당)와 비교해 평균보다 얼마나 더 내는지, 1년·5년·10년 누적 관리비와 연 8%로 굴렸다면 얼마인지 계산해 주는 무료 서비스입니다.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ko-KR",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "isPartOf": {
+        "@id": "https://donmeter.com/#website"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "평균 관리비는 어디서 가져왔나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "아파트는 공동주택관리정보시스템(K-apt)에 공개된 2025년 9월부터 2026년 9월까지의 관리비를 한국부동산원이 집계한 값이에요. 전국 평균은 전용면적 1㎡당 2,957원이고, 서울은 3,411원, 경기는 3,451원이에요. 여기에 고른 전용면적을 곱했어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "겨울은 왜 더 비싸게 나오나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "난방비 때문이에요. K-apt 기준 2026년 1월 전국 아파트 관리비는 ㎡당 3,343원으로 1년 평균보다 약 13% 높았어요. 겨울을 고르면 고른 지역 평균에 이 비율을 곱해 비교해요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "오피스텔과 원룸은 왜 지역과 크기를 고를 수 없나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "오피스텔과 원룸·빌라는 대부분 K-apt 공개 대상이 아니라서 지역·크기별 공식 평균이 없어요. 그래서 부동산 플랫폼 다방이 집계한 서울 대학가 전용 33㎡ 이하 매물 평균(원룸 8만 4,000원, 오피스텔 약 11만 4,000원)과 비교해요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "평형은 어떻게 계산했나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "관리비 평균은 전용면적 기준이에요. 칩 옆의 평형은 공급면적이 전용면적의 약 1.33배라고 보고 어림한 값이라 실제 단지와 1~2평 다를 수 있어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "10년 누적과 투자 수익은 어떻게 계산했나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "누적액은 관리비가 매년 3%씩 오른다고 가정해 더했어요. 투자했다면은 매달 관리비만큼을 연 8%(월 복리)로 10년 동안 굴렸다고 가정한 값이에요. 실제 관리비 인상률과 투자 수익은 이와 다를 수 있어요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "내 관리비를 정확히 넣을 수는 없나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "돈미터는 정확한 금액 대신 가까운 대표값을 칩으로 고르게 해요. 고지서 금액과 가장 가까운 칩을 고르면 충분히 비교할 수 있어요."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" crossorigin />
+    <script src="/ga.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6956832994874539"
+     crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/pages/managefee/main.jsx"></script>
+  </body>
+</html>
